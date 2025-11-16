@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
 
-export default function Header() {
+interface HeaderProps {
+  onMenuClick: () => void;
+}
+
+export default function Header({ onMenuClick }: HeaderProps) {
   const { t, i18n } = useTranslation();
   const [, setLocation] = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -54,13 +58,25 @@ export default function Header() {
 
   return (
     <header className="h-16 bg-sidebar-dark border-b border-white/10 flex items-center justify-between px-4 md:px-6 sticky top-0 z-50">
-      {/* Left: Logo */}
-      <Link href="/">
-        <div className="flex items-center gap-2 cursor-pointer">
-          <span className="material-symbols-outlined text-primary text-2xl">hub</span>
-          <h1 className="text-white text-lg font-bold">AI Platform</h1>
-        </div>
-      </Link>
+      {/* Left: Hamburger Menu + Logo */}
+      <div className="flex items-center gap-3">
+        {/* Hamburger Menu Button */}
+        <button
+          onClick={onMenuClick}
+          className="p-2 rounded-lg hover:bg-primary/20 transition"
+          aria-label="Open menu"
+        >
+          <span className="material-symbols-outlined text-white text-2xl">menu</span>
+        </button>
+
+        {/* Logo */}
+        <Link href="/">
+          <div className="flex items-center gap-2 cursor-pointer">
+            <span className="material-symbols-outlined text-primary text-2xl">hub</span>
+            <h1 className="text-white text-lg font-bold">AI Platform</h1>
+          </div>
+        </Link>
+      </div>
 
       {/* Center: 검색 (나중에 추가 가능) */}
       <div className="flex-1 max-w-xl mx-auto hidden md:block">

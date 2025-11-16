@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Route, Switch } from 'wouter';
 import HomePage from './pages/HomePage';
 import FortunePage from './pages/FortunePage';
@@ -11,14 +12,16 @@ import RightSidebar from './components/RightSidebar';
 import Header from './components/Header';
 
 function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col dark group/design-root overflow-x-hidden font-display bg-background-dark">
       {/* Header */}
-      <Header />
+      <Header onMenuClick={() => setSidebarOpen(true)} />
 
       <div className="flex flex-1 w-full">
         {/* Left Sidebar */}
-        <Sidebar />
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         {/* Main Content */}
         <main className="flex-1 p-2 sm:p-4 md:p-6 lg:p-8 overflow-y-auto">
