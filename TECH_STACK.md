@@ -171,9 +171,16 @@ Face Reading AI 프로젝트에서 사용한 기술 스택 목록입니다.
 
 | 서비스 | 용도 |
 |--------|------|
-| Vercel | 프론트엔드 및 서버리스 함수 배포 |
-| Neon | PostgreSQL 데이터베이스 호스팅 |
-| Supabase | 백엔드 서비스 (데이터베이스, 스토리지, 인증) |
+| Vercel | 통합 모노레포 배포 (프론트엔드 + 백엔드 API) |
+| Supabase | PostgreSQL 데이터베이스 호스팅 |
+| Supabase | 백엔드 서비스 (스토리지, 인증) |
+
+### 모노레포 배포 구조
+```
+aiports.org/          → 클라이언트 (React + Vite)
+aiports.org/api/*     → 백엔드 API (Express + TypeScript)
+aiports.org/health    → 서버 헬스 체크
+```
 
 ---
 
@@ -183,8 +190,10 @@ Face Reading AI 프로젝트에서 사용한 기술 스택 목록입니다.
 - 프론트엔드부터 백엔드까지 완전한 타입 안정성
 - 타입 기반 API 통신으로 런타임 에러 최소화
 
-### ✅ 서버리스 아키텍처
-- Neon Serverless PostgreSQL + Vercel 배포
+### ✅ 통합 모노레포 아키텍처
+- 단일 Vercel 프로젝트로 프론트엔드 + 백엔드 배포
+- 클라이언트와 API가 동일 도메인 (CORS 불필요)
+- Supabase PostgreSQL + Vercel 서버리스 함수
 - 자동 스케일링 및 비용 효율적 운영
 
 ### ✅ 모던 빌드 시스템

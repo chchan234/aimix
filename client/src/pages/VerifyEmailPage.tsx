@@ -20,7 +20,10 @@ function VerifyEmailPage() {
       }
 
       try {
-        const response = await fetch(`http://localhost:3000/api/auth/verify-email?token=${token}`);
+        const API_URL = import.meta.env.DEV
+          ? 'http://localhost:3000'
+          : 'https://server-vert-five-94.vercel.app';
+        const response = await fetch(`${API_URL}/api/auth/verify-email?token=${token}`);
         const data = await response.json();
 
         if (response.ok) {

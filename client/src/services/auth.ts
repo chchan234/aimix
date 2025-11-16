@@ -1,9 +1,12 @@
 /**
  * Authentication Service
  * Handles all authentication-related API calls
+ * Uses relative paths in production (same domain), localhost in development.
  */
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.DEV
+  ? 'http://localhost:3000'
+  : 'https://server-vert-five-94.vercel.app';
 
 export interface User {
   id: string;

@@ -43,20 +43,24 @@
     "title": "Login",
     "subtitle": "Login with your AI Platform account",
     "emailOrId": "Email or ID",
+    "emailPlaceholder": "Enter your email",
     "password": "Password",
     "passwordPlaceholder": "Enter your password",
     "forgotPassword": "Forgot your password?",
     "loginButton": "Login",
+    "logging": "Logging in...",
     "or": "or",
     "googleLogin": "Continue with Google",
     "kakaoLogin": "Continue with Kakao",
     "noAccount": "Don't have an account?",
     "signupLink": "Sign Up",
-    "loginError": "ID or password does not match.\\n\\nTest Account:\\nID: test\\nPW: test"
+    "loginError": "Email or password does not match",
+    "kakaoLoginError": "Kakao login failed"
   },
   "home": {
     "heroTitle": "Explore various AI features on our integrated AI platform",
     "heroButton": "Start for Free",
+    "weeklyUpdate": "New AI services updated weekly",
     "quickStart": "Quick Start",
     "popularThisWeek": "Popular This Week",
     "popularSubtitle": "Most used services",
@@ -424,6 +428,10 @@
         "service3": {
           "q": "Where can I view my results?",
           "a": "Generated results can be viewed on the 'My Results' page. Results can be downloaded, shared, or deleted."
+        },
+        "service4": {
+          "q": "When are new services added?",
+          "a": "New AI services and features are updated every week. You can check the latest updates on the main banner and announcements on the homepage. We will continue to introduce innovative AI services, so stay tuned!"
         },
         "account1": {
           "q": "How do I create an account?",

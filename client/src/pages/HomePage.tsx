@@ -308,6 +308,13 @@ export default function HomePage() {
           }}
         >
           <div className="flex flex-col items-center gap-2 p-6">
+            {/* Weekly Update Badge */}
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-1">
+              <span className="material-symbols-outlined text-white text-sm">auto_awesome</span>
+              <span className="text-white text-sm font-medium">
+                {t('home.weeklyUpdate')}
+              </span>
+            </div>
             <h1 className="text-white text-3xl md:text-4xl font-bold leading-tight text-center">
               The Essential AI Platform
             </h1>
