@@ -24,7 +24,7 @@ export default function SignupPage() {
           <div className="text-center mb-8">
             <h1 className="text-white text-3xl font-bold mb-2">회원가입</h1>
             <p className="text-[#ab9eb7] text-sm">
-              AIMix에서 다양한 AI 서비스를 무료로 이용하세요
+              AI Platform에서 다양한 AI 서비스를 무료로 이용하세요
             </p>
           </div>
 

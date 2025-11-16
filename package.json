@@ -1,7 +1,7 @@
 {
-  "name": "aimix-platform",
+  "name": "aiplatform",
   "version": "1.0.0",
-  "description": "AI Entertainment Integrated Platform",
+  "description": "The Essential AI Platform",
   "private": true,
   "workspaces": [
     "client",

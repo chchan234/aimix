@@ -51,7 +51,7 @@ app.get('/health', async (req, res) => {
 // API routes
 app.get('/api', (req, res) => {
   res.json({
-    message: 'AIMix API Server',
+    message: 'AI Platform API Server',
     version: '1.0.0',
     endpoints: {
       health: '/health',

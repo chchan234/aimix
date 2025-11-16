@@ -1,4 +1,4 @@
--- AIMix Database Schema for Supabase PostgreSQL
+-- AI Platform Database Schema for Supabase PostgreSQL
 -- Generated from Drizzle ORM schema
 
 -- Enable UUID extension

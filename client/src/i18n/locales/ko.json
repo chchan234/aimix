@@ -36,7 +36,7 @@
   },
   "login": {
     "title": "로그인",
-    "subtitle": "AIMix 계정으로 로그인하세요",
+    "subtitle": "AI Platform 계정으로 로그인하세요",
     "emailOrId": "이메일 또는 아이디",
     "password": "비밀번호",
     "passwordPlaceholder": "비밀번호를 입력하세요",

@@ -58,7 +58,7 @@ export default function Header() {
       <Link href="/">
         <div className="flex items-center gap-2 cursor-pointer">
           <span className="material-symbols-outlined text-primary text-2xl">hub</span>
-          <h1 className="text-white text-lg font-bold">AIMix</h1>
+          <h1 className="text-white text-lg font-bold">AI Platform</h1>
         </div>
       </Link>
 
@@ -130,7 +130,7 @@ export default function Header() {
                 <div
                   className="w-8 h-8 rounded-full bg-cover bg-center"
                   style={{
-                    backgroundImage: 'url("https://api.dicebear.com/7.x/avataaars/svg?seed=AIMix")',
+                    backgroundImage: 'url("https://api.dicebear.com/7.x/avataaars/svg?seed=AIplatform")',
                   }}
                 ></div>
                 <span className="text-white text-sm font-medium hidden md:block">{username}</span>
@@ -144,7 +144,7 @@ export default function Header() {
                 <div className="absolute right-0 mt-2 w-48 bg-sidebar-dark border border-white/10 rounded-lg shadow-lg overflow-hidden z-50">
                   <div className="px-4 py-3 border-b border-white/10">
                     <p className="text-white text-sm font-semibold">{username}</p>
-                    <p className="text-[#ab9eb7] text-xs">test@aimix.com</p>
+                    <p className="text-[#ab9eb7] text-xs">test@aiplatform.com</p>
                   </div>
                   <button
                     onClick={() => {

@@ -7,7 +7,7 @@
 const baseURL = 'https://server-p7x55tiuk-chanwoos-projects-bd61ed6a.vercel.app';
 
 async function testAIAPIs() {
-  console.log('\n🤖 Testing AIMix AI API Endpoints...\n');
+  console.log('\n🤖 Testing AI Platform AI API Endpoints...\n');
 
   // Test 1: Face Reading (using sample image URL)
   console.log('1️⃣ Testing /api/ai/face-reading');

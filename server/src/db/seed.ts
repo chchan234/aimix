@@ -93,7 +93,7 @@ JSON 형식으로 다음 항목을 포함하여 응답하세요:
     },
     outputFormat: 'json',
     description: 'Face reading analysis prompt v1.0',
-    author: 'AIMix Team',
+    author: 'AI Platform Team',
     isActive: true,
   }).returning();
 

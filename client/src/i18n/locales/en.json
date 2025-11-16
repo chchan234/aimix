@@ -36,7 +36,7 @@
   },
   "login": {
     "title": "Login",
-    "subtitle": "Login with your AIMix account",
+    "subtitle": "Login with your AI Platform account",
     "emailOrId": "Email or ID",
     "password": "Password",
     "passwordPlaceholder": "Enter your password",
