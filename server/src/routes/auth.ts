@@ -285,6 +285,7 @@ router.post('/kakao', async (req, res) => {
  */
 router.post('/kakao/callback', async (req, res) => {
   try {
+    const startTime = Date.now();
     const { code } = req.body;
 
     if (!code) {
@@ -297,9 +298,10 @@ router.post('/kakao/callback', async (req, res) => {
     const origin = req.headers.origin || req.headers.referer?.split('/oauth')[0] || process.env.CLIENT_URL || 'http://localhost:5173';
     const redirectUri = `${origin}/oauth/kakao/callback`;
 
-    console.log('Kakao callback - Using redirect_uri:', redirectUri);
+    console.log('Kakao callback started - redirect_uri:', redirectUri);
 
     // Exchange authorization code for access token
+    const tokenStartTime = Date.now();
     const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
       method: 'POST',
       headers: {
@@ -327,8 +329,10 @@ router.post('/kakao/callback', async (req, res) => {
 
     const tokenData = await tokenResponse.json();
     const accessToken = tokenData.access_token;
+    console.log(`Token exchange took ${Date.now() - tokenStartTime}ms`);
 
     // Get user info from Kakao
+    const userInfoStartTime = Date.now();
     const kakaoResponse = await fetch('https://kapi.kakao.com/v2/user/me', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -345,8 +349,10 @@ router.post('/kakao/callback', async (req, res) => {
     const email = kakaoUser.kakao_account?.email;
     const nickname = kakaoUser.kakao_account?.profile?.nickname;
     const profileImage = kakaoUser.kakao_account?.profile?.profile_image_url;
+    console.log(`User info fetch took ${Date.now() - userInfoStartTime}ms`);
 
     // Check if user exists
+    const dbStartTime = Date.now();
     const { data: existingUser } = await supabase
       .from('users')
       .select('*')
@@ -388,6 +394,9 @@ router.post('/kakao/callback', async (req, res) => {
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN }
     );
+
+    console.log(`Database operation took ${Date.now() - dbStartTime}ms`);
+    console.log(`Total Kakao login took ${Date.now() - startTime}ms`);
 
     res.json({
       success: true,
