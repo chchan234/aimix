@@ -7,6 +7,11 @@ import EntertainmentPage from './pages/EntertainmentPage';
 import HealthPage from './pages/HealthPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
+import ProfilePage from './pages/ProfilePage';
+import SettingsPage from './pages/SettingsPage';
+import MyResultsPage from './pages/MyResultsPage';
+import BuyCreditsPage from './pages/BuyCreditsPage';
+import HelpPage from './pages/HelpPage';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 
@@ -28,6 +33,11 @@ function App() {
             <Route path="/" component={HomePage} />
             <Route path="/signup" component={SignupPage} />
             <Route path="/login" component={LoginPage} />
+            <Route path="/profile" component={ProfilePage} />
+            <Route path="/settings" component={SettingsPage} />
+            <Route path="/my-results" component={MyResultsPage} />
+            <Route path="/buy-credits" component={BuyCreditsPage} />
+            <Route path="/help" component={HelpPage} />
             <Route path="/fortune" component={FortunePage} />
             <Route path="/image" component={ImagePage} />
             <Route path="/entertainment" component={EntertainmentPage} />

@@ -200,14 +200,30 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
         {/* Bottom section */}
         <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/20 cursor-pointer">
-            <span className="material-symbols-outlined text-white text-2xl">settings</span>
-            <p className="text-white text-sm font-medium leading-normal">{t('sidebar.settings')}</p>
-          </div>
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/20 cursor-pointer">
-            <span className="material-symbols-outlined text-white text-2xl">help</span>
-            <p className="text-white text-sm font-medium leading-normal">{t('sidebar.help')}</p>
-          </div>
+          <Link href="/settings" onClick={handleLinkClick}>
+            <div className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition ${
+              location === '/settings'
+                ? 'bg-primary'
+                : 'hover:bg-primary/20'
+            }`}>
+              <span className={`material-symbols-outlined text-2xl ${
+                location === '/settings' ? 'fill text-white' : 'text-white'
+              }`}>settings</span>
+              <p className="text-white text-sm font-medium leading-normal">{t('sidebar.settings')}</p>
+            </div>
+          </Link>
+          <Link href="/help" onClick={handleLinkClick}>
+            <div className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition ${
+              location === '/help'
+                ? 'bg-primary'
+                : 'hover:bg-primary/20'
+            }`}>
+              <span className={`material-symbols-outlined text-2xl ${
+                location === '/help' ? 'fill text-white' : 'text-white'
+              }`}>help</span>
+              <p className="text-white text-sm font-medium leading-normal">{t('sidebar.help')}</p>
+            </div>
+          </Link>
         </div>
       </aside>
     </>
