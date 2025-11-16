@@ -4,17 +4,50 @@
  * Handles user registration, login, and OAuth (Kakao, Google)
  */
 
-import express from 'express';
+import express, { Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { supabase } from '../db/supabase.js';
 import { generateVerificationToken, getTokenExpiration, sendVerificationEmail } from '../services/email.js';
+import { createRefreshToken } from '../services/refreshToken.js';
 
 const router = express.Router();
 
 // JWT_SECRET is validated at server startup - no fallback needed
 const JWT_SECRET = process.env.JWT_SECRET!;
 const JWT_EXPIRES_IN = '7d';
+const REFRESH_TOKEN_EXPIRES_DAYS = 30;
+
+/**
+ * Helper: Set authentication cookies
+ */
+function setAuthCookies(res: Response, accessToken: string, refreshToken: string) {
+  const isProd = process.env.NODE_ENV === 'production';
+
+  // Access token (short-lived, 7 days)
+  res.cookie('accessToken', accessToken, {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+  });
+
+  // Refresh token (long-lived, 30 days)
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
+    maxAge: REFRESH_TOKEN_EXPIRES_DAYS * 24 * 60 * 60 * 1000
+  });
+}
+
+/**
+ * Helper: Clear authentication cookies
+ */
+function clearAuthCookies(res: Response) {
+  res.clearCookie('accessToken');
+  res.clearCookie('refreshToken');
+}
 
 // Kakao OAuth API response types
 interface KakaoTokenResponse {
@@ -110,8 +143,8 @@ router.post('/register', async (req, res) => {
       // Continue anyway - user is created, they can request resend later
     }
 
-    // Generate JWT token (but email not verified yet)
-    const token = jwt.sign(
+    // Generate JWT access token (but email not verified yet)
+    const accessToken = jwt.sign(
       {
         userId: newUser.id,
         email: newUser.email,
@@ -121,9 +154,15 @@ router.post('/register', async (req, res) => {
       { expiresIn: JWT_EXPIRES_IN }
     );
 
+    // Generate refresh token
+    const refreshToken = await createRefreshToken(newUser.id);
+
+    // Set httpOnly cookies
+    setAuthCookies(res, accessToken, refreshToken);
+
     res.json({
       success: true,
-      token,
+      token: accessToken, // For backward compatibility with localStorage clients
       user: {
         id: newUser.id,
         email: newUser.email,
@@ -181,8 +220,8 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // Generate JWT token
-    const token = jwt.sign(
+    // Generate JWT access token
+    const jwtToken = jwt.sign(
       {
         userId: user.id,
         email: user.email
@@ -191,9 +230,15 @@ router.post('/login', async (req, res) => {
       { expiresIn: JWT_EXPIRES_IN }
     );
 
+    // Generate refresh token
+    const refreshToken = await createRefreshToken(user.id);
+
+    // Set httpOnly cookies
+    setAuthCookies(res, jwtToken, refreshToken);
+
     res.json({
       success: true,
-      token,
+      token: jwtToken, // For backward compatibility
       user: {
         id: user.id,
         email: user.email,
@@ -276,8 +321,8 @@ router.post('/kakao', async (req, res) => {
       user = newUser;
     }
 
-    // Generate JWT token
-    const token = jwt.sign(
+    // Generate JWT access token
+    const jwtToken = jwt.sign(
       {
         userId: user.id,
         email: user.email
@@ -286,9 +331,15 @@ router.post('/kakao', async (req, res) => {
       { expiresIn: JWT_EXPIRES_IN }
     );
 
+    // Generate refresh token
+    const refreshToken = await createRefreshToken(user.id);
+
+    // Set httpOnly cookies
+    setAuthCookies(res, jwtToken, refreshToken);
+
     res.json({
       success: true,
-      token,
+      token: jwtToken, // For backward compatibility
       user: {
         id: user.id,
         email: user.email,
@@ -500,13 +551,117 @@ router.get('/me', async (req, res) => {
 
 /**
  * POST /api/auth/logout
- * Logout (client-side token removal mainly)
+ * Logout and revoke refresh token
  */
-router.post('/logout', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Logged out successfully'
-  });
+router.post('/logout', async (req, res) => {
+  try {
+    const refreshToken = req.cookies?.refreshToken;
+
+    // Revoke refresh token if present
+    if (refreshToken) {
+      const { revokeRefreshToken } = await import('../services/refreshToken.js');
+      await revokeRefreshToken(refreshToken);
+    }
+
+    // Clear cookies
+    clearAuthCookies(res);
+
+    res.json({
+      success: true,
+      message: 'Logged out successfully'
+    });
+  } catch (error) {
+    console.error('Logout error:', error);
+    // Clear cookies even if revocation fails
+    clearAuthCookies(res);
+    res.json({
+      success: true,
+      message: 'Logged out successfully'
+    });
+  }
+});
+
+/**
+ * POST /api/auth/refresh
+ * Refresh access token using refresh token
+ */
+router.post('/refresh', async (req, res) => {
+  try {
+    const refreshToken = req.cookies?.refreshToken;
+
+    if (!refreshToken) {
+      res.status(401).json({
+        error: 'No refresh token provided'
+      });
+      return;
+    }
+
+    // Verify refresh token and get user ID
+    const { verifyRefreshToken } = await import('../services/refreshToken.js');
+    const userId = await verifyRefreshToken(refreshToken);
+
+    if (!userId) {
+      clearAuthCookies(res);
+      res.status(401).json({
+        error: 'Invalid or expired refresh token'
+      });
+      return;
+    }
+
+    // Get user data
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', userId)
+      .single();
+
+    if (error || !user) {
+      clearAuthCookies(res);
+      res.status(401).json({
+        error: 'User not found'
+      });
+      return;
+    }
+
+    // Generate new access token
+    const newAccessToken = jwt.sign(
+      {
+        userId: user.id,
+        email: user.email,
+        emailVerified: user.email_verified
+      },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
+    // Set new access token cookie (refresh token remains the same)
+    const isProd = process.env.NODE_ENV === 'production';
+    res.cookie('accessToken', newAccessToken, {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
+    res.json({
+      success: true,
+      token: newAccessToken, // For backward compatibility
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        credits: user.credits,
+        emailVerified: user.email_verified,
+        provider: user.provider
+      }
+    });
+  } catch (error) {
+    console.error('Refresh token error:', error);
+    clearAuthCookies(res);
+    res.status(401).json({
+      error: 'Failed to refresh token'
+    });
+  }
 });
 
 /**

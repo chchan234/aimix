@@ -8,14 +8,15 @@
 import express from 'express';
 import * as gemini from '../services/gemini.js';
 import * as openai from '../services/openai.js';
-import { authenticateToken } from '../middleware/auth.js';
+import { authenticateToken, requireEmailVerification } from '../middleware/auth.js';
 import { requireCredits, attachCreditInfo } from '../middleware/credits.js';
 import { RateLimits } from '../middleware/rateLimit.js';
 
 const router = express.Router();
 
-// Apply authentication and rate limiting to all AI routes
+// Apply authentication, rate limiting, and email verification to all AI routes
 router.use(authenticateToken);
+router.use(requireEmailVerification); // Require email verification for email-provider users
 router.use(RateLimits.AI);
 router.use(attachCreditInfo);
 
