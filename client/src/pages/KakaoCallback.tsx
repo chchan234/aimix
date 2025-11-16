@@ -31,13 +31,25 @@ export default function KakaoCallback() {
         const API_URL = import.meta.env.DEV
           ? 'http://localhost:3000'
           : 'https://server-vert-five-94.vercel.app';
+
+        console.log('Sending code to server:', API_URL);
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
         const response = await fetch(`${API_URL}/api/auth/kakao/callback`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ code })
+          body: JSON.stringify({ code }),
+          mode: 'cors',
+          credentials: 'include',
+          signal: controller.signal
         });
+
+        clearTimeout(timeoutId);
+        console.log('Server response status:', response.status);
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -53,7 +65,17 @@ export default function KakaoCallback() {
         window.location.href = '/';
       } catch (err) {
         console.error('Kakao callback error:', err);
-        setError(err instanceof Error ? err.message : 'Kakao login failed');
+
+        let errorMessage = 'Kakao login failed';
+        if (err instanceof Error) {
+          if (err.name === 'AbortError') {
+            errorMessage = 'Request timeout - please try again';
+          } else {
+            errorMessage = err.message;
+          }
+        }
+
+        setError(errorMessage);
 
         // Redirect back to login after 3 seconds
         setTimeout(() => setLocation('/login'), 3000);
