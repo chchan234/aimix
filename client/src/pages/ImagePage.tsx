@@ -1,72 +1,77 @@
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 export default function ImagePage() {
-  const services = {
+  const { t } = useTranslation();
+
+  const services = useMemo(() => ({
     avatar: [
       {
-        title: 'AI 프로필 생성',
-        description: '다양한 스타일 프로필 사진',
+        title: t('services.image.profileGenerator.title'),
+        description: t('services.image.profileGenerator.description'),
         icon: 'account_circle',
         color: 'cyan',
       },
       {
-        title: 'AI 캐리커처',
-        description: '만화풍 캐리커처 생성',
+        title: t('services.image.caricature.title'),
+        description: t('services.image.caricature.description'),
         icon: 'draw',
         color: 'purple',
       },
       {
-        title: 'AI 증명사진',
-        description: '정장/배경 자동 합성',
+        title: t('services.image.idPhoto.title'),
+        description: t('services.image.idPhoto.description'),
         icon: 'badge',
         color: 'blue',
       },
     ],
     editing: [
       {
-        title: 'AI 얼굴 교체',
-        description: 'Face swap 기술',
+        title: t('services.image.faceSwap.title'),
+        description: t('services.image.faceSwap.description'),
         icon: 'swap_horiz',
         color: 'pink',
       },
       {
-        title: 'AI 노화/회춘',
-        description: '나이 변환 필터',
+        title: t('services.image.ageTransform.title'),
+        description: t('services.image.ageTransform.description'),
         icon: 'schedule',
         color: 'orange',
       },
       {
-        title: 'AI 성별 변환',
-        description: '성별 체인지 필터',
+        title: t('services.image.genderSwap.title'),
+        description: t('services.image.genderSwap.description'),
         icon: 'wc',
         color: 'indigo',
       },
       {
-        title: '흑백사진 컬러화',
-        description: '옛날 사진 복원',
+        title: t('services.image.colorization.title'),
+        description: t('services.image.colorization.description'),
         icon: 'palette',
         color: 'green',
       },
     ],
     creative: [
       {
-        title: 'AI 배경 제거/변경',
-        description: '원클릭 배경 편집',
+        title: t('services.image.backgroundRemoval.title'),
+        description: t('services.image.backgroundRemoval.description'),
         icon: 'layers',
         color: 'yellow',
       },
       {
-        title: 'AI 헤어스타일 변경',
-        description: '가상 헤어 시뮬레이션',
+        title: t('services.image.hairstyle.title'),
+        description: t('services.image.hairstyle.description'),
         icon: 'face_retouching_natural',
         color: 'red',
       },
       {
-        title: 'AI 타투 시뮬레이션',
-        description: '가상 타투 체험',
+        title: t('services.image.tattoo.title'),
+        description: t('services.image.tattoo.description'),
         icon: 'auto_awesome',
         color: 'purple',
       },
     ],
-  };
+  }), [t]);
 
   const colorClasses: Record<string, string> = {
     cyan: 'bg-cyan-500/20 text-cyan-400',
@@ -84,17 +89,17 @@ export default function ImagePage() {
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       <div className="px-4">
         <h1 className="text-white text-3xl font-bold mb-2">
-          이미지 생성/편집 서비스
+          {t('pages.image.title')}
         </h1>
         <p className="text-[#ab9eb7] text-base">
-          AI로 당신의 사진을 마법처럼 변환하세요
+          {t('pages.image.subtitle')}
         </p>
       </div>
 
       {/* AI Avatar/Profile */}
       <div>
         <h2 className="text-white text-xl font-bold px-4 pb-4">
-          AI 아바타/프로필
+          {t('pages.image.sections.avatar')}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.avatar.map((service, index) => (
@@ -125,7 +130,7 @@ export default function ImagePage() {
       {/* Photo Editing/Restoration */}
       <div>
         <h2 className="text-white text-xl font-bold px-4 pb-4">
-          사진 편집/복원
+          {t('pages.image.sections.editing')}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.editing.map((service, index) => (
@@ -155,7 +160,7 @@ export default function ImagePage() {
 
       {/* Creative Generation */}
       <div>
-        <h2 className="text-white text-xl font-bold px-4 pb-4">창의적 생성</h2>
+        <h2 className="text-white text-xl font-bold px-4 pb-4">{t('pages.image.sections.creative')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.creative.map((service, index) => (
             <div

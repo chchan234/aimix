@@ -1,202 +1,218 @@
 import { useMemo } from 'react';
+import { useLocation } from 'wouter';
+import { useTranslation } from 'react-i18next';
 
 export default function HomePage() {
-  // 모든 서비스 목록
-  const allServices = [
+  const [, setLocation] = useLocation();
+  const { t } = useTranslation();
+
+  // 카테고리 → 경로 매핑
+  const getCategoryPath = (categoryKey: string): string => {
+    const categoryMap: Record<string, string> = {
+      fortune: '/fortune',
+      image: '/image',
+      entertainment: '/entertainment',
+      health: '/health',
+    };
+    return categoryMap[categoryKey] || '/';
+  };
+
+  // 모든 서비스 목록 (번역 적용)
+  const allServices = useMemo(() => [
     // 운세/점술
     {
-      title: 'AI 사주팔자',
-      description: '생년월일시 기반 운세 분석',
+      title: t('services.fortune.saju.title'),
+      description: t('services.fortune.saju.description'),
       icon: 'calendar_today',
       color: 'purple',
-      category: '운세/점술',
+      category: 'fortune',
     },
     {
-      title: 'AI 관상',
-      description: '얼굴 인식으로 관상 해석',
+      title: t('services.fortune.faceReading.title'),
+      description: t('services.fortune.faceReading.description'),
       icon: 'face',
       color: 'blue',
-      category: '운세/점술',
+      category: 'fortune',
     },
     {
-      title: 'AI 손금',
-      description: '손바닥 스캔으로 손금 분석',
+      title: t('services.fortune.palmistry.title'),
+      description: t('services.fortune.palmistry.description'),
       icon: 'back_hand',
       color: 'green',
-      category: '운세/점술',
+      category: 'fortune',
     },
     {
-      title: 'AI 별자리 운세',
-      description: '일/주/월/년 운세',
+      title: t('services.fortune.horoscope.title'),
+      description: t('services.fortune.horoscope.description'),
       icon: 'star',
       color: 'yellow',
-      category: '운세/점술',
+      category: 'fortune',
     },
     {
-      title: 'AI 띠 운세',
-      description: '12간지 기반 운세',
+      title: t('services.fortune.zodiac.title'),
+      description: t('services.fortune.zodiac.description'),
       icon: 'pets',
       color: 'orange',
-      category: '운세/점술',
+      category: 'fortune',
     },
     {
-      title: '연인 궁합',
-      description: '커플 호환성 분석',
+      title: t('services.fortune.loveCompatibility.title'),
+      description: t('services.fortune.loveCompatibility.description'),
       icon: 'favorite',
       color: 'pink',
-      category: '운세/점술',
+      category: 'fortune',
     },
     {
-      title: '이름 궁합',
-      description: '획수 기반 궁합',
+      title: t('services.fortune.nameCompatibility.title'),
+      description: t('services.fortune.nameCompatibility.description'),
       icon: 'edit',
       color: 'indigo',
-      category: '운세/점술',
+      category: 'fortune',
     },
     {
-      title: '부부 궁합',
-      description: '결혼 생활 예측',
+      title: t('services.fortune.marriageCompatibility.title'),
+      description: t('services.fortune.marriageCompatibility.description'),
       icon: 'family_restroom',
       color: 'red',
-      category: '운세/점술',
+      category: 'fortune',
     },
     // 이미지 편집
     {
-      title: 'AI 프로필 생성',
-      description: '다양한 스타일 프로필 사진',
+      title: t('services.image.profileGenerator.title'),
+      description: t('services.image.profileGenerator.description'),
       icon: 'account_circle',
       color: 'cyan',
-      category: '이미지 편집',
+      category: 'image',
     },
     {
-      title: 'AI 캐리커처',
-      description: '만화풍 캐리커처 생성',
+      title: t('services.image.caricature.title'),
+      description: t('services.image.caricature.description'),
       icon: 'draw',
       color: 'purple',
-      category: '이미지 편집',
+      category: 'image',
     },
     {
-      title: 'AI 증명사진',
-      description: '정장/배경 자동 합성',
+      title: t('services.image.idPhoto.title'),
+      description: t('services.image.idPhoto.description'),
       icon: 'badge',
       color: 'blue',
-      category: '이미지 편집',
+      category: 'image',
     },
     {
-      title: 'AI 얼굴 교체',
-      description: 'Face swap 기술',
+      title: t('services.image.faceSwap.title'),
+      description: t('services.image.faceSwap.description'),
       icon: 'swap_horiz',
       color: 'pink',
-      category: '이미지 편집',
+      category: 'image',
     },
     {
-      title: 'AI 노화/회춘',
-      description: '나이 변환 필터',
+      title: t('services.image.ageTransform.title'),
+      description: t('services.image.ageTransform.description'),
       icon: 'schedule',
       color: 'orange',
-      category: '이미지 편집',
+      category: 'image',
     },
     {
-      title: 'AI 성별 변환',
-      description: '성별 체인지 필터',
+      title: t('services.image.genderSwap.title'),
+      description: t('services.image.genderSwap.description'),
       icon: 'wc',
       color: 'indigo',
-      category: '이미지 편집',
+      category: 'image',
     },
     {
-      title: '흑백사진 컬러화',
-      description: '옛날 사진 복원',
+      title: t('services.image.colorization.title'),
+      description: t('services.image.colorization.description'),
       icon: 'palette',
       color: 'green',
-      category: '이미지 편집',
+      category: 'image',
     },
     {
-      title: 'AI 배경 제거/변경',
-      description: '원클릭 배경 편집',
+      title: t('services.image.backgroundRemoval.title'),
+      description: t('services.image.backgroundRemoval.description'),
       icon: 'layers',
       color: 'yellow',
-      category: '이미지 편집',
+      category: 'image',
     },
     {
-      title: 'AI 헤어스타일 변경',
-      description: '가상 헤어 시뮬레이션',
+      title: t('services.image.hairstyle.title'),
+      description: t('services.image.hairstyle.description'),
       icon: 'face_retouching_natural',
       color: 'red',
-      category: '이미지 편집',
+      category: 'image',
     },
     {
-      title: 'AI 타투 시뮬레이션',
-      description: '가상 타투 체험',
+      title: t('services.image.tattoo.title'),
+      description: t('services.image.tattoo.description'),
       icon: 'auto_awesome',
       color: 'purple',
-      category: '이미지 편집',
+      category: 'image',
     },
     // 엔터테인먼트
     {
-      title: 'MBTI 정밀 분석',
-      description: 'AI 기반 성격 유형 테스트',
+      title: t('services.entertainment.mbti.title'),
+      description: t('services.entertainment.mbti.description'),
       icon: 'psychology',
       color: 'purple',
-      category: '엔터테인먼트',
+      category: 'entertainment',
     },
     {
-      title: '에니어그램 테스트',
-      description: '9가지 성격 유형 분석',
+      title: t('services.entertainment.enneagram.title'),
+      description: t('services.entertainment.enneagram.description'),
       icon: 'hub',
       color: 'blue',
-      category: '엔터테인먼트',
+      category: 'entertainment',
     },
     {
-      title: 'Big 5 성격 테스트',
-      description: '5대 성격 특성 분석',
+      title: t('services.entertainment.bigFive.title'),
+      description: t('services.entertainment.bigFive.description'),
       icon: 'workspaces',
       color: 'green',
-      category: '엔터테인먼트',
+      category: 'entertainment',
     },
     {
-      title: '스트레스 지수 측정',
-      description: '정신 건강 체크',
+      title: t('services.entertainment.stress.title'),
+      description: t('services.entertainment.stress.description'),
       icon: 'spa',
       color: 'cyan',
-      category: '엔터테인먼트',
+      category: 'entertainment',
     },
     {
-      title: 'AI 닮은꼴 찾기',
-      description: '연예인/동물 닮은꼴',
+      title: t('services.entertainment.lookalike.title'),
+      description: t('services.entertainment.lookalike.description'),
       icon: 'compare',
       color: 'pink',
-      category: '엔터테인먼트',
+      category: 'entertainment',
     },
     {
-      title: 'AI 금쪽이 테스트',
-      description: '나쁜 버릇 진단',
+      title: t('services.entertainment.goldenChild.title'),
+      description: t('services.entertainment.goldenChild.description'),
       icon: 'child_care',
       color: 'orange',
-      category: '엔터테인먼트',
+      category: 'entertainment',
     },
     // 건강/웰빙
     {
-      title: 'AI 체형 분석',
-      description: '체형 타입 진단',
+      title: t('services.health.bodyType.title'),
+      description: t('services.health.bodyType.description'),
       icon: 'accessibility',
       color: 'blue',
-      category: '건강/웰빙',
+      category: 'health',
     },
     {
-      title: 'AI BMI 계산기',
-      description: '비만도 측정',
+      title: t('services.health.bmi.title'),
+      description: t('services.health.bmi.description'),
       icon: 'monitor_weight',
       color: 'green',
-      category: '건강/웰빙',
+      category: 'health',
     },
     {
-      title: 'AI 피부 분석',
-      description: '피부 타입/트러블 진단',
+      title: t('services.health.skinAnalysis.title'),
+      description: t('services.health.skinAnalysis.description'),
       icon: 'face_6',
       color: 'pink',
-      category: '건강/웰빙',
+      category: 'health',
     },
-  ];
+  ], [t]);
 
   const colorClasses: Record<string, string> = {
     purple: 'bg-purple-500/20 text-purple-400',
@@ -214,45 +230,205 @@ export default function HomePage() {
   const randomServices = useMemo(() => {
     const shuffled = [...allServices].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 6);
-  }, []);
+  }, [allServices]);
+
+  // 이번주 인기 서비스 (추후 좋아요 기능으로 대체)
+  const popularServices = useMemo(() => [
+    {
+      title: t('services.fortune.saju.title'),
+      description: t('services.fortune.saju.description'),
+      icon: 'calendar_today',
+      color: 'purple',
+      category: 'fortune',
+      rating: 4.9,
+      users: 3245,
+    },
+    {
+      title: t('services.image.profileGenerator.title'),
+      description: t('services.image.profileGenerator.description'),
+      icon: 'account_circle',
+      color: 'cyan',
+      category: 'image',
+      rating: 4.8,
+      users: 2876,
+    },
+    {
+      title: t('services.entertainment.mbti.title'),
+      description: t('services.entertainment.mbti.description'),
+      icon: 'psychology',
+      color: 'purple',
+      category: 'entertainment',
+      rating: 4.7,
+      users: 2654,
+    },
+    {
+      title: t('services.fortune.faceReading.title'),
+      description: t('services.fortune.faceReading.description'),
+      icon: 'face',
+      color: 'blue',
+      category: 'fortune',
+      rating: 4.6,
+      users: 1987,
+    },
+    {
+      title: t('services.image.faceSwap.title'),
+      description: t('services.image.faceSwap.description'),
+      icon: 'swap_horiz',
+      color: 'pink',
+      category: 'image',
+      rating: 4.8,
+      users: 1756,
+    },
+    {
+      title: t('services.entertainment.lookalike.title'),
+      description: t('services.entertainment.lookalike.description'),
+      icon: 'compare',
+      color: 'pink',
+      category: 'entertainment',
+      rating: 4.5,
+      users: 1543,
+    },
+  ], [t]);
+
+  // 순위 뱃지 아이콘
+  const getRankBadge = (rank: number) => {
+    const badges = ['🥇', '🥈', '🥉', '4', '5', '6'];
+    return badges[rank - 1];
+  };
 
   return (
     <div className="flex flex-col gap-6 max-w-7xl mx-auto">
       {/* Header Image */}
       <div className="w-full">
         <div
-          className="bg-cover bg-center flex flex-col justify-end overflow-hidden rounded-xl min-h-[240px]"
+          className="bg-cover bg-center flex flex-col items-center justify-center overflow-hidden rounded-xl min-h-[140px]"
           style={{
             backgroundImage:
               'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           }}
         >
-          <div className="flex flex-col gap-4 p-6">
-            <p className="text-white text-2xl md:text-3xl font-bold leading-tight max-w-xl">
-              AI 통합 플랫폼에서 다양한 AI 기능을 즐겨보세요
-            </p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => window.scrollTo({ top: 400, behavior: 'smooth' })}
-                className="px-6 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-white/90 transition-all duration-300 hover:shadow-lg"
-              >
-                서비스 둘러보기
-              </button>
-              <button
-                onClick={() => window.scrollTo({ top: 400, behavior: 'smooth' })}
-                className="px-6 py-3 bg-primary/20 text-white font-semibold rounded-lg border border-white/30 hover:bg-primary/30 transition-all duration-300 hover:shadow-lg"
-              >
-                무료로 이용
-              </button>
-            </div>
+          <div className="flex flex-col items-center gap-2 p-6">
+            <h1 className="text-white text-3xl md:text-4xl font-bold leading-tight text-center">
+              The Essential AI Platform
+            </h1>
           </div>
+        </div>
+      </div>
+
+      {/* Popular This Week */}
+      <div>
+        <div className="px-4 pb-3 pt-5">
+          <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+            {t('home.popularThisWeek')}
+          </h2>
+          <p className="text-[#ab9eb7] text-sm mt-1">
+            {t('home.popularSubtitle')}
+          </p>
+        </div>
+
+        {/* Mobile: Horizontal Scroll */}
+        <div className="md:hidden flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-stretch p-4 gap-3">
+            {popularServices.map((service, index) => (
+              <div
+                key={index}
+                onClick={() => setLocation(getCategoryPath(service.category))}
+                className="relative flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
+              >
+                {/* 순위 뱃지 */}
+                <div className="absolute top-2 right-2 flex items-center justify-center w-8 h-8 bg-primary/20 rounded-full">
+                  <span className="text-lg">{getRankBadge(index + 1)}</span>
+                </div>
+
+                <div
+                  className={`flex items-center justify-center w-12 h-12 ${
+                    colorClasses[service.color]
+                  } rounded-lg`}
+                >
+                  <span className="material-symbols-outlined text-2xl">
+                    {service.icon}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <p className="text-white text-sm font-semibold leading-tight">
+                    {service.title}
+                  </p>
+                  <p className="text-[#ab9eb7] text-xs font-normal leading-normal">
+                    {service.description}
+                  </p>
+                  <p className="text-primary text-xs font-medium leading-normal mt-1">
+                    {t(`home.categories.${service.category}`)}
+                  </p>
+                  {/* 평점 및 사용자 수 */}
+                  <div className="flex items-center gap-2 mt-1 text-xs">
+                    <span className="flex items-center gap-0.5 text-yellow-400">
+                      <span className="material-symbols-outlined text-sm">star</span>
+                      {service.rating}
+                    </span>
+                    <span className="text-[#ab9eb7]">•</span>
+                    <span className="text-[#ab9eb7]">
+                      {service.users.toLocaleString()} {t('home.users')}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: Grid Layout */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
+          {popularServices.map((service, index) => (
+            <div
+              key={index}
+              onClick={() => setLocation(getCategoryPath(service.category))}
+              className="relative flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
+            >
+              {/* 순위 뱃지 */}
+              <div className="absolute top-3 right-3 flex items-center justify-center w-10 h-10 bg-primary/20 rounded-full">
+                <span className="text-xl">{getRankBadge(index + 1)}</span>
+              </div>
+
+              <div
+                className={`flex items-center justify-center w-12 h-12 ${
+                  colorClasses[service.color]
+                } rounded-lg`}
+              >
+                <span className="material-symbols-outlined text-2xl">
+                  {service.icon}
+                </span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-white text-sm font-semibold leading-tight">
+                  {service.title}
+                </p>
+                <p className="text-[#ab9eb7] text-xs font-normal leading-normal">
+                  {service.description}
+                </p>
+                <p className="text-primary text-xs font-medium leading-normal mt-1">
+                  {t(`home.categories.${service.category}`)}
+                </p>
+                {/* 평점 및 사용자 수 */}
+                <div className="flex items-center gap-2 mt-1 text-xs">
+                  <span className="flex items-center gap-0.5 text-yellow-400">
+                    <span className="material-symbols-outlined text-sm">star</span>
+                    {service.rating}
+                  </span>
+                  <span className="text-[#ab9eb7]">•</span>
+                  <span className="text-[#ab9eb7]">
+                    {service.users.toLocaleString()} {t('home.users')}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Random Services */}
       <div>
         <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-          빠른 시작
+          {t('home.quickStart')}
         </h2>
         {/* Mobile: Horizontal Scroll */}
         <div className="md:hidden flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -260,6 +436,7 @@ export default function HomePage() {
             {randomServices.map((service, index) => (
               <div
                 key={index}
+                onClick={() => setLocation(getCategoryPath(service.category))}
                 className="flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
               >
                 <div
@@ -279,7 +456,7 @@ export default function HomePage() {
                     {service.description}
                   </p>
                   <p className="text-primary text-xs font-medium leading-normal mt-1">
-                    {service.category}
+                    {t(`home.categories.${service.category}`)}
                   </p>
                 </div>
               </div>
@@ -292,6 +469,7 @@ export default function HomePage() {
           {randomServices.map((service, index) => (
             <div
               key={index}
+              onClick={() => setLocation(getCategoryPath(service.category))}
               className="flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
             >
               <div
@@ -311,7 +489,7 @@ export default function HomePage() {
                   {service.description}
                 </p>
                 <p className="text-primary text-xs font-medium leading-normal mt-1">
-                  {service.category}
+                  {t(`home.categories.${service.category}`)}
                 </p>
               </div>
             </div>

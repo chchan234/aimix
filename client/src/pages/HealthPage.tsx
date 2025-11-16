@@ -1,26 +1,31 @@
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 export default function HealthPage() {
-  const services = {
+  const { t } = useTranslation();
+
+  const services = useMemo(() => ({
     health: [
       {
-        title: 'AI 체형 분석',
-        description: '체형 타입 진단',
+        title: t('services.health.bodyType.title'),
+        description: t('services.health.bodyType.description'),
         icon: 'accessibility',
         color: 'blue',
       },
       {
-        title: 'AI BMI 계산기',
-        description: '비만도 측정',
+        title: t('services.health.bmi.title'),
+        description: t('services.health.bmi.description'),
         icon: 'monitor_weight',
         color: 'green',
       },
       {
-        title: 'AI 피부 분석',
-        description: '피부 타입/트러블 진단',
+        title: t('services.health.skinAnalysis.title'),
+        description: t('services.health.skinAnalysis.description'),
         icon: 'face_6',
         color: 'pink',
       },
     ],
-  };
+  }), [t]);
 
   const colorClasses: Record<string, string> = {
     blue: 'bg-blue-500/20 text-blue-400',
@@ -32,16 +37,16 @@ export default function HealthPage() {
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       <div className="px-4">
         <h1 className="text-white text-3xl font-bold mb-2">
-          건강/웰빙 서비스
+          {t('pages.health.title')}
         </h1>
         <p className="text-[#ab9eb7] text-base">
-          AI가 분석하는 당신의 건강 상태
+          {t('pages.health.subtitle')}
         </p>
       </div>
 
       {/* Health Analysis */}
       <div>
-        <h2 className="text-white text-xl font-bold px-4 pb-4">건강 분석</h2>
+        <h2 className="text-white text-xl font-bold px-4 pb-4">{t('pages.health.sections.analysis')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.health.map((service, index) => (
             <div

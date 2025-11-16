@@ -1,0 +1,229 @@
+{
+  "header": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "profile": "Profile",
+    "settings": "Settings",
+    "notifications": "Notifications",
+    "credits": "Credits",
+    "languageSelect": "Language"
+  },
+  "sidebar": {
+    "home": "Home",
+    "fortune": "Fortune/Divination",
+    "image": "Image Editing",
+    "entertainment": "Entertainment",
+    "health": "Health/Wellness",
+    "settings": "Settings",
+    "help": "Help"
+  },
+  "rightSidebar": {
+    "recentActivity": "Recent Activity",
+    "openActivity": "Open Recent Activity",
+    "closeActivity": "Close Recent Activity",
+    "activities": {
+      "faceReading": "AI Face Reading Completed",
+      "dreamInterpretation": "Dream Interpretation Used",
+      "tarotReading": "Tarot Card Reading",
+      "saju": "AI Saju Reading Confirmed"
+    },
+    "timeAgo": {
+      "minutes": "{{count}} min ago",
+      "hours": "{{count}} hour ago",
+      "yesterday": "Yesterday"
+    }
+  },
+  "login": {
+    "title": "Login",
+    "subtitle": "Login with your AIMix account",
+    "emailOrId": "Email or ID",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "forgotPassword": "Forgot your password?",
+    "loginButton": "Login",
+    "or": "or",
+    "googleLogin": "Continue with Google",
+    "kakaoLogin": "Continue with Kakao",
+    "noAccount": "Don't have an account?",
+    "signupLink": "Sign Up",
+    "loginError": "ID or password does not match.\\n\\nTest Account:\\nID: test\\nPW: test"
+  },
+  "home": {
+    "heroTitle": "Explore various AI features on our integrated AI platform",
+    "heroButton": "Start for Free",
+    "quickStart": "Quick Start",
+    "popularThisWeek": "Popular This Week",
+    "popularSubtitle": "Most used services",
+    "rating": "Rating",
+    "users": "users",
+    "categories": {
+      "fortune": "Fortune/Divination",
+      "image": "Image Editing",
+      "entertainment": "Entertainment",
+      "health": "Health/Wellness"
+    }
+  },
+  "services": {
+    "fortune": {
+      "saju": {
+        "title": "AI Saju",
+        "description": "Fortune analysis based on birth date & time"
+      },
+      "faceReading": {
+        "title": "AI Face Reading",
+        "description": "Face recognition-based fortune telling"
+      },
+      "palmistry": {
+        "title": "AI Palmistry",
+        "description": "Palm scan analysis"
+      },
+      "horoscope": {
+        "title": "AI Horoscope",
+        "description": "Daily/Weekly/Monthly/Yearly horoscope"
+      },
+      "zodiac": {
+        "title": "AI Zodiac",
+        "description": "12 zodiac animal fortune"
+      },
+      "loveCompatibility": {
+        "title": "Love Compatibility",
+        "description": "Couple compatibility analysis"
+      },
+      "nameCompatibility": {
+        "title": "Name Compatibility",
+        "description": "Stroke-based compatibility"
+      },
+      "marriageCompatibility": {
+        "title": "Marriage Compatibility",
+        "description": "Married life prediction"
+      }
+    },
+    "image": {
+      "profileGenerator": {
+        "title": "AI Profile Generator",
+        "description": "Various style profile photos"
+      },
+      "caricature": {
+        "title": "AI Caricature",
+        "description": "Cartoon-style caricature generation"
+      },
+      "idPhoto": {
+        "title": "AI ID Photo",
+        "description": "Auto formal wear & background"
+      },
+      "faceSwap": {
+        "title": "AI Face Swap",
+        "description": "Face swap technology"
+      },
+      "ageTransform": {
+        "title": "AI Age Transform",
+        "description": "Age transformation filter"
+      },
+      "genderSwap": {
+        "title": "AI Gender Swap",
+        "description": "Gender change filter"
+      },
+      "colorization": {
+        "title": "Photo Colorization",
+        "description": "Restore old photos"
+      },
+      "backgroundRemoval": {
+        "title": "AI Background Removal",
+        "description": "One-click background editing"
+      },
+      "hairstyle": {
+        "title": "AI Hairstyle Change",
+        "description": "Virtual hair simulation"
+      },
+      "tattoo": {
+        "title": "AI Tattoo Simulation",
+        "description": "Virtual tattoo experience"
+      }
+    },
+    "entertainment": {
+      "mbti": {
+        "title": "MBTI Analysis",
+        "description": "AI-based personality type test"
+      },
+      "enneagram": {
+        "title": "Enneagram Test",
+        "description": "9 personality type analysis"
+      },
+      "bigFive": {
+        "title": "Big 5 Personality Test",
+        "description": "5 major personality traits"
+      },
+      "stress": {
+        "title": "Stress Level Test",
+        "description": "Mental health check"
+      },
+      "lookalike": {
+        "title": "AI Lookalike Finder",
+        "description": "Celebrity/Animal lookalike"
+      },
+      "goldenChild": {
+        "title": "AI Bad Habit Test",
+        "description": "Bad habit diagnosis"
+      }
+    },
+    "health": {
+      "bodyType": {
+        "title": "AI Body Type Analysis",
+        "description": "Body type diagnosis"
+      },
+      "bmi": {
+        "title": "AI BMI Calculator",
+        "description": "Obesity measurement"
+      },
+      "skinAnalysis": {
+        "title": "AI Skin Analysis",
+        "description": "Skin type & trouble diagnosis"
+      }
+    }
+  },
+  "pages": {
+    "fortune": {
+      "title": "Fortune/Divination Services",
+      "subtitle": "Discover your destiny and future with AI",
+      "sections": {
+        "traditional": "Traditional Fortune",
+        "western": "Western Fortune",
+        "compatibility": "Compatibility/Relationship"
+      }
+    },
+    "image": {
+      "title": "Image Generation/Editing Services",
+      "subtitle": "Transform your photos magically with AI",
+      "sections": {
+        "avatar": "AI Avatar/Profile",
+        "editing": "Photo Editing/Restoration",
+        "creative": "Creative Generation"
+      }
+    },
+    "entertainment": {
+      "title": "Entertainment/Games",
+      "subtitle": "Discover yourself with fun psychology tests and games",
+      "sections": {
+        "psychology": "Psychology Analysis",
+        "fun": "Fun/Challenge"
+      }
+    },
+    "health": {
+      "title": "Health/Wellness Services",
+      "subtitle": "AI-powered health status analysis",
+      "sections": {
+        "analysis": "Health Analysis"
+      }
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete"
+  }
+}

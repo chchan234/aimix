@@ -1,60 +1,65 @@
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 export default function FortunePage() {
-  const services = {
+  const { t } = useTranslation();
+
+  const services = useMemo(() => ({
     traditional: [
       {
-        title: 'AI 사주팔자',
-        description: '생년월일시 기반 운세 분석',
+        title: t('services.fortune.saju.title'),
+        description: t('services.fortune.saju.description'),
         icon: 'calendar_today',
         color: 'purple',
       },
       {
-        title: 'AI 관상',
-        description: '얼굴 인식으로 관상 해석',
+        title: t('services.fortune.faceReading.title'),
+        description: t('services.fortune.faceReading.description'),
         icon: 'face',
         color: 'blue',
       },
       {
-        title: 'AI 손금',
-        description: '손바닥 스캔으로 손금 분석',
+        title: t('services.fortune.palmistry.title'),
+        description: t('services.fortune.palmistry.description'),
         icon: 'back_hand',
         color: 'green',
       },
     ],
     western: [
       {
-        title: 'AI 별자리 운세',
-        description: '일/주/월/년 운세',
+        title: t('services.fortune.horoscope.title'),
+        description: t('services.fortune.horoscope.description'),
         icon: 'star',
         color: 'yellow',
       },
       {
-        title: 'AI 띠 운세',
-        description: '12간지 기반 운세',
+        title: t('services.fortune.zodiac.title'),
+        description: t('services.fortune.zodiac.description'),
         icon: 'pets',
         color: 'orange',
       },
     ],
     compatibility: [
       {
-        title: '연인 궁합',
-        description: '커플 호환성 분석',
+        title: t('services.fortune.loveCompatibility.title'),
+        description: t('services.fortune.loveCompatibility.description'),
         icon: 'favorite',
         color: 'pink',
       },
       {
-        title: '이름 궁합',
-        description: '획수 기반 궁합',
+        title: t('services.fortune.nameCompatibility.title'),
+        description: t('services.fortune.nameCompatibility.description'),
         icon: 'edit',
         color: 'indigo',
       },
       {
-        title: '부부 궁합',
-        description: '결혼 생활 예측',
+        title: t('services.fortune.marriageCompatibility.title'),
+        description: t('services.fortune.marriageCompatibility.description'),
         icon: 'family_restroom',
         color: 'red',
       },
     ],
-  };
+  }), [t]);
 
   const colorClasses: Record<string, string> = {
     purple: 'bg-purple-500/20 text-purple-400',
@@ -70,15 +75,15 @@ export default function FortunePage() {
   return (
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       <div className="px-4">
-        <h1 className="text-white text-3xl font-bold mb-2">운세/점술 서비스</h1>
+        <h1 className="text-white text-3xl font-bold mb-2">{t('pages.fortune.title')}</h1>
         <p className="text-[#ab9eb7] text-base">
-          AI가 분석하는 당신의 운명과 미래
+          {t('pages.fortune.subtitle')}
         </p>
       </div>
 
       {/* Traditional Fortune */}
       <div>
-        <h2 className="text-white text-xl font-bold px-4 pb-4">전통 운세</h2>
+        <h2 className="text-white text-xl font-bold px-4 pb-4">{t('pages.fortune.sections.traditional')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.traditional.map((service, index) => (
             <div
@@ -107,7 +112,7 @@ export default function FortunePage() {
 
       {/* Western Fortune */}
       <div>
-        <h2 className="text-white text-xl font-bold px-4 pb-4">서양 운세</h2>
+        <h2 className="text-white text-xl font-bold px-4 pb-4">{t('pages.fortune.sections.western')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.western.map((service, index) => (
             <div
@@ -136,7 +141,7 @@ export default function FortunePage() {
 
       {/* Compatibility */}
       <div>
-        <h2 className="text-white text-xl font-bold px-4 pb-4">궁합/관계</h2>
+        <h2 className="text-white text-xl font-bold px-4 pb-4">{t('pages.fortune.sections.compatibility')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.compatibility.map((service, index) => (
             <div
