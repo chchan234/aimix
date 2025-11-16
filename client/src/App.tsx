@@ -1,5 +1,9 @@
 import { Route, Switch } from 'wouter';
 import HomePage from './pages/HomePage';
+import FortunePage from './pages/FortunePage';
+import ImagePage from './pages/ImagePage';
+import EntertainmentPage from './pages/EntertainmentPage';
+import HealthPage from './pages/HealthPage';
 import Sidebar from './components/Sidebar';
 import RightSidebar from './components/RightSidebar';
 
@@ -14,6 +18,10 @@ function App() {
         <main className="flex-1 p-2 sm:p-4 md:p-6 lg:p-8 overflow-y-auto">
           <Switch>
             <Route path="/" component={HomePage} />
+            <Route path="/fortune" component={FortunePage} />
+            <Route path="/image" component={ImagePage} />
+            <Route path="/entertainment" component={EntertainmentPage} />
+            <Route path="/health" component={HealthPage} />
             <Route path="/:rest*">
               {() => (
                 <div className="flex items-center justify-center h-screen">
