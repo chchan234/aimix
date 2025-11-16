@@ -13,6 +13,7 @@ export interface User {
   profileImageUrl?: string;
   provider?: string;
   createdAt?: string;
+  emailVerified?: boolean;
 }
 
 export interface AuthResponse {

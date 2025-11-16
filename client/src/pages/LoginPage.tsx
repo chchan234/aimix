@@ -1,33 +1,48 @@
-import { useState } from 'react';
-import { useLocation } from 'wouter';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { login, loginWithKakao, initKakao, saveAuthData } from '../services/auth';
 
 export default function LoginPage() {
   const { t } = useTranslation();
-  const [, setLocation] = useLocation();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Initialize Kakao SDK
+  useEffect(() => {
+    initKakao();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setIsLoading(true);
 
-    // 테스트 계정 확인
-    if (formData.email === 'test' && formData.password === 'test') {
-      // 로그인 성공
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('username', 'Test User');
-      localStorage.setItem('userEmail', 'test@aiplatform.com');
+    try {
+      // Call login API
+      const response = await login(formData.email, formData.password);
 
-      // 홈으로 리다이렉트
-      setLocation('/');
+      // Save auth data
+      saveAuthData(response.token, response.user);
 
-      // 페이지 새로고침으로 헤더 상태 업데이트
+      // Redirect to home
       window.location.href = '/';
-    } else {
-      // 로그인 실패
-      alert(t('login.loginError'));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('login.loginError'));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKakaoLogin = () => {
+    try {
+      // Redirect to Kakao OAuth page
+      loginWithKakao();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('login.kakaoLoginError'));
     }
   };
 
@@ -43,6 +58,13 @@ export default function LoginPage() {
             </p>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+              <p className="text-red-400 text-sm">{error}</p>
+            </div>
+          )}
+
           {/* Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Email */}
@@ -53,8 +75,9 @@ export default function LoginPage() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="px-4 py-3 bg-background-dark text-white rounded-lg border border-white/10 focus:border-primary focus:outline-none transition"
-                placeholder="test"
+                placeholder={t('login.emailPlaceholder')}
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -68,6 +91,7 @@ export default function LoginPage() {
                 className="px-4 py-3 bg-background-dark text-white rounded-lg border border-white/10 focus:border-primary focus:outline-none transition"
                 placeholder={t('login.passwordPlaceholder')}
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -76,6 +100,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 className="text-primary text-sm hover:underline"
+                disabled={isLoading}
               >
                 {t('login.forgotPassword')}
               </button>
@@ -84,9 +109,10 @@ export default function LoginPage() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="mt-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all duration-300 hover:shadow-lg"
+              className="mt-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading}
             >
-              {t('login.loginButton')}
+              {isLoading ? t('login.logging') : t('login.loginButton')}
             </button>
           </form>
 
@@ -99,13 +125,14 @@ export default function LoginPage() {
 
           {/* Social Login Buttons */}
           <div className="flex flex-col gap-3">
-            <button className="px-6 py-3 bg-white text-gray-800 font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 flex items-center justify-center gap-2">
-              <span className="material-symbols-outlined">mail</span>
-              {t('login.googleLogin')}
-            </button>
-            <button className="px-6 py-3 bg-[#03C75A] text-white font-semibold rounded-lg hover:bg-[#02b350] transition-all duration-300 flex items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={handleKakaoLogin}
+              className="px-6 py-3 bg-[#FEE500] text-[#191919] font-semibold rounded-lg hover:bg-[#FDD835] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading}
+            >
               <span className="material-symbols-outlined">chat</span>
-              {t('login.kakaoLogin')}
+              {isLoading ? t('login.logging') : t('login.kakaoLogin')}
             </button>
           </div>
 
@@ -114,10 +141,11 @@ export default function LoginPage() {
             <p className="text-[#ab9eb7] text-sm">
               {t('login.noAccount')}{' '}
               <button
-                onClick={() => setLocation('/signup')}
+                onClick={handleKakaoLogin}
                 className="text-primary font-semibold hover:underline"
+                disabled={isLoading}
               >
-                {t('login.signupLink')}
+                카카오로 10초만에 가입
               </button>
             </p>
           </div>
