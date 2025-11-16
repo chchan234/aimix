@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { supabase, testConnection } from './db/supabase.js';
+import aiRoutes from './routes/ai.js';
 
 dotenv.config();
 
@@ -54,10 +55,20 @@ app.get('/api', (req, res) => {
     version: '1.0.0',
     endpoints: {
       health: '/health',
-      users: '/api/users'
+      users: '/api/users',
+      ai: {
+        faceReading: '/api/ai/face-reading',
+        nameAnalysis: '/api/ai/name-analysis',
+        dreamInterpretation: '/api/ai/dream-interpretation',
+        story: '/api/ai/story',
+        chat: '/api/ai/chat'
+      }
     }
   });
 });
+
+// AI service routes
+app.use('/api/ai', aiRoutes);
 
 // Test endpoint to get user count
 app.get('/api/users/count', async (req, res) => {
