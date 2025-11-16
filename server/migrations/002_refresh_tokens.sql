@@ -7,13 +7,13 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
   token TEXT NOT NULL UNIQUE,
   expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  revoked_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-
-  -- Indexes for performance
-  INDEX idx_refresh_tokens_user_id (user_id),
-  INDEX idx_refresh_tokens_token (token),
-  INDEX idx_refresh_tokens_expires_at (expires_at)
+  revoked_at TIMESTAMP WITH TIME ZONE DEFAULT NULL
 );
+
+-- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_id ON refresh_tokens(user_id);
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_token ON refresh_tokens(token);
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_expires_at ON refresh_tokens(expires_at);
 
 -- Clean up expired tokens automatically (run this periodically)
 -- Can be set up as a cron job in Supabase
