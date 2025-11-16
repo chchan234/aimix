@@ -32,6 +32,7 @@ declare global {
 
 /**
  * Verify JWT token and attach user to request
+ * Supports both Authorization header and httpOnly cookie
  */
 export async function authenticateToken(
   req: Request,
@@ -39,16 +40,22 @@ export async function authenticateToken(
   next: NextFunction
 ): Promise<void> {
   try {
-    const authHeader = req.headers.authorization;
+    // Try to get token from Authorization header first
+    let token = req.headers.authorization?.startsWith('Bearer ')
+      ? req.headers.authorization.substring(7)
+      : null;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    // If no header token, try cookie
+    if (!token && req.cookies?.accessToken) {
+      token = req.cookies.accessToken;
+    }
+
+    if (!token) {
       res.status(401).json({
         error: 'No token provided'
       });
       return;
     }
-
-    const token = authHeader.substring(7);
 
     // Verify JWT token
     const decoded = jwt.verify(token, JWT_SECRET) as {

@@ -42,7 +42,7 @@ router.post('/name-analysis', requireCredits('name-analysis'), async (req, res) 
       res.json(result);
     } else {
       res.status(500).json({
-        error: result.error || 'Failed to analyze name'
+        error: ('error' in result && result.error) || 'Failed to analyze name'
       });
     }
   } catch (error) {
@@ -76,7 +76,7 @@ router.post('/dream-interpretation', requireCredits('dream-interpretation'), asy
       res.json(result);
     } else {
       res.status(500).json({
-        error: result.error || 'Failed to interpret dream'
+        error: ('error' in result && result.error) || 'Failed to interpret dream'
       });
     }
   } catch (error) {

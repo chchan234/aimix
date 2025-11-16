@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { supabase, testConnection } from './db/supabase.js';
 import aiRoutes from './routes/ai.js';
@@ -77,6 +78,7 @@ app.options('*', cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Health check with DB connection test
 app.get('/health', async (req, res) => {

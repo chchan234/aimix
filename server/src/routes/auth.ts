@@ -16,6 +16,32 @@ const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET!;
 const JWT_EXPIRES_IN = '7d';
 
+// Kakao OAuth API response types
+interface KakaoTokenResponse {
+  access_token: string;
+  token_type: string;
+  refresh_token?: string;
+  expires_in: number;
+  scope?: string;
+  refresh_token_expires_in?: number;
+}
+
+interface KakaoUserResponse {
+  id: number;
+  connected_at?: string;
+  kakao_account?: {
+    profile?: {
+      nickname?: string;
+      profile_image_url?: string;
+      thumbnail_image_url?: string;
+    };
+    email?: string;
+    email_needs_agreement?: boolean;
+    is_email_valid?: boolean;
+    is_email_verified?: boolean;
+  };
+}
+
 /**
  * POST /api/auth/register
  * Register new user with email/password
@@ -211,7 +237,7 @@ router.post('/kakao', async (req, res) => {
       throw new Error('Failed to get Kakao user info');
     }
 
-    const kakaoUser = await kakaoResponse.json();
+    const kakaoUser = await kakaoResponse.json() as KakaoUserResponse;
     const kakaoId = String(kakaoUser.id);
     const email = kakaoUser.kakao_account?.email;
     const nickname = kakaoUser.kakao_account?.profile?.nickname;
@@ -328,7 +354,7 @@ router.post('/kakao/callback', async (req, res) => {
       throw new Error(`Failed to exchange authorization code: ${JSON.stringify(errorData)}`);
     }
 
-    const tokenData = await tokenResponse.json();
+    const tokenData = await tokenResponse.json() as KakaoTokenResponse;
     const accessToken = tokenData.access_token;
     console.log(`Token exchange took ${Date.now() - tokenStartTime}ms`);
 
@@ -345,7 +371,7 @@ router.post('/kakao/callback', async (req, res) => {
       throw new Error('Failed to get Kakao user info');
     }
 
-    const kakaoUser = await kakaoResponse.json();
+    const kakaoUser = await kakaoResponse.json() as KakaoUserResponse;
     const kakaoId = String(kakaoUser.id);
     const email = kakaoUser.kakao_account?.email;
     const nickname = kakaoUser.kakao_account?.profile?.nickname;
