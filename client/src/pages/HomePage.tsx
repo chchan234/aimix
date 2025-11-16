@@ -227,10 +227,18 @@ export default function HomePage() {
               'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           }}
         >
-          <div className="flex p-6">
+          <div className="flex flex-col gap-4 p-6">
             <p className="text-white text-2xl md:text-3xl font-bold leading-tight max-w-xl">
               AI 통합 플랫폼에서 다양한 AI 기능을 즐겨보세요
             </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => window.scrollTo({ top: 400, behavior: 'smooth' })}
+                className="px-6 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-white/90 transition-all duration-300 hover:shadow-lg"
+              >
+                서비스 둘러보기
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -240,12 +248,13 @@ export default function HomePage() {
         <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
           빠른 시작
         </h2>
-        <div className="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Mobile: Horizontal Scroll */}
+        <div className="md:hidden flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex items-stretch p-4 gap-3">
             {randomServices.map((service, index) => (
               <div
                 key={index}
-                className="flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer min-w-[160px] max-w-[160px]"
+                className="flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
               >
                 <div
                   className={`flex items-center justify-center w-12 h-12 ${
@@ -270,6 +279,37 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Desktop: Grid Layout */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
+          {randomServices.map((service, index) => (
+            <div
+              key={index}
+              className="flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
+            >
+              <div
+                className={`flex items-center justify-center w-12 h-12 ${
+                  colorClasses[service.color]
+                } rounded-lg`}
+              >
+                <span className="material-symbols-outlined text-2xl">
+                  {service.icon}
+                </span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-white text-sm font-semibold leading-tight">
+                  {service.title}
+                </p>
+                <p className="text-[#ab9eb7] text-xs font-normal leading-normal">
+                  {service.description}
+                </p>
+                <p className="text-primary text-xs font-medium leading-normal mt-1">
+                  {service.category}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
