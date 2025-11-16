@@ -6,7 +6,7 @@ export default function ProfilePage() {
   const { t } = useTranslation();
   const [, setLocation] = useLocation();
   const [username, setUsername] = useState('사용자');
-  const [email, setEmail] = useState('test@aiplatform.com');
+  const [email] = useState('test@aiplatform.com');
   const [joinDate] = useState('2024.01.15');
   const [isEditing, setIsEditing] = useState(false);
   const [editedUsername, setEditedUsername] = useState('');

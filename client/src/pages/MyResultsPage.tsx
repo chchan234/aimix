@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface Result {
   id: number;
@@ -12,7 +11,6 @@ interface Result {
 }
 
 export default function MyResultsPage() {
-  const { t } = useTranslation();
 
   // 필터 및 정렬 상태
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
