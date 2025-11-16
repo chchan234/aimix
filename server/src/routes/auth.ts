@@ -309,8 +309,13 @@ router.post('/kakao/callback', async (req, res) => {
 
     if (!tokenResponse.ok) {
       const errorData = await tokenResponse.json();
-      console.error('Token exchange error:', errorData);
-      throw new Error('Failed to exchange authorization code');
+      console.error('Token exchange error:', {
+        status: tokenResponse.status,
+        errorData,
+        redirect_uri: `${process.env.CLIENT_URL || 'http://localhost:5173'}/oauth/kakao/callback`,
+        client_id: process.env.KAKAO_REST_API_KEY ? 'SET' : 'NOT_SET'
+      });
+      throw new Error(`Failed to exchange authorization code: ${JSON.stringify(errorData)}`);
     }
 
     const tokenData = await tokenResponse.json();
