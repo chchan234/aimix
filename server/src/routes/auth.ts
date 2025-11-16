@@ -12,7 +12,8 @@ import { generateVerificationToken, getTokenExpiration, sendVerificationEmail } 
 
 const router = express.Router();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
+// JWT_SECRET is validated at server startup - no fallback needed
+const JWT_SECRET = process.env.JWT_SECRET!;
 const JWT_EXPIRES_IN = '7d';
 
 /**
@@ -30,9 +31,9 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       return res.status(400).json({
-        error: 'Password must be at least 6 characters'
+        error: 'Password must be at least 8 characters'
       });
     }
 

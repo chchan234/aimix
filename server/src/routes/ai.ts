@@ -2,21 +2,31 @@
  * AI Service Routes
  *
  * API endpoints for AI-powered services using OpenAI and Gemini
+ * Protected by authentication, rate limiting, and credit system
  */
 
 import express from 'express';
 import * as gemini from '../services/gemini.js';
 import * as openai from '../services/openai.js';
+import { authenticateToken } from '../middleware/auth.js';
+import { requireCredits, attachCreditInfo } from '../middleware/credits.js';
+import { RateLimits } from '../middleware/rateLimit.js';
 
 const router = express.Router();
+
+// Apply authentication and rate limiting to all AI routes
+router.use(authenticateToken);
+router.use(RateLimits.AI);
+router.use(attachCreditInfo);
 
 /**
  * POST /api/ai/name-analysis
  * Analyze name meaning using Gemini
  *
  * Body: { name: string, birthDate?: string }
+ * Cost: 10 credits
  */
-router.post('/name-analysis', async (req, res) => {
+router.post('/name-analysis', requireCredits('name-analysis'), async (req, res) => {
   try {
     const { name, birthDate } = req.body;
 
@@ -48,8 +58,9 @@ router.post('/name-analysis', async (req, res) => {
  * Interpret dream using Gemini
  *
  * Body: { dream: string }
+ * Cost: 15 credits
  */
-router.post('/dream-interpretation', async (req, res) => {
+router.post('/dream-interpretation', requireCredits('dream-interpretation'), async (req, res) => {
   try {
     const { dream } = req.body;
 
@@ -81,8 +92,9 @@ router.post('/dream-interpretation', async (req, res) => {
  * Generate creative story using Gemini
  *
  * Body: { theme: string, length?: 'short' | 'medium' | 'long' }
+ * Cost: 20 credits
  */
-router.post('/story', async (req, res) => {
+router.post('/story', requireCredits('story'), async (req, res) => {
   try {
     const { theme, length = 'medium' } = req.body;
 
@@ -114,8 +126,9 @@ router.post('/story', async (req, res) => {
  * General AI chat endpoint
  *
  * Body: { message: string }
+ * Cost: 5 credits
  */
-router.post('/chat', async (req, res) => {
+router.post('/chat', requireCredits('chat'), async (req, res) => {
   try {
     const { message } = req.body;
 
@@ -147,8 +160,9 @@ router.post('/chat', async (req, res) => {
  * Analyze face for fortune reading using OpenAI Vision
  *
  * Body: { imageUrl?: string, base64Image?: string, birthDate?: string }
+ * Cost: 25 credits (Vision API is more expensive)
  */
-router.post('/face-reading', async (req, res) => {
+router.post('/face-reading', requireCredits('face-reading'), async (req, res) => {
   try {
     const { imageUrl, base64Image, birthDate } = req.body;
 

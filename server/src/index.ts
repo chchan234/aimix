@@ -7,6 +7,40 @@ import authRoutes from './routes/auth.js';
 
 dotenv.config();
 
+// Security: Validate critical environment variables
+function validateEnvironment() {
+  const errors: string[] = [];
+
+  // JWT_SECRET is critical for security
+  if (!process.env.JWT_SECRET) {
+    errors.push('JWT_SECRET environment variable is required');
+  } else if (process.env.JWT_SECRET === 'your-secret-key-change-this') {
+    errors.push('JWT_SECRET must not use the default value');
+  } else if (process.env.JWT_SECRET.length < 32) {
+    errors.push('JWT_SECRET must be at least 32 characters long');
+  }
+
+  // Other critical environment variables
+  if (!process.env.SUPABASE_URL) {
+    errors.push('SUPABASE_URL environment variable is required');
+  }
+  if (!process.env.SUPABASE_ANON_KEY) {
+    errors.push('SUPABASE_ANON_KEY environment variable is required');
+  }
+
+  if (errors.length > 0) {
+    console.error('❌ CRITICAL: Server cannot start due to missing or invalid environment variables:');
+    errors.forEach(error => console.error(`  - ${error}`));
+    console.error('\n💡 Set these environment variables before starting the server.');
+    process.exit(1);
+  }
+
+  console.log('✅ Environment validation passed');
+}
+
+// Validate environment before starting server
+validateEnvironment();
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 

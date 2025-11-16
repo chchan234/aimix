@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'wouter';
-import { saveAuthData } from '../services/auth';
+import { saveAuthData, verifyOAuthState } from '../services/auth';
 
 export default function KakaoCallback() {
   const [error, setError] = useState('');
@@ -17,12 +17,18 @@ export default function KakaoCallback() {
       hasProcessed.current = true;
 
       try {
-        // Get authorization code from URL query params
+        // Get authorization code and state from URL query params
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
+        const state = urlParams.get('state');
 
         if (!code) {
           throw new Error('No authorization code received');
+        }
+
+        // Verify OAuth state to prevent CSRF attacks
+        if (!verifyOAuthState(state)) {
+          throw new Error('Invalid OAuth state - possible security issue');
         }
 
         console.log('Processing Kakao callback with code:', code.substring(0, 10) + '...');

@@ -141,16 +141,47 @@ export function initKakao() {
 }
 
 /**
+ * Generate random state for OAuth CSRF protection
+ */
+function generateOAuthState(): string {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+/**
  * Trigger Kakao login redirect using REST API (direct OAuth)
  */
 export function loginWithKakao(): void {
   const REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
   const REDIRECT_URI = `${window.location.origin}/oauth/kakao/callback`;
 
-  // Direct OAuth authorization URL (no SDK needed)
-  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  // Generate and store state for CSRF protection
+  const state = generateOAuthState();
+  sessionStorage.setItem('kakao_oauth_state', state);
+
+  // Direct OAuth authorization URL with state parameter
+  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${state}`;
 
   window.location.href = kakaoAuthUrl;
+}
+
+/**
+ * Verify OAuth state parameter for CSRF protection
+ */
+export function verifyOAuthState(receivedState: string | null): boolean {
+  const storedState = sessionStorage.getItem('kakao_oauth_state');
+
+  // Clean up stored state
+  sessionStorage.removeItem('kakao_oauth_state');
+
+  // Verify state matches
+  if (!receivedState || !storedState || receivedState !== storedState) {
+    console.error('OAuth state mismatch - possible CSRF attack');
+    return false;
+  }
+
+  return true;
 }
 
 /**
