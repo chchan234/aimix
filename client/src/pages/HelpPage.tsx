@@ -130,7 +130,7 @@ export default function HelpPage() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={t('help.searchPlaceholder')}
+            placeholder={t('help.search.placeholder')}
             className="w-full bg-[#1a1625] text-white px-6 py-4 pr-12 rounded-2xl border border-white/10 focus:border-primary focus:outline-none"
           />
           <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#ab9eb7] text-2xl">
@@ -251,11 +251,11 @@ export default function HelpPage() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition font-medium flex items-center justify-center gap-2">
             <span className="material-symbols-outlined">email</span>
-            {t('help.contact.emailButton')}
+            {t('help.contact.buttons.email')}
           </button>
           <button className="px-6 py-3 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition font-medium flex items-center justify-center gap-2 border border-white/10">
             <span className="material-symbols-outlined">chat</span>
-            {t('help.contact.chatButton')}
+            {t('help.contact.buttons.chat')}
           </button>
         </div>
 

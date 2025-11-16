@@ -277,13 +277,13 @@ export default function MyResultsPage() {
             <p className="text-[#ab9eb7] text-sm mb-6">
               {selectedCategory === 'all'
                 ? t('myResults.empty.description')
-                : t('myResults.empty.categoryEmpty', { category: getCategoryName(selectedCategory) })}
+                : t('myResults.empty.categoryDescription', { category: getCategoryName(selectedCategory) })}
             </p>
             <button
               onClick={() => setSelectedCategory('all')}
               className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition"
             >
-              {t('myResults.empty.viewAll')}
+              {t('myResults.empty.button')}
             </button>
           </div>
         </div>

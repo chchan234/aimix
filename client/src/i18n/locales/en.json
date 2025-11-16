@@ -326,9 +326,9 @@
     },
     "empty": {
       "title": "No results found",
-      "all": "Use AI services to generate results",
-      "category": "category has no results",
-      "viewAll": "View All"
+      "description": "Use AI services to generate results",
+      "categoryDescription": "{{category}} category has no results",
+      "button": "View All"
     },
     "deleteConfirm": "Are you sure you want to delete this result?",
     "deleteSuccess": "Result has been deleted.",
@@ -338,9 +338,11 @@
   "buyCredits": {
     "title": "Buy Credits",
     "subtitle": "Recharge credits to use AI services",
-    "currentCredits": "Current Credits",
+    "current": {
+      "title": "Current Credits"
+    },
     "stats": {
-      "monthlyUsage": "Monthly Usage",
+      "thisMonth": "Monthly Usage",
       "totalCharged": "Total Charged",
       "totalUsed": "Total Used"
     },
@@ -349,7 +351,7 @@
       "popular": "Popular",
       "credits": "Credits",
       "bonus": "Bonus",
-      "pricePerCredit": "per credit"
+      "perCredit": "per credit"
     },
     "payment": {
       "title": "Select Payment Method",
@@ -357,8 +359,10 @@
       "kakao": "Kakao Pay",
       "toss": "Toss Pay"
     },
-    "purchaseButton": "Purchase",
-    "selectPackage": "Select Package",
+    "purchase": {
+      "button": "Purchase",
+      "selectPackage": "Select Package"
+    },
     "history": {
       "title": "Recent Purchase History"
     },
@@ -383,7 +387,9 @@
   "help": {
     "title": "Help Center",
     "subtitle": "How can we help you?",
-    "searchPlaceholder": "Search for help...",
+    "search": {
+      "placeholder": "Search for help..."
+    },
     "categories": {
       "all": "All",
       "credits": "Credits",
@@ -456,8 +462,10 @@
     "contact": {
       "title": "Have any questions?",
       "description": "If you couldn't find an answer in the FAQ, please contact customer support",
-      "email": "Email Support",
-      "chat": "1:1 Chat",
+      "buttons": {
+        "email": "Email Support",
+        "chat": "1:1 Chat"
+      },
       "hours": "Business Hours: Mon-Fri 09:00 - 18:00 | support@aiplatform.com"
     }
   }

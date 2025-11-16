@@ -71,7 +71,7 @@ export default function BuyCreditsPage() {
           {/* 현재 크레딧 */}
           <div className="bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] rounded-2xl p-6 shadow-lg shadow-purple-500/20">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-white/90 text-sm font-medium">{t('buyCredits.currentCredits')}</p>
+              <p className="text-white/90 text-sm font-medium">{t('buyCredits.current.title')}</p>
               <span className="material-symbols-outlined text-white/60 text-2xl">toll</span>
             </div>
             <p className="text-white text-5xl font-bold mb-4">{currentCredits.toLocaleString()}</p>
@@ -109,7 +109,7 @@ export default function BuyCreditsPage() {
                   {pkg.popular && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                       <span className="bg-primary text-white text-xs px-3 py-1 rounded-full font-semibold">
-                        {t('buyCredits.popular')}
+                        {t('buyCredits.packages.popular')}
                       </span>
                     </div>
                   )}
@@ -117,13 +117,13 @@ export default function BuyCreditsPage() {
                   {/* 크레딧 */}
                   <div className="flex items-baseline gap-2 mb-2">
                     <p className="text-white text-3xl font-bold">{pkg.credits.toLocaleString()}</p>
-                    <p className="text-[#ab9eb7] text-sm">{t('buyCredits.credits')}</p>
+                    <p className="text-[#ab9eb7] text-sm">{t('buyCredits.packages.credits')}</p>
                   </div>
 
                   {/* 보너스 */}
                   {pkg.bonus > 0 && (
                     <p className="text-primary text-sm font-semibold mb-3">
-                      + {pkg.bonus.toLocaleString()} {t('buyCredits.bonus')}
+                      + {pkg.bonus.toLocaleString()} {t('buyCredits.packages.bonus')}
                     </p>
                   )}
 
@@ -131,7 +131,7 @@ export default function BuyCreditsPage() {
                   <div className="pt-3 border-t border-white/10">
                     <p className="text-white text-2xl font-bold">₩{pkg.price.toLocaleString()}</p>
                     <p className="text-[#ab9eb7] text-xs mt-1">
-                      {t('buyCredits.perCredit')} ₩{(pkg.price / (pkg.credits + pkg.bonus)).toFixed(1)}
+                      {t('buyCredits.packages.perCredit')} ₩{(pkg.price / (pkg.credits + pkg.bonus)).toFixed(1)}
                     </p>
                   </div>
 
@@ -175,8 +175,8 @@ export default function BuyCreditsPage() {
             className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-primary/90 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {selectedPackage && packages.find((p) => p.id === selectedPackage)
-              ? `₩${packages.find((p) => p.id === selectedPackage)!.price.toLocaleString()} ${t('buyCredits.purchaseButton')}`
-              : t('buyCredits.selectPackageButton')}
+              ? `₩${packages.find((p) => p.id === selectedPackage)!.price.toLocaleString()} ${t('buyCredits.purchase.button')}`
+              : t('buyCredits.purchase.selectPackage')}
           </button>
         </div>
 
