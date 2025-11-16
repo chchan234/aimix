@@ -7,14 +7,19 @@
     "settings": "Settings",
     "notifications": "Notifications",
     "credits": "Credits",
-    "languageSelect": "Language"
+    "languageSelect": "Language",
+    "creditBalance": "Credit Balance",
+    "rechargeCredits": "Recharge Credits"
   },
   "sidebar": {
     "home": "Home",
+    "explore": "Explore",
     "fortune": "Fortune/Divination",
     "image": "Image Editing",
     "entertainment": "Entertainment",
     "health": "Health/Wellness",
+    "myResults": "My Results",
+    "buyCredits": "Buy Credits",
     "settings": "Settings",
     "help": "Help"
   },

@@ -7,14 +7,19 @@
     "settings": "설정",
     "notifications": "알림",
     "credits": "크레딧",
-    "languageSelect": "언어 선택"
+    "languageSelect": "언어 선택",
+    "creditBalance": "크레딧 잔액",
+    "rechargeCredits": "크레딧 충전"
   },
   "sidebar": {
     "home": "홈",
+    "explore": "탐색",
     "fortune": "운세/점술",
     "image": "이미지 편집",
     "entertainment": "엔터테인먼트",
     "health": "건강/웰빙",
+    "myResults": "내 결과물",
+    "buyCredits": "크레딧 구매",
     "settings": "설정",
     "help": "도움말"
   },

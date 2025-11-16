@@ -141,11 +141,47 @@ export default function Header() {
 
               {/* 프로필 드롭다운 메뉴 */}
               {profileDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-sidebar-dark border border-white/10 rounded-lg shadow-lg overflow-hidden z-50">
+                <div className="absolute right-0 mt-2 w-72 bg-sidebar-dark border border-white/10 rounded-lg shadow-lg overflow-hidden z-50">
+                  {/* 사용자 정보 */}
                   <div className="px-4 py-3 border-b border-white/10">
                     <p className="text-white text-sm font-semibold">{username}</p>
                     <p className="text-[#ab9eb7] text-xs">test@aiplatform.com</p>
                   </div>
+
+                  {/* 크레딧 잔액 카드 */}
+                  <div className="p-4">
+                    <div className="bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] rounded-2xl p-6 shadow-lg shadow-purple-500/30">
+                      {/* 헤더 */}
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-white/90 text-sm font-medium">
+                          {t('header.creditBalance')}
+                        </p>
+                        <span className="material-symbols-outlined text-white/60 text-2xl">
+                          toll
+                        </span>
+                      </div>
+
+                      {/* 크레딧 숫자 */}
+                      <div className="mb-4">
+                        <p className="text-white text-5xl font-bold">
+                          {credits.toLocaleString()}
+                        </p>
+                      </div>
+
+                      {/* 충전 버튼 */}
+                      <button
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
+                          setLocation('/buy-credits');
+                        }}
+                        className="w-full bg-white text-[#7C3AED] font-semibold py-3 rounded-xl hover:bg-gray-100 transition-all duration-200 active:scale-98"
+                      >
+                        {t('header.rechargeCredits')}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* 메뉴 항목들 */}
                   <button
                     onClick={() => {
                       setProfileDropdownOpen(false);
