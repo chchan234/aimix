@@ -1,13 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'wouter';
 import { saveAuthData } from '../services/auth';
 
 export default function KakaoCallback() {
   const [error, setError] = useState('');
   const [, setLocation] = useLocation();
+  const hasProcessed = useRef(false);
 
   useEffect(() => {
     const handleCallback = async () => {
+      // Prevent double submission using ref
+      if (hasProcessed.current) {
+        console.log('Already processed callback, skipping duplicate request');
+        return;
+      }
+      hasProcessed.current = true;
+
       try {
         // Get authorization code from URL query params
         const urlParams = new URLSearchParams(window.location.search);
@@ -16,6 +24,8 @@ export default function KakaoCallback() {
         if (!code) {
           throw new Error('No authorization code received');
         }
+
+        console.log('Processing Kakao callback with code:', code.substring(0, 10) + '...');
 
         // Send authorization code to backend for token exchange
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
