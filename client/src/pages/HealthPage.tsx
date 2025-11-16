@@ -32,7 +32,7 @@ export default function HealthPage() {
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       <div className="px-4">
         <h1 className="text-white text-3xl font-bold mb-2">
-          🏥 건강/웰빙 서비스
+          건강/웰빙 서비스
         </h1>
         <p className="text-[#ab9eb7] text-base">
           AI가 분석하는 당신의 건강 상태

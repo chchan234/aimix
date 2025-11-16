@@ -238,6 +238,12 @@ export default function HomePage() {
               >
                 서비스 둘러보기
               </button>
+              <button
+                onClick={() => window.scrollTo({ top: 400, behavior: 'smooth' })}
+                className="px-6 py-3 bg-primary/20 text-white font-semibold rounded-lg border border-white/30 hover:bg-primary/30 transition-all duration-300 hover:shadow-lg"
+              >
+                무료로 이용
+              </button>
             </div>
           </div>
         </div>

@@ -70,7 +70,7 @@ export default function FortunePage() {
   return (
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       <div className="px-4">
-        <h1 className="text-white text-3xl font-bold mb-2">🔮 운세/점술 서비스</h1>
+        <h1 className="text-white text-3xl font-bold mb-2">운세/점술 서비스</h1>
         <p className="text-[#ab9eb7] text-base">
           AI가 분석하는 당신의 운명과 미래
         </p>

@@ -6,11 +6,15 @@ import EntertainmentPage from './pages/EntertainmentPage';
 import HealthPage from './pages/HealthPage';
 import Sidebar from './components/Sidebar';
 import RightSidebar from './components/RightSidebar';
+import Header from './components/Header';
 
 function App() {
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col dark group/design-root overflow-x-hidden font-display bg-background-dark">
-      <div className="flex min-h-screen w-full">
+      {/* Header */}
+      <Header />
+
+      <div className="flex flex-1 w-full">
         {/* Left Sidebar */}
         <Sidebar />
 

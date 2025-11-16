@@ -84,7 +84,7 @@ export default function ImagePage() {
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       <div className="px-4">
         <h1 className="text-white text-3xl font-bold mb-2">
-          🎨 이미지 생성/편집 서비스
+          이미지 생성/편집 서비스
         </h1>
         <p className="text-[#ab9eb7] text-base">
           AI로 당신의 사진을 마법처럼 변환하세요

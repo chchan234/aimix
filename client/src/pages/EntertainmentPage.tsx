@@ -55,7 +55,7 @@ export default function EntertainmentPage() {
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       <div className="px-4">
         <h1 className="text-white text-3xl font-bold mb-2">
-          🎮 엔터테인먼트/게임
+          엔터테인먼트/게임
         </h1>
         <p className="text-[#ab9eb7] text-base">
           재미있는 심리 테스트와 게임으로 자신을 알아보세요
