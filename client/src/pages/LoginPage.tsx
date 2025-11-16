@@ -18,6 +18,7 @@ export default function LoginPage() {
       // 로그인 성공
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('username', 'Test User');
+      localStorage.setItem('userEmail', 'test@aiplatform.com');
 
       // 홈으로 리다이렉트
       setLocation('/');

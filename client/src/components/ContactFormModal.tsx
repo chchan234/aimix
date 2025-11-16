@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ContactFormModalProps {
@@ -16,6 +16,22 @@ export default function ContactFormModal({ isOpen, onClose, contactType }: Conta
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // 로그인 상태 확인 및 자동 채우기
+  useEffect(() => {
+    if (isOpen) {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      if (isLoggedIn) {
+        const username = localStorage.getItem('username') || '';
+        const userEmail = localStorage.getItem('userEmail') || '';
+        setFormData((prev) => ({
+          ...prev,
+          name: username,
+          email: userEmail,
+        }));
+      }
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
