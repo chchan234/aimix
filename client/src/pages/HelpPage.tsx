@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import GettingStartedGuideModal from '../components/GettingStartedGuideModal';
+import ServiceGuideModal from '../components/ServiceGuideModal';
+import ContactFormModal from '../components/ContactFormModal';
 
 interface FAQ {
   id: number;
@@ -13,6 +16,12 @@ export default function HelpPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // 모달 상태
+  const [isGettingStartedOpen, setIsGettingStartedOpen] = useState(false);
+  const [isServiceGuideOpen, setIsServiceGuideOpen] = useState(false);
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
+  const [contactType, setContactType] = useState<'email' | 'chat'>('email');
 
   // FAQ 데이터
   const faqs: FAQ[] = [
@@ -205,7 +214,10 @@ export default function HelpPage() {
           <p className="text-[#ab9eb7] text-sm mb-4">
             {t('help.guides.gettingStarted.description')}
           </p>
-          <button className="text-purple-400 hover:text-purple-300 transition font-medium flex items-center gap-1">
+          <button
+            onClick={() => setIsGettingStartedOpen(true)}
+            className="text-purple-400 hover:text-purple-300 transition font-medium flex items-center gap-1"
+          >
             {t('help.guides.gettingStarted.button')}
             <span className="material-symbols-outlined text-sm">arrow_forward</span>
           </button>
@@ -222,7 +234,10 @@ export default function HelpPage() {
           <p className="text-[#ab9eb7] text-sm mb-4">
             {t('help.guides.serviceGuide.description')}
           </p>
-          <button className="text-blue-400 hover:text-blue-300 transition font-medium flex items-center gap-1">
+          <button
+            onClick={() => setIsServiceGuideOpen(true)}
+            className="text-blue-400 hover:text-blue-300 transition font-medium flex items-center gap-1"
+          >
             {t('help.guides.serviceGuide.button')}
             <span className="material-symbols-outlined text-sm">arrow_forward</span>
           </button>
@@ -239,11 +254,23 @@ export default function HelpPage() {
           {t('help.contact.description')}
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition font-medium flex items-center justify-center gap-2">
+          <button
+            onClick={() => {
+              setContactType('email');
+              setIsContactFormOpen(true);
+            }}
+            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition font-medium flex items-center justify-center gap-2"
+          >
             <span className="material-symbols-outlined">email</span>
             {t('help.contact.buttons.email')}
           </button>
-          <button className="px-6 py-3 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition font-medium flex items-center justify-center gap-2 border border-white/10">
+          <button
+            onClick={() => {
+              setContactType('chat');
+              setIsContactFormOpen(true);
+            }}
+            className="px-6 py-3 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition font-medium flex items-center justify-center gap-2 border border-white/10"
+          >
             <span className="material-symbols-outlined">chat</span>
             {t('help.contact.buttons.chat')}
           </button>
@@ -255,6 +282,15 @@ export default function HelpPage() {
           </p>
         </div>
       </div>
+
+      {/* 모달들 */}
+      <GettingStartedGuideModal isOpen={isGettingStartedOpen} onClose={() => setIsGettingStartedOpen(false)} />
+      <ServiceGuideModal isOpen={isServiceGuideOpen} onClose={() => setIsServiceGuideOpen(false)} />
+      <ContactFormModal
+        isOpen={isContactFormOpen}
+        onClose={() => setIsContactFormOpen(false)}
+        contactType={contactType}
+      />
     </div>
   );
 }
