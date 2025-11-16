@@ -144,7 +144,7 @@ export function initKakao() {
  * Trigger Kakao login redirect using REST API (direct OAuth)
  */
 export function loginWithKakao(): void {
-  const REST_API_KEY = import.meta.env.VITE_KAKAO_JS_KEY;
+  const REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
   const REDIRECT_URI = `${window.location.origin}/oauth/kakao/callback`;
 
   // Direct OAuth authorization URL (no SDK needed)
