@@ -229,6 +229,236 @@
     "cancel": "취소",
     "confirm": "확인",
     "save": "저장",
-    "delete": "삭제"
+    "delete": "삭제",
+    "edit": "수정",
+    "download": "다운로드",
+    "share": "공유",
+    "all": "전체",
+    "search": "검색",
+    "close": "닫기"
+  },
+  "profile": {
+    "title": "프로필",
+    "subtitle": "계정 정보 및 활동 내역",
+    "editProfile": "프로필 수정",
+    "username": "사용자명",
+    "email": "이메일",
+    "joinDate": "가입일",
+    "stats": {
+      "title": "이용 통계",
+      "totalCreditsUsed": "총 사용 크레딧",
+      "servicesUsed": "이용한 서비스",
+      "lastActivity": "마지막 활동"
+    },
+    "recentActivities": "최근 활동 내역",
+    "category": "카테고리",
+    "creditsUsed": "사용 크레딧",
+    "date": "날짜"
+  },
+  "settings": {
+    "title": "설정",
+    "subtitle": "계정 및 서비스 설정을 관리하세요",
+    "personal": {
+      "title": "개인 설정",
+      "language": "언어",
+      "languageSelect": "언어 선택",
+      "timezone": "시간대",
+      "timezoneSelect": "시간대 선택"
+    },
+    "notifications": {
+      "title": "알림 설정",
+      "email": "이메일 알림",
+      "emailDesc": "서비스 이용 관련 이메일 수신",
+      "push": "푸시 알림",
+      "pushDesc": "브라우저 푸시 알림 수신",
+      "marketing": "마케팅 정보",
+      "marketingDesc": "이벤트/프로모션 알림 수신"
+    },
+    "credits": {
+      "title": "크레딧 설정",
+      "autoRecharge": "자동 충전",
+      "autoRechargeDesc": "크레딧 부족 시 자동 충전",
+      "rechargeAmount": "충전 금액",
+      "rechargeThreshold": "충전 기준",
+      "threshold": "크레딧 이하 시"
+    },
+    "security": {
+      "title": "보안 설정",
+      "currentPassword": "현재 비밀번호",
+      "newPassword": "새 비밀번호",
+      "confirmPassword": "새 비밀번호 확인",
+      "changePassword": "비밀번호 변경"
+    },
+    "account": {
+      "title": "계정 관리",
+      "deleteAccount": "계정 삭제",
+      "deleteWarning": "계정을 삭제하면 모든 데이터가 영구적으로 삭제되며 복구할 수 없습니다.",
+      "deleteButton": "계정 삭제하기"
+    },
+    "saveSettings": "설정 저장",
+    "settingsSaved": "설정이 저장되었습니다."
+  },
+  "myResults": {
+    "title": "내 결과물",
+    "subtitle": "AI 서비스를 이용한 결과물을 관리하세요",
+    "categories": {
+      "all": "전체",
+      "fortune": "운세/점술",
+      "image": "이미지 편집",
+      "entertainment": "엔터테인먼트",
+      "health": "건강/웰빙"
+    },
+    "sort": {
+      "label": "정렬:",
+      "date": "최신순",
+      "credits": "크레딧순"
+    },
+    "stats": {
+      "total": "전체 결과물",
+      "thisWeek": "이번 주",
+      "thisMonth": "이번 달",
+      "totalCredits": "총 사용 크레딧"
+    },
+    "actions": {
+      "download": "다운로드",
+      "share": "공유",
+      "delete": "삭제"
+    },
+    "empty": {
+      "title": "결과물이 없습니다",
+      "all": "AI 서비스를 이용하여 결과물을 생성해보세요",
+      "category": "카테고리의 결과물이 없습니다",
+      "viewAll": "전체 보기"
+    },
+    "deleteConfirm": "결과물을 삭제하시겠습니까?",
+    "deleteSuccess": "결과물이 삭제되었습니다.",
+    "downloadMessage": "결과물을 다운로드합니다.",
+    "shareMessage": "결과물을 공유합니다."
+  },
+  "buyCredits": {
+    "title": "크레딧 구매",
+    "subtitle": "AI 서비스를 이용하기 위한 크레딧을 충전하세요",
+    "currentCredits": "현재 보유 크레딧",
+    "stats": {
+      "monthlyUsage": "이번 달 사용",
+      "totalCharged": "총 충전",
+      "totalUsed": "총 사용"
+    },
+    "packages": {
+      "title": "크레딧 패키지 선택",
+      "popular": "인기",
+      "credits": "크레딧",
+      "bonus": "보너스",
+      "pricePerCredit": "크레딧당"
+    },
+    "payment": {
+      "title": "결제 방법 선택",
+      "card": "카드결제",
+      "kakao": "카카오페이",
+      "toss": "토스페이"
+    },
+    "purchaseButton": "결제하기",
+    "selectPackage": "패키지 선택",
+    "history": {
+      "title": "최근 구매 내역"
+    },
+    "guide": {
+      "title": "크레딧 안내",
+      "item1": "크레딧은 유효기간 없이 사용 가능합니다",
+      "item2": "서비스마다 필요한 크레딧이 다릅니다",
+      "item3": "환불은 구매일로부터 7일 이내 가능합니다",
+      "item4": "결제 후 즉시 크레딧이 충전됩니다"
+    },
+    "support": {
+      "title": "결제 관련 문의",
+      "description": "결제 관련 문의사항이 있으시면 고객센터로 연락주세요",
+      "button": "고객센터 문의"
+    },
+    "alerts": {
+      "selectPackage": "크레딧 패키지를 선택해주세요.",
+      "selectPayment": "결제 방법을 선택해주세요.",
+      "purchaseConfirm": "크레딧을 구매합니다.\\n결제 방법:"
+    }
+  },
+  "help": {
+    "title": "도움말 센터",
+    "subtitle": "무엇을 도와드릴까요?",
+    "searchPlaceholder": "궁금한 내용을 검색해보세요...",
+    "categories": {
+      "all": "전체",
+      "credits": "크레딧",
+      "service": "서비스",
+      "account": "계정",
+      "technical": "기술지원"
+    },
+    "faq": {
+      "title": "자주 묻는 질문",
+      "noResults": "검색 결과가 없습니다",
+      "questions": {
+        "credits1": {
+          "q": "크레딧은 어떻게 구매하나요?",
+          "a": "상단 메뉴의 \"크레딧 구매\" 또는 사이드바의 \"크레딧 구매\"를 클릭하여 원하는 패키지를 선택하고 결제하시면 됩니다. 결제 후 즉시 크레딧이 충전됩니다."
+        },
+        "credits2": {
+          "q": "크레딧 환불이 가능한가요?",
+          "a": "구매일로부터 7일 이내, 사용하지 않은 크레딧에 한하여 환불이 가능합니다. 환불 요청은 고객센터를 통해 접수해 주세요."
+        },
+        "credits3": {
+          "q": "크레딧 유효기간이 있나요?",
+          "a": "아니요, 크레딧은 유효기간 없이 영구적으로 사용 가능합니다."
+        },
+        "service1": {
+          "q": "어떤 AI 서비스를 이용할 수 있나요?",
+          "a": "운세/점술, 이미지 편집, 엔터테인먼트, 건강/웰빙 등 4가지 카테고리에 걸쳐 30여 개의 AI 서비스를 제공하고 있습니다. 각 서비스는 최신 AI 기술을 활용하여 정확하고 빠른 결과를 제공합니다."
+        },
+        "service2": {
+          "q": "서비스 이용 시 크레딧은 얼마나 필요한가요?",
+          "a": "서비스마다 필요한 크레딧이 다릅니다. 일반적으로 간단한 서비스는 50-100 크레딧, 복잡한 서비스는 150-300 크레딧이 필요합니다. 각 서비스 페이지에서 정확한 크레딧을 확인하실 수 있습니다."
+        },
+        "service3": {
+          "q": "결과물은 어디서 확인할 수 있나요?",
+          "a": "서비스 이용 후 생성된 결과물은 \"내 결과물\" 페이지에서 확인하실 수 있습니다. 결과물은 다운로드, 공유, 삭제가 가능합니다."
+        },
+        "account1": {
+          "q": "계정은 어떻게 만드나요?",
+          "a": "우측 상단의 \"회원가입\" 버튼을 클릭하여 이메일로 가입하거나, Google, Kakao 계정으로 간편 가입이 가능합니다."
+        },
+        "account2": {
+          "q": "비밀번호를 잊어버렸어요",
+          "a": "로그인 페이지에서 \"비밀번호를 잊으셨나요?\" 링크를 클릭하여 비밀번호 재설정 이메일을 받으실 수 있습니다."
+        },
+        "account3": {
+          "q": "계정 정보는 어떻게 수정하나요?",
+          "a": "프로필 페이지에서 사용자명을 수정할 수 있으며, 설정 페이지에서 비밀번호, 언어, 알림 설정 등을 변경하실 수 있습니다."
+        },
+        "technical1": {
+          "q": "서비스 오류가 발생했어요",
+          "a": "페이지를 새로고침하거나 다시 로그인해 보세요. 문제가 계속되면 고객센터로 문의해 주시면 신속히 도와드리겠습니다."
+        },
+        "technical2": {
+          "q": "결과가 마음에 들지 않아요",
+          "a": "AI 서비스는 데이터와 알고리즘을 기반으로 결과를 생성합니다. 같은 서비스를 다시 이용하시면 다른 결과를 얻으실 수 있습니다. 크레딧은 결과 생성 시 차감되므로 신중하게 이용해 주세요."
+        }
+      }
+    },
+    "guides": {
+      "gettingStarted": {
+        "title": "시작하기",
+        "description": "AI Platform을 처음 사용하시나요? 기본 사용법을 확인해보세요",
+        "button": "가이드 보기"
+      },
+      "serviceGuide": {
+        "title": "서비스 가이드",
+        "description": "각 AI 서비스의 상세한 이용 방법을 알아보세요",
+        "button": "가이드 보기"
+      }
+    },
+    "contact": {
+      "title": "궁금한 점이 있으신가요?",
+      "description": "FAQ에서 답을 찾지 못하셨다면 고객센터로 문의해주세요",
+      "email": "이메일 문의",
+      "chat": "1:1 채팅",
+      "hours": "운영시간: 평일 09:00 - 18:00 | support@aiplatform.com"
+    }
   }
 }

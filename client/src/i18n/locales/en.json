@@ -229,6 +229,236 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "save": "Save",
-    "delete": "Delete"
+    "delete": "Delete",
+    "edit": "Edit",
+    "download": "Download",
+    "share": "Share",
+    "all": "All",
+    "search": "Search",
+    "close": "Close"
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Account information and activity history",
+    "editProfile": "Edit Profile",
+    "username": "Username",
+    "email": "Email",
+    "joinDate": "Join Date",
+    "stats": {
+      "title": "Usage Statistics",
+      "totalCreditsUsed": "Total Credits Used",
+      "servicesUsed": "Services Used",
+      "lastActivity": "Last Activity"
+    },
+    "recentActivities": "Recent Activities",
+    "category": "Category",
+    "creditsUsed": "Credits Used",
+    "date": "Date"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and service settings",
+    "personal": {
+      "title": "Personal Settings",
+      "language": "Language",
+      "languageSelect": "Select Language",
+      "timezone": "Timezone",
+      "timezoneSelect": "Select Timezone"
+    },
+    "notifications": {
+      "title": "Notification Settings",
+      "email": "Email Notifications",
+      "emailDesc": "Receive service-related emails",
+      "push": "Push Notifications",
+      "pushDesc": "Receive browser push notifications",
+      "marketing": "Marketing Information",
+      "marketingDesc": "Receive event/promotion notifications"
+    },
+    "credits": {
+      "title": "Credit Settings",
+      "autoRecharge": "Auto Recharge",
+      "autoRechargeDesc": "Automatically recharge when credits are low",
+      "rechargeAmount": "Recharge Amount",
+      "rechargeThreshold": "Recharge Threshold",
+      "threshold": "when credits fall below"
+    },
+    "security": {
+      "title": "Security Settings",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "changePassword": "Change Password"
+    },
+    "account": {
+      "title": "Account Management",
+      "deleteAccount": "Delete Account",
+      "deleteWarning": "Deleting your account will permanently remove all your data and cannot be undone.",
+      "deleteButton": "Delete Account"
+    },
+    "saveSettings": "Save Settings",
+    "settingsSaved": "Settings have been saved."
+  },
+  "myResults": {
+    "title": "My Results",
+    "subtitle": "Manage your AI service results",
+    "categories": {
+      "all": "All",
+      "fortune": "Fortune/Divination",
+      "image": "Image Editing",
+      "entertainment": "Entertainment",
+      "health": "Health/Wellness"
+    },
+    "sort": {
+      "label": "Sort:",
+      "date": "Latest",
+      "credits": "Credits"
+    },
+    "stats": {
+      "total": "Total Results",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month",
+      "totalCredits": "Total Credits Used"
+    },
+    "actions": {
+      "download": "Download",
+      "share": "Share",
+      "delete": "Delete"
+    },
+    "empty": {
+      "title": "No results found",
+      "all": "Use AI services to generate results",
+      "category": "category has no results",
+      "viewAll": "View All"
+    },
+    "deleteConfirm": "Are you sure you want to delete this result?",
+    "deleteSuccess": "Result has been deleted.",
+    "downloadMessage": "Downloading result.",
+    "shareMessage": "Sharing result."
+  },
+  "buyCredits": {
+    "title": "Buy Credits",
+    "subtitle": "Recharge credits to use AI services",
+    "currentCredits": "Current Credits",
+    "stats": {
+      "monthlyUsage": "Monthly Usage",
+      "totalCharged": "Total Charged",
+      "totalUsed": "Total Used"
+    },
+    "packages": {
+      "title": "Select Credit Package",
+      "popular": "Popular",
+      "credits": "Credits",
+      "bonus": "Bonus",
+      "pricePerCredit": "per credit"
+    },
+    "payment": {
+      "title": "Select Payment Method",
+      "card": "Credit Card",
+      "kakao": "Kakao Pay",
+      "toss": "Toss Pay"
+    },
+    "purchaseButton": "Purchase",
+    "selectPackage": "Select Package",
+    "history": {
+      "title": "Recent Purchase History"
+    },
+    "guide": {
+      "title": "Credit Information",
+      "item1": "Credits can be used without expiration",
+      "item2": "Different services require different credits",
+      "item3": "Refunds available within 7 days of purchase",
+      "item4": "Credits are recharged immediately after payment"
+    },
+    "support": {
+      "title": "Payment Support",
+      "description": "If you have any questions about payment, please contact customer support",
+      "button": "Contact Support"
+    },
+    "alerts": {
+      "selectPackage": "Please select a credit package.",
+      "selectPayment": "Please select a payment method.",
+      "purchaseConfirm": "Purchasing credits.\\nPayment method:"
+    }
+  },
+  "help": {
+    "title": "Help Center",
+    "subtitle": "How can we help you?",
+    "searchPlaceholder": "Search for help...",
+    "categories": {
+      "all": "All",
+      "credits": "Credits",
+      "service": "Service",
+      "account": "Account",
+      "technical": "Technical Support"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "noResults": "No search results found",
+      "questions": {
+        "credits1": {
+          "q": "How do I purchase credits?",
+          "a": "Click 'Buy Credits' in the top menu or sidebar, select your desired package, and complete the payment. Credits will be recharged immediately after payment."
+        },
+        "credits2": {
+          "q": "Can I get a refund for credits?",
+          "a": "Refunds are available within 7 days of purchase for unused credits only. Please submit refund requests through customer support."
+        },
+        "credits3": {
+          "q": "Do credits expire?",
+          "a": "No, credits can be used permanently without expiration."
+        },
+        "service1": {
+          "q": "What AI services are available?",
+          "a": "We offer over 30 AI services across 4 categories: Fortune/Divination, Image Editing, Entertainment, and Health/Wellness. Each service provides accurate and fast results using the latest AI technology."
+        },
+        "service2": {
+          "q": "How many credits do I need for each service?",
+          "a": "Each service requires different credits. Generally, simple services need 50-100 credits, while complex services require 150-300 credits. You can check the exact credit cost on each service page."
+        },
+        "service3": {
+          "q": "Where can I view my results?",
+          "a": "Generated results can be viewed on the 'My Results' page. Results can be downloaded, shared, or deleted."
+        },
+        "account1": {
+          "q": "How do I create an account?",
+          "a": "Click the 'Sign Up' button in the top right to register with email, or use Google or Kakao for quick registration."
+        },
+        "account2": {
+          "q": "I forgot my password",
+          "a": "Click the 'Forgot your password?' link on the login page to receive a password reset email."
+        },
+        "account3": {
+          "q": "How do I update my account information?",
+          "a": "You can edit your username on the Profile page, and change password, language, and notification settings on the Settings page."
+        },
+        "technical1": {
+          "q": "I encountered a service error",
+          "a": "Try refreshing the page or logging in again. If the problem persists, please contact customer support for assistance."
+        },
+        "technical2": {
+          "q": "I'm not satisfied with the results",
+          "a": "AI services generate results based on data and algorithms. You may get different results by using the same service again. Please note that credits are deducted when results are generated."
+        }
+      }
+    },
+    "guides": {
+      "gettingStarted": {
+        "title": "Getting Started",
+        "description": "New to AI Platform? Check out the basic usage guide",
+        "button": "View Guide"
+      },
+      "serviceGuide": {
+        "title": "Service Guide",
+        "description": "Learn detailed usage instructions for each AI service",
+        "button": "View Guide"
+      }
+    },
+    "contact": {
+      "title": "Have any questions?",
+      "description": "If you couldn't find an answer in the FAQ, please contact customer support",
+      "email": "Email Support",
+      "chat": "1:1 Chat",
+      "hours": "Business Hours: Mon-Fri 09:00 - 18:00 | support@aiplatform.com"
+    }
   }
 }

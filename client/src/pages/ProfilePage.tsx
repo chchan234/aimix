@@ -20,31 +20,28 @@ export default function ProfilePage() {
 
   // 최근 활동 데이터
   const [recentActivities] = useState([
-    { id: 1, service: 'AI 관상', category: 'fortune', date: '2024.03.15', credits: 100 },
-    { id: 2, service: 'AI 프로필 생성', category: 'image', date: '2024.03.14', credits: 200 },
-    { id: 3, service: 'MBTI 정밀 분석', category: 'entertainment', date: '2024.03.13', credits: 150 },
-    { id: 4, service: 'AI 체형 분석', category: 'health', date: '2024.03.12', credits: 100 },
+    {
+      id: 1,
+      serviceName: 'AI 관상',
+      category: 'fortune',
+      credits: 100,
+      date: '2024.03.15',
+    },
+    {
+      id: 2,
+      serviceName: 'AI 프로필 생성',
+      category: 'image',
+      credits: 200,
+      date: '2024.03.14',
+    },
+    {
+      id: 3,
+      serviceName: 'MBTI 정밀 분석',
+      category: 'entertainment',
+      credits: 150,
+      date: '2024.03.13',
+    },
   ]);
-
-  useEffect(() => {
-    const savedUsername = localStorage.getItem('username') || '사용자';
-    setUsername(savedUsername);
-    setEditedUsername(savedUsername);
-  }, []);
-
-  const handleEditToggle = () => {
-    if (isEditing) {
-      // 저장
-      localStorage.setItem('username', editedUsername);
-      setUsername(editedUsername);
-    }
-    setIsEditing(!isEditing);
-  };
-
-  const handleCancel = () => {
-    setEditedUsername(username);
-    setIsEditing(false);
-  };
 
   const getCategoryColor = (category: string) => {
     const colors = {
@@ -56,160 +53,135 @@ export default function ProfilePage() {
     return colors[category as keyof typeof colors] || 'bg-gray-500/20 text-gray-400';
   };
 
+  const getCategoryName = (category: string) => {
+    return t(`myResults.categories.${category}`);
+  };
+
+  const handleEditToggle = () => {
+    if (isEditing) {
+      localStorage.setItem('username', editedUsername);
+      setUsername(editedUsername);
+    }
+    setIsEditing(!isEditing);
+  };
+
+  useEffect(() => {
+    const savedUsername = localStorage.getItem('username');
+    if (savedUsername) {
+      setUsername(savedUsername);
+    }
+  }, []);
+
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-5xl mx-auto">
       {/* 페이지 헤더 */}
       <div className="mb-8">
-        <h1 className="text-white text-3xl font-bold mb-2">{t('header.profile')}</h1>
-        <p className="text-[#ab9eb7] text-sm">내 프로필 정보를 관리하세요</p>
+        <h1 className="text-white text-3xl font-bold mb-2">{t('profile.title')}</h1>
+        <p className="text-[#ab9eb7] text-sm">{t('profile.subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* 왼쪽: 프로필 정보 카드 */}
-        <div className="lg:col-span-1">
+        {/* 프로필 정보 */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* 프로필 카드 */}
           <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10">
-            {/* 프로필 사진 */}
-            <div className="flex flex-col items-center mb-6">
-              <div
-                className="w-32 h-32 rounded-full bg-cover bg-center mb-4 ring-4 ring-primary/30"
-                style={{
-                  backgroundImage: 'url("https://api.dicebear.com/7.x/avataaars/svg?seed=AIplatform")',
-                }}
-              ></div>
-              <button className="text-primary text-sm hover:underline">
-                프로필 사진 변경
-              </button>
-            </div>
-
-            {/* 사용자 정보 */}
-            <div className="space-y-4">
-              {/* 사용자명 */}
-              <div>
-                <label className="text-[#ab9eb7] text-xs mb-1 block">사용자명</label>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={editedUsername}
-                    onChange={(e) => setEditedUsername(e.target.value)}
-                    className="w-full bg-[#2a2436] text-white px-3 py-2 rounded-lg border border-white/10 focus:border-primary focus:outline-none"
-                  />
-                ) : (
-                  <p className="text-white font-medium">{username}</p>
-                )}
+            <div className="flex items-start gap-6">
+              {/* 프로필 사진 */}
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
+                  <span className="text-white text-3xl font-bold">
+                    {username.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                <button className="absolute bottom-0 right-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center hover:bg-primary/90 transition">
+                  <span className="material-symbols-outlined text-white text-sm">edit</span>
+                </button>
               </div>
 
-              {/* 이메일 */}
-              <div>
-                <label className="text-[#ab9eb7] text-xs mb-1 block">이메일</label>
-                <p className="text-white">{email}</p>
-              </div>
+              {/* 프로필 정보 */}
+              <div className="flex-1">
+                {/* 사용자명 */}
+                <div className="mb-4">
+                  <label className="text-[#ab9eb7] text-sm mb-2 block">{t('profile.username')}</label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editedUsername}
+                      onChange={(e) => setEditedUsername(e.target.value)}
+                      className="bg-[#2a2436] text-white px-4 py-2 rounded-lg border border-white/10 focus:border-primary focus:outline-none w-full"
+                      placeholder={username}
+                    />
+                  ) : (
+                    <p className="text-white text-lg font-semibold">{username}</p>
+                  )}
+                </div>
 
-              {/* 가입일 */}
-              <div>
-                <label className="text-[#ab9eb7] text-xs mb-1 block">가입일</label>
-                <p className="text-white">{joinDate}</p>
-              </div>
-            </div>
+                {/* 이메일 */}
+                <div className="mb-4">
+                  <label className="text-[#ab9eb7] text-sm mb-2 block">{t('profile.email')}</label>
+                  <p className="text-white">{email}</p>
+                </div>
 
-            {/* 편집 버튼 */}
-            <div className="mt-6 flex gap-2">
-              {isEditing ? (
-                <>
-                  <button
-                    onClick={handleEditToggle}
-                    className="flex-1 bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition"
-                  >
-                    저장
-                  </button>
-                  <button
-                    onClick={handleCancel}
-                    className="flex-1 bg-[#2a2436] text-white py-2 rounded-lg hover:bg-[#3a3446] transition"
-                  >
-                    취소
-                  </button>
-                </>
-              ) : (
+                {/* 가입일 */}
+                <div className="mb-4">
+                  <label className="text-[#ab9eb7] text-sm mb-2 block">{t('profile.joinDate')}</label>
+                  <p className="text-white">{joinDate}</p>
+                </div>
+
+                {/* 수정 버튼 */}
                 <button
                   onClick={handleEditToggle}
-                  className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition"
+                  className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition font-medium flex items-center gap-2"
                 >
-                  프로필 수정
+                  <span className="material-symbols-outlined text-sm">
+                    {isEditing ? 'check' : 'edit'}
+                  </span>
+                  {isEditing ? t('common.save') : t('common.edit')}
                 </button>
-              )}
+              </div>
+            </div>
+          </div>
+
+          {/* 이용 통계 */}
+          <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10">
+            <h2 className="text-white text-xl font-bold mb-6">{t('profile.stats.title')}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-[#2a2436] rounded-xl p-4">
+                <p className="text-[#ab9eb7] text-sm mb-2">{t('profile.stats.totalCreditsUsed')}</p>
+                <p className="text-primary text-3xl font-bold">
+                  {stats.totalCreditsUsed.toLocaleString()}
+                </p>
+              </div>
+              <div className="bg-[#2a2436] rounded-xl p-4">
+                <p className="text-[#ab9eb7] text-sm mb-2">{t('profile.stats.servicesUsed')}</p>
+                <p className="text-blue-400 text-3xl font-bold">{stats.servicesUsed}</p>
+              </div>
+              <div className="bg-[#2a2436] rounded-xl p-4">
+                <p className="text-[#ab9eb7] text-sm mb-2">{t('profile.stats.lastActivity')}</p>
+                <p className="text-green-400 text-xl font-bold">{stats.lastActivity}</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* 오른쪽: 통계 및 활동 */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* 통계 카드 */}
+        {/* 최근 활동 */}
+        <div className="lg:col-span-1">
           <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10">
-            <h2 className="text-white text-xl font-bold mb-4">이용 통계</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {/* 총 크레딧 사용량 */}
-              <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 rounded-xl p-4 border border-purple-500/20">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-purple-400 text-2xl">toll</span>
-                  <p className="text-[#ab9eb7] text-sm">총 사용 크레딧</p>
-                </div>
-                <p className="text-white text-3xl font-bold">{stats.totalCreditsUsed.toLocaleString()}</p>
-              </div>
-
-              {/* 이용한 서비스 수 */}
-              <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-xl p-4 border border-blue-500/20">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-blue-400 text-2xl">apps</span>
-                  <p className="text-[#ab9eb7] text-sm">이용 서비스</p>
-                </div>
-                <p className="text-white text-3xl font-bold">{stats.servicesUsed}</p>
-              </div>
-
-              {/* 마지막 활동일 */}
-              <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-xl p-4 border border-green-500/20">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-green-400 text-2xl">calendar_today</span>
-                  <p className="text-[#ab9eb7] text-sm">마지막 활동</p>
-                </div>
-                <p className="text-white text-lg font-bold">{stats.lastActivity}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* 최근 활동 */}
-          <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-white text-xl font-bold">최근 활동</h2>
-              <button
-                onClick={() => setLocation('/my-results')}
-                className="text-primary text-sm hover:underline"
-              >
-                전체보기
-              </button>
-            </div>
-
+            <h2 className="text-white text-xl font-bold mb-4">{t('profile.recentActivities')}</h2>
             <div className="space-y-3">
               {recentActivities.map((activity) => (
-                <div
-                  key={activity.id}
-                  className="bg-[#2a2436] rounded-lg p-4 hover:bg-[#3a3446] transition cursor-pointer"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-white font-medium">{activity.service}</h3>
-                        <span className={`text-xs px-2 py-0.5 rounded ${getCategoryColor(activity.category)}`}>
-                          {activity.category === 'fortune' && '운세'}
-                          {activity.category === 'image' && '이미지'}
-                          {activity.category === 'entertainment' && '엔터'}
-                          {activity.category === 'health' && '건강'}
-                        </span>
-                      </div>
-                      <p className="text-[#ab9eb7] text-sm">{activity.date}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-primary font-semibold">-{activity.credits}</p>
-                      <p className="text-[#ab9eb7] text-xs">크레딧</p>
-                    </div>
+                <div key={activity.id} className="bg-[#2a2436] rounded-lg p-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <p className="text-white font-semibold text-sm">{activity.serviceName}</p>
+                    <span
+                      className={`text-xs px-2 py-0.5 rounded ${getCategoryColor(activity.category)}`}
+                    >
+                      {getCategoryName(activity.category)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-[#ab9eb7]">{activity.date}</span>
+                    <span className="text-primary font-semibold">-{activity.credits}</span>
                   </div>
                 </div>
               ))}
