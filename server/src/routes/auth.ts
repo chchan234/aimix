@@ -293,6 +293,12 @@ router.post('/kakao/callback', async (req, res) => {
       });
     }
 
+    // Get the origin from the request header (where the frontend is hosted)
+    const origin = req.headers.origin || req.headers.referer?.split('/oauth')[0] || process.env.CLIENT_URL || 'http://localhost:5173';
+    const redirectUri = `${origin}/oauth/kakao/callback`;
+
+    console.log('Kakao callback - Using redirect_uri:', redirectUri);
+
     // Exchange authorization code for access token
     const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
       method: 'POST',
@@ -302,7 +308,7 @@ router.post('/kakao/callback', async (req, res) => {
       body: new URLSearchParams({
         grant_type: 'authorization_code',
         client_id: process.env.KAKAO_REST_API_KEY || '',
-        redirect_uri: `${process.env.CLIENT_URL || 'http://localhost:5173'}/oauth/kakao/callback`,
+        redirect_uri: redirectUri,
         code
       })
     });
@@ -312,7 +318,8 @@ router.post('/kakao/callback', async (req, res) => {
       console.error('Token exchange error:', {
         status: tokenResponse.status,
         errorData,
-        redirect_uri: `${process.env.CLIENT_URL || 'http://localhost:5173'}/oauth/kakao/callback`,
+        redirect_uri: redirectUri,
+        origin: req.headers.origin,
         client_id: process.env.KAKAO_REST_API_KEY ? 'SET' : 'NOT_SET'
       });
       throw new Error(`Failed to exchange authorization code: ${JSON.stringify(errorData)}`);
