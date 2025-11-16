@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
 
@@ -20,6 +20,10 @@ export default function Header({ onMenuClick }: HeaderProps) {
   // 언어 상태
   const [language, setLanguage] = useState<'ko' | 'en'>('ko');
 
+  // 드롭다운 외부 클릭 감지를 위한 ref
+  const languageDropdownRef = useRef<HTMLDivElement>(null);
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
+
   // 컴포넌트 마운트 시 설정 불러오기
   useEffect(() => {
     // 로그인 상태
@@ -35,6 +39,25 @@ export default function Header({ onMenuClick }: HeaderProps) {
       i18n.changeLanguage(savedLanguage);
     }
   }, [i18n]);
+
+  // 드롭다운 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // 언어 드롭다운 외부 클릭 시 닫기
+      if (languageDropdownRef.current && !languageDropdownRef.current.contains(event.target as Node)) {
+        setLanguageDropdownOpen(false);
+      }
+      // 프로필 드롭다운 외부 클릭 시 닫기
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
+        setProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
@@ -86,7 +109,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
       {/* Right: 글로벌 설정 + 로그인 전/후 UI */}
       <div className="flex items-center gap-2">
         {/* 언어 선택 버튼 */}
-        <div className="relative">
+        <div className="relative" ref={languageDropdownRef}>
           <button
             onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
             className="p-2 rounded-full hover:bg-primary/20 transition"
@@ -138,7 +161,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             </div>
 
             {/* 프로필 드롭다운 */}
-            <div className="relative">
+            <div className="relative" ref={profileDropdownRef}>
               <button
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                 className="flex items-center gap-2 hover:bg-primary/20 px-2 py-1.5 rounded-lg transition"

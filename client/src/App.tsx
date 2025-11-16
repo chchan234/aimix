@@ -8,7 +8,6 @@ import HealthPage from './pages/HealthPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import Sidebar from './components/Sidebar';
-import RightSidebar from './components/RightSidebar';
 import Header from './components/Header';
 
 function App() {
@@ -42,9 +41,6 @@ function App() {
             </Route>
           </Switch>
         </main>
-
-        {/* Right Sidebar */}
-        <RightSidebar />
       </div>
     </div>
   );
