@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { supabase, testConnection } from './db/supabase.js';
 import aiRoutes from './routes/ai.js';
+import authRoutes from './routes/auth.js';
 
 dotenv.config();
 
@@ -55,6 +56,13 @@ app.get('/api', (req, res) => {
     version: '1.0.0',
     endpoints: {
       health: '/health',
+      auth: {
+        register: '/api/auth/register',
+        login: '/api/auth/login',
+        kakao: '/api/auth/kakao',
+        me: '/api/auth/me',
+        logout: '/api/auth/logout'
+      },
       users: '/api/users',
       ai: {
         faceReading: '/api/ai/face-reading',
@@ -66,6 +74,9 @@ app.get('/api', (req, res) => {
     }
   });
 });
+
+// Authentication routes
+app.use('/api/auth', authRoutes);
 
 // AI service routes
 app.use('/api/ai', aiRoutes);
