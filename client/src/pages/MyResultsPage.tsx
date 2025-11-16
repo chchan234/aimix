@@ -145,8 +145,8 @@ export default function MyResultsPage() {
     <div className="max-w-7xl mx-auto">
       {/* 페이지 헤더 */}
       <div className="mb-8">
-        <h1 className="text-white text-3xl font-bold mb-2">내 결과물</h1>
-        <p className="text-[#ab9eb7] text-sm">AI 서비스를 이용한 결과물을 관리하세요</p>
+        <h1 className="text-white text-3xl font-bold mb-2">{t('myResults.title')}</h1>
+        <p className="text-[#ab9eb7] text-sm">{t('myResults.subtitle')}</p>
       </div>
 
       {/* 필터 및 정렬 */}
@@ -171,14 +171,14 @@ export default function MyResultsPage() {
 
           {/* 정렬 */}
           <div className="flex items-center gap-2">
-            <span className="text-[#ab9eb7] text-sm">정렬:</span>
+            <span className="text-[#ab9eb7] text-sm">{t('myResults.sortLabel')}:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'date' | 'credits')}
               className="bg-[#2a2436] text-white px-3 py-2 rounded-lg border border-white/10 focus:border-primary focus:outline-none text-sm"
             >
-              <option value="date">최신순</option>
-              <option value="credits">크레딧순</option>
+              <option value="date">{t('myResults.sort.date')}</option>
+              <option value="credits">{t('myResults.sort.credits')}</option>
             </select>
           </div>
         </div>
@@ -187,19 +187,19 @@ export default function MyResultsPage() {
         <div className="mt-4 pt-4 border-t border-white/10">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div>
-              <p className="text-[#ab9eb7] text-xs mb-1">전체 결과물</p>
+              <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.total')}</p>
               <p className="text-white text-2xl font-bold">{results.length}</p>
             </div>
             <div>
-              <p className="text-[#ab9eb7] text-xs mb-1">이번 주</p>
+              <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.thisWeek')}</p>
               <p className="text-white text-2xl font-bold">3</p>
             </div>
             <div>
-              <p className="text-[#ab9eb7] text-xs mb-1">이번 달</p>
+              <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.thisMonth')}</p>
               <p className="text-white text-2xl font-bold">8</p>
             </div>
             <div>
-              <p className="text-[#ab9eb7] text-xs mb-1">총 사용 크레딧</p>
+              <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.totalCredits')}</p>
               <p className="text-white text-2xl font-bold">
                 {results.reduce((sum, r) => sum + r.credits, 0).toLocaleString()}
               </p>
@@ -273,17 +273,17 @@ export default function MyResultsPage() {
             <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-4">
               <span className="material-symbols-outlined text-primary text-5xl">search_off</span>
             </div>
-            <h3 className="text-white text-xl font-bold mb-2">결과물이 없습니다</h3>
+            <h3 className="text-white text-xl font-bold mb-2">{t('myResults.empty.title')}</h3>
             <p className="text-[#ab9eb7] text-sm mb-6">
               {selectedCategory === 'all'
-                ? 'AI 서비스를 이용하여 결과물을 생성해보세요'
-                : `${getCategoryName(selectedCategory)} 카테고리의 결과물이 없습니다`}
+                ? t('myResults.empty.description')
+                : t('myResults.empty.categoryEmpty', { category: getCategoryName(selectedCategory) })}
             </p>
             <button
               onClick={() => setSelectedCategory('all')}
               className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition"
             >
-              전체 보기
+              {t('myResults.empty.viewAll')}
             </button>
           </div>
         </div>

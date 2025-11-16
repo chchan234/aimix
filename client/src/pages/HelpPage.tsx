@@ -95,11 +95,11 @@ export default function HelpPage() {
   ];
 
   const categories = [
-    { id: 'all', name: '전체', icon: 'apps' },
-    { id: 'credits', name: '크레딧', icon: 'toll' },
-    { id: 'service', name: '서비스', icon: 'star' },
-    { id: 'account', name: '계정', icon: 'person' },
-    { id: 'technical', name: '기술지원', icon: 'build' },
+    { id: 'all', name: t('help.categories.all'), icon: 'apps' },
+    { id: 'credits', name: t('help.categories.credits'), icon: 'toll' },
+    { id: 'service', name: t('help.categories.service'), icon: 'star' },
+    { id: 'account', name: t('help.categories.account'), icon: 'person' },
+    { id: 'technical', name: t('help.categories.technical'), icon: 'build' },
   ];
 
   // 필터링
@@ -120,7 +120,7 @@ export default function HelpPage() {
       {/* 페이지 헤더 */}
       <div className="mb-8 text-center">
         <h1 className="text-white text-4xl font-bold mb-3">{t('help.title')}</h1>
-        <p className="text-[#ab9eb7] text-lg">무엇을 도와드릴까요?</p>
+        <p className="text-[#ab9eb7] text-lg">{t('help.subtitle')}</p>
       </div>
 
       {/* 검색 */}
@@ -130,7 +130,7 @@ export default function HelpPage() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="궁금한 내용을 검색해보세요..."
+            placeholder={t('help.searchPlaceholder')}
             className="w-full bg-[#1a1625] text-white px-6 py-4 pr-12 rounded-2xl border border-white/10 focus:border-primary focus:outline-none"
           />
           <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#ab9eb7] text-2xl">
@@ -159,7 +159,7 @@ export default function HelpPage() {
 
       {/* FAQ 목록 */}
       <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10 mb-8">
-        <h2 className="text-white text-2xl font-bold mb-6">자주 묻는 질문</h2>
+        <h2 className="text-white text-2xl font-bold mb-6">{t('help.faqTitle')}</h2>
 
         {filteredFaqs.length > 0 ? (
           <div className="space-y-3">
@@ -195,7 +195,7 @@ export default function HelpPage() {
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="material-symbols-outlined text-primary text-3xl">search_off</span>
             </div>
-            <p className="text-[#ab9eb7]">검색 결과가 없습니다</p>
+            <p className="text-[#ab9eb7]">{t('help.noResults')}</p>
           </div>
         )}
       </div>
@@ -210,13 +210,13 @@ export default function HelpPage() {
                 rocket_launch
               </span>
             </div>
-            <h3 className="text-white text-xl font-bold">시작하기</h3>
+            <h3 className="text-white text-xl font-bold">{t('help.guides.gettingStarted.title')}</h3>
           </div>
           <p className="text-[#ab9eb7] text-sm mb-4">
-            AI Platform을 처음 사용하시나요? 기본 사용법을 확인해보세요
+            {t('help.guides.gettingStarted.description')}
           </p>
           <button className="text-purple-400 hover:text-purple-300 transition font-medium flex items-center gap-1">
-            가이드 보기
+            {t('help.guides.viewGuide')}
             <span className="material-symbols-outlined text-sm">arrow_forward</span>
           </button>
         </div>
@@ -227,13 +227,13 @@ export default function HelpPage() {
             <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
               <span className="material-symbols-outlined text-blue-400 text-2xl">menu_book</span>
             </div>
-            <h3 className="text-white text-xl font-bold">서비스 가이드</h3>
+            <h3 className="text-white text-xl font-bold">{t('help.guides.serviceGuide.title')}</h3>
           </div>
           <p className="text-[#ab9eb7] text-sm mb-4">
-            각 AI 서비스의 상세한 이용 방법을 알아보세요
+            {t('help.guides.serviceGuide.description')}
           </p>
           <button className="text-blue-400 hover:text-blue-300 transition font-medium flex items-center gap-1">
-            가이드 보기
+            {t('help.guides.viewGuide')}
             <span className="material-symbols-outlined text-sm">arrow_forward</span>
           </button>
         </div>
@@ -244,24 +244,24 @@ export default function HelpPage() {
         <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
           <span className="material-symbols-outlined text-primary text-3xl">support_agent</span>
         </div>
-        <h3 className="text-white text-2xl font-bold mb-2">궁금한 점이 있으신가요?</h3>
+        <h3 className="text-white text-2xl font-bold mb-2">{t('help.contact.title')}</h3>
         <p className="text-[#ab9eb7] mb-6">
-          FAQ에서 답을 찾지 못하셨다면 고객센터로 문의해주세요
+          {t('help.contact.description')}
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition font-medium flex items-center justify-center gap-2">
             <span className="material-symbols-outlined">email</span>
-            이메일 문의
+            {t('help.contact.emailButton')}
           </button>
           <button className="px-6 py-3 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition font-medium flex items-center justify-center gap-2 border border-white/10">
             <span className="material-symbols-outlined">chat</span>
-            1:1 채팅
+            {t('help.contact.chatButton')}
           </button>
         </div>
 
         <div className="mt-6 pt-6 border-t border-white/10">
           <p className="text-[#ab9eb7] text-sm">
-            운영시간: 평일 09:00 - 18:00 | support@aiplatform.com
+            {t('help.contact.hours')}
           </p>
         </div>
       </div>
