@@ -159,7 +159,7 @@ export default function HelpPage() {
 
       {/* FAQ 목록 */}
       <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10 mb-8">
-        <h2 className="text-white text-2xl font-bold mb-6">{t('help.faqTitle')}</h2>
+        <h2 className="text-white text-2xl font-bold mb-6">{t('help.faq.title')}</h2>
 
         {filteredFaqs.length > 0 ? (
           <div className="space-y-3">
@@ -216,7 +216,7 @@ export default function HelpPage() {
             {t('help.guides.gettingStarted.description')}
           </p>
           <button className="text-purple-400 hover:text-purple-300 transition font-medium flex items-center gap-1">
-            {t('help.guides.viewGuide')}
+            {t('help.guides.gettingStarted.button')}
             <span className="material-symbols-outlined text-sm">arrow_forward</span>
           </button>
         </div>
@@ -233,7 +233,7 @@ export default function HelpPage() {
             {t('help.guides.serviceGuide.description')}
           </p>
           <button className="text-blue-400 hover:text-blue-300 transition font-medium flex items-center gap-1">
-            {t('help.guides.viewGuide')}
+            {t('help.guides.serviceGuide.button')}
             <span className="material-symbols-outlined text-sm">arrow_forward</span>
           </button>
         </div>
