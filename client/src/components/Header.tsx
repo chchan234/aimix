@@ -4,7 +4,7 @@ import { Link } from 'wouter';
 export default function Header() {
   // 임시 로그인 상태 (나중에 전역 상태관리로 변경)
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [credits, setCredits] = useState(1200);
+  const [credits, _setCredits] = useState(1200);
 
   return (
     <header className="h-16 bg-sidebar-dark border-b border-white/10 flex items-center justify-between px-4 md:px-6 sticky top-0 z-50">
