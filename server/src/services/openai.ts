@@ -76,7 +76,7 @@ JSON 형식으로 응답해주세요:
 `;
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'user',
@@ -198,7 +198,7 @@ JSON 형식으로 응답해주세요:
 `;
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'user',
