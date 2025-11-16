@@ -9,9 +9,15 @@ export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   username: varchar('username', { length: 50 }).unique(),
+  password: varchar('password', { length: 255 }), // Hashed password for email provider
   provider: varchar('provider', { length: 20 }).notNull().default('email'), // 'email', 'kakao', 'google'
   providerId: varchar('provider_id', { length: 255 }),
   profileImageUrl: text('profile_image_url'),
+
+  // Email Verification
+  emailVerified: boolean('email_verified').notNull().default(false),
+  verificationToken: varchar('verification_token', { length: 255 }),
+  verificationTokenExpires: timestamp('verification_token_expires'),
 
   // Credits
   credits: integer('credits').notNull().default(0),

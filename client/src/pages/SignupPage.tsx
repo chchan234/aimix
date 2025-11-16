@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
+import { initKakao, loginWithKakao, register, saveAuthData } from '../services/auth';
 
 export default function SignupPage() {
   const [, setLocation] = useLocation();
@@ -9,11 +10,62 @@ export default function SignupPage() {
     confirmPassword: '',
     name: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showVerificationMessage, setShowVerificationMessage] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Initialize Kakao SDK
+  useEffect(() => {
+    initKakao();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Supabase 회원가입 로직 구현
-    console.log('회원가입 데이터:', formData);
+    setError('');
+
+    // Validation
+    if (formData.password !== formData.confirmPassword) {
+      setError('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      setError('비밀번호는 8자 이상이어야 합니다.');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Call register API
+      const response = await register(formData.email, formData.password, formData.name);
+
+      // Save auth data
+      saveAuthData(response.token, response.user);
+
+      // Show verification message if email is not verified
+      if (!response.user.emailVerified) {
+        setRegisteredEmail(formData.email);
+        setShowVerificationMessage(true);
+      } else {
+        // Redirect to home for verified users (OAuth users)
+        window.location.href = '/';
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '회원가입에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKakaoLogin = () => {
+    try {
+      // Redirect to Kakao OAuth page
+      loginWithKakao();
+    } catch (err) {
+      console.error('Kakao login error:', err);
+    }
   };
 
   return (
@@ -28,6 +80,33 @@ export default function SignupPage() {
             </p>
           </div>
 
+          {/* Verification Success Message */}
+          {showVerificationMessage && (
+            <div className="mb-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
+              <div className="flex items-start gap-3">
+                <span className="material-symbols-outlined text-green-400 text-2xl">
+                  mark_email_read
+                </span>
+                <div className="flex-1">
+                  <h3 className="text-green-400 font-semibold mb-2">회원가입 완료!</h3>
+                  <p className="text-gray-300 text-sm mb-2">
+                    <strong>{registeredEmail}</strong>로 인증 이메일을 보냈습니다.
+                  </p>
+                  <p className="text-gray-400 text-xs">
+                    이메일을 확인하여 인증을 완료해주세요. (링크 유효기간: 24시간)
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+              <p className="text-red-400 text-sm">{error}</p>
+            </div>
+          )}
+
           {/* Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Name */}
@@ -40,6 +119,7 @@ export default function SignupPage() {
                 className="px-4 py-3 bg-background-dark text-white rounded-lg border border-white/10 focus:border-primary focus:outline-none transition"
                 placeholder="홍길동"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -53,6 +133,7 @@ export default function SignupPage() {
                 className="px-4 py-3 bg-background-dark text-white rounded-lg border border-white/10 focus:border-primary focus:outline-none transition"
                 placeholder="example@email.com"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -67,6 +148,7 @@ export default function SignupPage() {
                 placeholder="8자 이상 입력하세요"
                 required
                 minLength={8}
+                disabled={isLoading}
               />
             </div>
 
@@ -83,15 +165,17 @@ export default function SignupPage() {
                 placeholder="비밀번호를 다시 입력하세요"
                 required
                 minLength={8}
+                disabled={isLoading}
               />
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="mt-4 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all duration-300 hover:shadow-lg"
+              className="mt-4 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading}
             >
-              회원가입
+              {isLoading ? '회원가입 중...' : '회원가입'}
             </button>
           </form>
 
@@ -104,13 +188,13 @@ export default function SignupPage() {
 
           {/* Social Login Buttons */}
           <div className="flex flex-col gap-3">
-            <button className="px-6 py-3 bg-white text-gray-800 font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 flex items-center justify-center gap-2">
-              <span className="material-symbols-outlined">mail</span>
-              Google로 계속하기
-            </button>
-            <button className="px-6 py-3 bg-[#03C75A] text-white font-semibold rounded-lg hover:bg-[#02b350] transition-all duration-300 flex items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={handleKakaoLogin}
+              className="px-6 py-3 bg-[#FEE500] text-[#191919] font-semibold rounded-lg hover:bg-[#FDD835] transition-all duration-300 flex items-center justify-center gap-2"
+            >
               <span className="material-symbols-outlined">chat</span>
-              Kakao로 계속하기
+              카카오 10초 가입
             </button>
           </div>
 

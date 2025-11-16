@@ -7,11 +7,13 @@ import EntertainmentPage from './pages/EntertainmentPage';
 import HealthPage from './pages/HealthPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
 import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
 import MyResultsPage from './pages/MyResultsPage';
 import BuyCreditsPage from './pages/BuyCreditsPage';
 import HelpPage from './pages/HelpPage';
+import KakaoCallback from './pages/KakaoCallback';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 
@@ -33,6 +35,8 @@ function App() {
             <Route path="/" component={HomePage} />
             <Route path="/signup" component={SignupPage} />
             <Route path="/login" component={LoginPage} />
+            <Route path="/verify-email" component={VerifyEmailPage} />
+            <Route path="/oauth/kakao/callback" component={KakaoCallback} />
             <Route path="/profile" component={ProfilePage} />
             <Route path="/settings" component={SettingsPage} />
             <Route path="/my-results" component={MyResultsPage} />
