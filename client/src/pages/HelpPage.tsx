@@ -19,78 +19,68 @@ export default function HelpPage() {
     {
       id: 1,
       category: 'credits',
-      question: '크레딧은 어떻게 구매하나요?',
-      answer:
-        '상단 메뉴의 "크레딧 구매" 또는 사이드바의 "크레딧 구매"를 클릭하여 원하는 패키지를 선택하고 결제하시면 됩니다. 결제 후 즉시 크레딧이 충전됩니다.',
+      question: t('help.faq.questions.credits1.q'),
+      answer: t('help.faq.questions.credits1.a'),
     },
     {
       id: 2,
       category: 'credits',
-      question: '크레딧 환불이 가능한가요?',
-      answer:
-        '구매일로부터 7일 이내, 사용하지 않은 크레딧에 한하여 환불이 가능합니다. 환불 요청은 고객센터를 통해 접수해 주세요.',
+      question: t('help.faq.questions.credits2.q'),
+      answer: t('help.faq.questions.credits2.a'),
     },
     {
       id: 3,
       category: 'credits',
-      question: '크레딧 유효기간이 있나요?',
-      answer: '아니요, 크레딧은 유효기간 없이 영구적으로 사용 가능합니다.',
+      question: t('help.faq.questions.credits3.q'),
+      answer: t('help.faq.questions.credits3.a'),
     },
     {
       id: 4,
       category: 'service',
-      question: '어떤 AI 서비스를 이용할 수 있나요?',
-      answer:
-        '운세/점술, 이미지 편집, 엔터테인먼트, 건강/웰빙 등 4가지 카테고리에 걸쳐 30여 개의 AI 서비스를 제공하고 있습니다. 각 서비스는 최신 AI 기술을 활용하여 정확하고 빠른 결과를 제공합니다.',
+      question: t('help.faq.questions.service1.q'),
+      answer: t('help.faq.questions.service1.a'),
     },
     {
       id: 5,
       category: 'service',
-      question: '서비스 이용 시 크레딧은 얼마나 필요한가요?',
-      answer:
-        '서비스마다 필요한 크레딧이 다릅니다. 일반적으로 간단한 서비스는 50-100 크레딧, 복잡한 서비스는 150-300 크레딧이 필요합니다. 각 서비스 페이지에서 정확한 크레딧을 확인하실 수 있습니다.',
+      question: t('help.faq.questions.service2.q'),
+      answer: t('help.faq.questions.service2.a'),
     },
     {
       id: 6,
       category: 'service',
-      question: '결과물은 어디서 확인할 수 있나요?',
-      answer:
-        '서비스 이용 후 생성된 결과물은 "내 결과물" 페이지에서 확인하실 수 있습니다. 결과물은 다운로드, 공유, 삭제가 가능합니다.',
+      question: t('help.faq.questions.service3.q'),
+      answer: t('help.faq.questions.service3.a'),
     },
     {
       id: 7,
       category: 'account',
-      question: '계정은 어떻게 만드나요?',
-      answer:
-        '우측 상단의 "회원가입" 버튼을 클릭하여 이메일로 가입하거나, Google, Kakao 계정으로 간편 가입이 가능합니다.',
+      question: t('help.faq.questions.account1.q'),
+      answer: t('help.faq.questions.account1.a'),
     },
     {
       id: 8,
       category: 'account',
-      question: '비밀번호를 잊어버렸어요',
-      answer:
-        '로그인 페이지에서 "비밀번호를 잊으셨나요?" 링크를 클릭하여 비밀번호 재설정 이메일을 받으실 수 있습니다.',
+      question: t('help.faq.questions.account2.q'),
+      answer: t('help.faq.questions.account2.a'),
     },
     {
       id: 9,
       category: 'account',
-      question: '계정 정보는 어떻게 수정하나요?',
-      answer:
-        '프로필 페이지에서 사용자명을 수정할 수 있으며, 설정 페이지에서 비밀번호, 언어, 알림 설정 등을 변경하실 수 있습니다.',
+      question: t('help.faq.questions.account3.q'),
+      answer: t('help.faq.questions.account3.a'),
     },
     {
       id: 10,
       category: 'technical',
-      question: '서비스 오류가 발생했어요',
-      answer:
-        '페이지를 새로고침하거나 다시 로그인해 보세요. 문제가 계속되면 고객센터로 문의해 주시면 신속히 도와드리겠습니다.',
+      question: t('help.faq.questions.technical1.q'),
+      answer: t('help.faq.questions.technical1.a'),
     },
     {
       id: 11,
       category: 'technical',
-      question: '결과가 마음에 들지 않아요',
-      answer:
-        'AI 서비스는 데이터와 알고리즘을 기반으로 결과를 생성합니다. 같은 서비스를 다시 이용하시면 다른 결과를 얻으실 수 있습니다. 크레딧은 결과 생성 시 차감되므로 신중하게 이용해 주세요.',
+      question: t('help.faq.questions.technical2.q'),
+      answer: t('help.faq.questions.technical2.a'),
     },
   ];
 
