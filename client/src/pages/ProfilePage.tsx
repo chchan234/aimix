@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
 
 export default function ProfilePage() {
   const { t } = useTranslation();
-  const [, setLocation] = useLocation();
   const [username, setUsername] = useState('사용자');
   const [email] = useState('test@aiplatform.com');
   const [joinDate] = useState('2024.01.15');

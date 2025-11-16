@@ -127,7 +127,7 @@ export default function MyResultsPage() {
     });
 
   const handleDownload = (result: Result) => {
-    alert(`${result.serviceName} 결과물을 다운로드합니다.`);
+    alert(`${result.serviceName} ${t('myResults.downloadMessage')}`);
   };
 
   const handleDelete = (result: Result) => {

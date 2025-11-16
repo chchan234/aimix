@@ -119,7 +119,7 @@ export default function HelpPage() {
     <div className="max-w-5xl mx-auto">
       {/* 페이지 헤더 */}
       <div className="mb-8 text-center">
-        <h1 className="text-white text-4xl font-bold mb-3">도움말 센터</h1>
+        <h1 className="text-white text-4xl font-bold mb-3">{t('help.title')}</h1>
         <p className="text-[#ab9eb7] text-lg">무엇을 도와드릴까요?</p>
       </div>
 

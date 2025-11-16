@@ -41,7 +41,7 @@ export default function BuyCreditsPage() {
 
   const handlePurchase = () => {
     if (!selectedPackage) {
-      alert('크레딧 패키지를 선택해주세요.');
+      alert(t('buyCredits.alerts.selectPackage'));
       return;
     }
     if (!paymentMethod) {
