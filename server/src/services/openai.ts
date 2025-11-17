@@ -143,8 +143,11 @@ JSON 형식으로 응답해주세요:
 export async function analyzeFaceReadingFromBase64(base64Image: string, birthDate?: string) {
   try {
     // Ensure base64 image has the correct format
-    if (!base64Image.startsWith('data:image/')) {
-      throw new Error('Invalid base64 image format. Must start with data:image/');
+    // If it doesn't start with data:image/, add it
+    let imageData = base64Image;
+    if (!imageData.startsWith('data:image/')) {
+      // Assume JPEG if format not specified
+      imageData = `data:image/jpeg;base64,${base64Image}`;
     }
 
     const prompt = `
@@ -210,7 +213,7 @@ JSON 형식으로 응답해주세요:
             {
               type: 'image_url',
               image_url: {
-                url: base64Image,
+                url: imageData,
                 detail: 'high'
               }
             }

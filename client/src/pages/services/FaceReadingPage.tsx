@@ -60,9 +60,8 @@ export default function FaceReadingPage() {
       reader.readAsDataURL(image);
       reader.onload = async () => {
         const base64 = reader.result as string;
-        const base64Data = base64.split(',')[1]; // Remove data:image/...;base64, prefix
-
-        const response = await analyzeFaceReading(base64Data) as any;
+        // Send full data URL (data:image/...;base64,...)
+        const response = await analyzeFaceReading(base64) as any;
         setResult(response);
 
         if (response.credits?.remaining !== undefined) {
