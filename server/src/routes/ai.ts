@@ -195,4 +195,106 @@ router.post('/face-reading', requireCredits('face-reading'), async (req, res) =>
   }
 });
 
+/**
+ * POST /api/ai/saju
+ * Analyze Saju (사주팔자) using OpenAI GPT
+ *
+ * Body: { birthDate: string, birthTime: string, gender: 'male' | 'female' }
+ * Cost: 25 credits
+ */
+router.post('/saju', requireCredits('saju'), async (req, res) => {
+  try {
+    const { birthDate, birthTime, gender } = req.body;
+
+    if (!birthDate || !birthTime || !gender) {
+      return res.status(400).json({
+        error: 'Birth date, birth time, and gender are required'
+      });
+    }
+
+    const result = await openai.analyzeSaju(birthDate, birthTime, gender);
+
+    if (result.success) {
+      res.json(result);
+    } else {
+      res.status(500).json({
+        error: ('error' in result && result.error) || 'Failed to analyze saju'
+      });
+    }
+  } catch (error) {
+    console.error('Saju analysis error:', error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
+ * POST /api/ai/tarot
+ * Read Tarot cards using OpenAI GPT
+ *
+ * Body: { question: string }
+ * Cost: 20 credits
+ */
+router.post('/tarot', requireCredits('tarot'), async (req, res) => {
+  try {
+    const { question } = req.body;
+
+    if (!question) {
+      return res.status(400).json({
+        error: 'Question is required'
+      });
+    }
+
+    const result = await openai.readTarot(question);
+
+    if (result.success) {
+      res.json(result);
+    } else {
+      res.status(500).json({
+        error: ('error' in result && result.error) || 'Failed to read tarot'
+      });
+    }
+  } catch (error) {
+    console.error('Tarot reading error:', error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
+ * POST /api/ai/tojeong
+ * Predict fortune using Tojeong Bigyeol (토정비결) with OpenAI GPT
+ *
+ * Body: { birthDate: string }
+ * Cost: 15 credits
+ */
+router.post('/tojeong', requireCredits('tojeong'), async (req, res) => {
+  try {
+    const { birthDate } = req.body;
+
+    if (!birthDate) {
+      return res.status(400).json({
+        error: 'Birth date is required'
+      });
+    }
+
+    const result = await openai.predictTojeong(birthDate);
+
+    if (result.success) {
+      res.json(result);
+    } else {
+      res.status(500).json({
+        error: ('error' in result && result.error) || 'Failed to predict fortune'
+      });
+    }
+  } catch (error) {
+    console.error('Tojeong prediction error:', error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
 export default router;

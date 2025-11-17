@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
+import { useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
 
 export default function FortunePage() {
+  const [, setLocation] = useLocation();
   const { t } = useTranslation();
 
   const services = useMemo(() => ({
@@ -11,18 +13,21 @@ export default function FortunePage() {
         description: t('services.fortune.saju.description'),
         icon: 'calendar_today',
         color: 'purple',
+        path: '/services/saju',
       },
       {
         title: t('services.fortune.faceReading.title'),
         description: t('services.fortune.faceReading.description'),
         icon: 'face',
         color: 'blue',
+        path: '/services/face-reading',
       },
       {
         title: t('services.fortune.palmistry.title'),
         description: t('services.fortune.palmistry.description'),
         icon: 'back_hand',
         color: 'green',
+        path: null, // Not implemented yet
       },
     ],
     western: [
@@ -31,12 +36,14 @@ export default function FortunePage() {
         description: t('services.fortune.horoscope.description'),
         icon: 'star',
         color: 'yellow',
+        path: null, // Not implemented yet
       },
       {
         title: t('services.fortune.zodiac.title'),
         description: t('services.fortune.zodiac.description'),
         icon: 'pets',
         color: 'orange',
+        path: null, // Not implemented yet
       },
     ],
     compatibility: [
@@ -45,18 +52,21 @@ export default function FortunePage() {
         description: t('services.fortune.loveCompatibility.description'),
         icon: 'favorite',
         color: 'pink',
+        path: null, // Not implemented yet
       },
       {
         title: t('services.fortune.nameCompatibility.title'),
         description: t('services.fortune.nameCompatibility.description'),
         icon: 'edit',
         color: 'indigo',
+        path: null, // Not implemented yet
       },
       {
         title: t('services.fortune.marriageCompatibility.title'),
         description: t('services.fortune.marriageCompatibility.description'),
         icon: 'family_restroom',
         color: 'red',
+        path: null, // Not implemented yet
       },
     ],
   }), [t]);
@@ -88,7 +98,10 @@ export default function FortunePage() {
           {services.traditional.map((service, index) => (
             <div
               key={index}
-              className="flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer"
+              onClick={() => service.path && setLocation(service.path)}
+              className={`flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition ${
+                service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
+              }`}
             >
               <div
                 className={`flex items-center justify-center w-16 h-16 ${
@@ -104,6 +117,9 @@ export default function FortunePage() {
                   {service.title}
                 </p>
                 <p className="text-[#ab9eb7] text-sm">{service.description}</p>
+                {!service.path && (
+                  <span className="text-xs text-yellow-500">준비 중</span>
+                )}
               </div>
             </div>
           ))}
@@ -117,7 +133,10 @@ export default function FortunePage() {
           {services.western.map((service, index) => (
             <div
               key={index}
-              className="flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer"
+              onClick={() => service.path && setLocation(service.path)}
+              className={`flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition ${
+                service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
+              }`}
             >
               <div
                 className={`flex items-center justify-center w-16 h-16 ${
@@ -133,6 +152,9 @@ export default function FortunePage() {
                   {service.title}
                 </p>
                 <p className="text-[#ab9eb7] text-sm">{service.description}</p>
+                {!service.path && (
+                  <span className="text-xs text-yellow-500">준비 중</span>
+                )}
               </div>
             </div>
           ))}
@@ -146,7 +168,10 @@ export default function FortunePage() {
           {services.compatibility.map((service, index) => (
             <div
               key={index}
-              className="flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer"
+              onClick={() => service.path && setLocation(service.path)}
+              className={`flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition ${
+                service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
+              }`}
             >
               <div
                 className={`flex items-center justify-center w-16 h-16 ${
@@ -162,6 +187,9 @@ export default function FortunePage() {
                   {service.title}
                 </p>
                 <p className="text-[#ab9eb7] text-sm">{service.description}</p>
+                {!service.path && (
+                  <span className="text-xs text-yellow-500">준비 중</span>
+                )}
               </div>
             </div>
           ))}

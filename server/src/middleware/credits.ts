@@ -15,6 +15,9 @@ export const CREDIT_COSTS = {
   'story': 20,
   'chat': 5,
   'face-reading': 25, // Vision API is more expensive
+  'saju': 25, // 사주팔자
+  'tarot': 20, // 타로
+  'tojeong': 15, // 토정비결
 } as const;
 
 /**
