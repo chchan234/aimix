@@ -7,7 +7,11 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { supabase } from '../db/supabase.js';
 
-const JWT_SECRET = process.env.JWT_SECRET!;
+// Validate JWT_SECRET at module load time
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is required');
+}
+const JWT_SECRET: string = process.env.JWT_SECRET;
 
 // Extend Express Request to include user data
 declare global {
@@ -17,6 +21,7 @@ declare global {
         userId: string;
         email: string;
         emailVerified?: boolean;
+        provider: string;
       };
       userData?: {
         id: string;
@@ -62,27 +67,11 @@ export async function authenticateToken(
       userId: string;
       email: string;
       emailVerified?: boolean;
+      provider: string;
     };
 
-    // Attach user to request
+    // Attach user to request (no DB query needed!)
     req.user = decoded;
-
-    // Fetch full user data from database
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', decoded.userId)
-      .single();
-
-    if (error || !user) {
-      res.status(401).json({
-        error: 'Invalid token - user not found'
-      });
-      return;
-    }
-
-    // Attach full user data to request
-    req.userData = user;
 
     next();
   } catch (error) {
@@ -95,13 +84,15 @@ export async function authenticateToken(
 
 /**
  * Require email verification
+ * Only applies to email-based users (Kakao users are pre-verified)
  */
 export function requireEmailVerification(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  if (!req.userData?.email_verified && req.userData?.provider === 'email') {
+  // Email provider users must verify their email
+  if (req.user?.provider === 'email' && !req.user?.emailVerified) {
     res.status(403).json({
       error: 'Email verification required',
       message: 'Please verify your email before using this feature'
@@ -110,4 +101,47 @@ export function requireEmailVerification(
   }
 
   next();
+}
+
+/**
+ * Load full user data from database (only use when needed)
+ * This is a separate middleware to avoid unnecessary DB queries
+ */
+export async function loadUserData(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    if (!req.user) {
+      res.status(401).json({
+        error: 'Authentication required'
+      });
+      return;
+    }
+
+    // Fetch full user data from database
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', req.user.userId)
+      .single();
+
+    if (error || !user) {
+      res.status(401).json({
+        error: 'User not found'
+      });
+      return;
+    }
+
+    // Attach full user data to request
+    req.userData = user;
+
+    next();
+  } catch (error) {
+    console.error('Load user data error:', error);
+    res.status(500).json({
+      error: 'Failed to load user data'
+    });
+  }
 }

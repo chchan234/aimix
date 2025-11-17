@@ -12,6 +12,7 @@ import { supabase } from '../db/supabase.js';
 import { generateVerificationToken, getTokenExpiration, sendVerificationEmail } from '../services/email.js';
 import { createRefreshToken } from '../services/refreshToken.js';
 import { rateLimitByIP } from '../middleware/rateLimit.js';
+import { verifyAndConsumeStateToken } from '../utils/oauth-state.js';
 
 // Validation schemas
 const registerSchema = z.object({
@@ -36,8 +37,11 @@ const loginSchema = z.object({
 
 const router = express.Router();
 
-// JWT_SECRET is validated at server startup - no fallback needed
-const JWT_SECRET = process.env.JWT_SECRET!;
+// JWT_SECRET is validated at server startup
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is required');
+}
+const JWT_SECRET: string = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = '7d';
 const REFRESH_TOKEN_EXPIRES_DAYS = 30;
 
@@ -174,7 +178,8 @@ router.post('/register', rateLimitByIP(5, 60 * 1000), async (req, res) => {
       {
         userId: newUser.id,
         email: newUser.email,
-        emailVerified: false
+        emailVerified: false,
+        provider: 'email'
       },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN }
@@ -259,7 +264,9 @@ router.post('/login', rateLimitByIP(5, 60 * 1000), async (req, res) => {
     const jwtToken = jwt.sign(
       {
         userId: user.id,
-        email: user.email
+        email: user.email,
+        emailVerified: user.email_verified,
+        provider: 'email'
       },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN }
@@ -289,6 +296,16 @@ router.post('/login', rateLimitByIP(5, 60 * 1000), async (req, res) => {
       error: error instanceof Error ? error.message : 'Login failed'
     });
   }
+});
+
+/**
+ * GET /api/auth/oauth/state
+ * Generate OAuth state token for CSRF protection
+ */
+router.get('/oauth/state', (req, res) => {
+  const { generateStateToken } = require('../utils/oauth-state.js');
+  const state = generateStateToken();
+  res.json({ state });
 });
 
 /**
@@ -360,7 +377,9 @@ router.post('/kakao', async (req, res) => {
     const jwtToken = jwt.sign(
       {
         userId: user.id,
-        email: user.email
+        email: user.email,
+        emailVerified: true, // Kakao users are pre-verified
+        provider: 'kakao'
       },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN }
@@ -413,6 +432,14 @@ router.post('/kakao/callback', rateLimitByIP(10, 60 * 1000), async (req, res) =>
       return res.status(403).json({
         error: 'Invalid or missing OAuth state parameter',
         message: 'Possible CSRF attack detected'
+      });
+    }
+
+    // Verify that this state token was actually issued by us
+    if (!verifyAndConsumeStateToken(state)) {
+      return res.status(403).json({
+        error: 'Invalid OAuth state token',
+        message: 'State token is invalid, expired, or already used. Possible CSRF attack.'
       });
     }
 
@@ -511,7 +538,9 @@ router.post('/kakao/callback', rateLimitByIP(10, 60 * 1000), async (req, res) =>
     const token = jwt.sign(
       {
         userId: user.id,
-        email: user.email
+        email: user.email,
+        emailVerified: true, // Kakao users are pre-verified
+        provider: 'kakao'
       },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN }
@@ -672,7 +701,8 @@ router.post('/refresh', async (req, res) => {
       {
         userId: user.id,
         email: user.email,
-        emailVerified: user.email_verified
+        emailVerified: user.email_verified,
+        provider: user.provider
       },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN }

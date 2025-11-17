@@ -139,23 +139,26 @@ export function initKakao() {
 }
 
 /**
- * Generate random state for OAuth CSRF protection
+ * Get OAuth state token from backend
  */
-function generateOAuthState(): string {
-  const array = new Uint8Array(32);
-  crypto.getRandomValues(array);
-  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+async function getOAuthState(): Promise<string> {
+  const response = await fetch(`${API_URL}/api/auth/oauth/state`);
+  if (!response.ok) {
+    throw new Error('Failed to get OAuth state');
+  }
+  const data = await response.json();
+  return data.state;
 }
 
 /**
  * Trigger Kakao login redirect using REST API (direct OAuth)
  */
-export function loginWithKakao(): void {
+export async function loginWithKakao(): Promise<void> {
   const REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
   const REDIRECT_URI = `${window.location.origin}/oauth/kakao/callback`;
 
-  // Generate and store state for CSRF protection
-  const state = generateOAuthState();
+  // Get state from backend for CSRF protection
+  const state = await getOAuthState();
   sessionStorage.setItem('kakao_oauth_state', state);
 
   // Direct OAuth authorization URL with state parameter

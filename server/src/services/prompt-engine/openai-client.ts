@@ -1,17 +1,19 @@
 import OpenAI from 'openai';
 import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
+import { parseAIResponse } from '../../utils/json-parser.js';
 
 export class OpenAIClient {
   private client: OpenAI;
   private model: string;
 
   constructor() {
-    if (!process.env.OPENAI_API_KEY) {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
       throw new Error('OPENAI_API_KEY is not defined');
     }
 
     this.client = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey,
     });
 
     this.model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
@@ -132,11 +134,6 @@ export class OpenAIClient {
    * Parse JSON response with error handling
    */
   parseJSON<T = any>(content: string): T {
-    try {
-      return JSON.parse(content);
-    } catch (error) {
-      console.error('Failed to parse JSON:', content);
-      throw new Error('Invalid JSON response from AI');
-    }
+    return parseAIResponse<T>(content);
   }
 }

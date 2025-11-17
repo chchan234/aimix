@@ -1,12 +1,43 @@
+// Load environment variables FIRST (before any other imports)
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { existsSync } from 'fs';
+
+// Get the directory name of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Try multiple locations for .env file
+const envPaths = [
+  path.resolve(__dirname, '../.env'),        // server/.env
+  path.resolve(process.cwd(), '.env'),        // current working directory
+  path.resolve(__dirname, '../../.env'),      // parent directory
+];
+
+let envLoaded = false;
+for (const envPath of envPaths) {
+  if (existsSync(envPath)) {
+    console.log(`📄 Loading environment from: ${envPath}`);
+    dotenv.config({ path: envPath, override: true });
+    envLoaded = true;
+    break;
+  }
+}
+
+if (!envLoaded) {
+  console.warn('⚠️  No .env file found, using environment variables');
+  dotenv.config({ override: true }); // Fall back to default behavior
+}
+
+// Now import everything else
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 import { supabase, testConnection } from './db/supabase.js';
+import { authenticateToken } from './middleware/auth.js';
 import aiRoutes from './routes/ai.js';
 import authRoutes from './routes/auth.js';
-
-dotenv.config();
 
 // Security: Validate critical environment variables
 function validateEnvironment() {
@@ -25,8 +56,21 @@ function validateEnvironment() {
   if (!process.env.SUPABASE_URL) {
     errors.push('SUPABASE_URL environment variable is required');
   }
-  if (!process.env.SUPABASE_ANON_KEY) {
-    errors.push('SUPABASE_ANON_KEY environment variable is required');
+  if (!process.env.SUPABASE_SERVICE_KEY) {
+    errors.push('SUPABASE_SERVICE_KEY environment variable is required for server');
+  }
+
+  // AI API Keys - at least one must be configured
+  const hasOpenAI = !!process.env.OPENAI_API_KEY;
+  const hasGemini = !!process.env.GEMINI_API_KEY;
+
+  if (!hasOpenAI && !hasGemini) {
+    errors.push('At least one AI API key (OPENAI_API_KEY or GEMINI_API_KEY) is required');
+  }
+
+  // Kakao OAuth (optional but recommended)
+  if (!process.env.KAKAO_REST_API_KEY) {
+    console.warn('⚠️  KAKAO_REST_API_KEY not configured - Kakao login will be disabled');
   }
 
   if (errors.length > 0) {
@@ -143,8 +187,8 @@ app.use('/api/auth', authRoutes);
 // AI service routes
 app.use('/api/ai', aiRoutes);
 
-// Test endpoint to get user count
-app.get('/api/users/count', async (req, res) => {
+// Test endpoint to get user count (requires authentication)
+app.get('/api/users/count', authenticateToken, async (req, res) => {
   try {
     const { count, error } = await supabase
       .from('users')
@@ -167,6 +211,10 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   });
 }
+
+// Global error handler (must be after all routes)
+import { globalErrorHandler } from './middleware/error-handler.js';
+app.use(globalErrorHandler);
 
 // Export for Vercel serverless
 export default app;

@@ -26,7 +26,7 @@ export const CREDIT_COSTS = {
 export function requireCredits(serviceName: keyof typeof CREDIT_COSTS) {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      if (!req.userData) {
+      if (!req.user) {
         res.status(401).json({
           error: 'Authentication required'
         });
@@ -34,8 +34,7 @@ export function requireCredits(serviceName: keyof typeof CREDIT_COSTS) {
       }
 
       const cost = CREDIT_COSTS[serviceName];
-      const userId = req.userData.id;
-      const currentCredits = req.userData.credits;
+      const userId = req.user.userId;
 
       // Atomically deduct credits using PostgreSQL function
       // This prevents race conditions in concurrent requests
@@ -56,22 +55,34 @@ export function requireCredits(serviceName: keyof typeof CREDIT_COSTS) {
 
       // If no user returned, insufficient credits
       if (!data) {
-        res.status(402).json({
-          error: 'Insufficient credits',
-          required: cost,
-          current: currentCredits,
-          message: `This service costs ${cost} credits, but you only have ${currentCredits} credits.`
+        // Fetch current credits for error message
+        const { data: user } = await supabase
+          .from('users')
+          .select('credits')
+          .eq('id', userId)
+          .single();
+
+        res.status(403).json({
+          success: false,
+          error: {
+            code: 'INSUFFICIENT_CREDITS',
+            message: `This service costs ${cost} credits, but you only have ${user?.credits || 0} credits.`,
+            details: {
+              required: cost,
+              current: user?.credits || 0
+            }
+          }
         });
         return;
       }
 
-      // Update user data in request (cast to correct type)
+      // Update user data in request (for response use)
       req.userData = data as typeof req.userData;
 
       // Attach credit info to response
       res.locals.creditInfo = {
         cost,
-        previousBalance: currentCredits,
+        previousBalance: (data as any).credits + cost, // Calculate previous balance
         newBalance: (data as any).credits
       };
 
