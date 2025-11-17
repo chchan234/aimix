@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import ExecuteButton from '../../components/ExecuteButton';
 import { predictTojeong } from '../../services/ai';
-import { getCurrentUser } from '../../services/auth';
+import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function TojeongPage() {
+  const [, setLocation] = useLocation();
   const [birthDate, setBirthDate] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -13,16 +15,25 @@ export default function TojeongPage() {
   const serviceCost = 15;
 
   useEffect(() => {
+    // 로그인 체크
+    if (!isLoggedIn()) {
+      alert('로그인 후 이용해주세요.');
+      setLocation('/');
+      return;
+    }
+
     const fetchUserData = async () => {
       try {
         const user = await getCurrentUser();
         setCurrentCredits(user.credits);
       } catch (error) {
         console.error('Failed to fetch user data:', error);
+        alert('로그인 후 이용해주세요.');
+        setLocation('/');
       }
     };
     fetchUserData();
-  }, []);
+  }, [setLocation]);
 
   const handleExecute = async () => {
     if (!birthDate) {

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import ExecuteButton from '../../components/ExecuteButton';
 import { readTarot } from '../../services/ai';
-import { getCurrentUser } from '../../services/auth';
+import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function TarotPage() {
+  const [, setLocation] = useLocation();
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -13,16 +15,25 @@ export default function TarotPage() {
   const serviceCost = 20;
 
   useEffect(() => {
+    // 로그인 체크
+    if (!isLoggedIn()) {
+      alert('로그인 후 이용해주세요.');
+      setLocation('/');
+      return;
+    }
+
     const fetchUserData = async () => {
       try {
         const user = await getCurrentUser();
         setCurrentCredits(user.credits);
       } catch (error) {
         console.error('Failed to fetch user data:', error);
+        alert('로그인 후 이용해주세요.');
+        setLocation('/');
       }
     };
     fetchUserData();
-  }, []);
+  }, [setLocation]);
 
   const handleExecute = async () => {
     if (!question.trim()) {

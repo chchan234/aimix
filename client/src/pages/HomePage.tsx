@@ -26,6 +26,7 @@ export default function HomePage() {
       icon: 'calendar_today',
       color: 'purple',
       category: 'fortune',
+      path: '/services/saju',
     },
     {
       title: t('services.fortune.faceReading.title'),
@@ -33,6 +34,7 @@ export default function HomePage() {
       icon: 'face',
       color: 'blue',
       category: 'fortune',
+      path: '/services/face-reading',
     },
     {
       title: t('services.fortune.palmistry.title'),
@@ -240,6 +242,7 @@ export default function HomePage() {
       icon: 'calendar_today',
       color: 'purple',
       category: 'fortune',
+      path: '/services/saju',
       rating: 4.9,
       users: 3245,
     },
@@ -267,6 +270,7 @@ export default function HomePage() {
       icon: 'face',
       color: 'blue',
       category: 'fortune',
+      path: '/services/face-reading',
       rating: 4.6,
       users: 1987,
     },
@@ -339,7 +343,7 @@ export default function HomePage() {
             {popularServices.map((service, index) => (
               <div
                 key={index}
-                onClick={() => setLocation(getCategoryPath(service.category))}
+                onClick={() => setLocation(service.path || getCategoryPath(service.category))}
                 className="relative flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
               >
                 {/* 순위 뱃지 */}
@@ -388,7 +392,7 @@ export default function HomePage() {
           {popularServices.map((service, index) => (
             <div
               key={index}
-              onClick={() => setLocation(getCategoryPath(service.category))}
+              onClick={() => setLocation(service.path || getCategoryPath(service.category))}
               className="relative flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
             >
               {/* 순위 뱃지 */}
@@ -443,7 +447,7 @@ export default function HomePage() {
             {randomServices.map((service, index) => (
               <div
                 key={index}
-                onClick={() => setLocation(getCategoryPath(service.category))}
+                onClick={() => setLocation(service.path || getCategoryPath(service.category))}
                 className="flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
               >
                 <div
@@ -476,7 +480,7 @@ export default function HomePage() {
           {randomServices.map((service, index) => (
             <div
               key={index}
-              onClick={() => setLocation(getCategoryPath(service.category))}
+              onClick={() => setLocation(service.path || getCategoryPath(service.category))}
               className="flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
             >
               <div

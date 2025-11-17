@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import ExecuteButton from '../../components/ExecuteButton';
 import { analyzeSaju } from '../../services/ai';
-import { getCurrentUser } from '../../services/auth';
+import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function SajuPage() {
   const { t } = useTranslation();
+  const [, setLocation] = useLocation();
   const [birthDate, setBirthDate] = useState('');
   const [birthTime, setBirthTime] = useState('');
   const [gender, setGender] = useState<'male' | 'female'>('male');
@@ -18,16 +20,25 @@ export default function SajuPage() {
 
   // Fetch user credits on mount
   useEffect(() => {
+    // 로그인 체크
+    if (!isLoggedIn()) {
+      alert('로그인 후 이용해주세요.');
+      setLocation('/');
+      return;
+    }
+
     const fetchUserData = async () => {
       try {
         const user = await getCurrentUser();
         setCurrentCredits(user.credits);
       } catch (error) {
         console.error('Failed to fetch user data:', error);
+        alert('로그인 후 이용해주세요.');
+        setLocation('/');
       }
     };
     fetchUserData();
-  }, []);
+  }, [setLocation]);
 
   const handleExecute = async () => {
     if (!birthDate || !birthTime) {
