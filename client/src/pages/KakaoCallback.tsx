@@ -34,9 +34,7 @@ export default function KakaoCallback() {
         console.log('Processing Kakao callback with code:', code.substring(0, 10) + '...');
 
         // Send authorization code to backend for token exchange
-        const API_URL = import.meta.env.DEV
-          ? 'http://localhost:3000'
-          : 'https://server-vert-five-94.vercel.app';
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
         console.log('Sending code to server:', API_URL);
 

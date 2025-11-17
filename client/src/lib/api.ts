@@ -2,12 +2,10 @@
  * API Configuration and Utilities
  *
  * Centralized API client for making requests to the backend server.
- * Uses relative paths in production (same domain), localhost in development.
+ * Uses environment variable for API URL configuration.
  */
 
-const API_BASE_URL = import.meta.env.DEV
-  ? 'http://localhost:3000'
-  : 'https://server-vert-five-94.vercel.app';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 /**
  * Generic API request wrapper with error handling
