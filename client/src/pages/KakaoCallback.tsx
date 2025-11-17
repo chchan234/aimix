@@ -48,7 +48,7 @@ export default function KakaoCallback() {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({ code, state }),
           mode: 'cors',
           credentials: 'include',
           signal: controller.signal

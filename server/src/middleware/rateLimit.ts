@@ -77,14 +77,65 @@ export function rateLimitByUser(maxRequests: number, windowMs: number) {
 }
 
 /**
+ * Rate limit by IP address (for unauthenticated endpoints)
+ * @param maxRequests - Maximum requests allowed in the time window
+ * @param windowMs - Time window in milliseconds
+ */
+export function rateLimitByIP(maxRequests: number, windowMs: number) {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    // Get client IP address
+    const ip = req.ip ||
+               req.headers['x-forwarded-for'] as string ||
+               req.headers['x-real-ip'] as string ||
+               req.socket.remoteAddress ||
+               'unknown';
+
+    const now = Date.now();
+    const key = `ip:${ip}`;
+
+    let entry = rateLimitStore.get(key);
+
+    // Create new entry if not exists or expired
+    if (!entry || entry.resetTime < now) {
+      entry = {
+        count: 0,
+        resetTime: now + windowMs
+      };
+      rateLimitStore.set(key, entry);
+    }
+
+    // Increment request count
+    entry.count++;
+
+    // Check if rate limit exceeded
+    if (entry.count > maxRequests) {
+      const resetIn = Math.ceil((entry.resetTime - now) / 1000);
+      res.status(429).json({
+        error: 'Rate limit exceeded',
+        message: `Too many requests from this IP. Please try again in ${resetIn} seconds.`,
+        retryAfter: resetIn
+      });
+      return;
+    }
+
+    // Add rate limit headers
+    res.setHeader('X-RateLimit-Limit', maxRequests.toString());
+    res.setHeader('X-RateLimit-Remaining', (maxRequests - entry.count).toString());
+    res.setHeader('X-RateLimit-Reset', Math.ceil(entry.resetTime / 1000).toString());
+
+    next();
+  };
+}
+
+/**
  * Preset rate limits for different service tiers
  */
 export const RateLimits = {
   // AI endpoints: 30 requests per minute per user
   AI: rateLimitByUser(30, 60 * 1000),
 
-  // Authentication: 10 requests per minute per IP (prevents brute force)
-  AUTH: rateLimitByUser(10, 60 * 1000),
+  // Authentication: 5 requests per minute per IP (prevents brute force)
+  AUTH: rateLimitByIP(5, 60 * 1000),
 
   // General API: 100 requests per minute per user
   GENERAL: rateLimitByUser(100, 60 * 1000),

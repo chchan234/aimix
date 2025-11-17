@@ -7,9 +7,32 @@
 import express, { Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { z } from 'zod';
 import { supabase } from '../db/supabase.js';
 import { generateVerificationToken, getTokenExpiration, sendVerificationEmail } from '../services/email.js';
 import { createRefreshToken } from '../services/refreshToken.js';
+import { rateLimitByIP } from '../middleware/rateLimit.js';
+
+// Validation schemas
+const registerSchema = z.object({
+  email: z.string().email('Invalid email format').max(255, 'Email too long'),
+  password: z.string()
+    .min(8, 'Password must be at least 8 characters')
+    .max(128, 'Password too long')
+    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .regex(/[0-9]/, 'Password must contain at least one number'),
+  username: z.string()
+    .min(3, 'Username must be at least 3 characters')
+    .max(50, 'Username too long')
+    .regex(/^[a-zA-Z0-9_-]+$/, 'Username can only contain letters, numbers, underscores and hyphens')
+    .optional()
+});
+
+const loginSchema = z.object({
+  email: z.string().email('Invalid email format'),
+  password: z.string().min(1, 'Password is required')
+});
 
 const router = express.Router();
 
@@ -78,23 +101,26 @@ interface KakaoUserResponse {
 /**
  * POST /api/auth/register
  * Register new user with email/password
+ * Rate limited to prevent abuse
  */
-router.post('/register', async (req, res) => {
+router.post('/register', rateLimitByIP(5, 60 * 1000), async (req, res) => {
   try {
-    const { email, password, username } = req.body;
+    // Validate input with Zod
+    const validation = registerSchema.safeParse(req.body);
 
-    // Validation
-    if (!email || !password) {
+    if (!validation.success) {
+      const errors = validation.error.errors.map(err => ({
+        field: err.path.join('.'),
+        message: err.message
+      }));
+
       return res.status(400).json({
-        error: 'Email and password are required'
+        error: 'Validation failed',
+        details: errors
       });
     }
 
-    if (password.length < 8) {
-      return res.status(400).json({
-        error: 'Password must be at least 8 characters'
-      });
-    }
+    const { email, password, username } = validation.data;
 
     // Check if user already exists
     const { data: existingUser } = await supabase
@@ -185,17 +211,26 @@ router.post('/register', async (req, res) => {
 /**
  * POST /api/auth/login
  * Login with email/password
+ * Rate limited to prevent brute force attacks
  */
-router.post('/login', async (req, res) => {
+router.post('/login', rateLimitByIP(5, 60 * 1000), async (req, res) => {
   try {
-    const { email, password } = req.body;
+    // Validate input with Zod
+    const validation = loginSchema.safeParse(req.body);
 
-    // Validation
-    if (!email || !password) {
+    if (!validation.success) {
+      const errors = validation.error.errors.map(err => ({
+        field: err.path.join('.'),
+        message: err.message
+      }));
+
       return res.status(400).json({
-        error: 'Email and password are required'
+        error: 'Validation failed',
+        details: errors
       });
     }
+
+    const { email, password } = validation.data;
 
     // Find user
     const { data: user, error } = await supabase
@@ -360,15 +395,24 @@ router.post('/kakao', async (req, res) => {
 /**
  * POST /api/auth/kakao/callback
  * Handle Kakao OAuth callback - exchange authorization code for access token
+ * Rate limited to prevent abuse
  */
-router.post('/kakao/callback', async (req, res) => {
+router.post('/kakao/callback', rateLimitByIP(10, 60 * 1000), async (req, res) => {
   try {
     const startTime = Date.now();
-    const { code } = req.body;
+    const { code, state } = req.body;
 
     if (!code) {
       return res.status(400).json({
         error: 'Authorization code is required'
+      });
+    }
+
+    // Verify OAuth state parameter to prevent CSRF attacks
+    if (!state || typeof state !== 'string' || state.length !== 64) {
+      return res.status(403).json({
+        error: 'Invalid or missing OAuth state parameter',
+        message: 'Possible CSRF attack detected'
       });
     }
 

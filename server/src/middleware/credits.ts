@@ -34,25 +34,13 @@ export function requireCredits(serviceName: keyof typeof CREDIT_COSTS) {
       const userId = req.userData.id;
       const currentCredits = req.userData.credits;
 
-      // Check if user has enough credits
-      if (currentCredits < cost) {
-        res.status(402).json({
-          error: 'Insufficient credits',
-          required: cost,
-          current: currentCredits,
-          message: `This service costs ${cost} credits, but you only have ${currentCredits} credits.`
-        });
-        return;
-      }
-
-      // Deduct credits
-      const { data: updatedUser, error } = await supabase
-        .from('users')
-        .update({
-          credits: currentCredits - cost
+      // Atomically deduct credits using PostgreSQL function
+      // This prevents race conditions in concurrent requests
+      const { data, error } = await supabase
+        .rpc('deduct_credits', {
+          p_user_id: userId,
+          p_amount: cost
         })
-        .eq('id', userId)
-        .select()
         .single();
 
       if (error) {
@@ -63,14 +51,25 @@ export function requireCredits(serviceName: keyof typeof CREDIT_COSTS) {
         return;
       }
 
-      // Update user data in request
-      req.userData = updatedUser;
+      // If no user returned, insufficient credits
+      if (!data) {
+        res.status(402).json({
+          error: 'Insufficient credits',
+          required: cost,
+          current: currentCredits,
+          message: `This service costs ${cost} credits, but you only have ${currentCredits} credits.`
+        });
+        return;
+      }
+
+      // Update user data in request (cast to correct type)
+      req.userData = data as typeof req.userData;
 
       // Attach credit info to response
       res.locals.creditInfo = {
         cost,
         previousBalance: currentCredits,
-        newBalance: updatedUser.credits
+        newBalance: (data as any).credits
       };
 
       next();
