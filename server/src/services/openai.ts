@@ -9,6 +9,8 @@ import { OpenAIClient } from './prompt-engine/openai-client.js';
 import { validateImage } from '../utils/image-validator.js';
 import { mbtiQuestions } from '../data/mbti-questions.js';
 import { enneagramQuestions } from '../data/enneagram-questions.js';
+import { bigFiveQuestions } from '../data/bigfive-questions.js';
+import { stressQuestions } from '../data/stress-questions.js';
 
 // Initialize centralized OpenAI client
 const client = new OpenAIClient();
@@ -1543,13 +1545,11 @@ export async function analyzeBigFive(answers: number[]): Promise<any> {
  * Calculate Big Five trait scores
  */
 function calculateBigFiveScores(answers: number[]): { [key: string]: number } {
-  const { bigFiveQuestions } = require('../data/bigfive-questions.js');
-
   const scores: { [key: string]: number } = {
     O: 0, C: 0, E: 0, A: 0, N: 0
   };
 
-  bigFiveQuestions.forEach((q: any, index: number) => {
+  bigFiveQuestions.forEach((q, index) => {
     const answer = answers[index];
     // positive direction: answer as is, negative direction: inverted (6 - answer)
     const score = q.direction === 'positive' ? answer : (6 - answer);
@@ -1663,8 +1663,6 @@ export async function analyzeStress(answers: number[]): Promise<any> {
  * Calculate stress scores by category
  */
 function calculateStressScores(answers: number[]): { [key: string]: number } {
-  const { stressQuestions } = require('../data/stress-questions.js');
-
   const scores: { [key: string]: number } = {
     work: 0,
     relationships: 0,
@@ -1672,7 +1670,7 @@ function calculateStressScores(answers: number[]): { [key: string]: number } {
     life: 0
   };
 
-  stressQuestions.forEach((q: any, index: number) => {
+  stressQuestions.forEach((q, index) => {
     scores[q.category] += answers[index];
   });
 
