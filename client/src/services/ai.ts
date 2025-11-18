@@ -65,6 +65,70 @@ export async function analyzeFaceReading(base64Image: string) {
 }
 
 /**
+ * Analyze palmistry (수상)
+ */
+export async function analyzePalmistry(
+  base64Image: string,
+  hand: 'left' | 'right' = 'right'
+) {
+  return apiRequest('/api/ai/palmistry', { base64Image, hand });
+}
+
+/**
+ * Analyze horoscope (별자리 운세)
+ */
+export async function analyzeHoroscope(
+  birthDate: string,
+  zodiacSign?: string
+) {
+  return apiRequest('/api/ai/horoscope', { birthDate, zodiacSign });
+}
+
+/**
+ * Analyze Chinese zodiac (띠 운세)
+ */
+export async function analyzeZodiac(birthDate: string) {
+  return apiRequest('/api/ai/zodiac', { birthDate });
+}
+
+/**
+ * Analyze love compatibility (연애궁합)
+ */
+export async function analyzeLoveCompatibility(
+  person1BirthDate: string,
+  person2BirthDate: string
+) {
+  return apiRequest('/api/ai/love-compatibility', { person1BirthDate, person2BirthDate });
+}
+
+/**
+ * Analyze name compatibility (이름궁합)
+ */
+export async function analyzeNameCompatibility(
+  name1: string,
+  name2: string
+) {
+  return apiRequest('/api/ai/name-compatibility', { name1, name2 });
+}
+
+/**
+ * Analyze marriage compatibility (결혼궁합)
+ */
+export async function analyzeMarriageCompatibility(
+  person1Name: string,
+  person1BirthDate: string,
+  person2Name: string,
+  person2BirthDate: string
+) {
+  return apiRequest('/api/ai/marriage-compatibility', {
+    person1Name,
+    person1BirthDate,
+    person2Name,
+    person2BirthDate,
+  });
+}
+
+/**
  * Get all results for the authenticated user
  */
 export async function getResults() {
