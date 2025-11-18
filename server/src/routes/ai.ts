@@ -194,26 +194,33 @@ router.post('/saju', validateBody(sajuSchema), requireCredits('saju'), async (re
     const result = await openai.analyzeSaju(birthDate, birthTime, gender);
 
     if (result.success) {
-      // Get service ID
-      const service = await db
-        .select()
-        .from(services)
-        .where(eq(services.serviceType, 'saju'))
-        .limit(1);
+      // Try to save result to database (optional)
+      try {
+        const service = await db
+          .select()
+          .from(services)
+          .where(eq(services.serviceType, 'saju'))
+          .limit(1);
 
-      if (service.length > 0) {
-        // Save result to database
-        const expiresAt = new Date();
-        expiresAt.setDate(expiresAt.getDate() + 14); // 14 days expiry
+        if (service.length > 0) {
+          // Save result to database
+          const expiresAt = new Date();
+          expiresAt.setDate(expiresAt.getDate() + 14); // 14 days expiry
 
-        await db.insert(serviceResults).values({
-          userId,
-          serviceId: service[0].id,
-          inputData: { birthDate, birthTime, gender },
-          resultData: result.analysis,
-          aiModel: result.model,
-          expiresAt,
-        });
+          await db.insert(serviceResults).values({
+            userId,
+            serviceId: service[0].id,
+            inputData: { birthDate, birthTime, gender },
+            resultData: result.analysis,
+            aiModel: result.model,
+            expiresAt,
+          });
+        } else {
+          console.warn('Service "saju" not found in database, skipping result save');
+        }
+      } catch (dbError) {
+        console.error('Failed to save result to database:', dbError);
+        // Continue anyway - don't fail the request
       }
 
       res.json(result);
