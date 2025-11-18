@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'wouter';
 
 export default function EntertainmentPage() {
   const { t } = useTranslation();
+  const [, setLocation] = useLocation();
 
   const services = useMemo(() => ({
     psychology: [
@@ -11,12 +13,14 @@ export default function EntertainmentPage() {
         description: t('services.entertainment.mbti.description'),
         icon: 'psychology',
         color: 'purple',
+        path: '/services/mbti-analysis',
       },
       {
         title: t('services.entertainment.enneagram.title'),
         description: t('services.entertainment.enneagram.description'),
         icon: 'hub',
         color: 'blue',
+        path: '/services/enneagram-test',
       },
       {
         title: t('services.entertainment.bigFive.title'),
@@ -74,6 +78,7 @@ export default function EntertainmentPage() {
           {services.psychology.map((service, index) => (
             <div
               key={index}
+              onClick={() => service.path && setLocation(service.path)}
               className="flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer"
             >
               <div
