@@ -23,6 +23,7 @@ import { authenticateToken } from './middleware/auth.js';
 import aiRoutes from './routes/ai.js';
 import authRoutes from './routes/auth.js';
 import resultsRoutes from './routes/results.js';
+import imageRoutes from './routes/image.js';
 
 // Security: Validate critical environment variables
 function validateEnvironment() {
@@ -176,6 +177,9 @@ app.use('/api/auth', authRoutes);
 
 // AI service routes
 app.use('/api/ai', aiRoutes);
+
+// Image generation/editing routes
+app.use('/api/image', imageRoutes);
 
 // Results routes
 app.use('/api/results', resultsRoutes);

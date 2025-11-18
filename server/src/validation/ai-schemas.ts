@@ -98,9 +98,195 @@ export const sajuSchema = z.object({
   }),
 });
 
+// Palmistry Analysis Schema
+export const palmistrySchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+  hand: z.enum(['left', 'right']).default('right'),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+// Horoscope Schema
+export const horoscopeSchema = z.object({
+  birthDate: dateString,
+  zodiacSign: z.enum(['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces']).optional(),
+});
+
+// Zodiac Schema (12띠)
+export const zodiacSchema = z.object({
+  birthDate: dateString,
+});
+
+// Love Compatibility Schema
+export const loveCompatibilitySchema = z.object({
+  person1BirthDate: dateString,
+  person2BirthDate: dateString,
+});
+
+// Name Compatibility Schema
+export const nameCompatibilitySchema = z.object({
+  name1: z.string()
+    .min(1, 'Name 1 is required')
+    .max(MAX_NAME_LENGTH, `Name must be less than ${MAX_NAME_LENGTH} characters`)
+    .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
+  name2: z.string()
+    .min(1, 'Name 2 is required')
+    .max(MAX_NAME_LENGTH, `Name must be less than ${MAX_NAME_LENGTH} characters`)
+    .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
+});
+
+// Marriage Compatibility Schema
+export const marriageCompatibilitySchema = z.object({
+  person1Name: z.string()
+    .min(1, 'Person 1 name is required')
+    .max(MAX_NAME_LENGTH, `Name must be less than ${MAX_NAME_LENGTH} characters`)
+    .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
+  person1BirthDate: dateString,
+  person2Name: z.string()
+    .min(1, 'Person 2 name is required')
+    .max(MAX_NAME_LENGTH, `Name must be less than ${MAX_NAME_LENGTH} characters`)
+    .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
+  person2BirthDate: dateString,
+});
+
+// Image Generation/Editing Schemas
+
+// Profile Generator Schema
+export const profileGeneratorSchema = z.object({
+  description: z.string()
+    .min(3, 'Description must be at least 3 characters')
+    .max(MAX_TEXT_LENGTH, `Description must be less than ${MAX_TEXT_LENGTH} characters`)
+    .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
+  style: z.enum(['professional', 'casual', 'artistic']).default('professional'),
+});
+
+// Caricature Schema
+export const caricatureSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+  exaggerationLevel: z.enum(['low', 'medium', 'high']).default('medium'),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+// ID Photo Schema
+export const idPhotoSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+  backgroundColor: z.enum(['white', 'blue', 'gray']).default('white'),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+// Face Swap Schema
+export const faceSwapSchema = z.object({
+  sourceImageUrl: imageUrl.optional(),
+  sourceBase64Image: base64Image.optional(),
+  targetImageUrl: imageUrl.optional(),
+  targetBase64Image: base64Image.optional(),
+}).refine(
+  (data) => (data.sourceImageUrl || data.sourceBase64Image) && (data.targetImageUrl || data.targetBase64Image),
+  'Both source and target images are required'
+);
+
+// Age Transform Schema
+export const ageTransformSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+  targetAge: z.number()
+    .min(1, 'Age must be at least 1')
+    .max(120, 'Age must be less than 120'),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+// Gender Swap Schema
+export const genderSwapSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+// Colorization Schema
+export const colorizationSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+// Background Removal Schema
+export const backgroundRemovalSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+  newBackground: z.string()
+    .max(MAX_TEXT_LENGTH, `Background description must be less than ${MAX_TEXT_LENGTH} characters`)
+    .default('transparent')
+    .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+// Hairstyle Schema
+export const hairstyleSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+  hairstyleDescription: z.string()
+    .min(3, 'Hairstyle description must be at least 3 characters')
+    .max(MAX_TEXT_LENGTH, `Hairstyle description must be less than ${MAX_TEXT_LENGTH} characters`)
+    .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+// Tattoo Schema
+export const tattooSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+  tattooDescription: z.string()
+    .min(3, 'Tattoo description must be at least 3 characters')
+    .max(MAX_TEXT_LENGTH, `Tattoo description must be less than ${MAX_TEXT_LENGTH} characters`)
+    .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
+  placement: z.string()
+    .min(2, 'Placement must be at least 2 characters')
+    .max(100, 'Placement must be less than 100 characters')
+    .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
 // Type exports for use in route handlers
 export type NameAnalysisInput = z.infer<typeof nameAnalysisSchema>;
 export type StoryInput = z.infer<typeof storySchema>;
 export type ChatInput = z.infer<typeof chatSchema>;
 export type FaceReadingInput = z.infer<typeof faceReadingSchema>;
 export type SajuInput = z.infer<typeof sajuSchema>;
+export type PalmistryInput = z.infer<typeof palmistrySchema>;
+export type HoroscopeInput = z.infer<typeof horoscopeSchema>;
+export type ZodiacInput = z.infer<typeof zodiacSchema>;
+export type LoveCompatibilityInput = z.infer<typeof loveCompatibilitySchema>;
+export type NameCompatibilityInput = z.infer<typeof nameCompatibilitySchema>;
+export type MarriageCompatibilityInput = z.infer<typeof marriageCompatibilitySchema>;
+
+// Image service types
+export type ProfileGeneratorInput = z.infer<typeof profileGeneratorSchema>;
+export type CaricatureInput = z.infer<typeof caricatureSchema>;
+export type IdPhotoInput = z.infer<typeof idPhotoSchema>;
+export type FaceSwapInput = z.infer<typeof faceSwapSchema>;
+export type AgeTransformInput = z.infer<typeof ageTransformSchema>;
+export type GenderSwapInput = z.infer<typeof genderSwapSchema>;
+export type ColorizationInput = z.infer<typeof colorizationSchema>;
+export type BackgroundRemovalInput = z.infer<typeof backgroundRemovalSchema>;
+export type HairstyleInput = z.infer<typeof hairstyleSchema>;
+export type TattooInput = z.infer<typeof tattooSchema>;

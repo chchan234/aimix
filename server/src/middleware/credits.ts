@@ -10,10 +10,12 @@ import { supabase } from '../db/supabase.js';
  * Credit costs for different AI services
  */
 export const CREDIT_COSTS = {
+  // Text services
   'name-analysis': 10,
   'dream-interpretation': 15,
   'story': 20,
   'chat': 5,
+  // Fortune services
   'face-reading': 25, // Vision API is more expensive
   'saju': 25, // 사주팔자
   'palmistry': 25, // 수상
@@ -24,6 +26,17 @@ export const CREDIT_COSTS = {
   'marriage-compatibility': 25, // 결혼궁합
   'tarot': 20, // 타로
   'tojeong': 15, // 토정비결
+  // Image generation/editing services
+  'profile-generator': 30, // AI 프로필 생성
+  'caricature': 35, // 캐리커쳐 변환
+  'id-photo': 25, // 증명사진
+  'face-swap': 40, // 얼굴 바꾸기
+  'age-transform': 35, // 나이 변환
+  'gender-swap': 35, // 성별 바꾸기
+  'colorization': 30, // 흑백사진 컬러화
+  'background-removal': 25, // 배경 제거
+  'hairstyle': 30, // 헤어스타일 변경
+  'tattoo': 30, // 타투 시뮬레이션
 } as const;
 
 /**

@@ -56,6 +56,133 @@ export class GeminiClient {
   }
 
   /**
+   * Image generation with Gemini (using Imagen 3)
+   */
+  async generateImage(
+    prompt: string,
+    options: {
+      numberOfImages?: number;
+      aspectRatio?: string;
+    } = {}
+  ) {
+    const startTime = Date.now();
+
+    try {
+      const model = this.client.getGenerativeModel({
+        model: 'gemini-2.0-flash-exp'
+      });
+
+      const result = await model.generateContent({
+        contents: [{
+          role: 'user',
+          parts: [{
+            text: `Generate an image: ${prompt}`
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.4,
+          topK: 32,
+          topP: 1,
+          maxOutputTokens: 4096,
+        }
+      });
+
+      const response = await result.response;
+
+      // Check if response contains image data
+      const candidates = response.candidates;
+      if (!candidates || candidates.length === 0) {
+        throw new Error('No image generated');
+      }
+
+      // Extract image from response
+      const imageData = candidates[0].content.parts.find(part =>
+        'inlineData' in part && part.inlineData?.mimeType?.startsWith('image/')
+      );
+
+      if (!imageData || !('inlineData' in imageData)) {
+        throw new Error('No image data in response');
+      }
+
+      const responseTime = Date.now() - startTime;
+      console.log(`✅ Gemini image generation completed in ${responseTime}ms`);
+
+      return {
+        imageData: imageData.inlineData.data,
+        mimeType: imageData.inlineData.mimeType,
+        responseTime,
+      };
+    } catch (error) {
+      console.error('❌ Gemini image generation error:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Analyze image and generate edited version
+   */
+  async editImage(
+    imageBase64: string,
+    editPrompt: string,
+    mimeType: string = 'image/jpeg'
+  ) {
+    const startTime = Date.now();
+
+    try {
+      const model = this.client.getGenerativeModel({
+        model: 'gemini-2.0-flash-exp'
+      });
+
+      const result = await model.generateContent({
+        contents: [{
+          role: 'user',
+          parts: [
+            {
+              inlineData: {
+                data: imageBase64,
+                mimeType: mimeType
+              }
+            },
+            {
+              text: `Analyze this image and create a new image based on this instruction: ${editPrompt}`
+            }
+          ]
+        }],
+        generationConfig: {
+          temperature: 0.4,
+        }
+      });
+
+      const response = await result.response;
+      const candidates = response.candidates;
+
+      if (!candidates || candidates.length === 0) {
+        throw new Error('No edited image generated');
+      }
+
+      const imageData = candidates[0].content.parts.find(part =>
+        'inlineData' in part && part.inlineData?.mimeType?.startsWith('image/')
+      );
+
+      if (!imageData || !('inlineData' in imageData)) {
+        throw new Error('No image data in response');
+      }
+
+      const responseTime = Date.now() - startTime;
+      console.log(`✅ Gemini image editing completed in ${responseTime}ms`);
+
+      return {
+        imageData: imageData.inlineData.data,
+        mimeType: imageData.inlineData.mimeType,
+        responseTime,
+      };
+    } catch (error) {
+      console.error('❌ Gemini image editing error:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Parse JSON response with error handling
    */
   parseJSON<T = any>(content: string): T {
