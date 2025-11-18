@@ -1,8 +1,8 @@
 # AIMIX 프로젝트 현황 및 작업 가이드
 
-> 최종 업데이트: 2025-11-18 10:30
+> 최종 업데이트: 2025-11-18 10:45
 > 작성자: Claude (AI Assistant)
-> 상태: ✅ **배포 완료** - 서버리스 함수 정상 작동, 로그인 기능 테스트 완료
+> 상태: ✅ **배포 완료** - 카카오 로그인 404 에러 수정 완료
 
 ---
 
@@ -111,12 +111,13 @@ aimix/
 - **Production URL**: `https://aiports.org` (또는 `https://aimix.vercel.app`)
 - **용도**: **Frontend + Backend 통합 배포**
 
-#### ✅ 배포 상태 (2025-11-18 10:30)
+#### ✅ 배포 상태 (2025-11-18 10:45)
 - **Frontend**: ✅ 정상 배포 및 작동
 - **Backend API**: ✅ Vercel Serverless 함수로 배포 완료
 - **API 엔드포인트**: `https://aiports.org/api` (정상 작동)
-- **OAuth 로그인**: ✅ Kakao OAuth 테스트 완료
-- **최종 배포 URL**: `https://aimix-e2yjpdwer-chanwoos-projects-bd61ed6a.vercel.app`
+- **OAuth 로그인**: ✅ Kakao OAuth 콜백 404 에러 수정 완료
+- **최종 배포 URL**: `https://aimix-5otbh4bpa-chanwoos-projects-bd61ed6a.vercel.app`
+- **Production 도메인**: `https://aiports.org`
 
 ### ❌ 삭제된 프로젝트들 (절대 재생성 금지!)
 - ~~server 프로젝트~~ (삭제됨 - 재생성 금지)
@@ -216,6 +217,63 @@ Uncaught (in promise) TypeError: Failed to fetch
 2. **Preview & Development 환경 변수 수정** (선택적)
    - [ ] Preview 환경 변수 수정
    - [ ] Development 환경 변수 수정
+
+### Issue #2: 카카오 로그인 404 에러 - ✅ **해결 완료**
+**발생일**: 2025-11-18 10:40
+**해결일**: 2025-11-18 10:45
+**환경**: 운영 환경 (Production)
+**상태**: ✅ **수정 완료** - 배포 완료 및 테스트 완료
+
+#### 에러 메시지
+```
+404: NOT_FOUND
+Code: NOT_FOUND
+ID: icn1::zj9z6-1763429926558-72605062a105
+```
+
+#### 근본 원인 분석
+🔍 **라우팅 설정 오류**: `vercel.json`의 rewrites 설정이 `/oauth/*` 경로를 서버리스 함수로 라우팅
+
+**문제 상황**:
+1. 카카오 OAuth는 `https://aiports.org/oauth/kakao/callback`으로 리디렉션 (프론트엔드 라우트)
+2. `vercel.json`이 `/oauth/*`를 서버리스 함수(`/api`)로 라우팅
+3. 프론트엔드 라우터가 작동하지 않아 404 발생
+4. `KakaoCallback.tsx` 컴포넌트가 로드되지 않음
+
+**실제 OAuth 플로우**:
+1. 사용자가 "Kakao로 계속하기" 클릭
+2. 카카오 인증 페이지로 이동 (redirect_uri: `/oauth/kakao/callback`)
+3. 카카오가 GET 요청으로 `/oauth/kakao/callback?code=xxx&state=yyy` 리디렉션
+4. **프론트엔드 라우터**가 `KakaoCallback` 컴포넌트 로드 (이 부분이 막혀있었음!)
+5. 컴포넌트가 서버의 `/api/auth/kakao/callback`로 POST 요청
+6. 서버가 토큰 교환 후 응답
+
+#### 해결 방법
+1. **vercel.json 수정** - `/oauth/*`, `/auth/*` rewrite 제거
+   ```json
+   "rewrites": [
+     {
+       "source": "/api/:path*",
+       "destination": "/api"
+     }
+   ]
+   ```
+
+2. **라우팅 구조 명확화**
+   - `/api/*` → 서버리스 함수 (백엔드 API)
+   - `/oauth/*` → 프론트엔드 SPA 라우트
+   - 다른 모든 경로 → 프론트엔드 SPA 라우트
+
+3. **Production 배포**
+   ```bash
+   vercel --prod
+   # 배포 URL: https://aimix-5otbh4bpa-chanwoos-projects-bd61ed6a.vercel.app
+   ```
+
+4. **테스트 완료**
+   - ✅ 카카오 로그인 페이지로 정상 리디렉션
+   - ✅ OAuth callback 경로 정상 작동
+   - ✅ 프론트엔드 라우터 정상 동작
 
 ---
 
