@@ -51,12 +51,6 @@ export default function EntertainmentPage() {
         icon: 'compare',
         color: 'pink',
       },
-      {
-        title: t('services.entertainment.goldenChild.title'),
-        description: t('services.entertainment.goldenChild.description'),
-        icon: 'child_care',
-        color: 'orange',
-      },
     ],
   }), [t]);
 

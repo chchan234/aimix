@@ -113,7 +113,7 @@ export default function GeumjjokiTestPage() {
         <div className="space-y-6">
           <div className="bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-white mb-4">
-              나는 금쪽이일까? 😅
+              나는 금쪽이일까?
             </h3>
             <div className="space-y-4 text-gray-300">
               <p>
@@ -133,11 +133,11 @@ export default function GeumjjokiTestPage() {
               <div className="bg-orange-900/20 border border-orange-500 rounded-lg p-4 mt-4">
                 <h4 className="font-semibold text-orange-400 mb-2">등급 시스템</h4>
                 <ul className="space-y-1 text-sm">
-                  <li>😇 <strong>천사</strong>: 자기관리가 완벽한 모범생</li>
-                  <li>😊 <strong>순한 아이</strong>: 가끔 실수하지만 전반적으로 괜찮음</li>
-                  <li>😅 <strong>보통 금쪽이</strong>: 현대인의 평균, MZ세대의 일반적 모습</li>
-                  <li>🤪 <strong>진성 금쪽이</strong>: 주변 사람들이 좀 힘들어함</li>
-                  <li>🔥 <strong>전설의 금쪽이</strong>: 오은영 박사님이 필요한 레벨</li>
+                  <li><strong>천사</strong>: 자기관리가 완벽한 모범생</li>
+                  <li><strong>순한 아이</strong>: 가끔 실수하지만 전반적으로 괜찮음</li>
+                  <li><strong>보통 금쪽이</strong>: 현대인의 평균, MZ세대의 일반적 모습</li>
+                  <li><strong>진성 금쪽이</strong>: 주변 사람들이 좀 힘들어함</li>
+                  <li><strong>전설의 금쪽이</strong>: 오은영 박사님이 필요한 레벨</li>
                 </ul>
               </div>
             </div>
@@ -299,7 +299,7 @@ export default function GeumjjokiTestPage() {
                     ))}
                   </ul>
                   {data.impact && (
-                    <p className="mt-2 text-gray-400 text-sm">💡 {data.impact}</p>
+                    <p className="mt-2 text-gray-400 text-sm">{data.impact}</p>
                   )}
                 </div>
               ))}
@@ -311,7 +311,7 @@ export default function GeumjjokiTestPage() {
             <h3 className="text-xl font-semibold text-white mb-4">강점과 개선점</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <h4 className="font-semibold text-green-400 mb-2">✨ 강점</h4>
+                <h4 className="font-semibold text-green-400 mb-2">강점</h4>
                 <ul className="list-disc list-inside text-gray-300 space-y-1 text-sm">
                   {result.analysis.strengths?.map((strength: string, i: number) => (
                     <li key={i}>{strength}</li>
@@ -319,7 +319,7 @@ export default function GeumjjokiTestPage() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-yellow-400 mb-2">💪 개선이 필요한 습관</h4>
+                <h4 className="font-semibold text-yellow-400 mb-2">개선이 필요한 습관</h4>
                 <ul className="list-disc list-inside text-gray-300 space-y-1 text-sm">
                   {result.analysis.challenges?.map((challenge: string, i: number) => (
                     <li key={i}>{challenge}</li>
@@ -334,7 +334,7 @@ export default function GeumjjokiTestPage() {
             <h3 className="text-xl font-semibold text-white mb-4">개선 가이드</h3>
             <div className="space-y-4">
               <div>
-                <h4 className="font-semibold text-orange-400 mb-2">🎯 최우선 개선사항</h4>
+                <h4 className="font-semibold text-orange-400 mb-2">최우선 개선사항</h4>
                 <ul className="list-decimal list-inside text-gray-300 space-y-1">
                   {result.analysis.improvement?.priority?.map((item: string, i: number) => (
                     <li key={i}>{item}</li>
@@ -342,7 +342,7 @@ export default function GeumjjokiTestPage() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-blue-400 mb-2">💡 실천 가능한 팁</h4>
+                <h4 className="font-semibold text-blue-400 mb-2">실천 가능한 팁</h4>
                 <ul className="list-disc list-inside text-gray-300 space-y-1">
                   {result.analysis.improvement?.tips?.map((tip: string, i: number) => (
                     <li key={i}>{tip}</li>
