@@ -56,18 +56,20 @@ export default function FaceReadingPage() {
     setLoading(true);
     try {
       // Convert image to base64
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      reader.onload = async () => {
-        const base64 = reader.result as string;
-        // Send full data URL (data:image/...;base64,...)
-        const response = await analyzeFaceReading(base64) as any;
-        setResult(response);
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(image);
+      });
 
-        if (response.credits?.remaining !== undefined) {
-          setCurrentCredits(response.credits.remaining);
-        }
-      };
+      // Send full data URL (data:image/...;base64,...)
+      const response = await analyzeFaceReading(base64) as any;
+      setResult(response);
+
+      if (response.credits?.remaining !== undefined) {
+        setCurrentCredits(response.credits.remaining);
+      }
     } catch (error) {
       console.error('Error:', error);
       alert(error instanceof Error ? error.message : '분석 중 오류가 발생했습니다.');
