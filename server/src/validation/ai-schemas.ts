@@ -62,14 +62,6 @@ export const nameAnalysisSchema = z.object({
   birthDate: dateString.optional(),
 });
 
-// Dream Interpretation Schema
-export const dreamInterpretationSchema = z.object({
-  dream: z.string()
-    .min(10, 'Dream description must be at least 10 characters')
-    .max(MAX_TEXT_LENGTH, `Dream description must be less than ${MAX_TEXT_LENGTH} characters`)
-    .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
-});
-
 // Story Generation Schema
 export const storySchema = z.object({
   theme: z.string()
@@ -106,25 +98,9 @@ export const sajuSchema = z.object({
   }),
 });
 
-// Tarot Reading Schema
-export const tarotSchema = z.object({
-  question: z.string()
-    .min(5, 'Question must be at least 5 characters')
-    .max(MAX_QUESTION_LENGTH, `Question must be less than ${MAX_QUESTION_LENGTH} characters`)
-    .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
-});
-
-// Tojeong Prediction Schema
-export const tojeongSchema = z.object({
-  birthDate: dateString,
-});
-
 // Type exports for use in route handlers
 export type NameAnalysisInput = z.infer<typeof nameAnalysisSchema>;
-export type DreamInterpretationInput = z.infer<typeof dreamInterpretationSchema>;
 export type StoryInput = z.infer<typeof storySchema>;
 export type ChatInput = z.infer<typeof chatSchema>;
 export type FaceReadingInput = z.infer<typeof faceReadingSchema>;
 export type SajuInput = z.infer<typeof sajuSchema>;
-export type TarotInput = z.infer<typeof tarotSchema>;
-export type TojeongInput = z.infer<typeof tojeongSchema>;

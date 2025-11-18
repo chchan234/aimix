@@ -19,10 +19,7 @@ import Header from './components/Header';
 
 // Service Pages
 import SajuPage from './pages/services/SajuPage';
-import TarotPage from './pages/services/TarotPage';
-import TojeongPage from './pages/services/TojeongPage';
 import FaceReadingPage from './pages/services/FaceReadingPage';
-import DreamPage from './pages/services/DreamPage';
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -58,10 +55,7 @@ function App() {
 
             {/* Service Detail Pages */}
             <Route path="/services/saju" component={SajuPage} />
-            <Route path="/services/tarot" component={TarotPage} />
-            <Route path="/services/tojeong" component={TojeongPage} />
             <Route path="/services/face-reading" component={FaceReadingPage} />
-            <Route path="/services/dream" component={DreamPage} />
 
             <Route path="/:rest*">
               {() => (

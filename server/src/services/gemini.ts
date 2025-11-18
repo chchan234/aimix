@@ -47,34 +47,6 @@ JSON 형식으로 응답해주세요:
 `;
 
 /**
- * Dream interpretation prompt template (꿈 해몽)
- */
-const DREAM_INTERPRETATION_PROMPT = (dreamDescription: string) => `
-당신은 한국의 꿈 해몽 전문가입니다. 다음 꿈을 해석해주세요:
-
-꿈 내용: ${dreamDescription}
-
-다음 항목을 포함하여 해석해주세요:
-1. 꿈의 전체적인 의미
-2. 주요 상징과 해석
-3. 심리적 의미
-4. 긍정적 메시지
-5. 주의사항 (있다면)
-
-JSON 형식으로 응답해주세요:
-{
-  "overallMeaning": "전체적인 의미",
-  "symbols": [
-    {"symbol": "상징", "meaning": "의미"}
-  ],
-  "psychologicalMeaning": "심리적 의미",
-  "positiveMessage": "긍정적 메시지",
-  "warnings": ["주의사항들"],
-  "luckyNumbers": [행운의 숫자들]
-}
-`;
-
-/**
  * Story generation prompt template
  */
 const STORY_PROMPT = (theme: string, length: 'short' | 'medium' | 'long') => {
@@ -162,40 +134,8 @@ export async function generateStory(theme: string, length: 'short' | 'medium' | 
   return await generateText(prompt);
 }
 
-/**
- * Interpret dream using Gemini (꿈 해몽)
- */
-export async function interpretDream(dreamDescription: string) {
-  try {
-    const prompt = DREAM_INTERPRETATION_PROMPT(dreamDescription);
-    const response = await getClient().generateText(prompt);
-    const interpretation = getClient().parseJSON(response.content);
-
-    return {
-      success: true,
-      interpretation
-    };
-  } catch (error) {
-    console.error('Gemini dream interpretation error:', error);
-    // Try to return raw text if JSON parsing fails
-    try {
-      const response = await getClient().generateText(DREAM_INTERPRETATION_PROMPT(dreamDescription));
-      return {
-        success: true,
-        rawText: response.content
-      };
-    } catch (innerError) {
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
-      };
-    }
-  }
-}
-
 export default {
   generateText,
   analyzeNameMeaning,
   generateStory,
-  interpretDream
 };

@@ -58,31 +58,10 @@ export async function analyzeSaju(
 }
 
 /**
- * Read Tarot cards
- */
-export async function readTarot(question: string) {
-  return apiRequest('/api/ai/tarot', { question });
-}
-
-/**
- * Predict fortune using Tojeong Bigyeol
- */
-export async function predictTojeong(birthDate: string) {
-  return apiRequest('/api/ai/tojeong', { birthDate });
-}
-
-/**
  * Analyze face for fortune reading
  */
 export async function analyzeFaceReading(base64Image: string) {
   return apiRequest('/api/ai/face-reading', { base64Image });
-}
-
-/**
- * Interpret dream
- */
-export async function interpretDream(dream: string) {
-  return apiRequest('/api/ai/dream-interpretation', { dream });
 }
 
 /**

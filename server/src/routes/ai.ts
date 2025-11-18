@@ -14,13 +14,10 @@ import { RateLimits } from '../middleware/rateLimit.js';
 import { validateBody } from '../middleware/validation.js';
 import {
   nameAnalysisSchema,
-  dreamInterpretationSchema,
   storySchema,
   chatSchema,
   faceReadingSchema,
   sajuSchema,
-  tarotSchema,
-  tojeongSchema,
 } from '../validation/ai-schemas.js';
 import { db } from '../db/index.js';
 import { serviceResults, services } from '../db/schema.js';
@@ -56,34 +53,6 @@ router.post('/name-analysis', validateBody(nameAnalysisSchema), requireCredits('
     }
   } catch (error) {
     console.error('Name analysis error:', error);
-    res.status(500).json({
-      error: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-
-/**
- * POST /api/ai/dream-interpretation
- * Interpret dream using Gemini
- *
- * Body: { dream: string }
- * Cost: 15 credits
- */
-router.post('/dream-interpretation', validateBody(dreamInterpretationSchema), requireCredits('dream-interpretation'), async (req, res) => {
-  try {
-    const { dream } = req.body;
-
-    const result = await gemini.interpretDream(dream);
-
-    if (result.success) {
-      res.json(result);
-    } else {
-      res.status(500).json({
-        error: ('error' in result && result.error) || 'Failed to interpret dream'
-      });
-    }
-  } catch (error) {
-    console.error('Dream interpretation error:', error);
     res.status(500).json({
       error: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -261,62 +230,6 @@ router.post('/saju', validateBody(sajuSchema), requireCredits('saju'), async (re
     }
   } catch (error) {
     console.error('Saju analysis error:', error);
-    res.status(500).json({
-      error: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-
-/**
- * POST /api/ai/tarot
- * Read Tarot cards using OpenAI GPT
- *
- * Body: { question: string }
- * Cost: 20 credits
- */
-router.post('/tarot', validateBody(tarotSchema), requireCredits('tarot'), async (req, res) => {
-  try {
-    const { question } = req.body;
-
-    const result = await openai.readTarot(question);
-
-    if (result.success) {
-      res.json(result);
-    } else {
-      res.status(500).json({
-        error: ('error' in result && result.error) || 'Failed to read tarot'
-      });
-    }
-  } catch (error) {
-    console.error('Tarot reading error:', error);
-    res.status(500).json({
-      error: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-
-/**
- * POST /api/ai/tojeong
- * Predict fortune using Tojeong Bigyeol (토정비결) with OpenAI GPT
- *
- * Body: { birthDate: string }
- * Cost: 15 credits
- */
-router.post('/tojeong', validateBody(tojeongSchema), requireCredits('tojeong'), async (req, res) => {
-  try {
-    const { birthDate } = req.body;
-
-    const result = await openai.predictTojeong(birthDate);
-
-    if (result.success) {
-      res.json(result);
-    } else {
-      res.status(500).json({
-        error: ('error' in result && result.error) || 'Failed to predict fortune'
-      });
-    }
-  } catch (error) {
-    console.error('Tojeong prediction error:', error);
     res.status(500).json({
       error: error instanceof Error ? error.message : 'Unknown error'
     });
