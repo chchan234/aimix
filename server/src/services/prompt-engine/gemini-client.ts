@@ -76,14 +76,11 @@ export class GeminiClient {
         contents: [{
           role: 'user',
           parts: [{
-            text: `Generate an image: ${prompt}`
+            text: prompt
           }]
         }],
         generationConfig: {
-          temperature: 0.4,
-          topK: 32,
-          topP: 1,
-          maxOutputTokens: 4096,
+          responseModalities: ['Image'],
         }
       });
 
@@ -144,12 +141,12 @@ export class GeminiClient {
               }
             },
             {
-              text: `Analyze this image and create a new image based on this instruction: ${editPrompt}`
+              text: editPrompt
             }
           ]
         }],
         generationConfig: {
-          temperature: 0.4,
+          responseModalities: ['Image'],
         }
       });
 
@@ -221,7 +218,7 @@ export class GeminiClient {
           ]
         }],
         generationConfig: {
-          temperature: 0.4,
+          responseModalities: ['Image'],
         }
       });
 
