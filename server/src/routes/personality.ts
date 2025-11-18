@@ -56,7 +56,7 @@ router.get('/enneagram/questions', authenticateToken, async (req, res) => {
 });
 
 // MBTI Analysis
-router.post('/mbti-analysis', validateBody(mbtiAnalysisSchema), requireCredits('mbti-analysis'), async (req, res) => {
+router.post('/mbti-analysis', authenticateToken, validateBody(mbtiAnalysisSchema), requireCredits('mbti-analysis'), async (req, res) => {
   try {
     const { userInputMBTI, answers } = req.body;
 
@@ -90,7 +90,7 @@ router.post('/mbti-analysis', validateBody(mbtiAnalysisSchema), requireCredits('
 });
 
 // Enneagram Test
-router.post('/enneagram-test', validateBody(enneagramTestSchema), requireCredits('enneagram-test'), async (req, res) => {
+router.post('/enneagram-test', authenticateToken, validateBody(enneagramTestSchema), requireCredits('enneagram-test'), async (req, res) => {
   try {
     const { answers } = req.body;
 
