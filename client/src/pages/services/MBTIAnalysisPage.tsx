@@ -15,7 +15,7 @@ const MBTI_TYPES = [
 ];
 
 export default function MBTIAnalysisPage() {
-  const [step, setStep] = useState<'input' | 'confirm' | 'test' | 'result'>('input');
+  const [step, setStep] = useState<'intro' | 'mbti-select' | 'test' | 'result'>('intro');
   const [userInputMBTI, setUserInputMBTI] = useState<string | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -41,12 +41,12 @@ export default function MBTIAnalysisPage() {
     }
   };
 
-  const handleMBTIInput = (mbti: string | null) => {
-    setUserInputMBTI(mbti);
-    setStep('confirm');
+  const handleStartFromIntro = () => {
+    setStep('mbti-select');
   };
 
-  const handleStartTest = () => {
+  const handleMBTIInput = (mbti: string | null) => {
+    setUserInputMBTI(mbti);
     setStep('test');
   };
 
@@ -99,59 +99,35 @@ export default function MBTIAnalysisPage() {
       icon="psychology"
       color="purple"
     >
-      {/* Step 1: MBTI Input */}
-      {step === 'input' && (
-        <div className="space-y-6">
-          <div className="text-center mb-8">
-            <h3 className="text-xl font-semibold text-white mb-4">
-              자신의 MBTI를 알고 계신가요?
-            </h3>
-            <p className="text-gray-400">
-              알고 있다면 선택해주세요. 테스트 결과와 비교 분석해드립니다.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-4 gap-3 mb-6">
-            {MBTI_TYPES.map((type) => (
-              <button
-                key={type}
-                onClick={() => handleMBTIInput(type)}
-                className="px-4 py-3 bg-gray-700 hover:bg-purple-600 text-white rounded-lg transition-colors"
-              >
-                {type}
-              </button>
-            ))}
-          </div>
-
-          <button
-            onClick={() => handleMBTIInput(null)}
-            className="w-full px-6 py-3 bg-gray-600 hover:bg-gray-500 text-white rounded-lg transition-colors"
-          >
-            잘 모르겠어요 (테스트만 진행)
-          </button>
-        </div>
-      )}
-
-      {/* Step 1.5: Credit Confirmation */}
-      {step === 'confirm' && (
+      {/* Introduction */}
+      {step === 'intro' && (
         <div className="space-y-6">
           <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold text-white mb-2">
-                테스트 시작 전 확인
-              </h3>
-              {userInputMBTI && (
-                <p className="text-gray-400">
-                  선택한 MBTI: <span className="text-purple-400 font-semibold">{userInputMBTI}</span>
-                </p>
-              )}
+            <h3 className="text-xl font-semibold text-white mb-4">
+              MBTI 심층분석이란?
+            </h3>
+            <div className="space-y-4 text-gray-300">
+              <p>
+                MBTI(Myers-Briggs Type Indicator)는 가장 널리 사용되는 성격 유형 검사입니다.
+                자가 진단한 MBTI와 테스트 결과를 비교하여 더욱 정확한 분석을 제공합니다.
+              </p>
+              <div className="bg-purple-900/20 border border-purple-500 rounded-lg p-4 mt-4">
+                <h4 className="font-semibold text-purple-400 mb-2">분석 내용</h4>
+                <ul className="space-y-2">
+                  <li>• <strong>자가진단 비교</strong>: 입력한 MBTI와 테스트 결과 비교</li>
+                  <li>• <strong>성격 특성</strong>: 주요 특성, 강점, 약점 분석</li>
+                  <li>• <strong>대인관계</strong>: 소통 스타일, 궁합 유형</li>
+                  <li>• <strong>진로 적성</strong>: 적합한 직업, 업무 스타일</li>
+                  <li>• <strong>성장 조언</strong>: 개발 영역, 주의사항</li>
+                </ul>
+              </div>
             </div>
 
-            <div className="bg-purple-900/20 border border-purple-500 rounded-lg p-4 mb-6">
+            <div className="bg-purple-900/20 border border-purple-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-white font-semibold">MBTI 심층분석</p>
-                  <p className="text-gray-400 text-sm">약 20개의 질문 + AI 분석</p>
+                  <p className="text-gray-400 text-sm">40개의 질문 + AI 분석</p>
                 </div>
                 <div className="text-right">
                   <p className="text-purple-400 font-bold text-xl">35 크레딧</p>
@@ -159,20 +135,47 @@ export default function MBTIAnalysisPage() {
               </div>
             </div>
 
-            <div className="space-y-3">
-              <button
-                onClick={handleStartTest}
-                className="w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
-              >
-                테스트 시작 (35 크레딧)
-              </button>
-              <button
-                onClick={() => setStep('input')}
-                className="w-full px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
-              >
-                이전으로
-              </button>
+            <button
+              onClick={handleStartFromIntro}
+              className="w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
+            >
+              테스트 시작 (35 크레딧)
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* MBTI Selection */}
+      {step === 'mbti-select' && (
+        <div className="space-y-6">
+          <div className="bg-gray-800 rounded-lg p-6">
+            <div className="text-center mb-8">
+              <h3 className="text-xl font-semibold text-white mb-4">
+                자신의 MBTI를 알고 계신가요?
+              </h3>
+              <p className="text-gray-400">
+                알고 있다면 선택해주세요. 테스트 결과와 비교 분석해드립니다.
+              </p>
             </div>
+
+            <div className="grid grid-cols-4 gap-3 mb-6">
+              {MBTI_TYPES.map((type) => (
+                <button
+                  key={type}
+                  onClick={() => handleMBTIInput(type)}
+                  className="px-4 py-3 bg-gray-700 hover:bg-purple-600 text-white rounded-lg transition-colors"
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => handleMBTIInput(null)}
+              className="w-full px-6 py-3 bg-gray-600 hover:bg-gray-500 text-white rounded-lg transition-colors"
+            >
+              잘 모르겠어요 (테스트만 진행)
+            </button>
           </div>
         </div>
       )}

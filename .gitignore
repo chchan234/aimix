@@ -59,3 +59,13 @@ coverage/
 .turbo
 .vercel
 *.env.bak
+.env.production
+.env.production.check
+.env.vercel
+VERCEL_ENV_FIX_GUIDE.md
+fix-vercel-env.sh
+server/VERCEL_ENV_SETUP.md
+CREDIT_DEDUCTION_FIX.md
+CREDIT_DEDUCTION_TYPE_MISMATCH_FIX.md
+PROBLEM_SOLVED_SUMMARY.md
+REACT_ERROR_FIX.md

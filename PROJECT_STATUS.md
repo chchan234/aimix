@@ -1,8 +1,8 @@
 # AIMIX 프로젝트 현황 및 작업 가이드
 
-> 최종 업데이트: 2025-11-18 11:15
+> 최종 업데이트: 2025-11-18 18:15
 > 작성자: Claude (AI Assistant)
-> 상태: ✅ **배포 완료** - 크레딧 차감 에러 수정 완료 (DB migration 실행)
+> 상태: ✅ **배포 완료** - Big Five & Stress 테스트 구현 완료, TypeScript 오류 수정
 
 ---
 
@@ -358,6 +358,71 @@ Error: Failed to deduct credits
    - [ ] 꿈 해몽 서비스 크레딧 차감 테스트
    - [ ] 이야기 생성 서비스 크레딧 차감 테스트
    - [ ] 크레딧 부족 시 에러 처리 확인
+
+### Issue #4: Big Five & Stress 테스트 구현 및 버그 수정 - ✅ **완료**
+**작업일**: 2025-11-18 18:00
+**환경**: 전체 (개발 + 운영)
+**상태**: ✅ **구현 및 배포 완료**
+
+#### 구현 내용
+🎯 **엔터테인먼트 카테고리 확장**: 성격 분석 서비스 2개 추가
+
+**1. Big Five 성격 테스트** (30 크레딧)
+   - 25개 질문 (OCEAN 모델: 개방성, 성실성, 외향성, 친화성, 신경성)
+   - 긍정/부정 질문 방향성 점수 계산
+   - AI 분석: 성격 특성별 강점/어려움, 커리어 추천, 대인관계 조언
+   - 경로: `/services/bigfive-test`
+
+**2. 스트레스 지수 측정** (25 크레딧)
+   - 20개 질문 (4개 카테고리: 업무/커리어, 대인관계, 건강, 일상생활)
+   - 전체 스트레스 수준 % 계산 + 카테고리별 점수
+   - 색상 코딩 (빨강/주황/노랑/초록)
+   - AI 분석: 스트레스 관리 전략, 이완 기법, 생활습관 개선
+   - 경로: `/services/stress-test`
+
+#### 버그 수정
+🐛 **TypeScript 컴파일 오류**
+1. **문제**: `req.user.id` 타입 오류 (ai.ts, results.ts)
+   - **원인**: JWT decode에서 `userId` 속성 사용하는데 `id`로 접근
+   - **해결**: `req.user.id` → `req.user.userId` 변경 (11곳)
+
+2. **문제**: `openAIClient is not defined` (openai.ts)
+   - **원인**: 변수명 불일치
+   - **해결**: `openAIClient` → `client` 변경
+
+3. **문제**: `parseJSON is not defined` (openai.ts)
+   - **원인**: 메서드 호출 방식 오류
+   - **해결**: `parseJSON()` → `client.parseJSON()` 변경
+
+4. **문제**: Big Five/Stress 테스트에서 `client.generateText()` 메서드 없음
+   - **원인**: 존재하지 않는 메서드 사용
+   - **해결**: `client.chat()` 메서드로 변경
+
+5. **문제**: Gemini `responseModalities` 타입 오류
+   - **원인**: TypeScript 타입 정의 미지원
+   - **해결**: `as any` 타입 assertion 추가
+
+6. **문제**: `imageData.inlineData` undefined 가능성
+   - **해결**: null check 추가
+
+🐛 **런타임 오류**
+1. **문제**: "require is not defined" 브라우저 오류
+   - **원인**: ES 모듈 환경에서 `require()` 사용
+   - **해결**:
+     - `bigFiveQuestions`, `stressQuestions` top-level import 추가
+     - `calculateBigFiveScores()`, `calculateStressScores()` 함수에서 `require()` 제거
+
+#### 커밋 이력
+- `ecc46f8`: feat: Add Big 5 and Stress tests to personality assessment
+- `bf75ed5`: feat: Add temporary admin route for credit management
+- `6d7ce56`: fix: Fix TypeScript compilation errors
+- `b63fed9`: fix: Replace require() with ES module imports for Big Five and Stress tests
+
+#### 배포 완료
+- ✅ 최종 배포: `https://aimix-e8co3xkvj-chanwoos-projects-bd61ed6a.vercel.app`
+- ✅ TypeScript 컴파일: 오류 없음
+- ✅ 빌드 성공: Client 472.59 kB
+- ✅ 상태: Ready
 
 ---
 
@@ -732,28 +797,40 @@ vercel inspect <deployment-url>
 | 2025-01-18 | 1.1.2 | fix-vercel-env.sh 스크립트 작성 | Claude |
 | 2025-01-18 | 1.2.0 | 프로젝트 상황 문서 대폭 업데이트 (이슈, TODO, 우선순위) | Claude |
 | 2025-01-18 | 2.0.0 | ✅ 환경 변수 수정 완료, Production 재배포 완료 (배포 ID: D9j8PQS55WKuat2heSyaubAgRwZk) | Claude |
+| 2025-11-18 | 2.1.0 | ✅ Big Five 성격 테스트 구현 완료 (30 크레딧, 25 질문) | Claude |
+| 2025-11-18 | 2.1.1 | ✅ 스트레스 지수 측정 구현 완료 (25 크레딧, 20 질문) | Claude |
+| 2025-11-18 | 2.2.0 | 🐛 TypeScript 컴파일 오류 6건 수정 (req.user.userId, client 메서드) | Claude |
+| 2025-11-18 | 2.2.1 | 🐛 런타임 require() 오류 수정 (ES 모듈 import로 변경) | Claude |
+| 2025-11-18 | 2.3.0 | ✅ Production 배포 완료 (커밋: b63fed9, 배포: aimix-e8co3xkvj) | Claude |
+| 2025-11-18 | 2.4.0 | 📝 SERVICES_STATUS.md 업데이트 (구현 완료: 12개/31개, 38.7%) | Claude |
 
 ---
 
 ## 📌 다음 작업
 
-**최우선 작업**: ✅ 완료 - 환경 변수 수정 및 재배포 완료
-**현재 작업**: 🧪 사용자 기능 테스트 진행 필요
-**다음 작업**: Preview & Development 환경 변수 수정 (선택적)
+**최근 완료**: ✅ Big Five & Stress 테스트 구현 및 배포 완료 (2025-11-18)
+**현재 상태**: 🟢 정상 운영 중 - 12개 서비스 제공
+**다음 작업**: 🎨 이미지 편집 카테고리 구현 시작
 **담당자**: 개발팀
 
-**테스트 체크리스트**:
-- [ ] 이메일 로그인 기능 테스트
-- [ ] 카카오 로그인 기능 테스트
-- [ ] API 호출 정상 작동 확인
-- [ ] 데이터베이스 연결 확인
+**신규 서비스 테스트 필요**:
+- [ ] Big Five 성격 테스트 사용자 테스트
+- [ ] 스트레스 지수 측정 사용자 테스트
+- [ ] 크레딧 차감 정상 작동 확인
+- [ ] 결과 저장 및 조회 테스트
 
 **Production 배포 정보**:
-- 배포 URL: https://aimix-k0ngjd2k2-chanwoos-projects-bd61ed6a.vercel.app
-- 배포 ID: D9j8PQS55WKuat2heSyaubAgRwZk
-- 배포일시: 2025-01-18 15:00
+- 배포 URL: https://aimix-e8co3xkvj-chanwoos-projects-bd61ed6a.vercel.app
+- 배포 커밋: b63fed9
+- 배포일시: 2025-11-18 18:00
+- 상태: ✅ Ready
+
+**구현 완료 서비스** (12개):
+- 🔮 운세/점술: 8개 (사주, 관상, 수상, 별자리, 띠, 연애궁합, 이름궁합, 결혼궁합)
+- 🎮 엔터테인먼트: 4개 (MBTI, 에니어그램, Big Five, 스트레스)
 
 **관련 문서**:
-- 📖 [Vercel 환경 변수 수정 가이드](./VERCEL_ENV_FIX_GUIDE.md)
-- 🔧 [수정 스크립트](./update-env-vars.sh)
+- 📊 [서비스 현황](./SERVICES_STATUS.md)
+- 🏗️ [플랫폼 아키텍처](./PLATFORM_ARCHITECTURE.md)
+- 📚 [기술 스택](./TECH_STACK.md)
 
