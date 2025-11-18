@@ -49,6 +49,12 @@ export default function HairstylePage() {
       return;
     }
 
+    // Validate minimum length
+    if (hairstyleDescription.trim().length < 3) {
+      alert('헤어스타일 설명은 최소 3자 이상 입력해주세요.\n예: 단발머리, 긴 웨이브 머리, 짧은 파마 등');
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await changeHairstyle(image, hairstyleDescription) as any;
@@ -65,7 +71,14 @@ export default function HairstylePage() {
       }
     } catch (error) {
       console.error('Error:', error);
-      alert(error instanceof Error ? error.message : '헤어스타일 변환 중 오류가 발생했습니다.');
+      const errorMessage = error instanceof Error ? error.message : '헤어스타일 변환 중 오류가 발생했습니다.';
+
+      // Special handling for validation error
+      if (errorMessage.includes('at least 3 characters')) {
+        alert('헤어스타일 설명은 최소 3자 이상 입력해주세요.\n예: 단발머리, 긴 웨이브 머리, 짧은 파마 등');
+      } else {
+        alert(errorMessage);
+      }
     } finally {
       setLoading(false);
     }
@@ -84,6 +97,10 @@ export default function HairstylePage() {
           <p className="text-[#ab9eb7] text-sm leading-relaxed">
             사진 속 헤어스타일을 원하는 스타일로 변환합니다.
           </p>
+          <ul className="text-[#ab9eb7] text-sm mt-2 space-y-1">
+            <li>• 헤어스타일 설명은 <span className="text-red-400 font-medium">최소 3자 이상</span> 입력해주세요</li>
+            <li>• 예: 단발머리, 긴 웨이브 머리, 짧은 파마, 투블럭 등</li>
+          </ul>
         </div>
 
         {!resultImage && (
