@@ -231,17 +231,18 @@ export async function swapFaces(sourceImageBase64: string, targetImageBase64: st
     Maintain natural skin tones, lighting, and perspective.
     Ensure realistic and high-quality blending.`;
 
-    // For face swap, we need to combine both images in the prompt
-    const response = await getClient().editImage(
+    // Use editImageWithReference to process both images
+    const response = await getClient().editImageWithReference(
       sourceImageBase64,
-      `${prompt}\nReference target image for body/pose to use.`
+      targetImageBase64,
+      prompt
     );
 
     return {
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Face swap error:', error);
