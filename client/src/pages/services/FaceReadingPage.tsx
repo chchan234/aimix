@@ -156,14 +156,177 @@ export default function FaceReadingPage() {
         {/* Result */}
         {result && (
           <div className="space-y-4">
+            {/* Preview Image */}
+            {previewUrl && (
+              <div className="bg-background-dark rounded-lg p-4 border border-blue-500/20">
+                <img
+                  src={previewUrl}
+                  alt="분석된 사진"
+                  className="w-full max-w-md mx-auto rounded-lg"
+                />
+              </div>
+            )}
+
+            {/* Analysis Result */}
             <div className="bg-background-dark rounded-lg p-6 border border-blue-500/20">
               <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
                 <span className="material-symbols-outlined">auto_awesome</span>
                 관상 분석 결과
               </h3>
-              <div className="text-[#ab9eb7] whitespace-pre-wrap">
-                {result}
-              </div>
+
+              {result.analysis ? (
+                <div className="space-y-4 text-[#ab9eb7]">
+                  {/* Overall Impression */}
+                  {result.analysis.overallImpression && (
+                    <div>
+                      <h4 className="text-white font-medium mb-2">전체적인 인상</h4>
+                      <p className="text-sm">{result.analysis.overallImpression}</p>
+                    </div>
+                  )}
+
+                  {/* Face Shape */}
+                  {result.analysis.faceShape && (
+                    <div>
+                      <h4 className="text-white font-medium mb-2">얼굴형</h4>
+                      <p className="text-sm">
+                        <span className="text-blue-400">{result.analysis.faceShape.type}</span> - {result.analysis.faceShape.meaning}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Forehead */}
+                  {result.analysis.forehead && (
+                    <div>
+                      <h4 className="text-white font-medium mb-2">이마 (재물운 & 지혜)</h4>
+                      <p className="text-sm mb-1">{result.analysis.forehead.analysis}</p>
+                      <p className="text-sm text-blue-400">{result.analysis.forehead.fortune}</p>
+                    </div>
+                  )}
+
+                  {/* Eyes */}
+                  {result.analysis.eyes && (
+                    <div>
+                      <h4 className="text-white font-medium mb-2">눈 (감정 & 인간관계)</h4>
+                      <p className="text-sm mb-1">{result.analysis.eyes.analysis}</p>
+                      <p className="text-sm text-blue-400">{result.analysis.eyes.fortune}</p>
+                    </div>
+                  )}
+
+                  {/* Nose */}
+                  {result.analysis.nose && (
+                    <div>
+                      <h4 className="text-white font-medium mb-2">코 (재물운 & 의지력)</h4>
+                      <p className="text-sm mb-1">{result.analysis.nose.analysis}</p>
+                      <p className="text-sm text-blue-400">{result.analysis.nose.fortune}</p>
+                    </div>
+                  )}
+
+                  {/* Mouth */}
+                  {result.analysis.mouth && (
+                    <div>
+                      <h4 className="text-white font-medium mb-2">입 (언변 & 복록)</h4>
+                      <p className="text-sm mb-1">{result.analysis.mouth.analysis}</p>
+                      <p className="text-sm text-blue-400">{result.analysis.mouth.fortune}</p>
+                    </div>
+                  )}
+
+                  {/* Ears */}
+                  {result.analysis.ears && (
+                    <div>
+                      <h4 className="text-white font-medium mb-2">귀 (건강 & 재물운)</h4>
+                      <p className="text-sm mb-1">{result.analysis.ears.analysis}</p>
+                      <p className="text-sm text-blue-400">{result.analysis.ears.fortune}</p>
+                    </div>
+                  )}
+
+                  {/* Overall Fortune */}
+                  {result.analysis.overallFortune && (
+                    <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-500/30">
+                      <h4 className="text-white font-medium mb-2">종합 운세</h4>
+                      <p className="text-sm">{result.analysis.overallFortune}</p>
+                    </div>
+                  )}
+
+                  {/* Strengths & Challenges */}
+                  {(result.analysis.strengths || result.analysis.challenges) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {result.analysis.strengths && (
+                        <div className="bg-green-900/20 rounded-lg p-4 border border-green-500/30">
+                          <h4 className="text-white font-medium mb-2">강점</h4>
+                          <ul className="text-sm space-y-1">
+                            {result.analysis.strengths.map((item: string, idx: number) => (
+                              <li key={idx} className="flex items-start gap-2">
+                                <span className="text-green-400">✓</span>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {result.analysis.challenges && (
+                        <div className="bg-yellow-900/20 rounded-lg p-4 border border-yellow-500/30">
+                          <h4 className="text-white font-medium mb-2">주의할 점</h4>
+                          <ul className="text-sm space-y-1">
+                            {result.analysis.challenges.map((item: string, idx: number) => (
+                              <li key={idx} className="flex items-start gap-2">
+                                <span className="text-yellow-400">!</span>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Advice */}
+                  {result.analysis.advice && Array.isArray(result.analysis.advice) && (
+                    <div className="bg-purple-900/20 rounded-lg p-4 border border-purple-500/30">
+                      <h4 className="text-white font-medium mb-2">조언</h4>
+                      <ul className="text-sm space-y-1">
+                        {result.analysis.advice.map((item: string, idx: number) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <span className="text-purple-400">→</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Lucky Elements */}
+                  {(result.analysis.luckyColors || result.analysis.luckyNumbers) && (
+                    <div className="grid grid-cols-2 gap-4">
+                      {result.analysis.luckyColors && (
+                        <div className="bg-blue-900/20 rounded-lg p-3 border border-blue-500/30">
+                          <h4 className="text-white font-medium mb-2 text-sm">행운의 색상</h4>
+                          <div className="flex gap-2 flex-wrap">
+                            {result.analysis.luckyColors.map((color: string, idx: number) => (
+                              <span key={idx} className="text-xs bg-blue-500/20 px-2 py-1 rounded">
+                                {color}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {result.analysis.luckyNumbers && (
+                        <div className="bg-blue-900/20 rounded-lg p-3 border border-blue-500/30">
+                          <h4 className="text-white font-medium mb-2 text-sm">행운의 숫자</h4>
+                          <div className="flex gap-2 flex-wrap">
+                            {result.analysis.luckyNumbers.map((num: number, idx: number) => (
+                              <span key={idx} className="text-xs bg-blue-500/20 px-2 py-1 rounded">
+                                {num}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="text-[#ab9eb7]">{JSON.stringify(result, null, 2)}</p>
+              )}
             </div>
 
             <button

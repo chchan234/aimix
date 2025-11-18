@@ -156,6 +156,7 @@ router.post('/chat', validateBody(chatSchema), requireCredits('chat'), async (re
 router.post('/face-reading', validateBody(faceReadingSchema), requireCredits('face-reading'), async (req, res) => {
   try {
     const { imageUrl, base64Image, birthDate } = req.body;
+    const userId = req.user!.id;
 
     let result;
     if (base64Image) {
@@ -165,6 +166,35 @@ router.post('/face-reading', validateBody(faceReadingSchema), requireCredits('fa
     }
 
     if (result.success) {
+      // Try to save result to database (optional)
+      try {
+        const service = await db
+          .select()
+          .from(services)
+          .where(eq(services.serviceType, 'face-reading'))
+          .limit(1);
+
+        if (service.length > 0) {
+          // Save result to database
+          const expiresAt = new Date();
+          expiresAt.setDate(expiresAt.getDate() + 14); // 14 days expiry
+
+          await db.insert(serviceResults).values({
+            userId,
+            serviceId: service[0].id,
+            inputData: { birthDate },
+            resultData: result.analysis,
+            aiModel: result.model,
+            expiresAt,
+          });
+        } else {
+          console.warn('Service "face-reading" not found in database, skipping result save');
+        }
+      } catch (dbError) {
+        console.error('Failed to save result to database:', dbError);
+        // Continue anyway - don't fail the request
+      }
+
       res.json(result);
     } else {
       res.status(500).json({
