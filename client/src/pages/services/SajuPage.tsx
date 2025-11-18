@@ -168,6 +168,33 @@ export default function SajuPage() {
                         <p className="text-sm">{result.analysis.saju}</p>
                       </div>
                     )}
+                    {result.analysis.elements && typeof result.analysis.elements === 'object' && (
+                      <div>
+                        <h4 className="text-white font-medium mb-2">오행 분석</h4>
+                        <div className="grid grid-cols-5 gap-2 text-sm">
+                          <div className="bg-green-900/20 p-2 rounded text-center">
+                            <div className="text-green-400">목(木)</div>
+                            <div className="text-white mt-1">{result.analysis.elements.wood || 0}</div>
+                          </div>
+                          <div className="bg-red-900/20 p-2 rounded text-center">
+                            <div className="text-red-400">화(火)</div>
+                            <div className="text-white mt-1">{result.analysis.elements.fire || 0}</div>
+                          </div>
+                          <div className="bg-yellow-900/20 p-2 rounded text-center">
+                            <div className="text-yellow-400">토(土)</div>
+                            <div className="text-white mt-1">{result.analysis.elements.earth || 0}</div>
+                          </div>
+                          <div className="bg-gray-400/20 p-2 rounded text-center">
+                            <div className="text-gray-300">금(金)</div>
+                            <div className="text-white mt-1">{result.analysis.elements.metal || 0}</div>
+                          </div>
+                          <div className="bg-blue-900/20 p-2 rounded text-center">
+                            <div className="text-blue-400">수(水)</div>
+                            <div className="text-white mt-1">{result.analysis.elements.water || 0}</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                     {result.analysis.personality && (
                       <div>
                         <h4 className="text-white font-medium mb-2">성격과 재능</h4>
