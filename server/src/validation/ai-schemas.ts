@@ -230,7 +230,7 @@ export const hairstyleSchema = z.object({
   imageUrl: imageUrl.optional(),
   base64Image: base64Image.optional(),
   hairstyleDescription: z.string()
-    .min(3, 'Hairstyle description must be at least 3 characters')
+    .min(1, 'Hairstyle description is required')
     .max(MAX_TEXT_LENGTH, `Hairstyle description must be less than ${MAX_TEXT_LENGTH} characters`)
     .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
 }).refine(
@@ -243,11 +243,11 @@ export const tattooSchema = z.object({
   imageUrl: imageUrl.optional(),
   base64Image: base64Image.optional(),
   tattooDescription: z.string()
-    .min(3, 'Tattoo description must be at least 3 characters')
+    .min(1, 'Tattoo description is required')
     .max(MAX_TEXT_LENGTH, `Tattoo description must be less than ${MAX_TEXT_LENGTH} characters`)
     .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
   placement: z.string()
-    .min(2, 'Placement must be at least 2 characters')
+    .min(1, 'Placement is required')
     .max(100, 'Placement must be less than 100 characters')
     .refine(validateNoDangerousPatterns, 'Invalid characters detected'),
 }).refine(
