@@ -22,6 +22,9 @@ import {
   tarotSchema,
   tojeongSchema,
 } from '../validation/ai-schemas.js';
+import { db } from '../db/index.js';
+import { serviceResults, services } from '../db/schema.js';
+import { eq } from 'drizzle-orm';
 
 const router = express.Router();
 
@@ -186,10 +189,33 @@ router.post('/face-reading', validateBody(faceReadingSchema), requireCredits('fa
 router.post('/saju', validateBody(sajuSchema), requireCredits('saju'), async (req, res) => {
   try {
     const { birthDate, birthTime, gender } = req.body;
+    const userId = req.user!.id;
 
     const result = await openai.analyzeSaju(birthDate, birthTime, gender);
 
     if (result.success) {
+      // Get service ID
+      const service = await db
+        .select()
+        .from(services)
+        .where(eq(services.serviceType, 'saju'))
+        .limit(1);
+
+      if (service.length > 0) {
+        // Save result to database
+        const expiresAt = new Date();
+        expiresAt.setFullYear(expiresAt.getFullYear() + 1); // 1 year expiry
+
+        await db.insert(serviceResults).values({
+          userId,
+          serviceId: service[0].id,
+          inputData: { birthDate, birthTime, gender },
+          resultData: result.analysis,
+          aiModel: result.model,
+          expiresAt,
+        });
+      }
+
       res.json(result);
     } else {
       res.status(500).json({

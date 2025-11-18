@@ -84,3 +84,65 @@ export async function analyzeFaceReading(base64Image: string) {
 export async function interpretDream(dream: string) {
   return apiRequest('/api/ai/dream-interpretation', { dream });
 }
+
+/**
+ * Get all results for the authenticated user
+ */
+export async function getResults() {
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('Not authenticated');
+  }
+
+  const response = await fetch(`${API_URL}/api/results`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    let errorMessage = 'Failed to fetch results';
+    try {
+      const error = await response.json();
+      errorMessage = error.error || error.message || errorMessage;
+    } catch (e) {
+      errorMessage = `${response.statusText || 'Request failed'} (${response.status})`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+
+/**
+ * Delete a result
+ */
+export async function deleteResult(resultId: string) {
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('Not authenticated');
+  }
+
+  const response = await fetch(`${API_URL}/api/results/${resultId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    let errorMessage = 'Failed to delete result';
+    try {
+      const error = await response.json();
+      errorMessage = error.error || error.message || errorMessage;
+    } catch (e) {
+      errorMessage = `${response.statusText || 'Request failed'} (${response.status})`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}

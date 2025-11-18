@@ -22,6 +22,7 @@ import { supabase, testConnection } from './db/supabase.js';
 import { authenticateToken } from './middleware/auth.js';
 import aiRoutes from './routes/ai.js';
 import authRoutes from './routes/auth.js';
+import resultsRoutes from './routes/results.js';
 
 // Security: Validate critical environment variables
 function validateEnvironment() {
@@ -175,6 +176,9 @@ app.use('/api/auth', authRoutes);
 
 // AI service routes
 app.use('/api/ai', aiRoutes);
+
+// Results routes
+app.use('/api/results', resultsRoutes);
 
 // Test endpoint to get user count (requires authentication)
 app.get('/api/users/count', authenticateToken, async (req, res) => {

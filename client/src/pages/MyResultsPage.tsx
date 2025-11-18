@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getResults, deleteResult } from '../services/ai';
 
 interface Result {
-  id: number;
-  serviceId: string;
+  id: string;
+  serviceType: string;
   serviceName: string;
   category: 'fortune' | 'image' | 'entertainment' | 'health';
-  thumbnail: string;
+  thumbnail?: string;
   createdAt: string;
-  credits: number;
+  creditCost: number;
 }
 
 export default function MyResultsPage() {
@@ -17,82 +18,45 @@ export default function MyResultsPage() {
   // 필터 및 정렬 상태
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'date' | 'credits'>('date');
+  const [results, setResults] = useState<Result[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock 데이터
-  const [results] = useState<Result[]>([
-    {
-      id: 1,
-      serviceId: 'face-reading',
-      serviceName: 'AI 관상',
-      category: 'fortune',
-      thumbnail: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-      createdAt: '2024.03.15',
-      credits: 100,
-    },
-    {
-      id: 2,
-      serviceId: 'profile-generator',
-      serviceName: 'AI 프로필 생성',
-      category: 'image',
-      thumbnail: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop',
-      createdAt: '2024.03.14',
-      credits: 200,
-    },
-    {
-      id: 3,
-      serviceId: 'mbti',
-      serviceName: 'MBTI 정밀 분석',
-      category: 'entertainment',
-      thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=400&fit=crop',
-      createdAt: '2024.03.13',
-      credits: 150,
-    },
-    {
-      id: 4,
-      serviceId: 'body-type',
-      serviceName: 'AI 체형 분석',
-      category: 'health',
-      thumbnail: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=400&fit=crop',
-      createdAt: '2024.03.12',
-      credits: 100,
-    },
-    {
-      id: 5,
-      serviceId: 'saju',
-      serviceName: 'AI 사주팔자',
-      category: 'fortune',
-      thumbnail: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=400&fit=crop',
-      createdAt: '2024.03.11',
-      credits: 150,
-    },
-    {
-      id: 6,
-      serviceId: 'caricature',
-      serviceName: 'AI 캐리커처',
-      category: 'image',
-      thumbnail: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
-      createdAt: '2024.03.10',
-      credits: 200,
-    },
-    {
-      id: 7,
-      serviceId: 'enneagram',
-      serviceName: '에니어그램 테스트',
-      category: 'entertainment',
-      thumbnail: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop',
-      createdAt: '2024.03.09',
-      credits: 150,
-    },
-    {
-      id: 8,
-      serviceId: 'skin-analysis',
-      serviceName: 'AI 피부 분석',
-      category: 'health',
-      thumbnail: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop',
-      createdAt: '2024.03.08',
-      credits: 100,
-    },
-  ]);
+  // Fetch results on mount
+  useEffect(() => {
+    const fetchResults = async () => {
+      try {
+        const response = await getResults();
+        if (response.success) {
+          setResults(response.results.map((r: any) => ({
+            id: r.id,
+            serviceType: r.serviceType,
+            serviceName: r.serviceName,
+            category: r.category || 'fortune',
+            thumbnail: getThumbnailForService(r.serviceType),
+            createdAt: new Date(r.createdAt).toLocaleDateString('ko-KR'),
+            creditCost: r.creditCost,
+          })));
+        }
+      } catch (error) {
+        console.error('Failed to fetch results:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchResults();
+  }, []);
+
+  // Get thumbnail for service type
+  const getThumbnailForService = (serviceType: string) => {
+    const thumbnails: { [key: string]: string } = {
+      'face-reading': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+      'saju': 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=400&fit=crop',
+      'tarot': 'https://images.unsplash.com/photo-1551269901-5c5e14c25df7?w=400&h=400&fit=crop',
+      'tojeong': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop',
+      'dream': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=400&fit=crop',
+    };
+    return thumbnails[serviceType] || 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=400&fit=crop';
+  };
 
   const getCategoryName = (category: string) => {
     const names: { [key: string]: string } = {
@@ -122,7 +86,7 @@ export default function MyResultsPage() {
       if (sortBy === 'date') {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       } else {
-        return b.credits - a.credits;
+        return b.creditCost - a.creditCost;
       }
     });
 
@@ -130,10 +94,17 @@ export default function MyResultsPage() {
     alert(`${result.serviceName} ${t('myResults.downloadMessage')}`);
   };
 
-  const handleDelete = (result: Result) => {
+  const handleDelete = async (result: Result) => {
     const confirmed = window.confirm(`${result.serviceName} 결과물을 삭제하시겠습니까?`);
     if (confirmed) {
-      alert('결과물이 삭제되었습니다.');
+      try {
+        await deleteResult(result.id);
+        setResults(results.filter(r => r.id !== result.id));
+        alert('결과물이 삭제되었습니다.');
+      } catch (error) {
+        console.error('Delete error:', error);
+        alert('삭제 중 오류가 발생했습니다.');
+      }
     }
   };
 
@@ -192,16 +163,28 @@ export default function MyResultsPage() {
             </div>
             <div>
               <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.thisWeek')}</p>
-              <p className="text-white text-2xl font-bold">3</p>
+              <p className="text-white text-2xl font-bold">
+                {results.filter(r => {
+                  const weekAgo = new Date();
+                  weekAgo.setDate(weekAgo.getDate() - 7);
+                  return new Date(r.createdAt) > weekAgo;
+                }).length}
+              </p>
             </div>
             <div>
               <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.thisMonth')}</p>
-              <p className="text-white text-2xl font-bold">8</p>
+              <p className="text-white text-2xl font-bold">
+                {results.filter(r => {
+                  const monthAgo = new Date();
+                  monthAgo.setMonth(monthAgo.getMonth() - 1);
+                  return new Date(r.createdAt) > monthAgo;
+                }).length}
+              </p>
             </div>
             <div>
               <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.totalCredits')}</p>
               <p className="text-white text-2xl font-bold">
-                {results.reduce((sum, r) => sum + r.credits, 0).toLocaleString()}
+                {results.reduce((sum, r) => sum + r.creditCost, 0).toLocaleString()}
               </p>
             </div>
           </div>
@@ -209,7 +192,12 @@ export default function MyResultsPage() {
       </div>
 
       {/* 결과물 그리드 */}
-      {filteredResults.length > 0 ? (
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          <p className="text-[#ab9eb7] mt-4">결과물을 불러오는 중...</p>
+        </div>
+      ) : filteredResults.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredResults.map((result) => (
             <div
@@ -260,7 +248,7 @@ export default function MyResultsPage() {
                 </div>
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-[#ab9eb7]">{result.createdAt}</span>
-                  <span className="text-primary font-semibold">-{result.credits}</span>
+                  <span className="text-primary font-semibold">-{result.creditCost}</span>
                 </div>
               </div>
             </div>
