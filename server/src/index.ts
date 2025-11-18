@@ -24,6 +24,7 @@ import aiRoutes from './routes/ai.js';
 import authRoutes from './routes/auth.js';
 import resultsRoutes from './routes/results.js';
 import imageRoutes from './routes/image.js';
+import personalityRoutes from './routes/personality.js';
 
 // Security: Validate critical environment variables
 function validateEnvironment() {
@@ -181,6 +182,9 @@ app.use('/api/ai', aiRoutes);
 
 // Image generation/editing routes
 app.use('/api/image', imageRoutes);
+
+// Personality test routes
+app.use('/api/personality', personalityRoutes);
 
 // Results routes
 app.use('/api/results', resultsRoutes);

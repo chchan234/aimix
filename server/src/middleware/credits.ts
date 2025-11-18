@@ -26,6 +26,9 @@ export const CREDIT_COSTS = {
   'marriage-compatibility': 25, // 결혼궁합
   'tarot': 20, // 타로
   'tojeong': 15, // 토정비결
+  // Personality tests
+  'mbti-analysis': 35, // MBTI 심층분석
+  'enneagram-test': 30, // 에니어그램 테스트
   // Image generation/editing services
   'profile-generator': 30, // AI 프로필 생성
   'caricature': 35, // 캐리커쳐 변환

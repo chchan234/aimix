@@ -108,6 +108,16 @@
         "description": "결혼 생활 예측"
       }
     },
+    "personality": {
+      "mbtiAnalysis": {
+        "title": "MBTI 심층분석",
+        "description": "자가 진단과 테스트 비교 분석"
+      },
+      "enneagramTest": {
+        "title": "에니어그램 테스트",
+        "description": "9가지 성격 유형 분석"
+      }
+    },
     "image": {
       "profileGenerator": {
         "title": "AI 프로필 생성",

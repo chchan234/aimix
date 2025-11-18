@@ -559,6 +559,232 @@ JSON 형식으로 응답해주세요:
 `;
 
 /**
+ * MBTI Analysis prompt template
+ */
+const MBTI_ANALYSIS_PROMPT = (
+  userInputMBTI: string | null,
+  testResultMBTI: string,
+  axisScores: {
+    EI: { E: number; I: number };
+    SN: { S: number; N: number };
+    TF: { T: number; F: number };
+    JP: { J: number; P: number };
+  }
+) => `
+당신은 MBTI 전문가입니다. 사용자의 MBTI를 심층 분석해주세요.
+
+입력 데이터:
+- 사용자가 입력한 MBTI: ${userInputMBTI || '없음 (모르겠다고 응답)'}
+- 테스트 결과 MBTI: ${testResultMBTI}
+- 각 축별 점수:
+  * E/I: E ${axisScores.EI.E}% vs I ${axisScores.EI.I}%
+  * S/N: S ${axisScores.SN.S}% vs N ${axisScores.SN.N}%
+  * T/F: T ${axisScores.TF.T}% vs F ${axisScores.TF.F}%
+  * J/P: J ${axisScores.JP.J}% vs P ${axisScores.JP.P}%
+
+다음 항목을 포함하여 상세히 분석해주세요:
+
+1. 결과 비교 분석:
+   - 입력 MBTI와 테스트 결과의 일치/불일치 분석
+   - 각 축별 일치도 평가
+   - 차이가 나는 이유 분석 (상황별 변화, 자기인식 등)
+
+2. 최종 MBTI 결론:
+   - 가장 정확한 MBTI 유형
+   - 각 축별 선호도 강도 (명확 vs 중간)
+   - 경계선에 있는 축이 있다면 설명
+
+3. 성격 특성:
+   - 주요 성격 특성 5가지
+   - 강점과 재능
+   - 약점과 개선 영역
+
+4. 대인관계:
+   - 소통 스타일
+   - 친구/연인 관계에서의 특징
+   - 궁합이 좋은 MBTI 유형
+
+5. 직업 및 진로:
+   - 적합한 직업군
+   - 업무 스타일
+   - 리더십 유형
+
+6. 성장 조언:
+   - 개발하면 좋은 부분
+   - 주의해야 할 함정
+   - 균형잡힌 발전을 위한 조언
+
+7. 일상생활:
+   - 스트레스 대처 방식
+   - 의사결정 스타일
+   - 학습 방법
+
+JSON 형식으로 응답해주세요:
+{
+  "comparison": {
+    "userInput": "사용자 입력 MBTI (또는 null)",
+    "testResult": "테스트 결과 MBTI",
+    "match": "일치 여부 및 분석",
+    "axisDifferences": ["차이나는 축들과 이유"]
+  },
+  "finalMBTI": {
+    "type": "최종 MBTI",
+    "confidence": "확신도 (높음/중간/낮음)",
+    "axisStrength": {
+      "EI": "E/I 선호도 설명",
+      "SN": "S/N 선호도 설명",
+      "TF": "T/F 선호도 설명",
+      "JP": "J/P 선호도 설명"
+    }
+  },
+  "personality": {
+    "traits": ["주요 성격 특성 5가지"],
+    "strengths": ["강점들"],
+    "weaknesses": ["약점들"]
+  },
+  "relationships": {
+    "communicationStyle": "소통 스타일",
+    "friendshipStyle": "친구 관계 스타일",
+    "loveStyle": "연애 스타일",
+    "compatibleTypes": ["궁합 좋은 MBTI 3개"]
+  },
+  "career": {
+    "suitableJobs": ["적합한 직업 5개"],
+    "workStyle": "업무 스타일",
+    "leadershipStyle": "리더십 유형"
+  },
+  "growth": {
+    "developmentAreas": ["개발 영역들"],
+    "pitfalls": ["주의사항들"],
+    "balanceTips": ["균형 조언들"]
+  },
+  "lifestyle": {
+    "stressCoping": "스트레스 대처법",
+    "decisionMaking": "의사결정 방식",
+    "learningStyle": "학습 스타일"
+  }
+}
+`;
+
+/**
+ * Enneagram Analysis prompt template
+ */
+const ENNEAGRAM_ANALYSIS_PROMPT = (
+  typeScores: { [key: number]: number },
+  mainType: number,
+  wingType: number | null
+) => `
+당신은 에니어그램 전문가입니다. 사용자의 에니어그램 유형을 심층 분석해주세요.
+
+테스트 결과:
+- 주 유형: ${mainType}번
+- 날개 유형: ${wingType ? `${wingType}번` : '없음'}
+- 각 유형별 점수:
+${Object.entries(typeScores).map(([type, score]) => `  * ${type}번: ${score}점`).join('\n')}
+
+다음 항목을 포함하여 상세히 분석해주세요:
+
+1. 주 유형 분석:
+   - ${mainType}번 유형의 이름과 별명
+   - 핵심 동기와 욕구
+   - 근본적인 두려움
+   - 기본 성격 특성
+
+2. 날개 유형 영향:
+   - 날개 유형이 주는 영향
+   - 주 유형과 날개의 조합 해석
+   - 이 조합의 독특한 특징
+
+3. 건강 수준:
+   - 건강한 상태의 모습
+   - 보통 상태의 모습
+   - 불건강한 상태의 모습
+   - 현재 상태 평가 및 조언
+
+4. 성장 방향:
+   - 통합 방향 (성장 시 향하는 유형)
+   - 분열 방향 (스트레스 시 향하는 유형)
+   - 성장을 위한 실천 방법
+
+5. 대인관계:
+   - 관계 맺는 방식
+   - 갈등 대응 스타일
+   - 궁합이 좋은 유형들
+   - 관계에서 주의할 점
+
+6. 직업 및 커리어:
+   - 적합한 직업과 역할
+   - 업무 환경 선호도
+   - 리더십 스타일
+
+7. 자기개발:
+   - 핵심 개발 과제
+   - 극복해야 할 패턴
+   - 균형을 위한 조언
+
+8. 일상 생활:
+   - 의사결정 방식
+   - 스트레스 대처법
+   - 감정 관리 방법
+
+JSON 형식으로 응답해주세요:
+{
+  "mainType": {
+    "number": ${mainType},
+    "name": "유형 이름",
+    "nickname": "별명",
+    "coreMotivation": "핵심 동기",
+    "coreFear": "근본적 두려움",
+    "traits": ["기본 성격 특성들"]
+  },
+  "wing": {
+    "wingType": ${wingType || null},
+    "influence": "날개의 영향",
+    "combination": "주 유형과 날개의 조합 해석",
+    "uniqueTraits": ["독특한 특징들"]
+  },
+  "healthLevels": {
+    "healthy": "건강한 상태",
+    "average": "보통 상태",
+    "unhealthy": "불건강한 상태",
+    "currentAssessment": "현재 상태 평가"
+  },
+  "growth": {
+    "integrationDirection": {
+      "toType": "통합 방향 유형 번호",
+      "description": "통합 방향 설명"
+    },
+    "disintegrationDirection": {
+      "toType": "분열 방향 유형 번호",
+      "description": "분열 방향 설명"
+    },
+    "practices": ["성장 실천 방법들"]
+  },
+  "relationships": {
+    "style": "관계 맺는 방식",
+    "conflictStyle": "갈등 대응 방식",
+    "compatibleTypes": [궁합 좋은 유형 번호들],
+    "warnings": ["관계에서 주의할 점들"]
+  },
+  "career": {
+    "suitableJobs": ["적합한 직업들"],
+    "workEnvironment": "선호 업무 환경",
+    "leadershipStyle": "리더십 스타일"
+  },
+  "development": {
+    "keyTasks": ["핵심 개발 과제들"],
+    "patternsToBreak": ["극복할 패턴들"],
+    "balanceTips": ["균형 조언들"]
+  },
+  "lifestyle": {
+    "decisionMaking": "의사결정 방식",
+    "stressCoping": "스트레스 대처법",
+    "emotionManagement": "감정 관리 방법"
+  }
+}
+`;
+
+/**
  * Marriage Compatibility (결혼궁합) prompt template
  */
 const MARRIAGE_COMPATIBILITY_PROMPT = (
@@ -1003,6 +1229,215 @@ export async function analyzeMarriageCompatibility(
   }
 }
 
+/**
+ * Analyze MBTI with user input and test results
+ * @param userInputMBTI - User's self-reported MBTI (or null)
+ * @param answers - Array of 28 answers (1-5 scale)
+ */
+export async function analyzeMBTI(userInputMBTI: string | null, answers: number[]) {
+  try {
+    // Calculate scores for each axis
+    const axisScores = calculateMBTIScores(answers);
+
+    // Determine MBTI type from test
+    const testResultMBTI = determineMBTIType(axisScores);
+
+    const prompt = MBTI_ANALYSIS_PROMPT(userInputMBTI, testResultMBTI, axisScores);
+
+    const response = await client.chat(
+      [{ role: 'user', content: prompt }],
+      {
+        temperature: 0.7,
+        maxTokens: 3000,
+        responseFormat: 'json',
+      }
+    );
+
+    const analysis = client.parseJSON(response.content);
+
+    return {
+      success: true,
+      analysis,
+      testResultMBTI,
+      axisScores,
+      model: 'gpt-4o-mini',
+    };
+  } catch (error) {
+    console.error('OpenAI MBTI analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+/**
+ * Calculate MBTI axis scores from answers
+ */
+function calculateMBTIScores(answers: number[]) {
+  const scores = {
+    EI: { E: 0, I: 0 },
+    SN: { S: 0, N: 0 },
+    TF: { T: 0, F: 0 },
+    JP: { J: 0, P: 0 },
+  };
+
+  // Import questions to know direction
+  const { mbtiQuestions } = require('../data/mbti-questions.js');
+
+  answers.forEach((answer, index) => {
+    const question = mbtiQuestions[index];
+    const { axis, direction } = question;
+
+    // Convert 1-5 scale to score
+    // 1 = strongly disagree, 5 = strongly agree
+    const score = direction === 'positive' ? answer : (6 - answer);
+
+    if (axis === 'EI') {
+      scores.EI.E += score > 3 ? (score - 3) : 0;
+      scores.EI.I += score < 3 ? (3 - score) : 0;
+    } else if (axis === 'SN') {
+      scores.SN.S += score > 3 ? (score - 3) : 0;
+      scores.SN.N += score < 3 ? (3 - score) : 0;
+    } else if (axis === 'TF') {
+      scores.TF.T += score > 3 ? (score - 3) : 0;
+      scores.TF.F += score < 3 ? (3 - score) : 0;
+    } else if (axis === 'JP') {
+      scores.JP.J += score > 3 ? (score - 3) : 0;
+      scores.JP.P += score < 3 ? (3 - score) : 0;
+    }
+  });
+
+  // Convert to percentages
+  const normalize = (a: number, b: number) => {
+    const total = a + b || 1;
+    return {
+      first: Math.round((a / total) * 100),
+      second: Math.round((b / total) * 100),
+    };
+  };
+
+  const EI = normalize(scores.EI.E, scores.EI.I);
+  const SN = normalize(scores.SN.S, scores.SN.N);
+  const TF = normalize(scores.TF.T, scores.TF.F);
+  const JP = normalize(scores.JP.J, scores.JP.P);
+
+  return {
+    EI: { E: EI.first, I: EI.second },
+    SN: { S: SN.first, N: SN.second },
+    TF: { T: TF.first, F: TF.second },
+    JP: { J: JP.first, P: JP.second },
+  };
+}
+
+/**
+ * Determine MBTI type from axis scores
+ */
+function determineMBTIType(axisScores: any): string {
+  const e_or_i = axisScores.EI.E > axisScores.EI.I ? 'E' : 'I';
+  const s_or_n = axisScores.SN.S > axisScores.SN.N ? 'S' : 'N';
+  const t_or_f = axisScores.TF.T > axisScores.TF.F ? 'T' : 'F';
+  const j_or_p = axisScores.JP.J > axisScores.JP.P ? 'J' : 'P';
+
+  return `${e_or_i}${s_or_n}${t_or_f}${j_or_p}`;
+}
+
+/**
+ * Analyze Enneagram from test results
+ * @param answers - Array of 36 answers (1-5 scale)
+ */
+export async function analyzeEnneagram(answers: number[]) {
+  try {
+    // Calculate scores for each type
+    const typeScores = calculateEnneagramScores(answers);
+
+    // Determine main type and wing
+    const { mainType, wingType } = determineEnneagramType(typeScores);
+
+    const prompt = ENNEAGRAM_ANALYSIS_PROMPT(typeScores, mainType, wingType);
+
+    const response = await client.chat(
+      [{ role: 'user', content: prompt }],
+      {
+        temperature: 0.7,
+        maxTokens: 3000,
+        responseFormat: 'json',
+      }
+    );
+
+    const analysis = client.parseJSON(response.content);
+
+    return {
+      success: true,
+      analysis,
+      mainType,
+      wingType,
+      typeScores,
+      model: 'gpt-4o-mini',
+    };
+  } catch (error) {
+    console.error('OpenAI Enneagram analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+/**
+ * Calculate Enneagram type scores from answers
+ */
+function calculateEnneagramScores(answers: number[]): { [key: number]: number } {
+  const scores: { [key: number]: number } = {
+    1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0
+  };
+
+  // Import questions
+  const { enneagramQuestions } = require('../data/enneagram-questions.js');
+
+  answers.forEach((answer, index) => {
+    const question = enneagramQuestions[index];
+    const { type } = question;
+
+    // Add answer score (1-5) to corresponding type
+    scores[type] += answer;
+  });
+
+  return scores;
+}
+
+/**
+ * Determine main type and wing from scores
+ */
+function determineEnneagramType(typeScores: { [key: number]: number }): { mainType: number; wingType: number | null } {
+  // Find main type (highest score)
+  const sortedTypes = Object.entries(typeScores)
+    .sort(([, a], [, b]) => b - a)
+    .map(([type]) => parseInt(type));
+
+  const mainType = sortedTypes[0];
+
+  // Determine wing (adjacent type with higher score)
+  const adjacentTypes = [
+    mainType === 1 ? 9 : mainType - 1,
+    mainType === 9 ? 1 : mainType + 1
+  ];
+
+  const wingScores = adjacentTypes.map(type => ({
+    type,
+    score: typeScores[type]
+  }));
+
+  wingScores.sort((a, b) => b.score - a.score);
+
+  // Only consider wing if score is significant (at least 70% of main type score)
+  const wingType = wingScores[0].score >= typeScores[mainType] * 0.7
+    ? wingScores[0].type
+    : null;
+
+  return { mainType, wingType };
+}
+
 export default {
   analyzeFaceReading,
   analyzeFaceReadingFromBase64,
@@ -1013,4 +1448,6 @@ export default {
   analyzeLoveCompatibility,
   analyzeNameCompatibility,
   analyzeMarriageCompatibility,
+  analyzeMBTI,
+  analyzeEnneagram,
 };

@@ -27,6 +27,10 @@ import LoveCompatibilityPage from './pages/services/LoveCompatibilityPage';
 import NameCompatibilityPage from './pages/services/NameCompatibilityPage';
 import MarriageCompatibilityPage from './pages/services/MarriageCompatibilityPage';
 
+// Service Pages - Personality
+import MBTIAnalysisPage from './pages/services/MBTIAnalysisPage';
+import EnneagramTestPage from './pages/services/EnneagramTestPage';
+
 // Service Pages - Image
 import ProfileGeneratorPage from './pages/services/ProfileGeneratorPage';
 import CaricaturePage from './pages/services/CaricaturePage';
@@ -79,6 +83,10 @@ function App() {
             <Route path="/services/love-compatibility" component={LoveCompatibilityPage} />
             <Route path="/services/name-compatibility" component={NameCompatibilityPage} />
             <Route path="/services/marriage-compatibility" component={MarriageCompatibilityPage} />
+
+            {/* Service Detail Pages - Personality */}
+            <Route path="/services/mbti-analysis" component={MBTIAnalysisPage} />
+            <Route path="/services/enneagram-test" component={EnneagramTestPage} />
 
             {/* Service Detail Pages - Image */}
             <Route path="/services/profile-generator" component={ProfileGeneratorPage} />

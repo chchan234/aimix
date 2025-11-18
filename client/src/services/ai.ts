@@ -238,3 +238,73 @@ export async function changeHairstyle(base64Image: string, hairstyleDescription:
 export async function addTattoo(base64Image: string, tattooDescription: string, placement: string) {
   return apiRequest('/api/image/tattoo', { base64Image, tattooDescription, placement });
 }
+
+// ============================================
+// Personality Tests
+// ============================================
+
+// Get MBTI Questions
+export async function getMBTIQuestions() {
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('Not authenticated');
+  }
+
+  const response = await fetch(`${API_URL}/api/personality/mbti/questions`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    let errorMessage = 'Failed to fetch MBTI questions';
+    try {
+      const error = await response.json();
+      errorMessage = error.error || error.message || errorMessage;
+    } catch (e) {
+      errorMessage = `${response.statusText || 'Request failed'} (${response.status})`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+
+// Get Enneagram Questions
+export async function getEnneagramQuestions() {
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('Not authenticated');
+  }
+
+  const response = await fetch(`${API_URL}/api/personality/enneagram/questions`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    let errorMessage = 'Failed to fetch Enneagram questions';
+    try {
+      const error = await response.json();
+      errorMessage = error.error || error.message || errorMessage;
+    } catch (e) {
+      errorMessage = `${response.statusText || 'Request failed'} (${response.status})`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+
+// MBTI Analysis
+export async function analyzeMBTI(userInputMBTI: string | null, answers: number[]) {
+  return apiRequest('/api/personality/mbti-analysis', { userInputMBTI, answers });
+}
+
+// Enneagram Test
+export async function analyzeEnneagram(answers: number[]) {
+  return apiRequest('/api/personality/enneagram-test', { answers });
+}

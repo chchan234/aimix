@@ -108,6 +108,16 @@
         "description": "Married life prediction"
       }
     },
+    "personality": {
+      "mbtiAnalysis": {
+        "title": "MBTI Deep Analysis",
+        "description": "Self-diagnosis and test comparison"
+      },
+      "enneagramTest": {
+        "title": "Enneagram Test",
+        "description": "9 personality types analysis"
+      }
+    },
     "image": {
       "profileGenerator": {
         "title": "AI Profile Generator",
