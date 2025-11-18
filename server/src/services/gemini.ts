@@ -140,7 +140,7 @@ export async function analyzeNameMeaning(name: string, birthDate?: string) {
     console.error('Gemini name analysis error:', error);
     // Try to return raw text if JSON parsing fails
     try {
-      const response = await client.generateText(NAME_ANALYSIS_PROMPT(name, birthDate));
+      const response = await getClient().generateText(NAME_ANALYSIS_PROMPT(name, birthDate));
       return {
         success: true,
         rawText: response.content
@@ -179,7 +179,7 @@ export async function interpretDream(dreamDescription: string) {
     console.error('Gemini dream interpretation error:', error);
     // Try to return raw text if JSON parsing fails
     try {
-      const response = await client.generateText(DREAM_INTERPRETATION_PROMPT(dreamDescription));
+      const response = await getClient().generateText(DREAM_INTERPRETATION_PROMPT(dreamDescription));
       return {
         success: true,
         rawText: response.content
