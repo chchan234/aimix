@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'wouter';
 
 export default function ImagePage() {
   const { t } = useTranslation();
+  const [, setLocation] = useLocation();
 
   const services = useMemo(() => ({
     avatar: [
@@ -11,18 +13,21 @@ export default function ImagePage() {
         description: t('services.image.profileGenerator.description'),
         icon: 'account_circle',
         color: 'cyan',
+        path: '/services/profile-generator',
       },
       {
         title: t('services.image.caricature.title'),
         description: t('services.image.caricature.description'),
         icon: 'draw',
         color: 'purple',
+        path: '/services/caricature',
       },
       {
         title: t('services.image.idPhoto.title'),
         description: t('services.image.idPhoto.description'),
         icon: 'badge',
         color: 'blue',
+        path: '/services/id-photo',
       },
     ],
     editing: [
@@ -31,24 +36,28 @@ export default function ImagePage() {
         description: t('services.image.faceSwap.description'),
         icon: 'swap_horiz',
         color: 'pink',
+        path: '/services/face-swap',
       },
       {
         title: t('services.image.ageTransform.title'),
         description: t('services.image.ageTransform.description'),
         icon: 'schedule',
         color: 'orange',
+        path: '/services/age-transform',
       },
       {
         title: t('services.image.genderSwap.title'),
         description: t('services.image.genderSwap.description'),
         icon: 'wc',
         color: 'indigo',
+        path: '/services/gender-swap',
       },
       {
         title: t('services.image.colorization.title'),
         description: t('services.image.colorization.description'),
         icon: 'palette',
         color: 'green',
+        path: '/services/colorization',
       },
     ],
     creative: [
@@ -57,18 +66,21 @@ export default function ImagePage() {
         description: t('services.image.backgroundRemoval.description'),
         icon: 'layers',
         color: 'yellow',
+        path: '/services/background-removal',
       },
       {
         title: t('services.image.hairstyle.title'),
         description: t('services.image.hairstyle.description'),
         icon: 'face_retouching_natural',
         color: 'red',
+        path: '/services/hairstyle',
       },
       {
         title: t('services.image.tattoo.title'),
         description: t('services.image.tattoo.description'),
         icon: 'auto_awesome',
-        color: 'purple',
+        color: 'teal',
+        path: '/services/tattoo',
       },
     ],
   }), [t]);
@@ -83,6 +95,7 @@ export default function ImagePage() {
     green: 'bg-green-500/20 text-green-400',
     yellow: 'bg-yellow-500/20 text-yellow-400',
     red: 'bg-red-500/20 text-red-400',
+    teal: 'bg-teal-500/20 text-teal-400',
   };
 
   return (
@@ -105,6 +118,7 @@ export default function ImagePage() {
           {services.avatar.map((service, index) => (
             <div
               key={index}
+              onClick={() => setLocation(service.path)}
               className="flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer"
             >
               <div
@@ -136,6 +150,7 @@ export default function ImagePage() {
           {services.editing.map((service, index) => (
             <div
               key={index}
+              onClick={() => setLocation(service.path)}
               className="flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer"
             >
               <div
@@ -165,6 +180,7 @@ export default function ImagePage() {
           {services.creative.map((service, index) => (
             <div
               key={index}
+              onClick={() => setLocation(service.path)}
               className="flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer"
             >
               <div

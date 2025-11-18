@@ -17,7 +17,7 @@ import KakaoCallback from './pages/KakaoCallback';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 
-// Service Pages
+// Service Pages - Fortune
 import SajuPage from './pages/services/SajuPage';
 import FaceReadingPage from './pages/services/FaceReadingPage';
 import PalmistryPage from './pages/services/PalmistryPage';
@@ -26,6 +26,18 @@ import ZodiacPage from './pages/services/ZodiacPage';
 import LoveCompatibilityPage from './pages/services/LoveCompatibilityPage';
 import NameCompatibilityPage from './pages/services/NameCompatibilityPage';
 import MarriageCompatibilityPage from './pages/services/MarriageCompatibilityPage';
+
+// Service Pages - Image
+import ProfileGeneratorPage from './pages/services/ProfileGeneratorPage';
+import CaricaturePage from './pages/services/CaricaturePage';
+import IdPhotoPage from './pages/services/IdPhotoPage';
+import FaceSwapPage from './pages/services/FaceSwapPage';
+import AgeTransformPage from './pages/services/AgeTransformPage';
+import GenderSwapPage from './pages/services/GenderSwapPage';
+import ColorizationPage from './pages/services/ColorizationPage';
+import BackgroundRemovalPage from './pages/services/BackgroundRemovalPage';
+import HairstylePage from './pages/services/HairstylePage';
+import TattooPage from './pages/services/TattooPage';
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -59,7 +71,7 @@ function App() {
             <Route path="/entertainment" component={EntertainmentPage} />
             <Route path="/health" component={HealthPage} />
 
-            {/* Service Detail Pages */}
+            {/* Service Detail Pages - Fortune */}
             <Route path="/services/saju" component={SajuPage} />
             <Route path="/services/face-reading" component={FaceReadingPage} />
             <Route path="/services/palmistry" component={PalmistryPage} />
@@ -68,6 +80,18 @@ function App() {
             <Route path="/services/love-compatibility" component={LoveCompatibilityPage} />
             <Route path="/services/name-compatibility" component={NameCompatibilityPage} />
             <Route path="/services/marriage-compatibility" component={MarriageCompatibilityPage} />
+
+            {/* Service Detail Pages - Image */}
+            <Route path="/services/profile-generator" component={ProfileGeneratorPage} />
+            <Route path="/services/caricature" component={CaricaturePage} />
+            <Route path="/services/id-photo" component={IdPhotoPage} />
+            <Route path="/services/face-swap" component={FaceSwapPage} />
+            <Route path="/services/age-transform" component={AgeTransformPage} />
+            <Route path="/services/gender-swap" component={GenderSwapPage} />
+            <Route path="/services/colorization" component={ColorizationPage} />
+            <Route path="/services/background-removal" component={BackgroundRemovalPage} />
+            <Route path="/services/hairstyle" component={HairstylePage} />
+            <Route path="/services/tattoo" component={TattooPage} />
 
             <Route path="/:rest*">
               {() => (
