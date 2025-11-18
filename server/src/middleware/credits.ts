@@ -16,6 +16,12 @@ export const CREDIT_COSTS = {
   'chat': 5,
   'face-reading': 25, // Vision API is more expensive
   'saju': 25, // 사주팔자
+  'palmistry': 25, // 수상
+  'horoscope': 15, // 별자리 운세
+  'zodiac': 15, // 띠 운세
+  'love-compatibility': 20, // 연애궁합
+  'name-compatibility': 15, // 이름궁합
+  'marriage-compatibility': 25, // 결혼궁합
   'tarot': 20, // 타로
   'tojeong': 15, // 토정비결
 } as const;
