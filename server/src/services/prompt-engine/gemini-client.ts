@@ -157,11 +157,23 @@ export class GeminiClient {
         throw new Error('No edited image generated');
       }
 
-      const imageData = candidates[0].content.parts.find(part =>
+      const candidate = candidates[0];
+      if (!candidate.content) {
+        console.error('❌ Candidate has no content:', JSON.stringify(candidate, null, 2));
+        throw new Error('No content in response candidate');
+      }
+
+      if (!candidate.content.parts || candidate.content.parts.length === 0) {
+        console.error('❌ Candidate content has no parts:', JSON.stringify(candidate.content, null, 2));
+        throw new Error('No parts in response content');
+      }
+
+      const imageData = candidate.content.parts.find(part =>
         'inlineData' in part && part.inlineData?.mimeType?.startsWith('image/')
       );
 
       if (!imageData || !('inlineData' in imageData)) {
+        console.error('❌ No image data found in parts:', JSON.stringify(candidate.content.parts, null, 2));
         throw new Error('No image data in response');
       }
 
