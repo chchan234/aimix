@@ -226,6 +226,10 @@ export async function generateIdPhoto(imageBase64: string, backgroundColor: stri
 // 4. Face Swap - 얼굴 바꾸기
 export async function swapFaces(sourceImageBase64: string, targetImageBase64: string) {
   try {
+    console.log('🔄 Face swap started');
+    console.log('📊 Source image length:', sourceImageBase64.length);
+    console.log('📊 Target image length:', targetImageBase64.length);
+
     const prompt = `Create a face swap between these two images.
     Take the face from the first image and seamlessly blend it onto the second image's head/body.
     Maintain natural skin tones, lighting, and perspective.
@@ -238,6 +242,7 @@ export async function swapFaces(sourceImageBase64: string, targetImageBase64: st
       prompt
     );
 
+    console.log('✅ Face swap successful');
     return {
       success: true,
       imageData: response.imageData,
@@ -245,10 +250,15 @@ export async function swapFaces(sourceImageBase64: string, targetImageBase64: st
       model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
-    console.error('Face swap error:', error);
+    console.error('❌ Face swap error:', error);
+    console.error('❌ Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      raw: error
+    });
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error ? error.message : JSON.stringify(error)
     };
   }
 }
