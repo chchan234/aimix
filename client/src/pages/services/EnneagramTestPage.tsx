@@ -20,7 +20,7 @@ const ENNEAGRAM_TYPE_NAMES: { [key: number]: string } = {
 };
 
 export default function EnneagramTestPage() {
-  const [step, setStep] = useState<'test' | 'result'>('test');
+  const [step, setStep] = useState<'intro' | 'test' | 'result'>('intro');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<number[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -31,6 +31,10 @@ export default function EnneagramTestPage() {
   useEffect(() => {
     loadQuestions();
   }, []);
+
+  const handleStartTest = () => {
+    setStep('test');
+  };
 
   const loadQuestions = async () => {
     try {
@@ -94,6 +98,54 @@ export default function EnneagramTestPage() {
       icon="hub"
       color="green"
     >
+      {/* Introduction */}
+      {step === 'intro' && (
+        <div className="space-y-6">
+          <div className="bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-white mb-4">
+              에니어그램이란?
+            </h3>
+            <div className="space-y-4 text-gray-300">
+              <p>
+                에니어그램은 9가지 성격 유형을 통해 사람들의 핵심 동기, 두려움, 욕구를 이해하는 성격 분류 체계입니다.
+              </p>
+              <p>
+                단순히 행동 패턴을 분류하는 것을 넘어, <strong className="text-green-400">왜 그렇게 행동하는지</strong>에 대한 깊은 통찰을 제공합니다.
+              </p>
+              <div className="bg-green-900/20 border border-green-500 rounded-lg p-4 mt-4">
+                <h4 className="font-semibold text-green-400 mb-2">테스트 내용</h4>
+                <ul className="space-y-2">
+                  <li>• 9가지 성격 유형 중 당신의 주 유형 분석</li>
+                  <li>• 날개(Wing) 유형과 그 영향 파악</li>
+                  <li>• 건강 수준별 행동 패턴 이해</li>
+                  <li>• 성장 방향과 스트레스 반응 분석</li>
+                  <li>• 대인관계 및 커리어 조언</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-green-900/20 border border-green-500 rounded-lg p-4 mt-6 mb-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white font-semibold">에니어그램 테스트</p>
+                  <p className="text-gray-400 text-sm">약 20개의 질문 + AI 분석</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-green-400 font-bold text-xl">30 크레딧</p>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={handleStartTest}
+              className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"
+            >
+              테스트 시작 (30 크레딧)
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Test Questions */}
       {step === 'test' && !loading && questions.length > 0 && (
         <div className="space-y-6">

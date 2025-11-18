@@ -15,7 +15,7 @@ const MBTI_TYPES = [
 ];
 
 export default function MBTIAnalysisPage() {
-  const [step, setStep] = useState<'input' | 'test' | 'result'>('input');
+  const [step, setStep] = useState<'input' | 'confirm' | 'test' | 'result'>('input');
   const [userInputMBTI, setUserInputMBTI] = useState<string | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -43,6 +43,10 @@ export default function MBTIAnalysisPage() {
 
   const handleMBTIInput = (mbti: string | null) => {
     setUserInputMBTI(mbti);
+    setStep('confirm');
+  };
+
+  const handleStartTest = () => {
     setStep('test');
   };
 
@@ -125,6 +129,51 @@ export default function MBTIAnalysisPage() {
           >
             잘 모르겠어요 (테스트만 진행)
           </button>
+        </div>
+      )}
+
+      {/* Step 1.5: Credit Confirmation */}
+      {step === 'confirm' && (
+        <div className="space-y-6">
+          <div className="bg-gray-800 rounded-lg p-6">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-semibold text-white mb-2">
+                테스트 시작 전 확인
+              </h3>
+              {userInputMBTI && (
+                <p className="text-gray-400">
+                  선택한 MBTI: <span className="text-purple-400 font-semibold">{userInputMBTI}</span>
+                </p>
+              )}
+            </div>
+
+            <div className="bg-purple-900/20 border border-purple-500 rounded-lg p-4 mb-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white font-semibold">MBTI 심층분석</p>
+                  <p className="text-gray-400 text-sm">약 20개의 질문 + AI 분석</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-purple-400 font-bold text-xl">35 크레딧</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <button
+                onClick={handleStartTest}
+                className="w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
+              >
+                테스트 시작 (35 크레딧)
+              </button>
+              <button
+                onClick={() => setStep('input')}
+                className="w-full px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+              >
+                이전으로
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
