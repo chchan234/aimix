@@ -121,10 +121,6 @@
         "title": "AI ID Photo",
         "description": "Auto formal wear & background"
       },
-      "faceSwap": {
-        "title": "AI Face Swap",
-        "description": "Face swap technology"
-      },
       "ageTransform": {
         "title": "AI Age Transform",
         "description": "Age transformation filter"

@@ -209,12 +209,7 @@ export async function generateIdPhoto(base64Image: string, backgroundColor: stri
   return apiRequest('/api/image/id-photo', { base64Image, backgroundColor });
 }
 
-// 4. Face Swap
-export async function swapFaces(sourceBase64Image: string, targetBase64Image: string) {
-  return apiRequest('/api/image/face-swap', { sourceBase64Image, targetBase64Image });
-}
-
-// 5. Age Transform
+// 4. Age Transform
 export async function transformAge(base64Image: string, targetAge: number) {
   return apiRequest('/api/image/age-transform', { base64Image, targetAge });
 }

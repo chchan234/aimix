@@ -101,13 +101,6 @@ export default function HomePage() {
       category: 'image',
     },
     {
-      title: t('services.image.faceSwap.title'),
-      description: t('services.image.faceSwap.description'),
-      icon: 'swap_horiz',
-      color: 'pink',
-      category: 'image',
-    },
-    {
       title: t('services.image.ageTransform.title'),
       description: t('services.image.ageTransform.description'),
       icon: 'schedule',
@@ -273,15 +266,6 @@ export default function HomePage() {
       path: '/services/face-reading',
       rating: 4.6,
       users: 1987,
-    },
-    {
-      title: t('services.image.faceSwap.title'),
-      description: t('services.image.faceSwap.description'),
-      icon: 'swap_horiz',
-      color: 'pink',
-      category: 'image',
-      rating: 4.8,
-      users: 1756,
     },
     {
       title: t('services.entertainment.lookalike.title'),

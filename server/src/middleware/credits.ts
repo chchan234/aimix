@@ -30,7 +30,6 @@ export const CREDIT_COSTS = {
   'profile-generator': 30, // AI 프로필 생성
   'caricature': 35, // 캐리커쳐 변환
   'id-photo': 25, // 증명사진
-  'face-swap': 40, // 얼굴 바꾸기
   'age-transform': 35, // 나이 변환
   'gender-swap': 35, // 성별 바꾸기
   'colorization': 30, // 흑백사진 컬러화
@@ -113,6 +112,33 @@ export function requireCredits(serviceName: keyof typeof CREDIT_COSTS) {
       });
     }
   };
+}
+
+/**
+ * Refund credits to user (used when service fails after credit deduction)
+ */
+export async function refundCredits(userId: string, amount: number): Promise<boolean> {
+  try {
+    console.log(`💰 Refunding ${amount} credits to user ${userId}`);
+
+    const { data, error } = await supabase
+      .rpc('add_credits', {
+        p_user_id: userId,
+        p_amount: amount
+      })
+      .single();
+
+    if (error) {
+      console.error('❌ Credit refund error:', error);
+      return false;
+    }
+
+    console.log(`✅ Refunded ${amount} credits successfully`);
+    return true;
+  } catch (error) {
+    console.error('❌ Credit refund failed:', error);
+    return false;
+  }
 }
 
 /**

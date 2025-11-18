@@ -182,17 +182,6 @@ export const idPhotoSchema = z.object({
   'Either imageUrl or base64Image is required'
 );
 
-// Face Swap Schema
-export const faceSwapSchema = z.object({
-  sourceImageUrl: imageUrl.optional(),
-  sourceBase64Image: base64Image.optional(),
-  targetImageUrl: imageUrl.optional(),
-  targetBase64Image: base64Image.optional(),
-}).refine(
-  (data) => (data.sourceImageUrl || data.sourceBase64Image) && (data.targetImageUrl || data.targetBase64Image),
-  'Both source and target images are required'
-);
-
 // Age Transform Schema
 export const ageTransformSchema = z.object({
   imageUrl: imageUrl.optional(),
@@ -283,7 +272,6 @@ export type MarriageCompatibilityInput = z.infer<typeof marriageCompatibilitySch
 export type ProfileGeneratorInput = z.infer<typeof profileGeneratorSchema>;
 export type CaricatureInput = z.infer<typeof caricatureSchema>;
 export type IdPhotoInput = z.infer<typeof idPhotoSchema>;
-export type FaceSwapInput = z.infer<typeof faceSwapSchema>;
 export type AgeTransformInput = z.infer<typeof ageTransformSchema>;
 export type GenderSwapInput = z.infer<typeof genderSwapSchema>;
 export type ColorizationInput = z.infer<typeof colorizationSchema>;

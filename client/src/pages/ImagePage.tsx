@@ -32,13 +32,6 @@ export default function ImagePage() {
     ],
     editing: [
       {
-        title: t('services.image.faceSwap.title'),
-        description: t('services.image.faceSwap.description'),
-        icon: 'swap_horiz',
-        color: 'pink',
-        path: '/services/face-swap',
-      },
-      {
         title: t('services.image.ageTransform.title'),
         description: t('services.image.ageTransform.description'),
         icon: 'schedule',

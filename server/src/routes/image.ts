@@ -5,13 +5,12 @@
 
 import { Router } from 'express';
 import { authenticateToken } from '../middleware/auth.js';
-import { requireCredits, attachCreditInfo } from '../middleware/credits.js';
+import { requireCredits, attachCreditInfo, refundCredits, CREDIT_COSTS } from '../middleware/credits.js';
 import { validateBody } from '../middleware/validation.js';
 import {
   profileGeneratorSchema,
   caricatureSchema,
   idPhotoSchema,
-  faceSwapSchema,
   ageTransformSchema,
   genderSwapSchema,
   colorizationSchema,
@@ -119,39 +118,7 @@ router.post('/id-photo', validateBody(idPhotoSchema), requireCredits('id-photo')
   }
 });
 
-// 4. Face Swap
-router.post('/face-swap', validateBody(faceSwapSchema), requireCredits('face-swap'), async (req, res) => {
-  try {
-    const { sourceImageUrl, sourceBase64Image, targetImageUrl, targetBase64Image } = req.body;
-
-    const sourceBase64 = sourceBase64Image ? sourceBase64Image.split(',')[1] : sourceImageUrl;
-    const targetBase64 = targetBase64Image ? targetBase64Image.split(',')[1] : targetImageUrl;
-
-    const result = await gemini.swapFaces(sourceBase64, targetBase64);
-
-    if (result.success) {
-      res.json({
-        success: true,
-        imageData: result.imageData,
-        mimeType: result.mimeType,
-        model: result.model,
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        error: result.error || 'Failed to swap faces'
-      });
-    }
-  } catch (error) {
-    console.error('Face swap error:', error);
-    res.status(500).json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-
-// 5. Age Transform
+// 4. Age Transform
 router.post('/age-transform', validateBody(ageTransformSchema), requireCredits('age-transform'), async (req, res) => {
   try {
     const { imageUrl, base64Image, targetAge } = req.body;

@@ -223,58 +223,6 @@ export async function generateIdPhoto(imageBase64: string, backgroundColor: stri
   }
 }
 
-// 4. Face Swap - 얼굴 바꾸기
-export async function swapFaces(sourceImageBase64: string, targetImageBase64: string) {
-  try {
-    console.log('🔄 Face swap started');
-    console.log('📊 Source image length:', sourceImageBase64.length);
-    console.log('📊 Target image length:', targetImageBase64.length);
-
-    const prompt = `Perform a high-quality face swap between these two images.
-
-TASK:
-- Take the face (including facial features, expression, and skin tone) from the FIRST image
-- Seamlessly transplant it onto the head/body position shown in the SECOND image
-- Preserve the pose, body, clothing, and background from the SECOND image completely unchanged
-
-QUALITY REQUIREMENTS:
-- Match the lighting conditions and direction from the SECOND image exactly
-- Blend skin tones naturally at the face-neck boundary
-- Maintain realistic shadows and highlights on the swapped face
-- Preserve the perspective and angle of the original head position
-- Ensure the face scale matches the body proportions perfectly
-- Keep all facial details sharp and high-resolution
-
-OUTPUT:
-Create a photorealistic result where the face swap looks completely natural and undetectable. The final image should maintain the original style, composition, and quality of the SECOND image, with only the face replaced.`;
-
-    // Use editImageWithReference to process both images
-    const response = await getClient().editImageWithReference(
-      sourceImageBase64,
-      targetImageBase64,
-      prompt
-    );
-
-    console.log('✅ Face swap successful');
-    return {
-      success: true,
-      imageData: response.imageData,
-      mimeType: response.mimeType,
-      model: 'gemini-2.5-flash-image'
-    };
-  } catch (error) {
-    console.error('❌ Face swap error:', error);
-    console.error('❌ Error details:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined,
-      raw: error
-    });
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : JSON.stringify(error)
-    };
-  }
-}
 
 // 5. Age Transform - 나이 변환
 export async function transformAge(imageBase64: string, targetAge: number) {
@@ -445,7 +393,6 @@ export default {
   generateProfile,
   generateCaricature,
   generateIdPhoto,
-  swapFaces,
   transformAge,
   swapGender,
   colorizePhoto,

@@ -31,7 +31,6 @@ import MarriageCompatibilityPage from './pages/services/MarriageCompatibilityPag
 import ProfileGeneratorPage from './pages/services/ProfileGeneratorPage';
 import CaricaturePage from './pages/services/CaricaturePage';
 import IdPhotoPage from './pages/services/IdPhotoPage';
-import FaceSwapPage from './pages/services/FaceSwapPage';
 import AgeTransformPage from './pages/services/AgeTransformPage';
 import GenderSwapPage from './pages/services/GenderSwapPage';
 import ColorizationPage from './pages/services/ColorizationPage';
@@ -85,7 +84,6 @@ function App() {
             <Route path="/services/profile-generator" component={ProfileGeneratorPage} />
             <Route path="/services/caricature" component={CaricaturePage} />
             <Route path="/services/id-photo" component={IdPhotoPage} />
-            <Route path="/services/face-swap" component={FaceSwapPage} />
             <Route path="/services/age-transform" component={AgeTransformPage} />
             <Route path="/services/gender-swap" component={GenderSwapPage} />
             <Route path="/services/colorization" component={ColorizationPage} />

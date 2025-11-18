@@ -121,10 +121,6 @@
         "title": "AI 증명사진",
         "description": "정장/배경 자동 합성"
       },
-      "faceSwap": {
-        "title": "AI 얼굴 교체",
-        "description": "Face swap 기술"
-      },
       "ageTransform": {
         "title": "AI 노화/회춘",
         "description": "나이 변환 필터"
