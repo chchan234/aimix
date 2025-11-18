@@ -35,7 +35,12 @@ async function apiRequest<T>(endpoint: string, data: any): Promise<T> {
     let errorMessage = 'API request failed';
     try {
       const error = await response.json();
-      errorMessage = error.error || error.message || errorMessage;
+      // Include details if available (for validation errors)
+      if (error.details) {
+        errorMessage = `${error.error}: ${error.details}`;
+      } else {
+        errorMessage = error.error || error.message || errorMessage;
+      }
     } catch (e) {
       // If response is not JSON (e.g., HTML error page), use status text
       errorMessage = `${response.statusText || 'Request failed'} (${response.status})`;
