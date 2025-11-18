@@ -20,6 +20,12 @@ import Header from './components/Header';
 // Service Pages
 import SajuPage from './pages/services/SajuPage';
 import FaceReadingPage from './pages/services/FaceReadingPage';
+import PalmistryPage from './pages/services/PalmistryPage';
+import HoroscopePage from './pages/services/HoroscopePage';
+import ZodiacPage from './pages/services/ZodiacPage';
+import LoveCompatibilityPage from './pages/services/LoveCompatibilityPage';
+import NameCompatibilityPage from './pages/services/NameCompatibilityPage';
+import MarriageCompatibilityPage from './pages/services/MarriageCompatibilityPage';
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -56,6 +62,12 @@ function App() {
             {/* Service Detail Pages */}
             <Route path="/services/saju" component={SajuPage} />
             <Route path="/services/face-reading" component={FaceReadingPage} />
+            <Route path="/services/palmistry" component={PalmistryPage} />
+            <Route path="/services/horoscope" component={HoroscopePage} />
+            <Route path="/services/zodiac" component={ZodiacPage} />
+            <Route path="/services/love-compatibility" component={LoveCompatibilityPage} />
+            <Route path="/services/name-compatibility" component={NameCompatibilityPage} />
+            <Route path="/services/marriage-compatibility" component={MarriageCompatibilityPage} />
 
             <Route path="/:rest*">
               {() => (

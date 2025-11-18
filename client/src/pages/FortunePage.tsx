@@ -27,7 +27,7 @@ export default function FortunePage() {
         description: t('services.fortune.palmistry.description'),
         icon: 'back_hand',
         color: 'green',
-        path: null, // Not implemented yet
+        path: '/services/palmistry',
       },
     ],
     western: [
@@ -36,14 +36,14 @@ export default function FortunePage() {
         description: t('services.fortune.horoscope.description'),
         icon: 'star',
         color: 'yellow',
-        path: null, // Not implemented yet
+        path: '/services/horoscope',
       },
       {
         title: t('services.fortune.zodiac.title'),
         description: t('services.fortune.zodiac.description'),
         icon: 'pets',
         color: 'orange',
-        path: null, // Not implemented yet
+        path: '/services/zodiac',
       },
     ],
     compatibility: [
@@ -52,21 +52,21 @@ export default function FortunePage() {
         description: t('services.fortune.loveCompatibility.description'),
         icon: 'favorite',
         color: 'pink',
-        path: null, // Not implemented yet
+        path: '/services/love-compatibility',
       },
       {
         title: t('services.fortune.nameCompatibility.title'),
         description: t('services.fortune.nameCompatibility.description'),
         icon: 'edit',
         color: 'indigo',
-        path: null, // Not implemented yet
+        path: '/services/name-compatibility',
       },
       {
         title: t('services.fortune.marriageCompatibility.title'),
         description: t('services.fortune.marriageCompatibility.description'),
         icon: 'family_restroom',
         color: 'red',
-        path: null, // Not implemented yet
+        path: '/services/marriage-compatibility',
       },
     ],
   }), [t]);
