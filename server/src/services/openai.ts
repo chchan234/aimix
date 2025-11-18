@@ -87,7 +87,7 @@ const SAJU_PROMPT = (birthDate: string, birthTime: string, gender: 'male' | 'fem
 
 JSON 형식으로 응답해주세요:
 {
-  "saju": "사주팔자",
+  "saju": "사주팔자를 한 줄로 표현 (예: 연주 경자년, 월주 신축월, 일주 신축일, 시주 임신시)",
   "elements": {
     "wood": 0,
     "fire": 0,
@@ -95,13 +95,13 @@ JSON 형식으로 응답해주세요:
     "metal": 0,
     "water": 0
   },
-  "personality": "성격과 재능",
-  "wealth": "재물운",
-  "health": "건강운",
-  "love": "연애운",
-  "career": "사업운",
-  "yearlyFortune": "올해 운세",
-  "advice": "조언"
+  "personality": "성격과 재능에 대한 상세한 설명",
+  "wealth": "재물운에 대한 상세한 설명",
+  "health": "건강운에 대한 상세한 설명",
+  "love": "연애운에 대한 상세한 설명",
+  "career": "사업운에 대한 상세한 설명",
+  "yearlyFortune": "올해 운세에 대한 상세한 설명",
+  "advice": "조언 및 주의사항"
 }
 `;
 
