@@ -31,6 +31,7 @@ export const CREDIT_COSTS = {
   'enneagram-test': 30, // 에니어그램 테스트
   'bigfive-test': 30, // Big Five 성격 테스트
   'stress-test': 25, // 스트레스 지수 측정
+  'geumjjoki-test': 30, // 금쪽이 테스트
   // Image generation/editing services
   'profile-generator': 30, // AI 프로필 생성
   'caricature': 35, // 캐리커쳐 변환

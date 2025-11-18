@@ -173,6 +173,10 @@
         "title": "스트레스 지수 측정",
         "description": "정신 건강 체크"
       },
+      "geumjjoki": {
+        "title": "금쪽이 테스트",
+        "description": "나는 금쪽이일까?"
+      },
       "lookalike": {
         "title": "AI 닮은꼴 찾기",
         "description": "연예인/동물 닮은꼴"

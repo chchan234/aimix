@@ -11,6 +11,7 @@ import { mbtiQuestions } from '../data/mbti-questions.js';
 import { enneagramQuestions } from '../data/enneagram-questions.js';
 import { bigFiveQuestions } from '../data/bigfive-questions.js';
 import { stressQuestions } from '../data/stress-questions.js';
+import { geumjjokiQuestions, GRADE_INFO } from '../data/geumjjoki-questions.js';
 
 // Initialize centralized OpenAI client
 const client = new OpenAIClient();
@@ -1677,6 +1678,141 @@ function calculateStressScores(answers: number[]): { [key: string]: number } {
   return scores;
 }
 
+/**
+ * Analyze Geumjjoki (금쪽이) test
+ */
+export async function analyzeGeumjjoki(answers: number[]): Promise<any> {
+  try {
+    const categoryScores = calculateGeumjjokiScores(answers);
+
+    // Calculate total score (0-100)
+    const totalAnswers = answers.reduce((sum, answer) => sum + answer, 0);
+    const maxScore = answers.length * 5; // 30 questions * 5 max score
+    const geumjjokiScore = Math.round((totalAnswers / maxScore) * 100);
+
+    // Determine grade
+    const grade = getGeumjjokiGrade(geumjjokiScore);
+
+    const prompt = `당신은 전문 심리학자입니다. "금쪽이 테스트" 결과를 분석해주세요.
+
+금쪽이 테스트는 10-30대가 자신의 일상 속 행동 패턴과 습관을 재미있게 진단하는 테스트입니다.
+
+**금쪽이 지수**: ${geumjjokiScore}점/100점
+**등급**: ${grade.name} ${grade.emoji}
+
+**카테고리별 점수**:
+- 충동성/자기조절: ${categoryScores.impulse}점/30점
+- 집중력/계획성: ${categoryScores.focus}점/30점
+- 감정조절/대인관계: ${categoryScores.emotion}점/30점
+- 생활습관/책임감: ${categoryScores.lifestyle}점/30점
+- 디지털/SNS 습관: ${categoryScores.digital}점/30점
+
+다음 형식의 JSON으로 응답해주세요:
+{
+  "summary": {
+    "gradeDescription": "${grade.description}",
+    "mainType": "당신의 금쪽이 유형 (ex: 충동형 금쪽이, 미루기형 금쪽이)",
+    "oneLineComment": "재미있고 공감되는 한 줄 코멘트"
+  },
+  "categoryAnalysis": {
+    "impulse": {
+      "level": "높음/중간/낮음",
+      "characteristics": ["특징1", "특징2", "특징3"],
+      "impact": "일상에 미치는 영향"
+    },
+    "focus": { /* 동일한 구조 */ },
+    "emotion": { /* 동일한 구조 */ },
+    "lifestyle": { /* 동일한 구조 */ },
+    "digital": { /* 동일한 구조 */ }
+  },
+  "strengths": ["강점1 (긍정적으로)", "강점2", "강점3"],
+  "challenges": ["개선이 필요한 습관1", "습관2", "습관3"],
+  "improvement": {
+    "priority": ["최우선 개선사항 TOP 3"],
+    "tips": ["실천 가능한 팁1", "팁2", "팁3"],
+    "encouragement": "공감과 위로의 메시지"
+  },
+  "forOthers": {
+    "howTheyFeel": "주변 사람들이 느끼는 점",
+    "advice": "주변 사람들을 위한 조언"
+  }
+}
+
+재미있고 공감되는 톤으로, 하지만 실질적인 도움이 되는 분석을 제공해주세요.`;
+
+    const response = await client.chat(
+      [{ role: 'user', content: prompt }],
+      {
+        temperature: 0.7,
+        maxTokens: 3000,
+        responseFormat: 'json',
+      }
+    );
+
+    const analysis = client.parseJSON(response.content);
+
+    return {
+      success: true,
+      analysis,
+      geumjjokiScore,
+      grade: {
+        name: grade.name,
+        emoji: grade.emoji,
+        description: grade.description
+      },
+      categoryScores,
+      model: 'gpt-4o-mini'
+    };
+  } catch (error) {
+    console.error('Geumjjoki analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+/**
+ * Calculate geumjjoki scores by category
+ */
+function calculateGeumjjokiScores(answers: number[]): { [key: string]: number } {
+  const scores: { [key: string]: number } = {
+    impulse: 0,
+    focus: 0,
+    emotion: 0,
+    lifestyle: 0,
+    digital: 0
+  };
+
+  geumjjokiQuestions.forEach((q, index) => {
+    scores[q.category] += answers[index];
+  });
+
+  return scores;
+}
+
+/**
+ * Get grade info based on score
+ */
+function getGeumjjokiGrade(score: number): { name: string; emoji: string; description: string } {
+  for (const [key, gradeInfo] of Object.entries(GRADE_INFO)) {
+    const [min, max] = gradeInfo.range;
+    if (score >= min && score <= max) {
+      return {
+        name: gradeInfo.name,
+        emoji: gradeInfo.emoji,
+        description: gradeInfo.description
+      };
+    }
+  }
+  // Default to normal if no match
+  return {
+    name: GRADE_INFO.normal.name,
+    emoji: GRADE_INFO.normal.emoji,
+    description: GRADE_INFO.normal.description
+  };
+}
+
 export default {
   analyzeFaceReading,
   analyzeFaceReadingFromBase64,
@@ -1691,4 +1827,5 @@ export default {
   analyzeEnneagram,
   analyzeBigFive,
   analyzeStress,
+  analyzeGeumjjoki,
 };

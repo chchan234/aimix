@@ -36,6 +36,13 @@ export default function EntertainmentPage() {
         color: 'cyan',
         path: '/services/stress-test',
       },
+      {
+        title: t('services.entertainment.geumjjoki.title'),
+        description: t('services.entertainment.geumjjoki.description'),
+        icon: 'celebration',
+        color: 'orange',
+        path: '/services/geumjjoki-test',
+      },
     ],
     fun: [
       {

@@ -32,6 +32,7 @@ import MBTIAnalysisPage from './pages/services/MBTIAnalysisPage';
 import EnneagramTestPage from './pages/services/EnneagramTestPage';
 import BigFiveTestPage from './pages/services/BigFiveTestPage';
 import StressTestPage from './pages/services/StressTestPage';
+import GeumjjokiTestPage from './pages/services/GeumjjokiTestPage';
 
 // Service Pages - Image
 import ProfileGeneratorPage from './pages/services/ProfileGeneratorPage';
@@ -91,6 +92,7 @@ function App() {
             <Route path="/services/enneagram-test" component={EnneagramTestPage} />
             <Route path="/services/bigfive-test" component={BigFiveTestPage} />
             <Route path="/services/stress-test" component={StressTestPage} />
+            <Route path="/services/geumjjoki-test" component={GeumjjokiTestPage} />
 
             {/* Service Detail Pages - Image */}
             <Route path="/services/profile-generator" component={ProfileGeneratorPage} />

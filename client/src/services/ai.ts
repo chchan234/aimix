@@ -379,3 +379,36 @@ export async function getStressQuestions() {
 export async function analyzeStress(answers: number[]) {
   return apiRequest('/api/personality/stress-test', { answers });
 }
+
+// Get Geumjjoki Questions
+export async function getGeumjjokiQuestions() {
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('Not authenticated');
+  }
+
+  const response = await fetch(`${API_URL}/api/personality/geumjjoki/questions`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    let errorMessage = 'Failed to fetch Geumjjoki questions';
+    try {
+      const error = await response.json();
+      errorMessage = error.error || error.message || errorMessage;
+    } catch (e) {
+      errorMessage = `${response.statusText || 'Request failed'} (${response.status})`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+
+// Geumjjoki Test
+export async function analyzeGeumjjoki(answers: number[]) {
+  return apiRequest('/api/personality/geumjjoki-test', { answers });
+}

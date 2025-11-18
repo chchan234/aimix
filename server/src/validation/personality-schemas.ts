@@ -32,8 +32,15 @@ export const stressTestSchema = z.object({
     .length(20, 'Must have exactly 20 answers'),
 });
 
+// Geumjjoki Test Schema
+export const geumjjokiTestSchema = z.object({
+  answers: z.array(z.number().int().min(1).max(5))
+    .length(30, 'Must have exactly 30 answers'),
+});
+
 // Type exports
 export type MBTIAnalysisInput = z.infer<typeof mbtiAnalysisSchema>;
 export type EnneagramTestInput = z.infer<typeof enneagramTestSchema>;
 export type BigFiveTestInput = z.infer<typeof bigFiveTestSchema>;
 export type StressTestInput = z.infer<typeof stressTestSchema>;
+export type GeumjjokiTestInput = z.infer<typeof geumjjokiTestSchema>;

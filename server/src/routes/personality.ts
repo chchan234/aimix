@@ -12,12 +12,14 @@ import {
   enneagramTestSchema,
   bigFiveTestSchema,
   stressTestSchema,
+  geumjjokiTestSchema,
 } from '../validation/personality-schemas.js';
-import { analyzeMBTI, analyzeEnneagram, analyzeBigFive, analyzeStress } from '../services/openai.js';
+import { analyzeMBTI, analyzeEnneagram, analyzeBigFive, analyzeStress, analyzeGeumjjoki } from '../services/openai.js';
 import { mbtiQuestions } from '../data/mbti-questions.js';
 import { enneagramQuestions } from '../data/enneagram-questions.js';
 import { bigFiveQuestions } from '../data/bigfive-questions.js';
 import { stressQuestions } from '../data/stress-questions.js';
+import { geumjjokiQuestions } from '../data/geumjjoki-questions.js';
 
 const router = Router();
 
@@ -239,6 +241,63 @@ router.post('/stress-test', authenticateToken, validateBody(stressTestSchema), r
     }
   } catch (error) {
     console.error('Stress test error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Get Geumjjoki questions
+router.get('/geumjjoki/questions', authenticateToken, async (req, res) => {
+  try {
+    res.json({
+      success: true,
+      questions: geumjjokiQuestions.map(q => ({
+        id: q.id,
+        question: q.question,
+      }))
+    });
+  } catch (error) {
+    console.error('Get Geumjjoki questions error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Geumjjoki Test
+router.post('/geumjjoki-test', authenticateToken, validateBody(geumjjokiTestSchema), requireCredits('geumjjoki-test'), async (req, res) => {
+  try {
+    const { answers } = req.body;
+
+    console.log('🔥 Geumjjoki Test started');
+    console.log('Answers count:', answers.length);
+
+    const result = await analyzeGeumjjoki(answers);
+
+    if (result.success) {
+      res.json({
+        success: true,
+        analysis: result.analysis,
+        geumjjokiScore: result.geumjjokiScore,
+        grade: result.grade,
+        categoryScores: result.categoryScores,
+        model: result.model,
+        credits: {
+          remaining: req.userData?.credits,
+          cost: res.locals.creditInfo?.cost,
+        },
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: result.error || 'Failed to analyze geumjjoki'
+      });
+    }
+  } catch (error) {
+    console.error('Geumjjoki test error:', error);
     res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'

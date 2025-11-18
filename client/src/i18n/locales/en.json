@@ -173,6 +173,10 @@
         "title": "Stress Level Test",
         "description": "Mental health check"
       },
+      "geumjjoki": {
+        "title": "Geumjjoki Test",
+        "description": "Am I a troublesome child?"
+      },
       "lookalike": {
         "title": "AI Lookalike Finder",
         "description": "Celebrity/Animal lookalike"
