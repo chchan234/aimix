@@ -313,3 +313,69 @@ export async function analyzeMBTI(userInputMBTI: string | null, answers: number[
 export async function analyzeEnneagram(answers: number[]) {
   return apiRequest('/api/personality/enneagram-test', { answers });
 }
+
+// Get Big Five Questions
+export async function getBigFiveQuestions() {
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('Not authenticated');
+  }
+
+  const response = await fetch(`${API_URL}/api/personality/bigfive/questions`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    let errorMessage = 'Failed to fetch Big Five questions';
+    try {
+      const error = await response.json();
+      errorMessage = error.error || error.message || errorMessage;
+    } catch (e) {
+      errorMessage = `${response.statusText || 'Request failed'} (${response.status})`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+
+// Big Five Test
+export async function analyzeBigFive(answers: number[]) {
+  return apiRequest('/api/personality/bigfive-test', { answers });
+}
+
+// Get Stress Questions
+export async function getStressQuestions() {
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('Not authenticated');
+  }
+
+  const response = await fetch(`${API_URL}/api/personality/stress/questions`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    let errorMessage = 'Failed to fetch Stress questions';
+    try {
+      const error = await response.json();
+      errorMessage = error.error || error.message || errorMessage;
+    } catch (e) {
+      errorMessage = `${response.statusText || 'Request failed'} (${response.status})`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+
+// Stress Test
+export async function analyzeStress(answers: number[]) {
+  return apiRequest('/api/personality/stress-test', { answers });
+}

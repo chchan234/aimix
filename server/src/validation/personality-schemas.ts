@@ -20,6 +20,20 @@ export const enneagramTestSchema = z.object({
     .length(36, 'Must have exactly 36 answers'),
 });
 
+// Big Five Test Schema
+export const bigFiveTestSchema = z.object({
+  answers: z.array(z.number().int().min(1).max(5))
+    .length(25, 'Must have exactly 25 answers'),
+});
+
+// Stress Test Schema
+export const stressTestSchema = z.object({
+  answers: z.array(z.number().int().min(1).max(5))
+    .length(20, 'Must have exactly 20 answers'),
+});
+
 // Type exports
 export type MBTIAnalysisInput = z.infer<typeof mbtiAnalysisSchema>;
 export type EnneagramTestInput = z.infer<typeof enneagramTestSchema>;
+export type BigFiveTestInput = z.infer<typeof bigFiveTestSchema>;
+export type StressTestInput = z.infer<typeof stressTestSchema>;

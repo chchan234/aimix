@@ -10,10 +10,14 @@ import { validateBody } from '../middleware/validation.js';
 import {
   mbtiAnalysisSchema,
   enneagramTestSchema,
+  bigFiveTestSchema,
+  stressTestSchema,
 } from '../validation/personality-schemas.js';
-import { analyzeMBTI, analyzeEnneagram } from '../services/openai.js';
+import { analyzeMBTI, analyzeEnneagram, analyzeBigFive, analyzeStress } from '../services/openai.js';
 import { mbtiQuestions } from '../data/mbti-questions.js';
 import { enneagramQuestions } from '../data/enneagram-questions.js';
+import { bigFiveQuestions } from '../data/bigfive-questions.js';
+import { stressQuestions } from '../data/stress-questions.js';
 
 const router = Router();
 
@@ -124,6 +128,117 @@ router.post('/enneagram-test', authenticateToken, validateBody(enneagramTestSche
     }
   } catch (error) {
     console.error('Enneagram test error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Get Big Five questions
+router.get('/bigfive/questions', authenticateToken, async (req, res) => {
+  try {
+    res.json({
+      success: true,
+      questions: bigFiveQuestions.map(q => ({
+        id: q.id,
+        question: q.question,
+      }))
+    });
+  } catch (error) {
+    console.error('Get Big Five questions error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Big Five Test
+router.post('/bigfive-test', authenticateToken, validateBody(bigFiveTestSchema), requireCredits('bigfive-test'), async (req, res) => {
+  try {
+    const { answers } = req.body;
+
+    console.log('🧠 Big Five Test started');
+    console.log('Answers count:', answers.length);
+
+    const result = await analyzeBigFive(answers);
+
+    if (result.success) {
+      res.json({
+        success: true,
+        analysis: result.analysis,
+        traitScores: result.traitScores,
+        model: result.model,
+        credits: {
+          remaining: req.userData?.credits,
+          cost: res.locals.creditInfo?.cost,
+        },
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: result.error || 'Failed to analyze Big Five'
+      });
+    }
+  } catch (error) {
+    console.error('Big Five test error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Get Stress questions
+router.get('/stress/questions', authenticateToken, async (req, res) => {
+  try {
+    res.json({
+      success: true,
+      questions: stressQuestions.map(q => ({
+        id: q.id,
+        question: q.question,
+      }))
+    });
+  } catch (error) {
+    console.error('Get Stress questions error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Stress Test
+router.post('/stress-test', authenticateToken, validateBody(stressTestSchema), requireCredits('stress-test'), async (req, res) => {
+  try {
+    const { answers } = req.body;
+
+    console.log('😰 Stress Test started');
+    console.log('Answers count:', answers.length);
+
+    const result = await analyzeStress(answers);
+
+    if (result.success) {
+      res.json({
+        success: true,
+        analysis: result.analysis,
+        overallStressLevel: result.overallStressLevel,
+        categoryScores: result.categoryScores,
+        model: result.model,
+        credits: {
+          remaining: req.userData?.credits,
+          cost: res.locals.creditInfo?.cost,
+        },
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: result.error || 'Failed to analyze stress'
+      });
+    }
+  } catch (error) {
+    console.error('Stress test error:', error);
     res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'

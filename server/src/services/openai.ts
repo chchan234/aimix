@@ -1434,6 +1434,259 @@ function determineEnneagramType(typeScores: { [key: number]: number }): { mainTy
   return { mainType, wingType };
 }
 
+/**
+ * Analyze Big Five Personality Test
+ */
+export async function analyzeBigFive(answers: number[]): Promise<any> {
+  try {
+    const { bigFiveQuestions } = await import('../data/bigfive-questions.js');
+
+    if (answers.length !== bigFiveQuestions.length) {
+      return { success: false, error: 'Invalid number of answers' };
+    }
+
+    // Calculate trait scores
+    const traitScores = calculateBigFiveScores(answers);
+
+    // Build prompt for AI analysis
+    const prompt = `당신은 전문 심리학자입니다. Big Five 성격 테스트 결과를 분석해주세요.
+
+특성별 점수:
+- 개방성 (Openness): ${traitScores.O}점/25점
+- 성실성 (Conscientiousness): ${traitScores.C}점/25점
+- 외향성 (Extraversion): ${traitScores.E}점/25점
+- 친화성 (Agreeableness): ${traitScores.A}점/25점
+- 신경성 (Neuroticism): ${traitScores.N}점/25점
+
+다음 형식의 JSON으로 응답해주세요:
+{
+  "summary": {
+    "overview": "종합 성격 분석 (2-3문장)",
+    "dominantTraits": ["가장 두드러진 특성 1", "특성 2"],
+    "developmentAreas": ["발전이 필요한 영역 1", "영역 2"]
+  },
+  "traits": {
+    "O": {
+      "level": "높음/중간/낮음",
+      "description": "이 수준의 개방성이 의미하는 바",
+      "strengths": ["강점 1", "강점 2"],
+      "challenges": ["어려움 1", "어려움 2"]
+    },
+    "C": {
+      "level": "높음/중간/낮음",
+      "description": "이 수준의 성실성이 의미하는 바",
+      "strengths": ["강점 1", "강점 2"],
+      "challenges": ["어려움 1", "어려움 2"]
+    },
+    "E": {
+      "level": "높음/중간/낮음",
+      "description": "이 수준의 외향성이 의미하는 바",
+      "strengths": ["강점 1", "강점 2"],
+      "challenges": ["어려움 1", "어려움 2"]
+    },
+    "A": {
+      "level": "높음/중간/낮음",
+      "description": "이 수준의 친화성이 의미하는 바",
+      "strengths": ["강점 1", "강점 2"],
+      "challenges": ["어려움 1", "어려움 2"]
+    },
+    "N": {
+      "level": "높음/중간/낮음",
+      "description": "이 수준의 신경성이 의미하는 바",
+      "strengths": ["강점 1", "강점 2"],
+      "challenges": ["어려움 1", "어려움 2"]
+    }
+  },
+  "career": {
+    "suitableFields": ["적합한 분야 1", "분야 2", "분야 3"],
+    "workStyle": "업무 스타일 설명",
+    "teamRole": "팀 내 역할"
+  },
+  "relationships": {
+    "interpersonalStyle": "대인관계 스타일",
+    "communicationTips": ["의사소통 팁 1", "팁 2"],
+    "compatibilityNotes": "궁합 관련 조언"
+  },
+  "growth": {
+    "recommendations": ["성장을 위한 추천사항 1", "추천사항 2", "추천사항 3"],
+    "balanceTips": ["균형을 위한 조언 1", "조언 2"]
+  }
+}`;
+
+    const openAIResponse = await openAIClient.generateText(prompt, {
+      model: 'gpt-4o-mini',
+      maxTokens: 2500,
+      temperature: 0.7
+    });
+
+    if (!openAIResponse.success || !openAIResponse.text) {
+      return { success: false, error: 'Failed to generate analysis' };
+    }
+
+    const analysis = parseJSON(openAIResponse.text);
+    if (!analysis) {
+      return { success: false, error: 'Failed to parse analysis' };
+    }
+
+    return {
+      success: true,
+      analysis,
+      traitScores,
+      model: 'gpt-4o-mini'
+    };
+  } catch (error) {
+    console.error('Big Five analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+/**
+ * Calculate Big Five trait scores
+ */
+function calculateBigFiveScores(answers: number[]): { [key: string]: number } {
+  const { bigFiveQuestions } = require('../data/bigfive-questions.js');
+
+  const scores: { [key: string]: number } = {
+    O: 0, C: 0, E: 0, A: 0, N: 0
+  };
+
+  bigFiveQuestions.forEach((q: any, index: number) => {
+    const answer = answers[index];
+    // positive direction: answer as is, negative direction: inverted (6 - answer)
+    const score = q.direction === 'positive' ? answer : (6 - answer);
+    scores[q.trait] += score;
+  });
+
+  return scores;
+}
+
+/**
+ * Analyze Stress Level
+ */
+export async function analyzeStress(answers: number[]): Promise<any> {
+  try {
+    const { stressQuestions } = await import('../data/stress-questions.js');
+
+    if (answers.length !== stressQuestions.length) {
+      return { success: false, error: 'Invalid number of answers' };
+    }
+
+    // Calculate category scores and overall stress
+    const categoryScores = calculateStressScores(answers);
+    const totalScore = Object.values(categoryScores).reduce((sum, score) => sum + score, 0);
+    const overallStressLevel = Math.round((totalScore / (answers.length * 5)) * 100);
+
+    // Build prompt for AI analysis
+    const prompt = `당신은 전문 심리상담사입니다. 스트레스 지수 측정 결과를 분석해주세요.
+
+전체 스트레스 수준: ${overallStressLevel}% (${totalScore}점/${answers.length * 5}점)
+
+영역별 점수:
+- 업무/커리어: ${categoryScores.work}점/25점
+- 대인관계: ${categoryScores.relationships}점/25점
+- 건강: ${categoryScores.health}점/25점
+- 일상생활: ${categoryScores.life}점/25점
+
+다음 형식의 JSON으로 응답해주세요:
+{
+  "overallAssessment": {
+    "level": "매우 높음/높음/보통/낮음/매우 낮음",
+    "description": "전반적인 스트레스 상태 설명 (2-3문장)",
+    "riskFactors": ["주요 위험 요인 1", "요인 2"]
+  },
+  "categories": {
+    "work": {
+      "level": "높음/보통/낮음",
+      "analysis": "업무 스트레스 분석",
+      "concerns": ["우려사항 1", "우려사항 2"],
+      "tips": ["대처 방법 1", "방법 2"]
+    },
+    "relationships": {
+      "level": "높음/보통/낮음",
+      "analysis": "대인관계 스트레스 분석",
+      "concerns": ["우려사항 1", "우려사항 2"],
+      "tips": ["대처 방법 1", "방법 2"]
+    },
+    "health": {
+      "level": "높음/보통/낮음",
+      "analysis": "건강 관련 스트레스 분석",
+      "concerns": ["우려사항 1", "우려사항 2"],
+      "tips": ["대처 방법 1", "방법 2"]
+    },
+    "life": {
+      "level": "높음/보통/낮음",
+      "analysis": "일상생활 스트레스 분석",
+      "concerns": ["우려사항 1", "우려사항 2"],
+      "tips": ["대처 방법 1", "방법 2"]
+    }
+  },
+  "management": {
+    "immediatePriorities": ["즉시 대처할 사항 1", "사항 2", "사항 3"],
+    "copingStrategies": ["대처 전략 1", "전략 2", "전략 3"],
+    "relaxationTechniques": ["이완 기법 1", "기법 2"],
+    "lifestyleChanges": ["생활습관 개선 1", "개선 2"]
+  },
+  "resources": {
+    "professionalHelp": "전문가 도움이 필요한지 여부와 이유",
+    "supportSystems": ["활용 가능한 지원 체계 1", "체계 2"],
+    "selfCareActivities": ["자기관리 활동 1", "활동 2", "활동 3"]
+  }
+}`;
+
+    const openAIResponse = await openAIClient.generateText(prompt, {
+      model: 'gpt-4o-mini',
+      maxTokens: 2500,
+      temperature: 0.7
+    });
+
+    if (!openAIResponse.success || !openAIResponse.text) {
+      return { success: false, error: 'Failed to generate analysis' };
+    }
+
+    const analysis = parseJSON(openAIResponse.text);
+    if (!analysis) {
+      return { success: false, error: 'Failed to parse analysis' };
+    }
+
+    return {
+      success: true,
+      analysis,
+      overallStressLevel,
+      categoryScores,
+      model: 'gpt-4o-mini'
+    };
+  } catch (error) {
+    console.error('Stress analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+/**
+ * Calculate stress scores by category
+ */
+function calculateStressScores(answers: number[]): { [key: string]: number } {
+  const { stressQuestions } = require('../data/stress-questions.js');
+
+  const scores: { [key: string]: number } = {
+    work: 0,
+    relationships: 0,
+    health: 0,
+    life: 0
+  };
+
+  stressQuestions.forEach((q: any, index: number) => {
+    scores[q.category] += answers[index];
+  });
+
+  return scores;
+}
+
 export default {
   analyzeFaceReading,
   analyzeFaceReadingFromBase64,
@@ -1446,4 +1699,6 @@ export default {
   analyzeMarriageCompatibility,
   analyzeMBTI,
   analyzeEnneagram,
+  analyzeBigFive,
+  analyzeStress,
 };

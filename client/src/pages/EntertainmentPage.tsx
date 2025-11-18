@@ -27,12 +27,14 @@ export default function EntertainmentPage() {
         description: t('services.entertainment.bigFive.description'),
         icon: 'workspaces',
         color: 'green',
+        path: '/services/bigfive-test',
       },
       {
         title: t('services.entertainment.stress.title'),
         description: t('services.entertainment.stress.description'),
         icon: 'spa',
         color: 'cyan',
+        path: '/services/stress-test',
       },
     ],
     fun: [
