@@ -204,7 +204,7 @@ router.post('/saju', validateBody(sajuSchema), requireCredits('saju'), async (re
       if (service.length > 0) {
         // Save result to database
         const expiresAt = new Date();
-        expiresAt.setFullYear(expiresAt.getFullYear() + 1); // 1 year expiry
+        expiresAt.setDate(expiresAt.getDate() + 14); // 14 days expiry
 
         await db.insert(serviceResults).values({
           userId,
