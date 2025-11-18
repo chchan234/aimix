@@ -7,6 +7,8 @@
 
 import { OpenAIClient } from './prompt-engine/openai-client.js';
 import { validateImage } from '../utils/image-validator.js';
+import { mbtiQuestions } from '../data/mbti-questions.js';
+import { enneagramQuestions } from '../data/enneagram-questions.js';
 
 // Initialize centralized OpenAI client
 const client = new OpenAIClient();
@@ -1282,9 +1284,6 @@ function calculateMBTIScores(answers: number[]) {
     JP: { J: 0, P: 0 },
   };
 
-  // Import questions to know direction
-  const { mbtiQuestions } = require('../data/mbti-questions.js');
-
   answers.forEach((answer, index) => {
     const question = mbtiQuestions[index];
     const { axis, direction } = question;
@@ -1391,9 +1390,6 @@ function calculateEnneagramScores(answers: number[]): { [key: number]: number } 
   const scores: { [key: number]: number } = {
     1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0
   };
-
-  // Import questions
-  const { enneagramQuestions } = require('../data/enneagram-questions.js');
 
   answers.forEach((answer, index) => {
     const question = enneagramQuestions[index];
