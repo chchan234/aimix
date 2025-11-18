@@ -131,7 +131,7 @@ router.post('/chat', validateBody(chatSchema), requireCredits('chat'), async (re
 router.post('/face-reading', validateBody(faceReadingSchema), requireCredits('face-reading'), async (req, res) => {
   try {
     const { imageUrl, base64Image, birthDate } = req.body;
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
 
     let result;
     if (base64Image) {
@@ -194,7 +194,7 @@ router.post('/face-reading', validateBody(faceReadingSchema), requireCredits('fa
 router.post('/saju', validateBody(sajuSchema), requireCredits('saju'), async (req, res) => {
   try {
     const { birthDate, birthTime, gender } = req.body;
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
 
     const result = await openai.analyzeSaju(birthDate, birthTime, gender);
 
@@ -252,7 +252,7 @@ router.post('/saju', validateBody(sajuSchema), requireCredits('saju'), async (re
 router.post('/palmistry', validateBody(palmistrySchema), requireCredits('palmistry'), async (req, res) => {
   try {
     const { imageUrl, base64Image, hand = 'right' } = req.body;
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
 
     const imageData = base64Image || imageUrl;
     const result = await openai.analyzePalmistry(imageData, hand);
@@ -307,7 +307,7 @@ router.post('/palmistry', validateBody(palmistrySchema), requireCredits('palmist
 router.post('/horoscope', validateBody(horoscopeSchema), requireCredits('horoscope'), async (req, res) => {
   try {
     const { birthDate, zodiacSign } = req.body;
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
 
     const result = await openai.analyzeHoroscope(birthDate, zodiacSign);
 
@@ -361,7 +361,7 @@ router.post('/horoscope', validateBody(horoscopeSchema), requireCredits('horosco
 router.post('/zodiac', validateBody(zodiacSchema), requireCredits('zodiac'), async (req, res) => {
   try {
     const { birthDate } = req.body;
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
 
     const result = await openai.analyzeZodiac(birthDate);
 
@@ -415,7 +415,7 @@ router.post('/zodiac', validateBody(zodiacSchema), requireCredits('zodiac'), asy
 router.post('/love-compatibility', validateBody(loveCompatibilitySchema), requireCredits('love-compatibility'), async (req, res) => {
   try {
     const { person1BirthDate, person2BirthDate } = req.body;
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
 
     const result = await openai.analyzeLoveCompatibility(person1BirthDate, person2BirthDate);
 
@@ -469,7 +469,7 @@ router.post('/love-compatibility', validateBody(loveCompatibilitySchema), requir
 router.post('/name-compatibility', validateBody(nameCompatibilitySchema), requireCredits('name-compatibility'), async (req, res) => {
   try {
     const { name1, name2 } = req.body;
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
 
     const result = await openai.analyzeNameCompatibility(name1, name2);
 
@@ -523,7 +523,7 @@ router.post('/name-compatibility', validateBody(nameCompatibilitySchema), requir
 router.post('/marriage-compatibility', validateBody(marriageCompatibilitySchema), requireCredits('marriage-compatibility'), async (req, res) => {
   try {
     const { person1Name, person1BirthDate, person2Name, person2BirthDate } = req.body;
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
 
     const result = await openai.analyzeMarriageCompatibility(person1Name, person1BirthDate, person2Name, person2BirthDate);
 

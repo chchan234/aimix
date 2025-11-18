@@ -20,7 +20,7 @@ router.use(authenticateToken);
  */
 router.get('/', async (req, res) => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
 
     const results = await db
       .select({
@@ -57,7 +57,7 @@ router.get('/', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
     const resultId = req.params.id;
 
     const result = await db
@@ -106,7 +106,7 @@ router.get('/:id', async (req, res) => {
  */
 router.delete('/:id', async (req, res) => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
     const resultId = req.params.id;
 
     const deleted = await db

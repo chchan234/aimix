@@ -1513,20 +1513,16 @@ export async function analyzeBigFive(answers: number[]): Promise<any> {
   }
 }`;
 
-    const openAIResponse = await openAIClient.generateText(prompt, {
-      model: 'gpt-4o-mini',
-      maxTokens: 2500,
-      temperature: 0.7
-    });
+    const response = await client.chat(
+      [{ role: 'user', content: prompt }],
+      {
+        temperature: 0.7,
+        maxTokens: 2500,
+        responseFormat: 'json',
+      }
+    );
 
-    if (!openAIResponse.success || !openAIResponse.text) {
-      return { success: false, error: 'Failed to generate analysis' };
-    }
-
-    const analysis = parseJSON(openAIResponse.text);
-    if (!analysis) {
-      return { success: false, error: 'Failed to parse analysis' };
-    }
+    const analysis = client.parseJSON(response.content);
 
     return {
       success: true,
@@ -1636,20 +1632,16 @@ export async function analyzeStress(answers: number[]): Promise<any> {
   }
 }`;
 
-    const openAIResponse = await openAIClient.generateText(prompt, {
-      model: 'gpt-4o-mini',
-      maxTokens: 2500,
-      temperature: 0.7
-    });
+    const response = await client.chat(
+      [{ role: 'user', content: prompt }],
+      {
+        temperature: 0.7,
+        maxTokens: 2500,
+        responseFormat: 'json',
+      }
+    );
 
-    if (!openAIResponse.success || !openAIResponse.text) {
-      return { success: false, error: 'Failed to generate analysis' };
-    }
-
-    const analysis = parseJSON(openAIResponse.text);
-    if (!analysis) {
-      return { success: false, error: 'Failed to parse analysis' };
-    }
+    const analysis = client.parseJSON(response.content);
 
     return {
       success: true,

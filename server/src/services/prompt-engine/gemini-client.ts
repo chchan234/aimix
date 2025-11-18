@@ -81,7 +81,7 @@ export class GeminiClient {
         }],
         generationConfig: {
           responseModalities: ['Image'],
-        }
+        } as any
       });
 
       const response = await result.response;
@@ -97,7 +97,7 @@ export class GeminiClient {
         'inlineData' in part && part.inlineData?.mimeType?.startsWith('image/')
       );
 
-      if (!imageData || !('inlineData' in imageData)) {
+      if (!imageData || !('inlineData' in imageData) || !imageData.inlineData) {
         throw new Error('No image data in response');
       }
 
@@ -147,7 +147,7 @@ export class GeminiClient {
         }],
         generationConfig: {
           responseModalities: ['Image'],
-        }
+        } as any
       });
 
       const response = await result.response;
@@ -172,7 +172,7 @@ export class GeminiClient {
         'inlineData' in part && part.inlineData?.mimeType?.startsWith('image/')
       );
 
-      if (!imageData || !('inlineData' in imageData)) {
+      if (!imageData || !('inlineData' in imageData) || !imageData.inlineData) {
         console.error('❌ No image data found in parts:', JSON.stringify(candidate.content.parts, null, 2));
         throw new Error('No image data in response');
       }
