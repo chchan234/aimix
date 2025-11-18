@@ -1,8 +1,8 @@
 # AIMIX 프로젝트 현황 및 작업 가이드
 
-> 최종 업데이트: 2025-11-18 10:45
+> 최종 업데이트: 2025-11-18 11:15
 > 작성자: Claude (AI Assistant)
-> 상태: ✅ **배포 완료** - 카카오 로그인 404 에러 수정 완료
+> 상태: ✅ **배포 완료** - 크레딧 차감 에러 수정 완료 (DB migration 실행)
 
 ---
 
@@ -274,6 +274,90 @@ ID: icn1::zj9z6-1763429926558-72605062a105
    - ✅ 카카오 로그인 페이지로 정상 리디렉션
    - ✅ OAuth callback 경로 정상 작동
    - ✅ 프론트엔드 라우터 정상 동작
+
+### Issue #3: 크레딧 차감 실패 에러 - ✅ **해결 완료**
+**발생일**: 2025-11-18 11:00
+**해결일**: 2025-11-18 11:15
+**환경**: 운영 환경 (Production)
+**상태**: ✅ **수정 완료** - 데이터베이스 migration 실행 완료, 사용자 테스트 필요
+
+#### 에러 메시지
+```
+Error: Failed to deduct credits
+    at ps (ai.ts:43:11)
+    at async b (SajuPage.tsx:51:24)
+```
+
+#### 근본 원인 분석
+🔍 **데이터베이스 함수 누락**: PostgreSQL `deduct_credits` 함수가 production 데이터베이스에 생성되지 않음
+
+**문제 상황**:
+1. 사용자가 사주팔자 서비스 시도
+2. 서버: `server/src/middleware/credits.ts:51`에서 `supabase.rpc('deduct_credits', ...)` 호출
+3. 데이터베이스에 `deduct_credits` 함수가 존재하지 않음
+4. PostgreSQL 에러 발생 → 500 Internal Server Error
+5. 프론트엔드에서 "Failed to deduct credits" 표시
+
+**함수 목적**:
+- Atomic credit deduction (원자적 크레딧 차감)
+- Race condition 방지
+- Row-level locking으로 동시성 문제 해결
+- 크레딧 부족 시 자동 실패 (credits >= p_amount 조건)
+
+#### 해결 방법
+1. **Migration SQL 확인**
+   - 파일: `server/migrations/003_atomic_credit_deduction.sql`
+   - 함수 생성 SQL 존재 확인
+
+2. **Supabase SQL Editor에서 실행** ✅
+   ```sql
+   CREATE OR REPLACE FUNCTION deduct_credits(
+     p_user_id UUID,
+     p_amount INTEGER
+   )
+   RETURNS TABLE (
+     id UUID,
+     email TEXT,
+     username TEXT,
+     credits INTEGER,
+     email_verified BOOLEAN,
+     provider TEXT,
+     profile_image_url TEXT,
+     created_at TIMESTAMP WITH TIME ZONE,
+     updated_at TIMESTAMP WITH TIME ZONE
+   ) AS $$
+   BEGIN
+     -- Atomically check and deduct credits in a single operation
+     RETURN QUERY
+     UPDATE users
+     SET credits = credits - p_amount,
+         updated_at = NOW()
+     WHERE users.id = p_user_id
+       AND users.credits >= p_amount  -- Atomic check
+     RETURNING
+       users.id,
+       users.email,
+       users.username,
+       users.credits,
+       users.email_verified,
+       users.provider,
+       users.profile_image_url,
+       users.created_at,
+       users.updated_at;
+   END;
+   $$ LANGUAGE plpgsql;
+   ```
+
+3. **실행 결과**
+   - ✅ Success. No rows returned (함수 생성 완료)
+   - 함수가 production 데이터베이스에 정상 생성됨
+
+4. **테스트 필요**
+   - [ ] 사주팔자 서비스 크레딧 차감 테스트
+   - [ ] 얼굴 분석 서비스 크레딧 차감 테스트
+   - [ ] 꿈 해몽 서비스 크레딧 차감 테스트
+   - [ ] 이야기 생성 서비스 크레딧 차감 테스트
+   - [ ] 크레딧 부족 시 에러 처리 확인
 
 ---
 
