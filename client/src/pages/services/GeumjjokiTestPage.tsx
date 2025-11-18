@@ -104,7 +104,7 @@ export default function GeumjjokiTestPage() {
   return (
     <ServiceDetailLayout
       title="금쪽이 테스트"
-      description="10-30대를 위한 재미있는 자가진단 테스트"
+      description="금쪽이 자가진단 테스트"
       icon="celebration"
       color="orange"
     >
