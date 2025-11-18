@@ -73,6 +73,10 @@ router.post('/mbti-analysis', authenticateToken, validateBody(mbtiAnalysisSchema
         testResultMBTI: result.testResultMBTI,
         axisScores: result.axisScores,
         model: result.model,
+        credits: {
+          remaining: req.userData?.credits,
+          cost: res.locals.creditInfo?.cost,
+        },
       });
     } else {
       res.status(500).json({
@@ -107,6 +111,10 @@ router.post('/enneagram-test', authenticateToken, validateBody(enneagramTestSche
         wingType: result.wingType,
         typeScores: result.typeScores,
         model: result.model,
+        credits: {
+          remaining: req.userData?.credits,
+          cost: res.locals.creditInfo?.cost,
+        },
       });
     } else {
       res.status(500).json({

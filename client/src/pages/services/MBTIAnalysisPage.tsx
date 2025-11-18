@@ -92,7 +92,7 @@ export default function MBTIAnalysisPage() {
     <ServiceDetailLayout
       title="MBTI 심층분석"
       description="자가 진단과 테스트 결과를 비교하여 정확한 MBTI를 분석합니다"
-      icon="🧠"
+      icon="psychology"
       color="purple"
     >
       {/* Step 1: MBTI Input */}

@@ -91,7 +91,7 @@ export default function EnneagramTestPage() {
     <ServiceDetailLayout
       title="에니어그램 테스트"
       description="9가지 성격 유형을 분석하여 당신의 핵심 동기와 성장 방향을 알려드립니다"
-      icon="⭐"
+      icon="hub"
       color="green"
     >
       {/* Test Questions */}
