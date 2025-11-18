@@ -1,33 +1,17 @@
 // Load environment variables FIRST (before any other imports)
+// In Vercel serverless, environment variables are injected, so .env loading is optional
 import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { existsSync } from 'fs';
 
-// Get the directory name of the current module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Try multiple locations for .env file
-const envPaths = [
-  path.resolve(__dirname, '../.env'),        // server/.env
-  path.resolve(process.cwd(), '.env'),        // current working directory
-  path.resolve(__dirname, '../../.env'),      // parent directory
-];
-
-let envLoaded = false;
-for (const envPath of envPaths) {
-  if (existsSync(envPath)) {
-    console.log(`📄 Loading environment from: ${envPath}`);
-    dotenv.config({ path: envPath, override: true });
-    envLoaded = true;
-    break;
+// Only try to load .env in non-Vercel environments
+if (process.env.VERCEL !== '1') {
+  try {
+    dotenv.config({ override: true });
+    console.log('📄 Loaded environment variables from .env file');
+  } catch (error) {
+    console.warn('⚠️  Could not load .env file, using system environment variables');
   }
-}
-
-if (!envLoaded) {
-  console.warn('⚠️  No .env file found, using environment variables');
-  dotenv.config({ override: true }); // Fall back to default behavior
+} else {
+  console.log('🔧 Running in Vercel serverless, using injected environment variables');
 }
 
 // Now import everything else
@@ -77,6 +61,11 @@ function validateEnvironment() {
     console.error('❌ CRITICAL: Server cannot start due to missing or invalid environment variables:');
     errors.forEach(error => console.error(`  - ${error}`));
     console.error('\n💡 Set these environment variables before starting the server.');
+
+    // In Vercel serverless, don't exit - throw error instead so we can see it in logs
+    if (process.env.VERCEL === '1') {
+      throw new Error(`Environment validation failed: ${errors.join(', ')}`);
+    }
     process.exit(1);
   }
 

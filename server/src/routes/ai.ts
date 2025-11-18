@@ -11,6 +11,17 @@ import * as openai from '../services/openai.js';
 import { authenticateToken, requireEmailVerification } from '../middleware/auth.js';
 import { requireCredits, attachCreditInfo } from '../middleware/credits.js';
 import { RateLimits } from '../middleware/rateLimit.js';
+import { validateBody } from '../middleware/validation.js';
+import {
+  nameAnalysisSchema,
+  dreamInterpretationSchema,
+  storySchema,
+  chatSchema,
+  faceReadingSchema,
+  sajuSchema,
+  tarotSchema,
+  tojeongSchema,
+} from '../validation/ai-schemas.js';
 
 const router = express.Router();
 
@@ -27,15 +38,9 @@ router.use(attachCreditInfo);
  * Body: { name: string, birthDate?: string }
  * Cost: 10 credits
  */
-router.post('/name-analysis', requireCredits('name-analysis'), async (req, res) => {
+router.post('/name-analysis', validateBody(nameAnalysisSchema), requireCredits('name-analysis'), async (req, res) => {
   try {
     const { name, birthDate } = req.body;
-
-    if (!name) {
-      return res.status(400).json({
-        error: 'Name is required'
-      });
-    }
 
     const result = await gemini.analyzeNameMeaning(name, birthDate);
 
@@ -61,15 +66,9 @@ router.post('/name-analysis', requireCredits('name-analysis'), async (req, res) 
  * Body: { dream: string }
  * Cost: 15 credits
  */
-router.post('/dream-interpretation', requireCredits('dream-interpretation'), async (req, res) => {
+router.post('/dream-interpretation', validateBody(dreamInterpretationSchema), requireCredits('dream-interpretation'), async (req, res) => {
   try {
     const { dream } = req.body;
-
-    if (!dream) {
-      return res.status(400).json({
-        error: 'Dream description is required'
-      });
-    }
 
     const result = await gemini.interpretDream(dream);
 
@@ -95,15 +94,9 @@ router.post('/dream-interpretation', requireCredits('dream-interpretation'), asy
  * Body: { theme: string, length?: 'short' | 'medium' | 'long' }
  * Cost: 20 credits
  */
-router.post('/story', requireCredits('story'), async (req, res) => {
+router.post('/story', validateBody(storySchema), requireCredits('story'), async (req, res) => {
   try {
     const { theme, length = 'medium' } = req.body;
-
-    if (!theme) {
-      return res.status(400).json({
-        error: 'Story theme is required'
-      });
-    }
 
     const result = await gemini.generateStory(theme, length);
 
@@ -129,15 +122,9 @@ router.post('/story', requireCredits('story'), async (req, res) => {
  * Body: { message: string }
  * Cost: 5 credits
  */
-router.post('/chat', requireCredits('chat'), async (req, res) => {
+router.post('/chat', validateBody(chatSchema), requireCredits('chat'), async (req, res) => {
   try {
     const { message } = req.body;
-
-    if (!message) {
-      return res.status(400).json({
-        error: 'Message is required'
-      });
-    }
 
     const result = await gemini.generateText(message);
 
@@ -163,15 +150,9 @@ router.post('/chat', requireCredits('chat'), async (req, res) => {
  * Body: { imageUrl?: string, base64Image?: string, birthDate?: string }
  * Cost: 25 credits (Vision API is more expensive)
  */
-router.post('/face-reading', requireCredits('face-reading'), async (req, res) => {
+router.post('/face-reading', validateBody(faceReadingSchema), requireCredits('face-reading'), async (req, res) => {
   try {
     const { imageUrl, base64Image, birthDate } = req.body;
-
-    if (!imageUrl && !base64Image) {
-      return res.status(400).json({
-        error: 'Either imageUrl or base64Image is required'
-      });
-    }
 
     let result;
     if (base64Image) {
@@ -202,15 +183,9 @@ router.post('/face-reading', requireCredits('face-reading'), async (req, res) =>
  * Body: { birthDate: string, birthTime: string, gender: 'male' | 'female' }
  * Cost: 25 credits
  */
-router.post('/saju', requireCredits('saju'), async (req, res) => {
+router.post('/saju', validateBody(sajuSchema), requireCredits('saju'), async (req, res) => {
   try {
     const { birthDate, birthTime, gender } = req.body;
-
-    if (!birthDate || !birthTime || !gender) {
-      return res.status(400).json({
-        error: 'Birth date, birth time, and gender are required'
-      });
-    }
 
     const result = await openai.analyzeSaju(birthDate, birthTime, gender);
 
@@ -236,15 +211,9 @@ router.post('/saju', requireCredits('saju'), async (req, res) => {
  * Body: { question: string }
  * Cost: 20 credits
  */
-router.post('/tarot', requireCredits('tarot'), async (req, res) => {
+router.post('/tarot', validateBody(tarotSchema), requireCredits('tarot'), async (req, res) => {
   try {
     const { question } = req.body;
-
-    if (!question) {
-      return res.status(400).json({
-        error: 'Question is required'
-      });
-    }
 
     const result = await openai.readTarot(question);
 
@@ -270,15 +239,9 @@ router.post('/tarot', requireCredits('tarot'), async (req, res) => {
  * Body: { birthDate: string }
  * Cost: 15 credits
  */
-router.post('/tojeong', requireCredits('tojeong'), async (req, res) => {
+router.post('/tojeong', validateBody(tojeongSchema), requireCredits('tojeong'), async (req, res) => {
   try {
     const { birthDate } = req.body;
-
-    if (!birthDate) {
-      return res.status(400).json({
-        error: 'Birth date is required'
-      });
-    }
 
     const result = await openai.predictTojeong(birthDate);
 

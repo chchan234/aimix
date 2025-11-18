@@ -12,7 +12,7 @@ import { supabase } from '../db/supabase.js';
 import { generateVerificationToken, getTokenExpiration, sendVerificationEmail } from '../services/email.js';
 import { createRefreshToken } from '../services/refreshToken.js';
 import { rateLimitByIP } from '../middleware/rateLimit.js';
-import { verifyAndConsumeStateToken } from '../utils/oauth-state.js';
+import { generateStateToken, verifyAndConsumeStateToken } from '../utils/oauth-state.js';
 
 // Validation schemas
 const registerSchema = z.object({
@@ -303,7 +303,6 @@ router.post('/login', rateLimitByIP(5, 60 * 1000), async (req, res) => {
  * Generate OAuth state token for CSRF protection
  */
 router.get('/oauth/state', (req, res) => {
-  const { generateStateToken } = require('../utils/oauth-state.js');
   const state = generateStateToken();
   res.json({ state });
 });

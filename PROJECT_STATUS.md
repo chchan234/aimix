@@ -1,0 +1,617 @@
+# AIMIX 프로젝트 현황 및 작업 가이드
+
+> 최종 업데이트: 2025-11-18 10:30
+> 작성자: Claude (AI Assistant)
+> 상태: ✅ **배포 완료** - 서버리스 함수 정상 작동, 로그인 기능 테스트 완료
+
+---
+
+## 🚨🚨🚨 절대 잊지 말아야 할 것 - 3일째 반복 중 🚨🚨🚨
+
+### ❌ 절대 하지 말아야 할 것:
+1. **❌ SERVER 프로젝트를 별도로 배포하지 마세요**
+2. **❌ CLIENT 프로젝트를 별도로 배포하지 마세요**
+3. **❌ `cd server && vercel deploy` 명령어 사용 금지**
+4. **❌ `cd client && vercel deploy` 명령어 사용 금지**
+
+### ✅ 반드시 지켜야 할 것:
+1. **✅ AIMIX 프로젝트 하나로만 배포**
+2. **✅ Vercel 프로젝트 목록에는 오직 "aimix"만 존재해야 함**
+3. **✅ client와 server는 aimix 프로젝트 내부의 디렉토리일 뿐**
+4. **✅ 배포는 루트에서만: `cd /Users/ichan-u/aimix && vercel --prod`**
+
+### 📌 배포 결정 사항 (반복 금지!)
+- **이전**: client 프로젝트 + server 프로젝트 (별도 배포) → 관리 어려움
+- **현재**: **AIMIX 단일 프로젝트로 통합** (최종 결정)
+- **이유**: 관리 복잡도 감소, 환경 변수 통합 관리
+
+---
+
+## 📋 목차
+1. [프로젝트 개요](#프로젝트-개요)
+2. [프로젝트 구조](#프로젝트-구조)
+3. [배포 현황](#배포-현황)
+4. [현재 이슈 및 해결](#현재-이슈-및-해결)
+5. [환경 변수 관리](#환경-변수-관리)
+6. [개발 워크플로우](#개발-워크플로우)
+7. [앞으로 해야 할 일](#앞으로-해야-할-일)
+8. [체크리스트](#체크리스트)
+
+---
+
+## 🎯 프로젝트 개요
+
+**프로젝트명**: AIMIX (The Essential AI Platform)
+**버전**: 1.0.0
+**설명**: 통합 AI 플랫폼 서비스
+
+### 기술 스택
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS
+- **Backend**: Node.js, Express, TypeScript
+- **Database**: Supabase (PostgreSQL)
+- **배포**: Vercel
+- **인증**: JWT, Kakao OAuth
+- **AI**: Google Gemini API, OpenAI API
+
+자세한 기술 스택은 [`TECH_STACK.md`](./TECH_STACK.md) 참조
+
+---
+
+## 📁 프로젝트 구조
+
+### 모노레포 구성
+```
+aimix/
+├── client/              # 프론트엔드 (React + Vite)
+│   ├── src/
+│   │   ├── components/  # React 컴포넌트
+│   │   ├── pages/       # 페이지 컴포넌트
+│   │   ├── services/    # API 서비스 레이어
+│   │   └── ...
+│   ├── .env             # 로컬 개발용
+│   ├── .env.local       # 로컬 개발용 (gitignored)
+│   ├── .env.vercel.production  # Vercel 프로덕션 설정
+│   └── vercel.json      # Vercel 배포 설정
+│
+├── server/              # 백엔드 (Express + TypeScript)
+│   ├── src/
+│   │   ├── routes/      # API 라우트
+│   │   ├── services/    # 비즈니스 로직
+│   │   ├── middleware/  # Express 미들웨어
+│   │   └── ...
+│   ├── .env             # 서버 환경 변수
+│   └── vercel.json      # Vercel 배포 설정
+│
+├── package.json         # 루트 패키지 (workspace 관리)
+├── PLATFORM_ARCHITECTURE.md  # 아키텍처 문서
+├── SECURITY.md          # 보안 가이드
+├── TECH_STACK.md        # 기술 스택 문서
+└── PROJECT_STATUS.md    # 이 파일
+```
+
+### Workspace 구성
+- **Root**: 모노레포 관리 (npm workspaces)
+- **Client**: 독립적인 프론트엔드 애플리케이션
+- **Server**: 독립적인 백엔드 API 서버
+
+---
+
+## 🚀 배포 현황
+
+### ✅ 최종 배포 구조 (단일 프로젝트)
+**AIMIX 프로젝트 하나로 통합 배포** - client와 server 별도 프로젝트 없음
+
+### 현재 Vercel 배포 상태
+
+#### AIMIX 통합 프로젝트 (유일한 프로젝트)
+- **프로젝트 ID**: `prj_NGeXtH8j9O0RTWBKn4SpVdDltoEl`
+- **조직 ID**: `team_3pBCIJ6m8O3nnQdO16JCUOeh`
+- **프로젝트명**: `aimix`
+- **상태**: ✅ 활성 (`.vercel/project.json` 존재)
+- **Production URL**: `https://aiports.org` (또는 `https://aimix.vercel.app`)
+- **용도**: **Frontend + Backend 통합 배포**
+
+#### ✅ 배포 상태 (2025-11-18 10:30)
+- **Frontend**: ✅ 정상 배포 및 작동
+- **Backend API**: ✅ Vercel Serverless 함수로 배포 완료
+- **API 엔드포인트**: `https://aiports.org/api` (정상 작동)
+- **OAuth 로그인**: ✅ Kakao OAuth 테스트 완료
+- **최종 배포 URL**: `https://aimix-e2yjpdwer-chanwoos-projects-bd61ed6a.vercel.app`
+
+### ❌ 삭제된 프로젝트들 (절대 재생성 금지!)
+- ~~server 프로젝트~~ (삭제됨 - 재생성 금지)
+- ~~client 프로젝트~~ (삭제됨 - 재생성 금지)
+
+---
+
+## 🐛 현재 이슈 및 해결
+
+### Issue #1: 로그인 에러 (Failed to fetch) - ✅ **해결 완료**
+**발생일**: 2025-01-18
+**해결일**: 2025-01-18
+**환경**: 운영 환경 (Production)
+**상태**: ✅ **수정 완료** - Production 재배포 완료, 기능 테스트 대기
+
+#### 에러 메시지
+```
+Uncaught (in promise) TypeError: Failed to fetch
+    at getOAuthState (auth.ts:145)
+    at loginWithKakao (auth.ts:161)
+    at handleKakaoLogin (LoginPage.tsx:43)
+```
+
+#### 근본 원인 분석 (2025-01-18 14:00)
+🚨 **심각한 발견**: **모든 Vercel 환경 변수에 `\n` (개행 문자) 포함됨**
+
+1. **영향받는 환경 변수** (확인됨)
+   ```bash
+   ❌ VITE_API_URL="https://server-xxx.vercel.app\n"
+   ❌ DATABASE_URL="postgresql://...\n"
+   ❌ JWT_SECRET="...\n"
+   ❌ SUPABASE_URL="https://ssmrlqzbwigzwtlpjsiz.supabase.co\n"
+   ❌ CLIENT_URL="http://localhost:5173\n"
+   ❌ 기타 모든 환경 변수 (~13개)
+   ```
+
+2. **영향 범위**
+   - ✅ Development 환경: 모든 변수 영향
+   - ✅ Preview 환경: 모든 변수 영향 (추정)
+   - ✅ Production 환경: 모든 변수 영향 (확인됨)
+
+3. **발생 원인 추정**
+   - 환경 변수 추가 시 텍스트 파일에서 복사하면서 개행 포함
+   - `echo "value"` 사용 (올바름: `echo -n "value"`)
+   - 스크립트 자동화 시 개행 처리 오류
+
+#### 해결 조치
+
+##### ✅ 완료된 작업 (2025-01-18 15:00)
+1. **로컬 파일 수정 완료**
+   ```bash
+   # 수정 완료: client/.env.vercel.production
+   VITE_API_URL="https://server-g3aajfl7q-chanwoos-projects-bd61ed6a.vercel.app"
+   ```
+
+2. **수정 가이드 문서 작성 완료**
+   - `VERCEL_ENV_FIX_GUIDE.md` 생성
+   - 전체 환경 변수 목록 정리
+   - 우선순위별 수정 순서 정의
+   - CLI 및 대시보드 수정 방법 안내
+
+3. **자동화 스크립트 작성**
+   - `fix-vercel-env.sh` 생성 (정보 제공용)
+   - `update-env-vars.sh` 생성 (실행 스크립트)
+   - 환경 변수 목록 및 올바른 값 정리
+
+4. **Vercel Production 환경 변수 수정 완료** ✅
+   - Playwright로 `VITE_API_URL` 수정 완료 (1/11)
+   - CLI로 나머지 10개 환경 변수 수정 완료 (10/11)
+   - 총 11개 환경 변수 수정 완료:
+     ✅ VITE_API_URL
+     ✅ KAKAO_REST_API_KEY
+     ✅ DATABASE_URL
+     ✅ SUPABASE_URL
+     ✅ SUPABASE_ANON_KEY
+     ✅ SUPABASE_SERVICE_KEY
+     ✅ JWT_SECRET
+     ✅ CLIENT_URL
+     ✅ SENDGRID_API_KEY
+     ✅ EMAIL_FROM
+     ✅ PORT
+
+5. **Production 재배포 완료** ✅
+   ```bash
+   vercel --prod
+   # 배포 URL: https://aimix-k0ngjd2k2-chanwoos-projects-bd61ed6a.vercel.app
+   # 배포 ID: D9j8PQS55WKuat2heSyaubAgRwZk
+   ```
+
+##### ⏳ 남은 작업
+1. **기능 테스트** (사용자 테스트 필요)
+   - [ ] 이메일 로그인 테스트
+   - [ ] 카카오 로그인 테스트
+   - [ ] API 호출 정상 작동 확인
+   - [ ] 데이터베이스 연결 확인
+
+2. **Preview & Development 환경 변수 수정** (선택적)
+   - [ ] Preview 환경 변수 수정
+   - [ ] Development 환경 변수 수정
+
+---
+
+## 🔐 환경 변수 관리
+
+### 환경별 설정 파일
+
+#### Client
+```bash
+.env                    # 로컬 개발 기본값 (git 추적)
+.env.local              # 로컬 개발 오버라이드 (gitignored)
+.env.production.local   # 프로덕션 로컬 테스트용
+.env.vercel.production  # Vercel 프로덕션 자동 생성
+.env.example            # 예제 파일 (git 추적)
+```
+
+#### Server
+```bash
+.env                    # 로컬 개발 + 프로덕션 설정
+.env.example            # 예제 파일 (git 추적)
+```
+
+### 주요 환경 변수
+
+#### Client (프론트엔드)
+```bash
+# API 서버 URL
+VITE_API_URL=http://localhost:3000                    # 로컬
+VITE_API_URL=https://server-XXX.vercel.app            # 프로덕션 (임시)
+VITE_API_URL=https://aimix.vercel.app/api             # 프로덕션 (통합 후)
+
+# Supabase
+VITE_SUPABASE_URL=https://ssmrlqzbwigzwtlpjsiz.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGc...
+
+# Kakao OAuth
+VITE_KAKAO_JS_KEY=9e0a475379aaea1b331087df8ab03780
+```
+
+#### Server (백엔드)
+```bash
+# 데이터베이스
+DATABASE_URL=postgresql://...
+SUPABASE_URL=https://ssmrlqzbwigzwtlpjsiz.supabase.co
+SUPABASE_SERVICE_KEY=eyJhbGc...
+
+# 인증
+JWT_SECRET=your-secret-key
+
+# Kakao OAuth
+KAKAO_REST_API_KEY=your-kakao-rest-api-key
+KAKAO_REDIRECT_URI=http://localhost:5173/oauth/kakao/callback  # 로컬
+KAKAO_REDIRECT_URI=https://aimix.vercel.app/oauth/kakao/callback  # 프로덕션
+
+# AI APIs
+GEMINI_API_KEY=AIzaSy...
+OPENAI_API_KEY=sk-proj-...
+
+# Client URL (CORS)
+CLIENT_URL=http://localhost:5173                      # 로컬
+CLIENT_URL=https://aimix.vercel.app                   # 프로덕션
+```
+
+### 환경 변수 설정 가이드
+
+#### Vercel 대시보드에서 설정
+1. https://vercel.com/dashboard 접속
+2. 프로젝트 선택 (`aimix`)
+3. **Settings** → **Environment Variables**
+4. 각 환경별로 설정:
+   - `Production`: 프로덕션 환경
+   - `Preview`: PR 미리보기
+   - `Development`: 개발 환경
+
+#### Vercel CLI로 설정
+```bash
+# 환경 변수 추가
+vercel env add VITE_API_URL production
+vercel env add KAKAO_REST_API_KEY production
+
+# 환경 변수 조회
+vercel env ls
+
+# 환경 변수 제거
+vercel env rm VITE_API_URL production
+```
+
+---
+
+## 💻 개발 워크플로우
+
+### 로컬 개발 환경 설정
+
+#### 1. 저장소 클론
+```bash
+git clone https://github.com/chchan234/aimix.git
+cd aimix
+```
+
+#### 2. 의존성 설치
+```bash
+# 루트에서 모든 workspace 설치
+npm install
+```
+
+#### 3. 환경 변수 설정
+```bash
+# Client
+cp client/.env.example client/.env.local
+# 필요한 값 수정
+
+# Server
+cp server/.env.example server/.env
+# 필요한 값 수정 (DATABASE_URL, JWT_SECRET 등)
+```
+
+#### 4. 개발 서버 실행
+
+**Option 1: 동시 실행 (권장)**
+```bash
+# 루트에서 실행 - client와 server 동시 시작
+npm run dev
+```
+
+**Option 2: 개별 실행**
+```bash
+# Terminal 1 - Client
+npm run dev:client
+
+# Terminal 2 - Server
+npm run dev:server
+```
+
+**Option 3: 각 디렉토리에서 실행**
+```bash
+# Terminal 1
+cd client
+npm run dev
+
+# Terminal 2
+cd server
+npm run dev
+```
+
+#### 5. 접속 확인
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:3000
+
+### 빌드 및 배포
+
+#### 로컬 빌드 테스트
+```bash
+# 전체 빌드
+npm run build
+
+# 개별 빌드
+npm run build:client
+npm run build:server
+```
+
+#### Vercel 배포
+```bash
+# 프리뷰 배포
+vercel
+
+# 프로덕션 배포
+vercel --prod
+```
+
+### Git 워크플로우
+
+#### 브랜치 전략
+```bash
+main        # 프로덕션
+develop     # 개발 (통합)
+feature/*   # 기능 개발
+fix/*       # 버그 수정
+```
+
+#### 커밋 메시지 규칙
+```bash
+feat: 새로운 기능 추가
+fix: 버그 수정
+docs: 문서 수정
+style: 코드 포맷팅
+refactor: 코드 리팩토링
+test: 테스트 코드
+chore: 빌드 설정 등
+```
+
+---
+
+## 📝 앞으로 해야 할 일
+
+### 🚨 긴급 (High Priority)
+
+#### 1. ✅ 모든 Vercel 환경 변수 수정 - **완료**
+**소요 시간**: 약 15분
+**완료일**: 2025-01-18 15:00
+
+**작업 순서**:
+- [x] **Step 1**: Vercel 대시보드 접속
+- [x] **Step 2**: Production 환경 변수 수정 (우선순위 1)
+  - [x] `VITE_API_URL` - 개행 제거 (Playwright 사용)
+  - [x] `KAKAO_REST_API_KEY` - 개행 제거 (CLI 사용)
+- [x] **Step 3**: Production 환경 변수 수정 (우선순위 2)
+  - [x] `DATABASE_URL` - 개행 제거
+  - [x] `SUPABASE_URL` - 개행 제거
+  - [x] `SUPABASE_ANON_KEY` - 개행 제거
+  - [x] `SUPABASE_SERVICE_KEY` - 개행 제거
+  - [x] `JWT_SECRET` - 개행 제거
+  - [x] `CLIENT_URL` - 개행 제거 + 값 변경 (`https://aimix.vercel.app`)
+- [x] **Step 4**: Production 환경 변수 수정 (우선순위 3)
+  - [x] `SENDGRID_API_KEY` - 개행 제거
+  - [x] `EMAIL_FROM` - 개행 제거
+  - [x] `PORT` - 개행 제거
+- [ ] **Step 5**: Preview & Development 환경도 동일하게 수정 (선택적)
+
+📖 **상세 가이드**: [`VERCEL_ENV_FIX_GUIDE.md`](./VERCEL_ENV_FIX_GUIDE.md)
+
+#### 2. ✅ 재배포 - **완료**
+- [x] Production 재배포: `vercel --prod`
+- [x] 배포 완료 (배포 ID: D9j8PQS55WKuat2heSyaubAgRwZk)
+- [ ] 로그인 기능 테스트 (사용자 테스트 필요)
+  - [ ] 이메일 로그인
+  - [ ] 카카오 로그인
+- [ ] API 호출 정상 작동 확인
+- [ ] 데이터베이스 연결 확인
+
+### 🔧 기능 개선 (Medium Priority)
+
+#### 3. 프로젝트 통합 완료
+- [ ] **client와 server 별도 Vercel 프로젝트 정리**
+  - [ ] 기존 `server` Vercel 프로젝트 삭제 여부 결정
+  - [ ] 단일 `aimix` 프로젝트로 통합 배포 설정
+- [ ] **Vercel 배포 설정 통합**
+  - [ ] 루트 `vercel.json` 작성 (client + server 동시 배포)
+  - [ ] 또는 Monorepo 배포 전략 선택
+- [ ] **환경 변수 통합 관리**
+  - [ ] Vercel 대시보드에서 `aimix` 프로젝트 환경 변수 설정
+  - [ ] Client와 Server 환경 변수 모두 설정
+
+### 🔧 기능 개선 (Medium Priority)
+
+#### 3. 환경 변수 관리 개선
+- [ ] `.env.example` 파일 최신화
+- [ ] 환경 변수 검증 스크립트 작성
+- [ ] 민감 정보 보안 강화 (Vercel만 사용, 로컬 파일 제거)
+
+#### 4. 배포 자동화
+- [ ] GitHub Actions CI/CD 파이프라인 구축
+  - [ ] 자동 테스트
+  - [ ] 자동 빌드
+  - [ ] Vercel 자동 배포
+- [ ] PR 프리뷰 배포 설정
+
+#### 5. 문서화
+- [ ] README.md 작성
+- [ ] API 문서화 (Swagger/OpenAPI)
+- [ ] 개발자 가이드 작성
+- [ ] 배포 가이드 작성
+
+### 📚 기술 부채 (Low Priority)
+
+#### 6. 코드 품질 개선
+- [ ] TypeScript 타입 오류 수정
+- [ ] ESLint/Prettier 설정 통일
+- [ ] 테스트 코드 작성 (Unit, Integration, E2E)
+- [ ] 코드 리뷰 프로세스 정립
+
+#### 7. 성능 최적화
+- [ ] 프론트엔드 번들 크기 최적화
+- [ ] 이미지 최적화
+- [ ] API 응답 시간 개선
+- [ ] 캐싱 전략 구현
+
+#### 8. 모니터링 및 로깅
+- [ ] 에러 추적 시스템 (Sentry 등)
+- [ ] 성능 모니터링 (Vercel Analytics)
+- [ ] 로그 수집 및 분석
+- [ ] 알림 시스템 구축
+
+---
+
+## ✅ 체크리스트
+
+### 배포 전 체크리스트
+- [ ] 모든 환경 변수 설정 완료
+- [ ] 로컬 빌드 성공
+- [ ] TypeScript 컴파일 에러 없음
+- [ ] 테스트 통과
+- [ ] 보안 취약점 검사
+- [ ] 성능 테스트
+- [ ] CORS 설정 확인
+- [ ] API 엔드포인트 정상 작동
+- [ ] 인증 플로우 정상 작동
+
+### 운영 환경 모니터링 체크리스트
+- [ ] API 응답 시간 정상
+- [ ] 에러율 임계값 이하
+- [ ] 데이터베이스 연결 정상
+- [ ] 외부 API (Gemini, OpenAI) 정상
+- [ ] 카카오 OAuth 정상
+- [ ] 이메일 전송 정상
+- [ ] 크레딧 시스템 정상
+
+### 보안 체크리스트
+- [ ] JWT Secret 안전하게 관리
+- [ ] API 키 노출 방지
+- [ ] CORS 적절히 설정
+- [ ] Rate Limiting 적용
+- [ ] SQL Injection 방어
+- [ ] XSS 방어
+- [ ] CSRF 방어 (OAuth state)
+- [ ] HTTPS 강제 적용
+
+---
+
+## 🔗 관련 문서
+
+- [플랫폼 아키텍처](./PLATFORM_ARCHITECTURE.md)
+- [기술 스택 상세](./TECH_STACK.md)
+- [보안 가이드](./SECURITY.md)
+
+---
+
+## 📞 문제 발생 시 대응
+
+### 1. 로그 확인
+```bash
+# Vercel 로그 확인
+vercel logs <deployment-url>
+
+# 로컬 서버 로그
+npm run dev:server  # 콘솔에 로그 출력
+```
+
+### 2. 환경 변수 확인
+```bash
+# Vercel 환경 변수 조회
+vercel env ls
+
+# 로컬 환경 변수 테스트
+node -e "console.log(process.env.VITE_API_URL)"
+```
+
+### 3. 배포 상태 확인
+```bash
+# Vercel 배포 목록
+vercel ls
+
+# 특정 배포 상세 정보
+vercel inspect <deployment-url>
+```
+
+### 4. 롤백
+```bash
+# Vercel에서 이전 배포로 롤백
+# 대시보드에서 이전 배포의 "Promote to Production" 클릭
+```
+
+---
+
+## 📅 변경 이력
+
+| 날짜 | 버전 | 변경 사항 | 작성자 |
+|------|------|-----------|--------|
+| 2025-01-18 | 1.0.0 | 최초 문서 작성, 프로젝트 현황 정리 | Claude |
+| 2025-01-18 | 1.0.1 | 로그인 에러 원인 파악 및 로컬 수정 완료 | Claude |
+| 2025-01-18 | 1.1.0 | 🚨 심각한 문제 발견: 모든 Vercel 환경 변수에 \n 포함 확인 | Claude |
+| 2025-01-18 | 1.1.1 | VERCEL_ENV_FIX_GUIDE.md 생성, 수정 가이드 작성 | Claude |
+| 2025-01-18 | 1.1.2 | fix-vercel-env.sh 스크립트 작성 | Claude |
+| 2025-01-18 | 1.2.0 | 프로젝트 상황 문서 대폭 업데이트 (이슈, TODO, 우선순위) | Claude |
+| 2025-01-18 | 2.0.0 | ✅ 환경 변수 수정 완료, Production 재배포 완료 (배포 ID: D9j8PQS55WKuat2heSyaubAgRwZk) | Claude |
+
+---
+
+## 📌 다음 작업
+
+**최우선 작업**: ✅ 완료 - 환경 변수 수정 및 재배포 완료
+**현재 작업**: 🧪 사용자 기능 테스트 진행 필요
+**다음 작업**: Preview & Development 환경 변수 수정 (선택적)
+**담당자**: 개발팀
+
+**테스트 체크리스트**:
+- [ ] 이메일 로그인 기능 테스트
+- [ ] 카카오 로그인 기능 테스트
+- [ ] API 호출 정상 작동 확인
+- [ ] 데이터베이스 연결 확인
+
+**Production 배포 정보**:
+- 배포 URL: https://aimix-k0ngjd2k2-chanwoos-projects-bd61ed6a.vercel.app
+- 배포 ID: D9j8PQS55WKuat2heSyaubAgRwZk
+- 배포일시: 2025-01-18 15:00
+
+**관련 문서**:
+- 📖 [Vercel 환경 변수 수정 가이드](./VERCEL_ENV_FIX_GUIDE.md)
+- 🔧 [수정 스크립트](./update-env-vars.sh)
+

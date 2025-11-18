@@ -1,18 +1,48 @@
 import { PromptManager } from './prompt-manager';
 import { OpenAIClient } from './openai-client';
+import { GeminiClient } from './gemini-client';
 import { GeminiImageClient } from './gemini-image-client';
 import type { Redis } from 'ioredis';
 import { z } from 'zod';
 
 export class PromptEngine {
   private promptManager: PromptManager;
-  private openai: OpenAIClient;
-  private gemini: GeminiImageClient;
+  private openai: OpenAIClient | null = null;
+  private gemini: GeminiClient | null = null;
+  private geminiImage: GeminiImageClient | null = null;
 
   constructor(redis?: Redis) {
     this.promptManager = new PromptManager(redis);
-    this.openai = new OpenAIClient();
-    this.gemini = new GeminiImageClient();
+
+    // Only initialize clients if their API keys are available
+    if (process.env.OPENAI_API_KEY) {
+      this.openai = new OpenAIClient();
+    }
+    if (process.env.GEMINI_API_KEY) {
+      this.gemini = new GeminiClient();
+      this.geminiImage = new GeminiImageClient();
+    }
+  }
+
+  private ensureOpenAI(): OpenAIClient {
+    if (!this.openai) {
+      throw new Error('OpenAI client not available - OPENAI_API_KEY not configured');
+    }
+    return this.openai;
+  }
+
+  private ensureGemini(): GeminiClient {
+    if (!this.gemini) {
+      throw new Error('Gemini client not available - GEMINI_API_KEY not configured');
+    }
+    return this.gemini;
+  }
+
+  private ensureGeminiImage(): GeminiImageClient {
+    if (!this.geminiImage) {
+      throw new Error('Gemini Image client not available - GEMINI_API_KEY not configured');
+    }
+    return this.geminiImage;
   }
 
   /**
@@ -47,7 +77,7 @@ export class PromptEngine {
 
     // 3. Execute AI request
     const params = template.parameters as any;
-    const response = await this.openai.chat(
+    const response = await this.ensureOpenAI().chat(
       [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt },
@@ -70,7 +100,7 @@ export class PromptEngine {
     // 5. Parse result
     let result: any;
     if (template.outputFormat === 'json') {
-      result = this.openai.parseJSON(response.content);
+      result = this.ensureOpenAI().parseJSON(response.content);
 
       // Validate with Zod if schema provided
       if (template.validationSchema) {
@@ -126,7 +156,7 @@ export class PromptEngine {
 
     // 3. Execute AI request
     const params = template.parameters as any;
-    const response = await this.openai.vision(imageUrl, fullPrompt, {
+    const response = await this.ensureOpenAI().vision(imageUrl, fullPrompt, {
       temperature: params.temperature ?? 0.7,
       maxTokens: params.max_tokens ?? 2000,
       responseFormat: params.response_format as 'json' | 'text',
@@ -142,7 +172,7 @@ export class PromptEngine {
     // 5. Parse result
     let result: any;
     if (template.outputFormat === 'json') {
-      result = this.openai.parseJSON(response.content);
+      result = this.ensureOpenAI().parseJSON(response.content);
     } else {
       result = response.content;
     }
@@ -189,28 +219,28 @@ export class PromptEngine {
       // 3. Execute based on mode
       if (!inputImages || inputImages.length === 0) {
         // Generation mode
-        imageBase64 = await this.gemini.generate(prompt, {
+        imageBase64 = await this.ensureGeminiImage().generate(prompt, {
           aspectRatio: params.aspect_ratio ?? '1:1',
           numberOfImages: params.number_of_images ?? 1,
         });
       } else if (inputImages.length === 1) {
         // Edit mode
         const imageData = inputImages[0].startsWith('http')
-          ? await this.gemini.urlToBase64(inputImages[0])
+          ? await this.ensureGeminiImage().urlToBase64(inputImages[0])
           : inputImages[0];
 
-        imageBase64 = await this.gemini.edit(imageData, prompt, {
+        imageBase64 = await this.ensureGeminiImage().edit(imageData, prompt, {
           aspectRatio: params.aspect_ratio ?? '1:1',
         });
       } else {
         // Merge mode
         const imageDataArray = await Promise.all(
           inputImages.map((img) =>
-            img.startsWith('http') ? this.gemini.urlToBase64(img) : Promise.resolve(img)
+            img.startsWith('http') ? this.ensureGeminiImage().urlToBase64(img) : Promise.resolve(img)
           )
         );
 
-        imageBase64 = await this.gemini.merge(imageDataArray, prompt, {
+        imageBase64 = await this.ensureGeminiImage().merge(imageDataArray, prompt, {
           aspectRatio: params.aspect_ratio ?? '1:1',
         });
       }
@@ -248,4 +278,5 @@ export function getPromptEngine(redis?: Redis): PromptEngine {
 
 export * from './prompt-manager';
 export * from './openai-client';
+export * from './gemini-client';
 export * from './gemini-image-client';
