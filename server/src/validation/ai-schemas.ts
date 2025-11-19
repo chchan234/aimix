@@ -323,3 +323,15 @@ export const personalColorSchema = z.object({
 );
 
 export type PersonalColorInput = z.infer<typeof personalColorSchema>;
+
+// Professional Headshot Schema
+export const professionalHeadshotSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+  style: z.enum(['professional', 'business', 'casual']).optional().default('professional'),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+export type ProfessionalHeadshotInput = z.infer<typeof professionalHeadshotSchema>;

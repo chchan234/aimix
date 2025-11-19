@@ -63,6 +63,17 @@ export async function analyzeSaju(
 }
 
 /**
+ * Deep Saju 2025 Analysis (심층 신년운세)
+ */
+export async function analyzeDeepSaju2025(
+  birthDate: string,
+  birthTime: string,
+  gender: 'male' | 'female'
+) {
+  return apiRequest('/api/ai/deep-saju-2025', { birthDate, birthTime, gender });
+}
+
+/**
  * Analyze face for fortune reading
  */
 export async function analyzeFaceReading(base64Image: string) {
@@ -431,4 +442,9 @@ export async function generateBabyFace(parent1Image: string, parent2Image: strin
 // Personal Color Analysis
 export async function analyzePersonalColor(base64Image: string) {
   return apiRequest('/api/image/personal-color', { base64Image });
+}
+
+// Professional Headshot
+export async function generateProfessionalHeadshot(base64Image: string, style: 'professional' | 'business' | 'casual' = 'professional') {
+  return apiRequest('/api/image/professional-headshot', { base64Image, style });
 }

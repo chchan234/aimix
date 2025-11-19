@@ -21,6 +21,7 @@ import {
   petSoulmateSchema,
   babyFaceSchema,
   personalColorSchema,
+  professionalHeadshotSchema,
 } from '../validation/ai-schemas.js';
 import * as gemini from '../services/gemini.js';
 
@@ -401,7 +402,38 @@ router.post('/baby-face', validateBody(babyFaceSchema), requireCredits('baby-fac
   }
 });
 
-// 14. Personal Color Analysis - 퍼스널 컬러 진단
+// 14. Professional Headshot - AI 프로페셔널 헤드샷
+router.post('/professional-headshot', validateBody(professionalHeadshotSchema), requireCredits('professional-headshot'), async (req, res) => {
+  try {
+    const { imageUrl, base64Image, style } = req.body;
+
+    const imageBase64 = base64Image ? base64Image.split(',')[1] : imageUrl;
+
+    const result = await gemini.generateProfessionalHeadshot(imageBase64, style);
+
+    if (result.success) {
+      res.json({
+        success: true,
+        imageData: result.imageData,
+        mimeType: result.mimeType,
+        model: result.model,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: result.error || 'Failed to generate professional headshot'
+      });
+    }
+  } catch (error) {
+    console.error('Professional headshot error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// 15. Personal Color Analysis - 퍼스널 컬러 진단
 router.post('/personal-color', validateBody(personalColorSchema), requireCredits('personal-color'), async (req, res) => {
   try {
     const { imageUrl, base64Image } = req.body;

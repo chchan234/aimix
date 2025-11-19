@@ -243,6 +243,64 @@ router.post('/saju', validateBody(sajuSchema), requireCredits('saju'), async (re
 });
 
 /**
+ * POST /api/ai/deep-saju-2025
+ * Deep Saju Analysis for 2025 (심층 신년운세) using OpenAI GPT
+ *
+ * Body: { birthDate: string, birthTime: string, gender: 'male' | 'female' }
+ * Cost: 50 credits
+ */
+router.post('/deep-saju-2025', validateBody(sajuSchema), requireCredits('deep-fortune-2025'), async (req, res) => {
+  try {
+    const { birthDate, birthTime, gender } = req.body;
+    const userId = req.user!.userId;
+
+    const result = await openai.analyzeDeepSaju2025(birthDate, birthTime, gender);
+
+    if (result.success) {
+      // Try to save result to database (optional)
+      try {
+        const service = await db
+          .select()
+          .from(services)
+          .where(eq(services.serviceType, 'deep-fortune-2025'))
+          .limit(1);
+
+        if (service.length > 0) {
+          // Save result to database
+          const expiresAt = new Date();
+          expiresAt.setDate(expiresAt.getDate() + 30); // 30 days expiry for deep analysis
+
+          await db.insert(serviceResults).values({
+            userId,
+            serviceId: service[0].id,
+            inputData: { birthDate, birthTime, gender },
+            resultData: result.analysis,
+            aiModel: result.model,
+            expiresAt,
+          });
+        } else {
+          console.warn('Service "deep-fortune-2025" not found in database, skipping result save');
+        }
+      } catch (dbError) {
+        console.error('Failed to save result to database:', dbError);
+        // Continue anyway - don't fail the request
+      }
+
+      res.json(result);
+    } else {
+      res.status(500).json({
+        error: ('error' in result && result.error) || 'Failed to analyze deep saju'
+      });
+    }
+  } catch (error) {
+    console.error('Deep Saju 2025 analysis error:', error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
  * POST /api/ai/palmistry
  * Analyze palmistry from hand image using OpenAI Vision
  *

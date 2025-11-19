@@ -70,34 +70,34 @@ export default function EntertainmentPage() {
   }), [t]);
 
   const colorClasses: Record<string, string> = {
-    purple: 'bg-purple-500/20 text-purple-400',
-    blue: 'bg-blue-500/20 text-blue-400',
-    green: 'bg-green-500/20 text-green-400',
-    cyan: 'bg-cyan-500/20 text-cyan-400',
-    pink: 'bg-pink-500/20 text-pink-400',
-    orange: 'bg-orange-500/20 text-orange-400',
+    purple: 'bg-purple-200/60 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400',
+    blue: 'bg-blue-200/60 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400',
+    green: 'bg-emerald-200/60 text-emerald-600 dark:bg-green-500/20 dark:text-green-400',
+    cyan: 'bg-cyan-200/60 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400',
+    pink: 'bg-pink-200/60 text-pink-600 dark:bg-pink-500/20 dark:text-pink-400',
+    orange: 'bg-orange-200/60 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400',
   };
 
   return (
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       <div className="px-4">
-        <h1 className="text-white text-3xl font-bold mb-2">
+        <h1 className="text-foreground text-3xl font-serif font-bold mb-2">
           {t('pages.entertainment.title')}
         </h1>
-        <p className="text-[#ab9eb7] text-base">
+        <p className="text-muted-foreground text-base">
           {t('pages.entertainment.subtitle')}
         </p>
       </div>
 
       {/* Psychology Tests */}
       <div>
-        <h2 className="text-white text-xl font-bold px-4 pb-4">{t('pages.entertainment.sections.psychology')}</h2>
+        <h2 className="text-foreground text-xl font-serif font-bold px-4 pb-4">{t('pages.entertainment.sections.psychology')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.psychology.map((service, index) => (
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className="flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer"
+              className="flex flex-col gap-4 p-6 rounded-2xl glass-panel hover:bg-white/90 dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition cursor-pointer"
             >
               <div
                 className={`flex items-center justify-center w-16 h-16 ${
@@ -109,10 +109,10 @@ export default function EntertainmentPage() {
                 </span>
               </div>
               <div className="flex flex-col gap-2">
-                <p className="text-white text-lg font-semibold">
+                <p className="text-foreground text-lg font-semibold font-serif">
                   {service.title}
                 </p>
-                <p className="text-[#ab9eb7] text-sm">{service.description}</p>
+                <p className="text-muted-foreground text-sm">{service.description}</p>
               </div>
             </div>
           ))}
@@ -127,7 +127,7 @@ export default function EntertainmentPage() {
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className="flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer"
+              className="flex flex-col gap-4 p-6 rounded-2xl glass-panel hover:bg-white/90 dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition cursor-pointer"
             >
               <div
                 className={`flex items-center justify-center w-16 h-16 ${
@@ -139,10 +139,10 @@ export default function EntertainmentPage() {
                 </span>
               </div>
               <div className="flex flex-col gap-2">
-                <p className="text-white text-lg font-semibold">
+                <p className="text-foreground text-lg font-semibold font-serif">
                   {service.title}
                 </p>
-                <p className="text-[#ab9eb7] text-sm">{service.description}</p>
+                <p className="text-muted-foreground text-sm">{service.description}</p>
               </div>
             </div>
           ))}

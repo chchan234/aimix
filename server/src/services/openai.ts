@@ -940,7 +940,18 @@ JSON 형식으로 응답해주세요:
  */
 export async function analyzeFaceReading(imageUrl: string, birthDate?: string) {
   try {
-    const prompt = FACE_READING_PROMPT(birthDate);
+    // Fetch template from DB using PromptManager
+    const { PromptManager } = await import('./prompt-engine/prompt-manager.js');
+    const promptManager = new PromptManager();
+
+    const template = await promptManager.getTemplate('face-reading');
+    if (!template) {
+      throw new Error('Face reading prompt template not found');
+    }
+
+    // Render prompt with variables
+    const birthDateInfo = birthDate ? `생년월일: ${birthDate}` : '';
+    const prompt = promptManager.renderPrompt(template.userPromptTemplate, { birthDateInfo });
 
     const response = await client.vision(imageUrl, prompt, {
       temperature: 0.7,
@@ -949,6 +960,13 @@ export async function analyzeFaceReading(imageUrl: string, birthDate?: string) {
     });
 
     const analysis = client.parseJSON(response.content);
+
+    // Track performance
+    await promptManager.trackPerformance(
+      template.id,
+      response.usage.totalTokens,
+      response.responseTime
+    );
 
     return {
       success: true,
@@ -990,12 +1008,28 @@ export async function analyzeFaceReadingFromBase64(base64Image: string, birthDat
   }
 }
 
+
 /**
  * Analyze Saju (사주팔자) using GPT-4
  */
 export async function analyzeSaju(birthDate: string, birthTime: string, gender: 'male' | 'female') {
   try {
-    const prompt = SAJU_PROMPT(birthDate, birthTime, gender);
+    // Fetch template from DB using PromptManager
+    const { PromptManager } = await import('./prompt-engine/prompt-manager.js');
+    const promptManager = new PromptManager();
+
+    const template = await promptManager.getTemplate('saju');
+    if (!template) {
+      throw new Error('Saju prompt template not found');
+    }
+
+    // Render prompt with variables
+    const genderKo = gender === 'male' ? '남성' : '여성';
+    const prompt = promptManager.renderPrompt(template.userPromptTemplate, {
+      birthDate,
+      birthTime,
+      gender: genderKo
+    });
 
     const response = await client.chat(
       [{ role: 'user', content: prompt }],
@@ -1008,6 +1042,13 @@ export async function analyzeSaju(birthDate: string, birthTime: string, gender: 
 
     const analysis = client.parseJSON(response.content);
 
+    // Track performance
+    await promptManager.trackPerformance(
+      template.id,
+      response.usage.totalTokens,
+      response.responseTime
+    );
+
     return {
       success: true,
       analysis,
@@ -1015,6 +1056,138 @@ export async function analyzeSaju(birthDate: string, birthTime: string, gender: 
     };
   } catch (error) {
     console.error('OpenAI Saju analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+/**
+ * Deep Saju Analysis for 2025 - 심층 신년운세 (10,000+ characters)
+ * Generates a comprehensive yearly fortune report
+ */
+export async function analyzeDeepSaju2025(birthDate: string, birthTime: string, gender: 'male' | 'female') {
+  try {
+    const genderKo = gender === 'male' ? '남성' : '여성';
+
+    const prompt = `당신은 대한민국 최고의 사주 명리학 전문가입니다.
+다음 정보를 바탕으로 2025년 심층 신년운세를 작성해주세요.
+
+생년월일: ${birthDate}
+태어난 시간: ${birthTime}
+성별: ${genderKo}
+
+반드시 10,000자 이상의 매우 상세한 보고서를 작성해주세요.
+각 섹션은 최소 1,000자 이상으로 상세하게 작성해야 합니다.
+
+다음 JSON 형식으로 응답해주세요:
+
+{
+  "summary": {
+    "overallFortune": "2025년 전체 운세 개요 (최소 500자)",
+    "yearlyTheme": "올해의 테마와 키워드",
+    "luckyColor": "행운의 색상",
+    "luckyNumber": "행운의 숫자",
+    "luckyDirection": "길한 방향"
+  },
+  "fourPillars": {
+    "year": "연주 분석",
+    "month": "월주 분석",
+    "day": "일주 분석",
+    "time": "시주 분석",
+    "interpretation": "사주팔자 종합 해석 (최소 1,000자)"
+  },
+  "monthlyFortune": {
+    "january": {
+      "overall": "1월 전체 운세",
+      "career": "직업/사업운",
+      "love": "연애/결혼운",
+      "wealth": "재물운",
+      "health": "건강운",
+      "advice": "조언",
+      "luckyDays": [1, 15, 22],
+      "cautionDays": [7, 13]
+    },
+    "february": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
+    "march": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
+    "april": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
+    "may": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
+    "june": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
+    "july": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
+    "august": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
+    "september": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
+    "october": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
+    "november": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
+    "december": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] }
+  },
+  "careerFortune": {
+    "overall": "2025년 직업운 전체 분석 (최소 1,500자)",
+    "bestMonths": ["3월", "7월", "10월"],
+    "cautionMonths": ["5월", "9월"],
+    "opportunities": ["기회1", "기회2", "기회3"],
+    "challenges": ["도전1", "도전2"],
+    "advice": "직업 관련 조언 (최소 500자)"
+  },
+  "wealthFortune": {
+    "overall": "2025년 재물운 전체 분석 (최소 1,500자)",
+    "investmentAdvice": "투자 관련 조언",
+    "savingsAdvice": "저축 관련 조언",
+    "spendingCaution": "지출 주의사항",
+    "bestMonths": ["4월", "8월", "11월"],
+    "cautionMonths": ["2월", "6월"],
+    "luckyNumbers": [3, 7, 12]
+  },
+  "loveFortune": {
+    "overall": "2025년 연애운/결혼운 전체 분석 (최소 1,500자)",
+    "single": "미혼자를 위한 조언",
+    "relationship": "연애 중인 사람을 위한 조언",
+    "married": "기혼자를 위한 조언",
+    "bestMonths": ["2월", "5월", "9월"],
+    "cautionMonths": ["7월", "12월"]
+  },
+  "healthFortune": {
+    "overall": "2025년 건강운 전체 분석 (최소 1,000자)",
+    "weakPoints": ["주의할 신체 부위1", "주의할 신체 부위2"],
+    "preventionAdvice": "예방을 위한 조언",
+    "exerciseRecommendation": "추천 운동",
+    "dietAdvice": "식이 조언"
+  },
+  "relationshipFortune": {
+    "family": "가족 관계 운세 (최소 500자)",
+    "friends": "친구/사회 관계 운세 (최소 500자)",
+    "colleagues": "직장 내 인간관계 (최소 500자)"
+  },
+  "spiritualGuidance": {
+    "meditation": "명상 및 마음 수양 조언",
+    "luckyCharms": ["부적/액세서리 추천"],
+    "avoidance": ["피해야 할 것들"],
+    "rituals": "길한 의식이나 습관"
+  },
+  "yearlyAdvice": "2025년을 위한 종합 조언 (최소 1,000자)"
+}
+
+각 월별 운세는 반드시 6개 항목(overall, career, love, wealth, health, advice)을 모두 상세하게 작성하세요.
+모든 텍스트는 구체적이고 실용적인 조언을 포함해야 합니다.`;
+
+    const response = await client.chat(
+      [{ role: 'user', content: prompt }],
+      {
+        temperature: 0.8,
+        maxTokens: 8000,
+        responseFormat: 'json',
+      }
+    );
+
+    const analysis = client.parseJSON(response.content);
+
+    return {
+      success: true,
+      analysis,
+      model: 'gpt-4o-mini',
+    };
+  } catch (error) {
+    console.error('OpenAI Deep Saju 2025 analysis error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -1813,6 +1986,207 @@ function getGeumjjokiGrade(score: number): { name: string; emoji: string; descri
   };
 }
 
+/**
+ * Deep Fortune 2025 - 2025년 심층 신년운세
+ * Generates comprehensive year-long fortune reading
+ */
+export async function analyzeDeepFortune2025(birthDate: string, birthTime?: string, gender?: 'male' | 'female') {
+  try {
+    const prompt = `당신은 한국의 사주 및 운세 전문가입니다. 2025년(을사년, 뱀띠) 신년을 맞아 상세한 1년 운세를 분석해주세요.
+
+생년월일: ${birthDate}
+${birthTime ? `태어난 시간: ${birthTime}` : ''}
+${gender ? `성별: ${gender === 'male' ? '남성' : '여성'}` : ''}
+
+다음 내용을 매우 상세하게 분석해주세요 (총 5,000-10,000자 분량):
+
+# 1. 2025년 전체 운세 개관
+- 을사년의 기운과 귀하의 사주와의 조화
+- 전반적인 운의 흐름 (상승/하강/평탄)
+- 올해의 핵심 키워드 3가지
+- 가장 주의해야 할 시기와 가장 좋은 시기
+
+# 2. 월별 상세 운세 (1월 ~ 12월)
+각 월마다 다음 항목을 포함:
+- 해당 월의 전체 운세 흐름
+- 주요 이벤트 및 기회
+- 주의할 점
+- 추천 활동
+
+# 3. 세부 운세 분석
+
+## 3.1 재물운 (財運)
+- 수입 전망 및 변동성
+- 투자 운세 (부동산, 주식, 사업 등)
+- 지출 주의사항
+- 재테크 추천 방향
+- 큰 돈이 들어오는 시기
+- 재물 손실 주의 시기
+
+## 3.2 직장운 / 사업운 (事業運)
+- 직장인: 승진, 평가, 이직 운세
+- 사업자: 매출, 확장, 계약 운세
+- 새로운 프로젝트 시작 길일
+- 주의해야 할 갈등 요소
+- 협력자 및 동업 운세
+
+## 3.3 연애운 / 결혼운 (戀愛運)
+- 솔로: 만남의 기회, 소개팅 운, 최적의 만남 시기
+- 연인: 관계 발전, 결혼 타이밍, 갈등 주의 시기
+- 기혼: 부부 관계, 가정의 화목, 주의사항
+- 이성에게 매력적으로 보이는 시기
+
+## 3.4 건강운 (健康運)
+- 전반적인 건강 상태
+- 주의해야 할 신체 부위
+- 취약한 시기와 관리법
+- 권장 운동 및 식습관
+- 정기 검진 추천 시기
+
+## 3.5 학업운 / 시험운 (學業運)
+- 학습 능률이 오르는 시기
+- 시험 운세 (입시, 자격증, 승진시험 등)
+- 집중력 향상 방법
+- 공부 방향 및 과목 추천
+
+## 3.6 대인관계운 (對人關係運)
+- 인간관계 전반의 흐름
+- 새로운 인연의 시기
+- 갈등 주의 인물 유형
+- 귀인운 (도움 받을 사람)
+- 네트워킹 최적 시기
+
+# 4. 길방위 및 길일
+- 2025년 귀하에게 좋은 방위
+- 이사, 여행 길방위
+- 중요한 일을 시작하기 좋은 날들
+- 피해야 할 흉일
+
+# 5. 행운 요소
+- 행운의 숫자
+- 행운의 색상
+- 행운의 아이템
+- 행운을 부르는 습관
+
+# 6. 2025년 실천 조언
+- 반드시 해야 할 일 TOP 3
+- 절대 해서는 안 될 일 TOP 3
+- 균형 잡힌 한 해를 위한 조언
+- 영적/정신적 성장 방법
+
+# 7. 10년 운세 맥락
+- 지난 2024년 복기
+- 2025년의 위치
+- 향후 2026-2027년 전망
+
+매우 상세하고 구체적으로 작성해주세요. 추상적인 표현보다는 실질적인 조언을 제공해주세요.
+
+JSON 형식으로 응답해주세요:
+{
+  "year": 2025,
+  "overview": {
+    "yearEnergy": "을사년 기운 설명",
+    "trend": "상승/하강/평탄",
+    "keywords": ["키워드1", "키워드2", "키워드3"],
+    "bestPeriod": "가장 좋은 시기",
+    "cautionPeriod": "주의할 시기"
+  },
+  "monthlyFortune": [
+    {
+      "month": 1,
+      "overall": "전체 운세",
+      "events": ["주요 이벤트"],
+      "cautions": ["주의사항"],
+      "recommendations": ["추천 활동"]
+    }
+  ],
+  "detailedFortune": {
+    "wealth": {
+      "income": "수입 전망",
+      "investment": "투자 운세",
+      "spending": "지출 주의",
+      "advice": "재테크 조언",
+      "luckyMonths": [좋은 달들],
+      "cautiousMonths": [주의할 달들]
+    },
+    "career": {
+      "employee": "직장인 운세",
+      "business": "사업자 운세",
+      "projectTiming": "프로젝트 시작 시기",
+      "conflicts": "갈등 요소",
+      "partnership": "협력 운세"
+    },
+    "love": {
+      "single": "솔로 운세",
+      "dating": "연인 운세",
+      "married": "기혼 운세",
+      "bestMonths": [좋은 달들]
+    },
+    "health": {
+      "overall": "전반적 건강",
+      "vulnerableAreas": ["주의 부위"],
+      "riskPeriods": ["취약 시기"],
+      "recommendations": ["권장 사항"],
+      "checkupTiming": "검진 추천 시기"
+    },
+    "study": {
+      "productivity": "학습 능률 시기",
+      "examLuck": "시험 운세",
+      "focus": "집중력 향상법",
+      "subjects": ["추천 과목/분야"]
+    },
+    "relationships": {
+      "trend": "인간관계 흐름",
+      "newConnections": "새 인연 시기",
+      "conflicts": "갈등 주의",
+      "benefactors": "귀인운",
+      "networking": "네트워킹 시기"
+    }
+  },
+  "luckyDirections": {
+    "favorable": ["좋은 방위"],
+    "moving": "이사 방위",
+    "travel": "여행 방위",
+    "avoid": ["피할 방위"]
+  },
+  "luckyElements": {
+    "numbers": [행운 숫자들],
+    "colors": ["행운 색상들"],
+    "items": ["행운 아이템들"],
+    "habits": ["행운 습관들"]
+  },
+  "actionAdvice": {
+    "mustDo": ["해야 할 일 3가지"],
+    "mustAvoid": ["피해야 할 일 3가지"],
+    "balance": "균형 조언",
+    "growth": "성장 방법"
+  },
+  "decadePerspective": {
+    "past2024": "2024년 복기",
+    "current2025": "2025년 위치",
+    "future": "2026-2027 전망"
+  }
+}`;
+
+    const result = await client.generateText(prompt, {
+      temperature: 0.7,
+      max_tokens: 16000, // Allow for very long response
+    });
+
+    return {
+      success: true,
+      analysis: result.content,
+      model: 'gpt-4o'
+    };
+  } catch (error) {
+    console.error('Deep Fortune 2025 analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
 export default {
   analyzeFaceReading,
   analyzeFaceReadingFromBase64,
@@ -1828,4 +2202,5 @@ export default {
   analyzeBigFive,
   analyzeStress,
   analyzeGeumjjoki,
+  analyzeDeepFortune2025,
 };

@@ -16,6 +16,13 @@ export default function FortunePage() {
         path: '/services/saju',
       },
       {
+        title: t('services.fortune.deepSaju2025.title'),
+        description: t('services.fortune.deepSaju2025.description'),
+        icon: 'auto_awesome',
+        color: 'indigo',
+        path: '/services/deep-saju-2025',
+      },
+      {
         title: t('services.fortune.faceReading.title'),
         description: t('services.fortune.faceReading.description'),
         icon: 'face',
@@ -72,34 +79,34 @@ export default function FortunePage() {
   }), [t]);
 
   const colorClasses: Record<string, string> = {
-    purple: 'bg-purple-500/20 text-purple-400',
-    blue: 'bg-blue-500/20 text-blue-400',
-    green: 'bg-green-500/20 text-green-400',
-    yellow: 'bg-yellow-500/20 text-yellow-400',
-    orange: 'bg-orange-500/20 text-orange-400',
-    pink: 'bg-pink-500/20 text-pink-400',
-    indigo: 'bg-indigo-500/20 text-indigo-400',
-    red: 'bg-red-500/20 text-red-400',
+    purple: 'bg-purple-200/60 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400',
+    blue: 'bg-blue-200/60 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400',
+    green: 'bg-emerald-200/60 text-emerald-600 dark:bg-green-500/20 dark:text-green-400',
+    yellow: 'bg-amber-200/60 text-amber-600 dark:bg-yellow-500/20 dark:text-yellow-400',
+    orange: 'bg-orange-200/60 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400',
+    pink: 'bg-pink-200/60 text-pink-600 dark:bg-pink-500/20 dark:text-pink-400',
+    indigo: 'bg-indigo-200/60 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400',
+    red: 'bg-rose-200/60 text-rose-600 dark:bg-red-500/20 dark:text-red-400',
   };
 
   return (
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       <div className="px-4">
-        <h1 className="text-white text-3xl font-bold mb-2">{t('pages.fortune.title')}</h1>
-        <p className="text-[#ab9eb7] text-base">
+        <h1 className="text-foreground text-3xl font-serif font-bold mb-2">{t('pages.fortune.title')}</h1>
+        <p className="text-muted-foreground text-base">
           {t('pages.fortune.subtitle')}
         </p>
       </div>
 
       {/* Traditional Fortune */}
       <div>
-        <h2 className="text-white text-xl font-bold px-4 pb-4">{t('pages.fortune.sections.traditional')}</h2>
+        <h2 className="text-foreground text-xl font-serif font-bold px-4 pb-4">{t('pages.fortune.sections.traditional')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.traditional.map((service, index) => (
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className={`flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition ${
+              className={`flex flex-col gap-4 p-6 rounded-2xl glass-panel hover:bg-white/90 dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
                 service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
               }`}
             >
@@ -113,10 +120,10 @@ export default function FortunePage() {
                 </span>
               </div>
               <div className="flex flex-col gap-2">
-                <p className="text-white text-lg font-semibold">
+                <p className="text-foreground text-lg font-semibold font-serif">
                   {service.title}
                 </p>
-                <p className="text-[#ab9eb7] text-sm">{service.description}</p>
+                <p className="text-muted-foreground text-sm">{service.description}</p>
                 {!service.path && (
                   <span className="text-xs text-yellow-500">준비 중</span>
                 )}
@@ -128,13 +135,13 @@ export default function FortunePage() {
 
       {/* Western Fortune */}
       <div>
-        <h2 className="text-white text-xl font-bold px-4 pb-4">{t('pages.fortune.sections.western')}</h2>
+        <h2 className="text-foreground text-xl font-serif font-bold px-4 pb-4">{t('pages.fortune.sections.western')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.western.map((service, index) => (
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className={`flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition ${
+              className={`flex flex-col gap-4 p-6 rounded-2xl glass-panel hover:bg-white/90 dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
                 service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
               }`}
             >
@@ -148,10 +155,10 @@ export default function FortunePage() {
                 </span>
               </div>
               <div className="flex flex-col gap-2">
-                <p className="text-white text-lg font-semibold">
+                <p className="text-foreground text-lg font-semibold font-serif">
                   {service.title}
                 </p>
-                <p className="text-[#ab9eb7] text-sm">{service.description}</p>
+                <p className="text-muted-foreground text-sm">{service.description}</p>
                 {!service.path && (
                   <span className="text-xs text-yellow-500">준비 중</span>
                 )}
@@ -163,13 +170,13 @@ export default function FortunePage() {
 
       {/* Compatibility */}
       <div>
-        <h2 className="text-white text-xl font-bold px-4 pb-4">{t('pages.fortune.sections.compatibility')}</h2>
+        <h2 className="text-foreground text-xl font-serif font-bold px-4 pb-4">{t('pages.fortune.sections.compatibility')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.compatibility.map((service, index) => (
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className={`flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition ${
+              className={`flex flex-col gap-4 p-6 rounded-2xl glass-panel hover:bg-white/90 dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
                 service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
               }`}
             >
@@ -183,10 +190,10 @@ export default function FortunePage() {
                 </span>
               </div>
               <div className="flex flex-col gap-2">
-                <p className="text-white text-lg font-semibold">
+                <p className="text-foreground text-lg font-semibold font-serif">
                   {service.title}
                 </p>
-                <p className="text-[#ab9eb7] text-sm">{service.description}</p>
+                <p className="text-muted-foreground text-sm">{service.description}</p>
                 {!service.path && (
                   <span className="text-xs text-yellow-500">준비 중</span>
                 )}

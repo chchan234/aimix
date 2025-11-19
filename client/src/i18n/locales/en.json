@@ -106,6 +106,10 @@
       "marriageCompatibility": {
         "title": "Marriage Compatibility",
         "description": "Married life prediction"
+      },
+      "deepSaju2025": {
+        "title": "2025 Deep Fortune",
+        "description": "10,000+ character detailed analysis"
       }
     },
     "personality": {
@@ -154,6 +158,14 @@
       "tattoo": {
         "title": "AI Tattoo Simulation",
         "description": "Virtual tattoo experience"
+      },
+      "professionalHeadshot": {
+        "title": "AI Professional Headshot",
+        "description": "Transform selfie to studio photo"
+      },
+      "personalColor": {
+        "title": "Personal Color Analysis",
+        "description": "Find colors that suit you"
       }
     },
     "entertainment": {
@@ -184,6 +196,14 @@
       "goldenChild": {
         "title": "AI Bad Habit Test",
         "description": "Bad habit diagnosis"
+      },
+      "petSoulmate": {
+        "title": "AI Pet Soulmate",
+        "description": "Your pet's past life and MBTI"
+      },
+      "babyFace": {
+        "title": "Baby Face Prediction",
+        "description": "Predict your future baby's face"
       }
     },
     "health": {

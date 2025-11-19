@@ -106,6 +106,10 @@
       "marriageCompatibility": {
         "title": "부부 궁합",
         "description": "결혼 생활 예측"
+      },
+      "deepSaju2025": {
+        "title": "2025 심층 신년운세",
+        "description": "10,000자 이상 상세 분석"
       }
     },
     "personality": {
@@ -154,6 +158,14 @@
       "tattoo": {
         "title": "AI 타투 시뮬레이션",
         "description": "가상 타투 체험"
+      },
+      "professionalHeadshot": {
+        "title": "AI 프로페셔널 헤드샷",
+        "description": "셀카를 스튜디오 사진으로"
+      },
+      "personalColor": {
+        "title": "퍼스널 컬러 진단",
+        "description": "나에게 어울리는 색 찾기"
       }
     },
     "entertainment": {
@@ -184,6 +196,14 @@
       "goldenChild": {
         "title": "AI 금쪽이 테스트",
         "description": "나쁜 버릇 진단"
+      },
+      "petSoulmate": {
+        "title": "AI 반려동물 소울메이트",
+        "description": "우리 아이의 전생과 MBTI 분석"
+      },
+      "babyFace": {
+        "title": "2세 얼굴 예측",
+        "description": "미래 아이의 얼굴 예측"
       }
     },
     "health": {
