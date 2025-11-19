@@ -622,6 +622,57 @@ router.get('/me', async (req, res) => {
 });
 
 /**
+ * GET /api/auth/credits
+ * Get user credits
+ */
+router.get('/credits', async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({
+        success: false,
+        credits: 0,
+        error: 'No token provided'
+      });
+    }
+
+    const token = authHeader.substring(7);
+
+    // Verify JWT token
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+
+    // Get user credits from database
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('credits')
+      .eq('id', decoded.userId)
+      .single();
+
+    if (error || !user) {
+      return res.status(401).json({
+        success: false,
+        credits: 0,
+        error: 'Invalid token'
+      });
+    }
+
+    res.json({
+      success: true,
+      credits: user.credits
+    });
+
+  } catch (error) {
+    console.error('Get credits error:', error);
+    res.status(401).json({
+      success: false,
+      credits: 0,
+      error: 'Invalid or expired token'
+    });
+  }
+});
+
+/**
  * POST /api/auth/logout
  * Logout and revoke refresh token
  */

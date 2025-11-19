@@ -106,7 +106,7 @@ export default function FortunePage() {
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className={`flex flex-col gap-4 p-6 rounded-2xl glass-panel hover:bg-white/90 dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
+              className={`flex flex-col gap-4 p-6 rounded-2xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
                 service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
               }`}
             >
@@ -141,7 +141,7 @@ export default function FortunePage() {
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className={`flex flex-col gap-4 p-6 rounded-2xl glass-panel hover:bg-white/90 dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
+              className={`flex flex-col gap-4 p-6 rounded-2xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
                 service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
               }`}
             >
@@ -176,7 +176,7 @@ export default function FortunePage() {
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className={`flex flex-col gap-4 p-6 rounded-2xl glass-panel hover:bg-white/90 dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
+              className={`flex flex-col gap-4 p-6 rounded-2xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
                 service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
               }`}
             >

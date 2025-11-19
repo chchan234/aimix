@@ -176,6 +176,30 @@ export async function getResults() {
 }
 
 /**
+ * Get user credits
+ */
+export async function getCredits(): Promise<{ success: boolean; credits: number }> {
+  const token = getAuthToken();
+
+  if (!token) {
+    return { success: false, credits: 0 };
+  }
+
+  const response = await fetch(`${API_URL}/api/auth/credits`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    return { success: false, credits: 0 };
+  }
+
+  return response.json();
+}
+
+/**
  * Delete a result
  */
 export async function deleteResult(resultId: string) {

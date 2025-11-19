@@ -62,7 +62,7 @@ export default function HealthPage() {
             <div
               key={index}
               onClick={() => (service as any).path && setLocation((service as any).path)}
-              className="flex flex-col gap-4 p-6 rounded-2xl glass-panel hover:bg-white/90 dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition cursor-pointer"
+              className="flex flex-col gap-4 p-6 rounded-2xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition cursor-pointer"
             >
               <div
                 className={`flex items-center justify-center w-16 h-16 ${

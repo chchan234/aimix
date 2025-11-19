@@ -116,12 +116,12 @@ export default function MyResultsPage() {
     <div className="max-w-7xl mx-auto">
       {/* 페이지 헤더 */}
       <div className="mb-8">
-        <h1 className="text-white text-3xl font-bold mb-2">{t('myResults.title')}</h1>
-        <p className="text-[#ab9eb7] text-sm">{t('myResults.subtitle')}</p>
+        <h1 className="text-foreground text-3xl font-bold mb-2">{t('myResults.title')}</h1>
+        <p className="text-muted-foreground text-sm">{t('myResults.subtitle')}</p>
       </div>
 
       {/* 필터 및 정렬 */}
-      <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10 mb-6">
+      <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10 mb-6">
         <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
           {/* 카테고리 필터 */}
           <div className="flex flex-wrap gap-2">
@@ -132,7 +132,7 @@ export default function MyResultsPage() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                   selectedCategory === category
                     ? 'bg-primary text-white'
-                    : 'bg-[#2a2436] text-[#ab9eb7] hover:bg-[#3a3446]'
+                    : 'bg-gray-100 dark:bg-[#2a2436] text-muted-foreground hover:bg-gray-200 dark:hover:bg-[#3a3446]'
                 }`}
               >
                 {getCategoryName(category)}
@@ -142,11 +142,11 @@ export default function MyResultsPage() {
 
           {/* 정렬 */}
           <div className="flex items-center gap-2">
-            <span className="text-[#ab9eb7] text-sm">{t('myResults.sortLabel')}:</span>
+            <span className="text-muted-foreground text-sm">{t('myResults.sortLabel')}:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'date' | 'credits')}
-              className="bg-[#2a2436] text-white px-3 py-2 rounded-lg border border-white/10 focus:border-primary focus:outline-none text-sm"
+              className="bg-gray-100 dark:bg-[#2a2436] text-foreground px-3 py-2 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none text-sm"
             >
               <option value="date">{t('myResults.sort.date')}</option>
               <option value="credits">{t('myResults.sort.credits')}</option>
@@ -155,15 +155,15 @@ export default function MyResultsPage() {
         </div>
 
         {/* 결과 통계 */}
-        <div className="mt-4 pt-4 border-t border-white/10">
+        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-white/10">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div>
-              <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.total')}</p>
-              <p className="text-white text-2xl font-bold">{results.length}</p>
+              <p className="text-muted-foreground text-xs mb-1">{t('myResults.stats.total')}</p>
+              <p className="text-foreground text-2xl font-bold">{results.length}</p>
             </div>
             <div>
-              <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.thisWeek')}</p>
-              <p className="text-white text-2xl font-bold">
+              <p className="text-muted-foreground text-xs mb-1">{t('myResults.stats.thisWeek')}</p>
+              <p className="text-foreground text-2xl font-bold">
                 {results.filter(r => {
                   const weekAgo = new Date();
                   weekAgo.setDate(weekAgo.getDate() - 7);
@@ -172,8 +172,8 @@ export default function MyResultsPage() {
               </p>
             </div>
             <div>
-              <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.thisMonth')}</p>
-              <p className="text-white text-2xl font-bold">
+              <p className="text-muted-foreground text-xs mb-1">{t('myResults.stats.thisMonth')}</p>
+              <p className="text-foreground text-2xl font-bold">
                 {results.filter(r => {
                   const monthAgo = new Date();
                   monthAgo.setMonth(monthAgo.getMonth() - 1);
@@ -182,8 +182,8 @@ export default function MyResultsPage() {
               </p>
             </div>
             <div>
-              <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.totalCredits')}</p>
-              <p className="text-white text-2xl font-bold">
+              <p className="text-muted-foreground text-xs mb-1">{t('myResults.stats.totalCredits')}</p>
+              <p className="text-foreground text-2xl font-bold">
                 {results.reduce((sum, r) => sum + r.creditCost, 0).toLocaleString()}
               </p>
             </div>
@@ -195,14 +195,14 @@ export default function MyResultsPage() {
       {loading ? (
         <div className="text-center py-12">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-          <p className="text-[#ab9eb7] mt-4">결과물을 불러오는 중...</p>
+          <p className="text-muted-foreground mt-4">결과물을 불러오는 중...</p>
         </div>
       ) : filteredResults.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredResults.map((result) => (
             <div
               key={result.id}
-              className="bg-[#1a1625] rounded-2xl overflow-hidden border border-white/10 hover:border-primary/50 transition group"
+              className="bg-white dark:bg-[#1a1625] rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 hover:border-primary/50 transition group"
             >
               {/* 썸네일 */}
               <div className="relative aspect-square overflow-hidden">
@@ -241,13 +241,13 @@ export default function MyResultsPage() {
               {/* 정보 */}
               <div className="p-4">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-white font-semibold text-sm">{result.serviceName}</h3>
+                  <h3 className="text-foreground font-semibold text-sm">{result.serviceName}</h3>
                   <span className={`text-xs px-2 py-0.5 rounded border ${getCategoryColor(result.category)}`}>
                     {getCategoryName(result.category)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-[#ab9eb7]">{result.createdAt}</span>
+                  <span className="text-muted-foreground">{result.createdAt}</span>
                   <span className="text-primary font-semibold">-{result.creditCost}</span>
                 </div>
               </div>
@@ -256,13 +256,13 @@ export default function MyResultsPage() {
         </div>
       ) : (
         /* 빈 상태 */
-        <div className="bg-[#1a1625] rounded-2xl p-12 border border-white/10 text-center">
+        <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-12 border border-gray-200 dark:border-white/10 text-center">
           <div className="flex flex-col items-center">
             <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-4">
               <span className="material-symbols-outlined text-primary text-5xl">search_off</span>
             </div>
-            <h3 className="text-white text-xl font-bold mb-2">{t('myResults.empty.title')}</h3>
-            <p className="text-[#ab9eb7] text-sm mb-6">
+            <h3 className="text-foreground text-xl font-bold mb-2">{t('myResults.empty.title')}</h3>
+            <p className="text-muted-foreground text-sm mb-6">
               {selectedCategory === 'all'
                 ? t('myResults.empty.description')
                 : t('myResults.empty.categoryDescription', { category: getCategoryName(selectedCategory) })}
@@ -281,17 +281,17 @@ export default function MyResultsPage() {
       {filteredResults.length > 0 && (
         <div className="mt-8 flex justify-center">
           <div className="flex items-center gap-2">
-            <button className="px-4 py-2 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition disabled:opacity-50 disabled:cursor-not-allowed">
+            <button className="px-4 py-2 bg-gray-100 dark:bg-[#2a2436] text-foreground rounded-lg hover:bg-gray-200 dark:hover:bg-[#3a3446] transition disabled:opacity-50 disabled:cursor-not-allowed">
               <span className="material-symbols-outlined text-xl">chevron_left</span>
             </button>
             <button className="px-4 py-2 bg-primary text-white rounded-lg">1</button>
-            <button className="px-4 py-2 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition">
+            <button className="px-4 py-2 bg-gray-100 dark:bg-[#2a2436] text-foreground rounded-lg hover:bg-gray-200 dark:hover:bg-[#3a3446] transition">
               2
             </button>
-            <button className="px-4 py-2 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition">
+            <button className="px-4 py-2 bg-gray-100 dark:bg-[#2a2436] text-foreground rounded-lg hover:bg-gray-200 dark:hover:bg-[#3a3446] transition">
               3
             </button>
-            <button className="px-4 py-2 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition">
+            <button className="px-4 py-2 bg-gray-100 dark:bg-[#2a2436] text-foreground rounded-lg hover:bg-gray-200 dark:hover:bg-[#3a3446] transition">
               <span className="material-symbols-outlined text-xl">chevron_right</span>
             </button>
           </div>

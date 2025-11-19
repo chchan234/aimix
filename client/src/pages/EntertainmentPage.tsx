@@ -97,7 +97,7 @@ export default function EntertainmentPage() {
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className="flex flex-col gap-4 p-6 rounded-2xl glass-panel hover:bg-white/90 dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition cursor-pointer"
+              className="flex flex-col gap-4 p-6 rounded-2xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition cursor-pointer"
             >
               <div
                 className={`flex items-center justify-center w-16 h-16 ${
@@ -121,13 +121,13 @@ export default function EntertainmentPage() {
 
       {/* Fun/Challenge */}
       <div>
-        <h2 className="text-white text-xl font-bold px-4 pb-4">{t('pages.entertainment.sections.fun')}</h2>
+        <h2 className="text-foreground text-xl font-serif font-bold px-4 pb-4">{t('pages.entertainment.sections.fun')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
           {services.fun.map((service, index) => (
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className="flex flex-col gap-4 p-6 rounded-2xl glass-panel hover:bg-white/90 dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition cursor-pointer"
+              className="flex flex-col gap-4 p-6 rounded-2xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition cursor-pointer"
             >
               <div
                 className={`flex items-center justify-center w-16 h-16 ${

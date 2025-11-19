@@ -45,22 +45,22 @@ export default function SettingsPage() {
     <div className="max-w-4xl mx-auto">
       {/* 페이지 헤더 */}
       <div className="mb-8">
-        <h1 className="text-white text-3xl font-bold mb-2">{t('settings.title')}</h1>
-        <p className="text-[#ab9eb7] text-sm">{t('settings.subtitle')}</p>
+        <h1 className="text-foreground text-3xl font-bold mb-2">{t('settings.title')}</h1>
+        <p className="text-muted-foreground text-sm">{t('settings.subtitle')}</p>
       </div>
 
       <div className="space-y-6">
         {/* 개인 설정 */}
-        <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10">
-          <h2 className="text-white text-xl font-bold mb-6">{t('settings.personal.title')}</h2>
+        <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10">
+          <h2 className="text-foreground text-xl font-bold mb-6">{t('settings.personal.title')}</h2>
 
           {/* 언어 */}
           <div className="mb-6">
-            <label className="text-white font-semibold mb-3 block">{t('settings.personal.language')}</label>
+            <label className="text-foreground font-semibold mb-3 block">{t('settings.personal.language')}</label>
             <select
               value={language}
               onChange={(e) => handleLanguageChange(e.target.value)}
-              className="w-full bg-[#2a2436] text-white px-4 py-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none"
+              className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
             >
               <option value="ko">한국어</option>
               <option value="en">English</option>
@@ -69,11 +69,11 @@ export default function SettingsPage() {
 
           {/* 시간대 */}
           <div>
-            <label className="text-white font-semibold mb-3 block">{t('settings.personal.timezone')}</label>
+            <label className="text-foreground font-semibold mb-3 block">{t('settings.personal.timezone')}</label>
             <select
               value={timezone}
               onChange={(e) => setTimezone(e.target.value)}
-              className="w-full bg-[#2a2436] text-white px-4 py-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none"
+              className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
             >
               <option value="Asia/Seoul">Seoul (UTC+9)</option>
               <option value="America/New_York">New York (UTC-5)</option>
@@ -84,19 +84,19 @@ export default function SettingsPage() {
         </div>
 
         {/* 알림 설정 */}
-        <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10">
-          <h2 className="text-white text-xl font-bold mb-6">{t('settings.notifications.title')}</h2>
+        <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10">
+          <h2 className="text-foreground text-xl font-bold mb-6">{t('settings.notifications.title')}</h2>
 
           {/* 이메일 알림 */}
-          <div className="flex items-center justify-between mb-6 pb-6 border-b border-white/10">
+          <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200 dark:border-white/10">
             <div>
-              <p className="text-white font-semibold mb-1">{t('settings.notifications.email')}</p>
-              <p className="text-[#ab9eb7] text-sm">{t('settings.notifications.emailDesc')}</p>
+              <p className="text-foreground font-semibold mb-1">{t('settings.notifications.email')}</p>
+              <p className="text-muted-foreground text-sm">{t('settings.notifications.emailDesc')}</p>
             </div>
             <button
               onClick={() => setEmailNotifications(!emailNotifications)}
               className={`relative w-14 h-8 rounded-full transition ${
-                emailNotifications ? 'bg-primary' : 'bg-[#2a2436]'
+                emailNotifications ? 'bg-primary' : 'bg-gray-200 dark:bg-[#2a2436]'
               }`}
             >
               <span
@@ -108,15 +108,15 @@ export default function SettingsPage() {
           </div>
 
           {/* 푸시 알림 */}
-          <div className="flex items-center justify-between mb-6 pb-6 border-b border-white/10">
+          <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200 dark:border-white/10">
             <div>
-              <p className="text-white font-semibold mb-1">{t('settings.notifications.push')}</p>
-              <p className="text-[#ab9eb7] text-sm">{t('settings.notifications.pushDesc')}</p>
+              <p className="text-foreground font-semibold mb-1">{t('settings.notifications.push')}</p>
+              <p className="text-muted-foreground text-sm">{t('settings.notifications.pushDesc')}</p>
             </div>
             <button
               onClick={() => setPushNotifications(!pushNotifications)}
               className={`relative w-14 h-8 rounded-full transition ${
-                pushNotifications ? 'bg-primary' : 'bg-[#2a2436]'
+                pushNotifications ? 'bg-primary' : 'bg-gray-200 dark:bg-[#2a2436]'
               }`}
             >
               <span
@@ -130,13 +130,13 @@ export default function SettingsPage() {
           {/* 마케팅 정보 */}
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-white font-semibold mb-1">{t('settings.notifications.marketing')}</p>
-              <p className="text-[#ab9eb7] text-sm">{t('settings.notifications.marketingDesc')}</p>
+              <p className="text-foreground font-semibold mb-1">{t('settings.notifications.marketing')}</p>
+              <p className="text-muted-foreground text-sm">{t('settings.notifications.marketingDesc')}</p>
             </div>
             <button
               onClick={() => setMarketingEmails(!marketingEmails)}
               className={`relative w-14 h-8 rounded-full transition ${
-                marketingEmails ? 'bg-primary' : 'bg-[#2a2436]'
+                marketingEmails ? 'bg-primary' : 'bg-gray-200 dark:bg-[#2a2436]'
               }`}
             >
               <span
@@ -149,19 +149,19 @@ export default function SettingsPage() {
         </div>
 
         {/* 크레딧 설정 */}
-        <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10">
-          <h2 className="text-white text-xl font-bold mb-6">{t('settings.credits.title')}</h2>
+        <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10">
+          <h2 className="text-foreground text-xl font-bold mb-6">{t('settings.credits.title')}</h2>
 
           {/* 자동 충전 */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <p className="text-white font-semibold mb-1">{t('settings.credits.autoRecharge')}</p>
-              <p className="text-[#ab9eb7] text-sm">{t('settings.credits.autoRechargeDesc')}</p>
+              <p className="text-foreground font-semibold mb-1">{t('settings.credits.autoRecharge')}</p>
+              <p className="text-muted-foreground text-sm">{t('settings.credits.autoRechargeDesc')}</p>
             </div>
             <button
               onClick={() => setAutoRecharge(!autoRecharge)}
               className={`relative w-14 h-8 rounded-full transition ${
-                autoRecharge ? 'bg-primary' : 'bg-[#2a2436]'
+                autoRecharge ? 'bg-primary' : 'bg-gray-200 dark:bg-[#2a2436]'
               }`}
             >
               <span
@@ -174,13 +174,13 @@ export default function SettingsPage() {
 
           {/* 자동 충전 상세 설정 */}
           {autoRecharge && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-white/10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-white/10">
               <div>
-                <label className="text-white font-semibold mb-3 block">{t('settings.credits.rechargeAmount')}</label>
+                <label className="text-foreground font-semibold mb-3 block">{t('settings.credits.rechargeAmount')}</label>
                 <select
                   value={autoRechargeAmount}
                   onChange={(e) => setAutoRechargeAmount(e.target.value)}
-                  className="w-full bg-[#2a2436] text-white px-4 py-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none"
+                  className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
                 >
                   <option value="5000">₩5,000</option>
                   <option value="10000">₩10,000</option>
@@ -189,11 +189,11 @@ export default function SettingsPage() {
                 </select>
               </div>
               <div>
-                <label className="text-white font-semibold mb-3 block">{t('settings.credits.rechargeThreshold')}</label>
+                <label className="text-foreground font-semibold mb-3 block">{t('settings.credits.rechargeThreshold')}</label>
                 <select
                   value={autoRechargeThreshold}
                   onChange={(e) => setAutoRechargeThreshold(e.target.value)}
-                  className="w-full bg-[#2a2436] text-white px-4 py-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none"
+                  className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
                 >
                   <option value="50">50 {t('settings.credits.threshold')}</option>
                   <option value="100">100 {t('settings.credits.threshold')}</option>
@@ -206,31 +206,31 @@ export default function SettingsPage() {
         </div>
 
         {/* 보안 설정 */}
-        <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10">
-          <h2 className="text-white text-xl font-bold mb-6">{t('settings.security.title')}</h2>
+        <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10">
+          <h2 className="text-foreground text-xl font-bold mb-6">{t('settings.security.title')}</h2>
 
           <div className="space-y-4">
             <div>
-              <label className="text-white font-semibold mb-2 block">{t('settings.security.currentPassword')}</label>
+              <label className="text-foreground font-semibold mb-2 block">{t('settings.security.currentPassword')}</label>
               <input
                 type="password"
-                className="w-full bg-[#2a2436] text-white px-4 py-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none"
+                className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
                 placeholder="••••••••"
               />
             </div>
             <div>
-              <label className="text-white font-semibold mb-2 block">{t('settings.security.newPassword')}</label>
+              <label className="text-foreground font-semibold mb-2 block">{t('settings.security.newPassword')}</label>
               <input
                 type="password"
-                className="w-full bg-[#2a2436] text-white px-4 py-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none"
+                className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
                 placeholder="••••••••"
               />
             </div>
             <div>
-              <label className="text-white font-semibold mb-2 block">{t('settings.security.confirmPassword')}</label>
+              <label className="text-foreground font-semibold mb-2 block">{t('settings.security.confirmPassword')}</label>
               <input
                 type="password"
-                className="w-full bg-[#2a2436] text-white px-4 py-3 rounded-lg border border-white/10 focus:border-primary focus:outline-none"
+                className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
                 placeholder="••••••••"
               />
             </div>
@@ -241,15 +241,15 @@ export default function SettingsPage() {
         </div>
 
         {/* 계정 관리 */}
-        <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10">
-          <h2 className="text-white text-xl font-bold mb-6">{t('settings.account.title')}</h2>
+        <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10">
+          <h2 className="text-foreground text-xl font-bold mb-6">{t('settings.account.title')}</h2>
 
           <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-6">
             <div className="flex items-start gap-3 mb-4">
               <span className="material-symbols-outlined text-red-400 text-2xl">warning</span>
               <div>
                 <p className="text-red-400 font-semibold mb-2">{t('settings.account.deleteAccount')}</p>
-                <p className="text-[#ab9eb7] text-sm">{t('settings.account.deleteWarning')}</p>
+                <p className="text-muted-foreground text-sm">{t('settings.account.deleteWarning')}</p>
               </div>
             </div>
             <button

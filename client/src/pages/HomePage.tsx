@@ -313,10 +313,10 @@ export default function HomePage() {
       {/* Popular This Week */}
       <div>
         <div className="px-4 pb-3 pt-5">
-          <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+          <h2 className="text-foreground text-[22px] font-bold leading-tight tracking-[-0.015em]">
             {t('home.popularThisWeek')}
           </h2>
-          <p className="text-[#ab9eb7] text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             {t('home.popularSubtitle')}
           </p>
         </div>
@@ -328,7 +328,7 @@ export default function HomePage() {
               <div
                 key={index}
                 onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-                className="relative flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
+                className="relative flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
               >
                 {/* 순위 뱃지 */}
                 <div className="absolute top-2 right-2 flex items-center justify-center w-8 h-8 bg-primary/20 rounded-full">
@@ -345,10 +345,10 @@ export default function HomePage() {
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className="text-white text-sm font-semibold leading-tight">
+                  <p className="text-foreground text-sm font-semibold leading-tight">
                     {service.title}
                   </p>
-                  <p className="text-[#ab9eb7] text-xs font-normal leading-normal">
+                  <p className="text-muted-foreground text-xs font-normal leading-normal">
                     {service.description}
                   </p>
                   <p className="text-primary text-xs font-medium leading-normal mt-1">
@@ -360,8 +360,8 @@ export default function HomePage() {
                       <span className="material-symbols-outlined text-sm">star</span>
                       {service.rating}
                     </span>
-                    <span className="text-[#ab9eb7]">•</span>
-                    <span className="text-[#ab9eb7]">
+                    <span className="text-muted-foreground">•</span>
+                    <span className="text-muted-foreground">
                       {service.users.toLocaleString()} {t('home.users')}
                     </span>
                   </div>
@@ -377,7 +377,7 @@ export default function HomePage() {
             <div
               key={index}
               onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-              className="relative flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
+              className="relative flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
             >
               {/* 순위 뱃지 */}
               <div className="absolute top-3 right-3 flex items-center justify-center w-10 h-10 bg-primary/20 rounded-full">
@@ -394,10 +394,10 @@ export default function HomePage() {
                 </span>
               </div>
               <div className="flex flex-col gap-1">
-                <p className="text-white text-sm font-semibold leading-tight">
+                <p className="text-foreground text-sm font-semibold leading-tight">
                   {service.title}
                 </p>
-                <p className="text-[#ab9eb7] text-xs font-normal leading-normal">
+                <p className="text-muted-foreground text-xs font-normal leading-normal">
                   {service.description}
                 </p>
                 <p className="text-primary text-xs font-medium leading-normal mt-1">
@@ -409,8 +409,8 @@ export default function HomePage() {
                     <span className="material-symbols-outlined text-sm">star</span>
                     {service.rating}
                   </span>
-                  <span className="text-[#ab9eb7]">•</span>
-                  <span className="text-[#ab9eb7]">
+                  <span className="text-muted-foreground">•</span>
+                  <span className="text-muted-foreground">
                     {service.users.toLocaleString()} {t('home.users')}
                   </span>
                 </div>
@@ -422,7 +422,7 @@ export default function HomePage() {
 
       {/* Random Services */}
       <div>
-        <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
+        <h2 className="text-foreground text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
           {t('home.quickStart')}
         </h2>
         {/* Mobile: Horizontal Scroll */}
@@ -432,7 +432,7 @@ export default function HomePage() {
               <div
                 key={index}
                 onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-                className="flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
+                className="flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
               >
                 <div
                   className={`flex items-center justify-center w-12 h-12 ${
@@ -444,10 +444,10 @@ export default function HomePage() {
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className="text-white text-sm font-semibold leading-tight">
+                  <p className="text-foreground text-sm font-semibold leading-tight">
                     {service.title}
                   </p>
-                  <p className="text-[#ab9eb7] text-xs font-normal leading-normal">
+                  <p className="text-muted-foreground text-xs font-normal leading-normal">
                     {service.description}
                   </p>
                   <p className="text-primary text-xs font-medium leading-normal mt-1">
@@ -465,7 +465,7 @@ export default function HomePage() {
             <div
               key={index}
               onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-              className="flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
+              className="flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
             >
               <div
                 className={`flex items-center justify-center w-12 h-12 ${
@@ -477,10 +477,10 @@ export default function HomePage() {
                 </span>
               </div>
               <div className="flex flex-col gap-1">
-                <p className="text-white text-sm font-semibold leading-tight">
+                <p className="text-foreground text-sm font-semibold leading-tight">
                   {service.title}
                 </p>
-                <p className="text-[#ab9eb7] text-xs font-normal leading-normal">
+                <p className="text-muted-foreground text-xs font-normal leading-normal">
                   {service.description}
                 </p>
                 <p className="text-primary text-xs font-medium leading-normal mt-1">
