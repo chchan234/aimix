@@ -112,44 +112,46 @@ export default function BMICalculatorPage() {
       {/* Introduction */}
       {step === 'intro' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              AI 기반 BMI 분석
-            </h3>
-            <div className="space-y-4 text-muted-foreground">
-              <p>
-                키, 체중, 나이를 입력하면 AI가 BMI를 계산하고 맞춤 건강 조언을 제공합니다.
-              </p>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="material-symbols-outlined text-3xl text-green-400">monitor_weight</span>
+              <h3 className="text-xl font-semibold text-foreground">
+                AI BMI 계산기
+              </h3>
+            </div>
+            <p className="text-muted-foreground mb-6">
+              키, 체중, 나이를 입력하면 AI가 BMI를 계산하고 맞춤 건강 조언을 제공합니다.
+              정확한 체질량 지수와 함께 식단, 운동, 생활습관 가이드를 받아보세요.
+            </p>
 
-              <div className="grid grid-cols-2 gap-3 mt-4">
-                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-green-400">calculate</span>
-                    <span className="font-semibold text-green-400">BMI 계산</span>
-                  </div>
-                  <p className="text-sm opacity-80">정확한 체질량 지수 계산</p>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-green-400">calculate</span>
+                  <span className="text-foreground font-medium">BMI 계산</span>
                 </div>
-                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-green-400">health_and_safety</span>
-                    <span className="font-semibold text-green-400">건강 분석</span>
-                  </div>
-                  <p className="text-sm opacity-80">건강 위험도 평가</p>
+                <p className="text-muted-foreground text-sm">정확한 체질량 지수 계산</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-green-400">health_and_safety</span>
+                  <span className="text-foreground font-medium">건강 분석</span>
                 </div>
-                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-green-400">restaurant</span>
-                    <span className="font-semibold text-green-400">식단 조언</span>
-                  </div>
-                  <p className="text-sm opacity-80">맞춤 식단 가이드</p>
+                <p className="text-muted-foreground text-sm">건강 위험도 평가</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-green-400">restaurant</span>
+                  <span className="text-foreground font-medium">식단 조언</span>
                 </div>
-                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-green-400">directions_run</span>
-                    <span className="font-semibold text-green-400">운동 추천</span>
-                  </div>
-                  <p className="text-sm opacity-80">효과적인 운동 방법</p>
+                <p className="text-muted-foreground text-sm">맞춤 식단 가이드</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-green-400">directions_run</span>
+                  <span className="text-foreground font-medium">운동 추천</span>
                 </div>
+                <p className="text-muted-foreground text-sm">효과적인 운동 방법</p>
               </div>
             </div>
 

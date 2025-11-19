@@ -92,44 +92,46 @@ export default function BodyAnalysisPage() {
       {/* Introduction */}
       {step === 'intro' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              AI가 분석하는 나의 체형
-            </h3>
-            <div className="space-y-4 text-muted-foreground">
-              <p>
-                전신 사진을 업로드하면 AI가 체형을 분석하고 맞춤 조언을 제공합니다.
-              </p>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="material-symbols-outlined text-3xl text-teal-400">accessibility_new</span>
+              <h3 className="text-xl font-semibold text-foreground">
+                AI 체형 분석
+              </h3>
+            </div>
+            <p className="text-muted-foreground mb-6">
+              전신 사진을 업로드하면 AI가 체형을 분석하고 맞춤 조언을 제공합니다.
+              어깨, 허리, 힙의 비율을 분석하여 운동, 패션, 자세 교정 팁을 알려드립니다.
+            </p>
 
-              <div className="grid grid-cols-2 gap-3 mt-4">
-                <div className="p-4 rounded-lg bg-teal-500/20 border border-teal-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-teal-400">straighten</span>
-                    <span className="font-semibold text-teal-400">체형 분류</span>
-                  </div>
-                  <p className="text-sm opacity-80">어깨, 허리, 힙 비율 분석</p>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-teal-400">straighten</span>
+                  <span className="text-foreground font-medium">체형 분류</span>
                 </div>
-                <div className="p-4 rounded-lg bg-teal-500/20 border border-teal-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-teal-400">fitness_center</span>
-                    <span className="font-semibold text-teal-400">운동 추천</span>
-                  </div>
-                  <p className="text-sm opacity-80">체형에 맞는 운동 가이드</p>
+                <p className="text-muted-foreground text-sm">어깨, 허리, 힙 비율 분석</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-teal-400">fitness_center</span>
+                  <span className="text-foreground font-medium">운동 추천</span>
                 </div>
-                <div className="p-4 rounded-lg bg-teal-500/20 border border-teal-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-teal-400">checkroom</span>
-                    <span className="font-semibold text-teal-400">패션 조언</span>
-                  </div>
-                  <p className="text-sm opacity-80">체형에 어울리는 스타일</p>
+                <p className="text-muted-foreground text-sm">체형에 맞는 운동 가이드</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-teal-400">checkroom</span>
+                  <span className="text-foreground font-medium">패션 조언</span>
                 </div>
-                <div className="p-4 rounded-lg bg-teal-500/20 border border-teal-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-teal-400">self_improvement</span>
-                    <span className="font-semibold text-teal-400">자세 교정</span>
-                  </div>
-                  <p className="text-sm opacity-80">바른 자세 유지 팁</p>
+                <p className="text-muted-foreground text-sm">체형에 어울리는 스타일</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-teal-400">self_improvement</span>
+                  <span className="text-foreground font-medium">자세 교정</span>
                 </div>
+                <p className="text-muted-foreground text-sm">바른 자세 유지 팁</p>
               </div>
             </div>
 

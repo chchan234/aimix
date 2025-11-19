@@ -103,44 +103,46 @@ export default function SkinAnalysisPage() {
       {/* Introduction */}
       {step === 'intro' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              AI가 분석하는 나의 피부
-            </h3>
-            <div className="space-y-4 text-muted-foreground">
-              <p>
-                얼굴 사진을 업로드하면 AI가 피부 상태를 분석하고 맞춤 스킨케어를 추천합니다.
-              </p>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="material-symbols-outlined text-3xl text-pink-400">face_retouching_natural</span>
+              <h3 className="text-xl font-semibold text-foreground">
+                AI 피부 분석
+              </h3>
+            </div>
+            <p className="text-muted-foreground mb-6">
+              얼굴 사진을 업로드하면 AI가 피부 상태를 분석하고 맞춤 스킨케어를 추천합니다.
+              수분, 유분, 민감도, 탄력을 종합적으로 분석하여 최적의 관리법을 알려드립니다.
+            </p>
 
-              <div className="grid grid-cols-2 gap-3 mt-4">
-                <div className="p-4 rounded-lg bg-pink-500/20 border border-pink-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-pink-400">water_drop</span>
-                    <span className="font-semibold text-pink-400">수분 분석</span>
-                  </div>
-                  <p className="text-sm opacity-80">피부 수분도 측정</p>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-pink-400">water_drop</span>
+                  <span className="text-foreground font-medium">수분 분석</span>
                 </div>
-                <div className="p-4 rounded-lg bg-pink-500/20 border border-pink-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-pink-400">spa</span>
-                    <span className="font-semibold text-pink-400">피부 타입</span>
-                  </div>
-                  <p className="text-sm opacity-80">건성/지성/복합성 판별</p>
+                <p className="text-muted-foreground text-sm">피부 수분도 측정</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-pink-400">spa</span>
+                  <span className="text-foreground font-medium">피부 타입</span>
                 </div>
-                <div className="p-4 rounded-lg bg-pink-500/20 border border-pink-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-pink-400">science</span>
-                    <span className="font-semibold text-pink-400">성분 추천</span>
-                  </div>
-                  <p className="text-sm opacity-80">피부에 맞는 성분</p>
+                <p className="text-muted-foreground text-sm">건성/지성/복합성 판별</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-pink-400">science</span>
+                  <span className="text-foreground font-medium">성분 추천</span>
                 </div>
-                <div className="p-4 rounded-lg bg-pink-500/20 border border-pink-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-pink-400">schedule</span>
-                    <span className="font-semibold text-pink-400">루틴 제안</span>
-                  </div>
-                  <p className="text-sm opacity-80">아침/저녁 스킨케어</p>
+                <p className="text-muted-foreground text-sm">피부에 맞는 성분</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-pink-400">schedule</span>
+                  <span className="text-foreground font-medium">루틴 제안</span>
                 </div>
+                <p className="text-muted-foreground text-sm">아침/저녁 스킨케어</p>
               </div>
             </div>
 

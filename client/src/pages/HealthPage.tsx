@@ -13,18 +13,21 @@ export default function HealthPage() {
         description: t('services.health.bodyType.description'),
         icon: 'accessibility',
         color: 'blue',
+        path: '/services/body-analysis',
       },
       {
         title: t('services.health.bmi.title'),
         description: t('services.health.bmi.description'),
         icon: 'monitor_weight',
         color: 'green',
+        path: '/services/bmi-calculator',
       },
       {
         title: t('services.health.skinAnalysis.title'),
         description: t('services.health.skinAnalysis.description'),
         icon: 'face_6',
         color: 'pink',
+        path: '/services/skin-analysis',
       },
       {
         title: '퍼스널 컬러 진단',
@@ -61,7 +64,7 @@ export default function HealthPage() {
           {services.health.map((service, index) => (
             <div
               key={index}
-              onClick={() => (service as any).path && setLocation((service as any).path)}
+              onClick={() => service.path && setLocation(service.path)}
               className="flex flex-col gap-4 p-6 rounded-2xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition cursor-pointer"
             >
               <div

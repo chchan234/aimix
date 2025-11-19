@@ -116,45 +116,50 @@ const [step, setStep] = useState<'intro' | 'test' | 'result'>('intro');
 ```tsx
 {step === 'intro' && (
   <div className="space-y-6">
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-      <h3 className="text-xl font-semibold text-foreground mb-4">
-        서비스 타이틀
-      </h3>
-      <div className="space-y-4 text-muted-foreground">
-        <p>
-          서비스 설명 텍스트
-        </p>
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+      {/* 아이콘 + 제목 */}
+      <div className="flex items-center gap-3 mb-4">
+        <span className="material-symbols-outlined text-3xl text-{color}-400">service_icon</span>
+        <h3 className="text-xl font-semibold text-foreground">
+          서비스 타이틀
+        </h3>
+      </div>
 
-        {/* 2x2 기능 카드 그리드 */}
-        <div className="grid grid-cols-2 gap-3 mt-4">
-          <div className="p-4 rounded-lg bg-{color}-500/20 border border-{color}-500">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="material-symbols-outlined text-{color}-400">icon_name</span>
-              <span className="font-semibold text-{color}-400">기능 1</span>
-            </div>
-            <p className="text-sm opacity-80">기능 설명</p>
+      {/* 서비스 설명 */}
+      <p className="text-muted-foreground mb-6">
+        서비스 설명 텍스트. 이 서비스가 무엇을 하는지 설명합니다.
+        두 번째 문장으로 추가 정보를 제공합니다.
+      </p>
+
+      {/* 2x2 기능 카드 그리드 */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="material-symbols-outlined text-{color}-400">icon_name</span>
+            <span className="text-foreground font-medium">기능 1</span>
           </div>
-          <div className="p-4 rounded-lg bg-{color}-500/20 border border-{color}-500">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="material-symbols-outlined text-{color}-400">icon_name</span>
-              <span className="font-semibold text-{color}-400">기능 2</span>
-            </div>
-            <p className="text-sm opacity-80">기능 설명</p>
+          <p className="text-muted-foreground text-sm">기능 설명</p>
+        </div>
+        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="material-symbols-outlined text-{color}-400">icon_name</span>
+            <span className="text-foreground font-medium">기능 2</span>
           </div>
-          <div className="p-4 rounded-lg bg-{color}-500/20 border border-{color}-500">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="material-symbols-outlined text-{color}-400">icon_name</span>
-              <span className="font-semibold text-{color}-400">기능 3</span>
-            </div>
-            <p className="text-sm opacity-80">기능 설명</p>
+          <p className="text-muted-foreground text-sm">기능 설명</p>
+        </div>
+        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="material-symbols-outlined text-{color}-400">icon_name</span>
+            <span className="text-foreground font-medium">기능 3</span>
           </div>
-          <div className="p-4 rounded-lg bg-{color}-500/20 border border-{color}-500">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="material-symbols-outlined text-{color}-400">icon_name</span>
-              <span className="font-semibold text-{color}-400">기능 4</span>
-            </div>
-            <p className="text-sm opacity-80">기능 설명</p>
+          <p className="text-muted-foreground text-sm">기능 설명</p>
+        </div>
+        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="material-symbols-outlined text-{color}-400">icon_name</span>
+            <span className="text-foreground font-medium">기능 4</span>
           </div>
+          <p className="text-muted-foreground text-sm">기능 설명</p>
         </div>
       </div>
 
