@@ -193,6 +193,51 @@ export class GeminiClient {
 
 
   /**
+   * Analyze image and return text response (for face analysis, lookalike, etc.)
+   */
+  async analyzeImageWithText(
+    imageBase64: string,
+    prompt: string,
+    mimeType: string = 'image/jpeg'
+  ) {
+    const startTime = Date.now();
+
+    try {
+      const model = this.client.getGenerativeModel({
+        model: 'gemini-2.0-flash-exp'
+      });
+
+      const result = await model.generateContent({
+        contents: [{
+          role: 'user',
+          parts: [
+            {
+              inlineData: {
+                data: imageBase64,
+                mimeType: mimeType
+              }
+            },
+            {
+              text: prompt
+            }
+          ]
+        }]
+      });
+
+      const response = await result.response;
+      const content = response.text();
+
+      const responseTime = Date.now() - startTime;
+      console.log(`✅ Gemini image analysis completed in ${responseTime}ms`);
+
+      return content;
+    } catch (error) {
+      console.error('❌ Gemini image analysis error:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Parse JSON response with error handling
    */
   parseJSON<T = any>(content: string): T {
