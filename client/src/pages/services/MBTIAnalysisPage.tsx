@@ -177,7 +177,7 @@ export default function MBTIAnalysisPage() {
               </div>
             </div>
 
-            <div className="bg-purple-900/20 border border-purple-500 rounded-lg p-4 mt-6 mb-6">
+            <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-foreground font-semibold">MBTI 심층분석</p>
@@ -217,7 +217,7 @@ export default function MBTIAnalysisPage() {
                 <button
                   key={type}
                   onClick={() => handleMBTIInput(type)}
-                  className="px-4 py-3 bg-gray-700 hover:bg-purple-600 text-foreground rounded-lg transition-colors"
+                  className="px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-purple-600 text-foreground rounded-lg transition-colors"
                 >
                   {type}
                 </button>
@@ -226,7 +226,7 @@ export default function MBTIAnalysisPage() {
 
             <button
               onClick={() => handleMBTIInput(null)}
-              className="w-full px-6 py-3 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground rounded-lg transition-colors"
+              className="w-full px-6 py-3 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition-colors"
             >
               잘 모르겠어요 (테스트만 진행)
             </button>
@@ -243,7 +243,7 @@ export default function MBTIAnalysisPage() {
               <span>진행률</span>
               <span>{currentQuestionIndex + 1} / {questions.length}</span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className="bg-purple-500 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
@@ -272,7 +272,7 @@ export default function MBTIAnalysisPage() {
                   className={`w-full px-6 py-3 rounded-lg transition-colors ${
                     answers[currentQuestionIndex] === option.value
                       ? 'bg-purple-600 text-foreground'
-                      : 'bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-foreground'
+                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-foreground'
                   }`}
                 >
                   {option.label}
@@ -284,7 +284,7 @@ export default function MBTIAnalysisPage() {
             {currentQuestionIndex > 0 && (
               <button
                 onClick={handlePrevious}
-                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground rounded-lg"
+                className="mt-6 px-6 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg"
               >
                 이전 질문
               </button>
@@ -334,12 +334,12 @@ export default function MBTIAnalysisPage() {
           )}
 
           {/* Final MBTI */}
-          <div className="bg-gradient-to-r from-purple-900 to-blue-900 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-2">최종 결과</h3>
-            <p className="text-4xl font-bold text-foreground mb-2">
+          <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-white mb-2">최종 결과</h3>
+            <p className="text-4xl font-bold text-white mb-2">
               {result.analysis.finalMBTI.type}
             </p>
-            <p className="text-muted-foreground">
+            <p className="text-white/80">
               확신도: {result.analysis.finalMBTI.confidence}
             </p>
           </div>
@@ -356,7 +356,7 @@ export default function MBTIAnalysisPage() {
                       <span>{first}: {scores[first]}%</span>
                       <span>{second}: {scores[second]}%</span>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2">
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div
                         className="bg-purple-500 h-2 rounded-full"
                         style={{ width: `${scores[first]}%` }}
@@ -418,7 +418,7 @@ export default function MBTIAnalysisPage() {
                 <h4 className="font-semibold text-purple-400 mb-2">적합한 직업</h4>
                 <div className="flex flex-wrap gap-2">
                   {result.analysis.career.suitableJobs.map((job: string, i: number) => (
-                    <span key={i} className="px-3 py-1 bg-purple-900/50 text-purple-300 rounded-full text-sm">
+                    <span key={i} className="px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300 rounded-full text-sm">
                       {job}
                     </span>
                   ))}
@@ -455,7 +455,7 @@ export default function MBTIAnalysisPage() {
           {/* Try Again */}
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 테스트하기
           </button>

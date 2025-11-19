@@ -184,7 +184,7 @@ export default function GeumjjokiTestPage() {
                 </div>
               </div>
 
-              <div className="bg-orange-900/20 border border-orange-500 rounded-lg p-4 mt-4">
+              <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-500 rounded-lg p-4 mt-4">
                 <h4 className="font-semibold text-orange-400 mb-2">등급 시스템</h4>
                 <ul className="space-y-1 text-sm">
                   <li><strong>천사</strong>: 자기관리가 완벽한 모범생</li>
@@ -196,7 +196,7 @@ export default function GeumjjokiTestPage() {
               </div>
             </div>
 
-            <div className="bg-orange-900/20 border border-orange-500 rounded-lg p-4 mt-6 mb-6">
+            <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-foreground font-semibold">금쪽이 테스트</p>
@@ -226,7 +226,7 @@ export default function GeumjjokiTestPage() {
               <span>진행률</span>
               <span>{currentQuestionIndex + 1} / {questions.length}</span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className="bg-orange-500 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
@@ -256,7 +256,7 @@ export default function GeumjjokiTestPage() {
                   className={`w-full px-6 py-3 rounded-lg transition-colors ${
                     answers[currentQuestionIndex] === option.value
                       ? 'bg-orange-600 text-foreground'
-                      : 'bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-foreground'
+                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-foreground'
                   }`}
                 >
                   {option.label}
@@ -267,7 +267,7 @@ export default function GeumjjokiTestPage() {
             {currentQuestionIndex > 0 && (
               <button
                 onClick={handlePrevious}
-                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground rounded-lg"
+                className="mt-6 px-6 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg"
               >
                 이전 질문
               </button>
@@ -327,7 +327,7 @@ export default function GeumjjokiTestPage() {
                     <span>{CATEGORY_NAMES[category]}</span>
                     <span className={getScoreColor(score)}>{score} / 30</span>
                   </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div
                       className="bg-orange-500 h-2 rounded-full"
                       style={{ width: `${(score / 30) * 100}%` }}
@@ -403,7 +403,7 @@ export default function GeumjjokiTestPage() {
                   ))}
                 </ul>
               </div>
-              <div className="bg-orange-900/20 border border-orange-500 rounded-lg p-4">
+              <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-500 rounded-lg p-4">
                 <p className="text-muted-foreground italic">
                   {result.analysis.improvement?.encouragement}
                 </p>
@@ -423,7 +423,7 @@ export default function GeumjjokiTestPage() {
           {/* Try Again */}
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 테스트하기
           </button>

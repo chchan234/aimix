@@ -175,7 +175,7 @@ export default function EnneagramTestPage() {
               </div>
             </div>
 
-            <div className="bg-green-900/20 border border-green-500 rounded-lg p-4 mt-6 mb-6">
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-foreground font-semibold">에니어그램 테스트</p>
@@ -206,7 +206,7 @@ export default function EnneagramTestPage() {
               <span>진행률</span>
               <span>{currentQuestionIndex + 1} / {questions.length}</span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className="bg-green-500 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
@@ -235,7 +235,7 @@ export default function EnneagramTestPage() {
                   className={`w-full px-6 py-3 rounded-lg transition-colors ${
                     answers[currentQuestionIndex] === option.value
                       ? 'bg-green-600 text-foreground'
-                      : 'bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-foreground'
+                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-foreground'
                   }`}
                 >
                   {option.label}
@@ -247,7 +247,7 @@ export default function EnneagramTestPage() {
             {currentQuestionIndex > 0 && (
               <button
                 onClick={handlePrevious}
-                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground rounded-lg"
+                className="mt-6 px-6 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg"
               >
                 이전 질문
               </button>
@@ -275,19 +275,19 @@ export default function EnneagramTestPage() {
       {step === 'result' && result && (
         <div className="space-y-6">
           {/* Main Type */}
-          <div className="bg-gradient-to-r from-green-900 to-teal-900 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-2">당신의 유형</h3>
-            <p className="text-4xl font-bold text-foreground mb-2">
+          <div className="bg-gradient-to-r from-green-500 to-teal-500 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-white mb-2">당신의 유형</h3>
+            <p className="text-4xl font-bold text-white mb-2">
               {result.mainType}번 유형
             </p>
-            <p className="text-2xl text-green-300 mb-2">
+            <p className="text-2xl text-green-100 mb-2">
               {result.analysis.mainType.name}
             </p>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-white/80">
               {result.analysis.mainType.nickname}
             </p>
             {result.wingType && (
-              <p className="mt-4 text-muted-foreground">
+              <p className="mt-4 text-white/80">
                 날개: {result.wingType}번 ({ENNEAGRAM_TYPE_NAMES[result.wingType]})
               </p>
             )}
@@ -305,7 +305,7 @@ export default function EnneagramTestPage() {
                       <span>{type}번 - {ENNEAGRAM_TYPE_NAMES[parseInt(type)]}</span>
                       <span>{score}점</span>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2">
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div
                         className={`h-2 rounded-full ${parseInt(type) === result.mainType ? 'bg-green-500' : 'bg-gray-500'}`}
                         style={{ width: `${(score / 20) * 100}%` }}
@@ -374,7 +374,7 @@ export default function EnneagramTestPage() {
                 <h4 className="font-semibold text-red-400 mb-2">불건강한 상태</h4>
                 <p className="text-muted-foreground">{result.analysis.healthLevels.unhealthy}</p>
               </div>
-              <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4 mt-4">
+              <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-500 rounded-lg p-4 mt-4">
                 <h4 className="font-semibold text-blue-400 mb-2">현재 상태 평가</h4>
                 <p className="text-muted-foreground">{result.analysis.healthLevels.currentAssessment}</p>
               </div>
@@ -385,13 +385,13 @@ export default function EnneagramTestPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">성장 방향</h3>
             <div className="space-y-4">
-              <div className="bg-green-900/30 border border-green-500 rounded-lg p-4">
+              <div className="bg-green-50 dark:bg-green-900/30 border border-green-500 rounded-lg p-4">
                 <h4 className="font-semibold text-green-400 mb-2">
                   통합 방향 (성장 시 → {result.analysis.growth.integrationDirection.toType}번)
                 </h4>
                 <p className="text-muted-foreground">{result.analysis.growth.integrationDirection.description}</p>
               </div>
-              <div className="bg-orange-900/30 border border-orange-500 rounded-lg p-4">
+              <div className="bg-orange-50 dark:bg-orange-900/30 border border-orange-500 rounded-lg p-4">
                 <h4 className="font-semibold text-orange-400 mb-2">
                   분열 방향 (스트레스 시 → {result.analysis.growth.disintegrationDirection.toType}번)
                 </h4>
@@ -418,7 +418,7 @@ export default function EnneagramTestPage() {
                 <h4 className="font-semibold text-green-400 mb-2">궁합 좋은 유형</h4>
                 <div className="flex flex-wrap gap-2">
                   {result.analysis.relationships.compatibleTypes.map((type: number, i: number) => (
-                    <span key={i} className="px-3 py-1 bg-green-900/50 text-green-300 rounded-full text-sm">
+                    <span key={i} className="px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-300 rounded-full text-sm">
                       {type}번 - {ENNEAGRAM_TYPE_NAMES[type]}
                     </span>
                   ))}
@@ -435,7 +435,7 @@ export default function EnneagramTestPage() {
                 <h4 className="font-semibold text-green-400 mb-2">적합한 직업</h4>
                 <div className="flex flex-wrap gap-2">
                   {result.analysis.career.suitableJobs.map((job: string, i: number) => (
-                    <span key={i} className="px-3 py-1 bg-green-900/50 text-green-300 rounded-full text-sm">
+                    <span key={i} className="px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-300 rounded-full text-sm">
                       {job}
                     </span>
                   ))}
@@ -480,7 +480,7 @@ export default function EnneagramTestPage() {
           {/* Try Again */}
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 테스트하기
           </button>

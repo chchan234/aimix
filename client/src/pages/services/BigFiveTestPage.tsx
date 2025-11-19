@@ -170,7 +170,7 @@ export default function BigFiveTestPage() {
               </div>
             </div>
 
-            <div className="bg-green-900/20 border border-green-500 rounded-lg p-4 mt-6 mb-6">
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-foreground font-semibold">Big Five 성격 테스트</p>
@@ -200,7 +200,7 @@ export default function BigFiveTestPage() {
               <span>진행률</span>
               <span>{currentQuestionIndex + 1} / {questions.length}</span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className="bg-green-500 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
@@ -227,7 +227,7 @@ export default function BigFiveTestPage() {
                   className={`w-full px-6 py-3 rounded-lg transition-colors ${
                     answers[currentQuestionIndex] === option.value
                       ? 'bg-green-600 text-foreground'
-                      : 'bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-foreground'
+                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-foreground'
                   }`}
                 >
                   {option.label}
@@ -238,7 +238,7 @@ export default function BigFiveTestPage() {
             {currentQuestionIndex > 0 && (
               <button
                 onClick={handlePrevious}
-                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground rounded-lg"
+                className="mt-6 px-6 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg"
               >
                 이전 질문
               </button>
@@ -266,14 +266,14 @@ export default function BigFiveTestPage() {
       {step === 'result' && result && (
         <div className="space-y-6">
           {/* Summary */}
-          <div className="bg-gradient-to-r from-green-900 to-teal-900 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">종합 분석</h3>
-            <p className="text-muted-foreground leading-relaxed">{result.analysis.summary.overview}</p>
+          <div className="bg-gradient-to-r from-green-500 to-teal-500 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-white mb-4">종합 분석</h3>
+            <p className="text-white/80 leading-relaxed">{result.analysis.summary.overview}</p>
             <div className="mt-4">
-              <h4 className="font-semibold text-green-300 mb-2">두드러진 특성</h4>
+              <h4 className="font-semibold text-green-100 mb-2">두드러진 특성</h4>
               <div className="flex flex-wrap gap-2">
                 {result.analysis.summary.dominantTraits.map((trait: string, i: number) => (
-                  <span key={i} className="px-3 py-1 bg-green-700 text-foreground rounded-full text-sm">
+                  <span key={i} className="px-3 py-1 bg-green-700 text-white rounded-full text-sm">
                     {trait}
                   </span>
                 ))}
@@ -291,7 +291,7 @@ export default function BigFiveTestPage() {
                     <span>{TRAIT_NAMES[trait]}</span>
                     <span>{score}/25점</span>
                   </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div
                       className="bg-green-500 h-2 rounded-full"
                       style={{ width: `${(score / 25) * 100}%` }}
@@ -338,7 +338,7 @@ export default function BigFiveTestPage() {
                 <h4 className="font-semibold text-green-400 mb-2">적합한 분야</h4>
                 <div className="flex flex-wrap gap-2">
                   {result.analysis.career.suitableFields.map((field: string, i: number) => (
-                    <span key={i} className="px-3 py-1 bg-green-900/50 text-green-300 rounded-full text-sm">
+                    <span key={i} className="px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-300 rounded-full text-sm">
                       {field}
                     </span>
                   ))}
@@ -392,7 +392,7 @@ export default function BigFiveTestPage() {
           {/* Try Again */}
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 테스트하기
           </button>

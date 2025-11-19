@@ -187,7 +187,7 @@ export default function StressTestPage() {
               </p>
             </div>
 
-            <div className="bg-cyan-900/20 border border-cyan-500 rounded-lg p-4 mt-6 mb-6">
+            <div className="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-foreground font-semibold">스트레스 지수 측정</p>
@@ -217,7 +217,7 @@ export default function StressTestPage() {
               <span>진행률</span>
               <span>{currentQuestionIndex + 1} / {questions.length}</span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className="bg-cyan-500 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
@@ -244,7 +244,7 @@ export default function StressTestPage() {
                   className={`w-full px-6 py-3 rounded-lg transition-colors ${
                     answers[currentQuestionIndex] === option.value
                       ? 'bg-cyan-600 text-foreground'
-                      : 'bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-foreground'
+                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-foreground'
                   }`}
                 >
                   {option.label}
@@ -255,7 +255,7 @@ export default function StressTestPage() {
             {currentQuestionIndex > 0 && (
               <button
                 onClick={handlePrevious}
-                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground rounded-lg"
+                className="mt-6 px-6 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg"
               >
                 이전 질문
               </button>
@@ -283,22 +283,22 @@ export default function StressTestPage() {
       {step === 'result' && result && (
         <div className="space-y-6">
           {/* Overall Stress Level */}
-          <div className="bg-gradient-to-r from-cyan-900 to-blue-900 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">전체 스트레스 지수</h3>
+          <div className="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-white mb-4">전체 스트레스 지수</h3>
             <div className="flex items-center justify-center mb-4">
               <span className={`text-6xl font-bold ${getStressLevelColor(result.overallStressLevel)}`}>
                 {result.overallStressLevel}%
               </span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-4 mb-4">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 mb-4">
               <div
                 className={`h-4 rounded-full ${getStressLevelBg(result.overallStressLevel)}`}
                 style={{ width: `${result.overallStressLevel}%` }}
               />
             </div>
-            <p className="text-muted-foreground text-center">{result.analysis.overallAssessment.description}</p>
+            <p className="text-white/80 text-center">{result.analysis.overallAssessment.description}</p>
             {result.analysis.overallAssessment.riskFactors.length > 0 && (
-              <div className="mt-4 bg-red-900/20 border border-red-500 rounded-lg p-4">
+              <div className="mt-4 bg-red-100 dark:bg-red-900/20 border border-red-500 rounded-lg p-4">
                 <h4 className="font-semibold text-red-400 mb-2">주요 위험 요인</h4>
                 <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   {result.analysis.overallAssessment.riskFactors.map((factor: string, i: number) => (
@@ -319,7 +319,7 @@ export default function StressTestPage() {
                     <span>{CATEGORY_NAMES[category]}</span>
                     <span>{score}/25점</span>
                   </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div
                       className={getStressLevelBg(Math.round((score / 25) * 100))}
                       style={{ width: `${(score / 25) * 100}%`, height: '0.5rem', borderRadius: '9999px' }}
@@ -401,7 +401,7 @@ export default function StressTestPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">지원 및 자원</h3>
             <div className="space-y-4 text-muted-foreground">
-              <div className="bg-cyan-900/20 border border-cyan-500 rounded-lg p-4">
+              <div className="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-500 rounded-lg p-4">
                 <h4 className="font-semibold text-cyan-400 mb-2">전문가 도움</h4>
                 <p>{result.analysis.resources.professionalHelp}</p>
               </div>
@@ -427,7 +427,7 @@ export default function StressTestPage() {
           {/* Try Again */}
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 테스트하기
           </button>
