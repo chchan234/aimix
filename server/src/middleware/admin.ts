@@ -7,8 +7,10 @@ import { eq } from 'drizzle-orm';
 export async function requireAdmin(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = (req as any).user?.userId;
+    console.log('[Admin Middleware] userId from token:', userId);
 
     if (!userId) {
+      console.log('[Admin Middleware] No userId found');
       return res.status(401).json({ error: 'Authentication required' });
     }
 
@@ -20,12 +22,15 @@ export async function requireAdmin(req: Request, res: Response, next: NextFuncti
         email: true
       }
     });
+    console.log('[Admin Middleware] User from DB:', user);
 
     if (!user) {
+      console.log('[Admin Middleware] User not found in DB');
       return res.status(401).json({ error: 'User not found' });
     }
 
     if (user.role !== 'admin') {
+      console.log('[Admin Middleware] User role is not admin:', user.role);
       return res.status(403).json({ error: 'Admin access required' });
     }
 
