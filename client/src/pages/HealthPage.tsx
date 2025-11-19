@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'wouter';
 
 export default function HealthPage() {
   const { t } = useTranslation();
+  const [, setLocation] = useLocation();
 
   const services = useMemo(() => ({
     health: [
@@ -24,6 +26,13 @@ export default function HealthPage() {
         icon: 'face_6',
         color: 'pink',
       },
+      {
+        title: '퍼스널 컬러 진단',
+        description: '나에게 어울리는 색 찾기',
+        icon: 'palette',
+        color: 'purple',
+        path: '/services/personal-color',
+      },
     ],
   }), [t]);
 
@@ -31,6 +40,7 @@ export default function HealthPage() {
     blue: 'bg-blue-500/20 text-blue-400',
     green: 'bg-green-500/20 text-green-400',
     pink: 'bg-pink-500/20 text-pink-400',
+    purple: 'bg-purple-500/20 text-purple-400',
   };
 
   return (
@@ -51,6 +61,7 @@ export default function HealthPage() {
           {services.health.map((service, index) => (
             <div
               key={index}
+              onClick={() => (service as any).path && setLocation((service as any).path)}
               className="flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer"
             >
               <div

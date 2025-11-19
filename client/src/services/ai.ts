@@ -417,3 +417,18 @@ export async function analyzeGeumjjoki(answers: number[]) {
 export async function findLookalike(base64Image: string, category: 'celebrity' | 'anime' | 'animal') {
   return apiRequest('/api/image/lookalike', { base64Image, category });
 }
+
+// Pet Soulmate
+export async function analyzePetSoulmate(base64Image: string) {
+  return apiRequest('/api/image/pet-soulmate', { base64Image });
+}
+
+// Baby Face Prediction
+export async function generateBabyFace(parent1Image: string, parent2Image: string, style: 'normal' | 'idol' = 'normal') {
+  return apiRequest('/api/image/baby-face', { parent1Image, parent2Image, style });
+}
+
+// Personal Color Analysis
+export async function analyzePersonalColor(base64Image: string) {
+  return apiRequest('/api/image/personal-color', { base64Image });
+}

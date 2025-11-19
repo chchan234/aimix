@@ -52,6 +52,20 @@ export default function EntertainmentPage() {
         color: 'pink',
         path: '/services/lookalike',
       },
+      {
+        title: 'AI 반려동물 소울메이트',
+        description: '우리 아이의 전생과 MBTI 분석',
+        icon: 'pets',
+        color: 'orange',
+        path: '/services/pet-soulmate',
+      },
+      {
+        title: '2세 얼굴 예측',
+        description: '미래 아이의 얼굴 예측',
+        icon: 'child_care',
+        color: 'pink',
+        path: '/services/baby-face',
+      },
     ],
   }), [t]);
 

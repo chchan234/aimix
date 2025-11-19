@@ -292,3 +292,34 @@ export const lookalikeSchema = z.object({
 );
 
 export type LookalikeInput = z.infer<typeof lookalikeSchema>;
+
+// Pet Soulmate Schema
+export const petSoulmateSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+export type PetSoulmateInput = z.infer<typeof petSoulmateSchema>;
+
+// Baby Face Schema
+export const babyFaceSchema = z.object({
+  parent1Image: base64Image,
+  parent2Image: base64Image,
+  style: z.enum(['normal', 'idol']).optional().default('normal'),
+});
+
+export type BabyFaceInput = z.infer<typeof babyFaceSchema>;
+
+// Personal Color Schema
+export const personalColorSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+export type PersonalColorInput = z.infer<typeof personalColorSchema>;

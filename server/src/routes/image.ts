@@ -18,6 +18,9 @@ import {
   hairstyleSchema,
   tattooSchema,
   lookalikeSchema,
+  petSoulmateSchema,
+  babyFaceSchema,
+  personalColorSchema,
 } from '../validation/ai-schemas.js';
 import * as gemini from '../services/gemini.js';
 
@@ -329,6 +332,98 @@ router.post('/lookalike', validateBody(lookalikeSchema), requireCredits('lookali
     }
   } catch (error) {
     console.error('Lookalike finder error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// 12. Pet Soulmate - AI 반려동물 소울메이트
+router.post('/pet-soulmate', validateBody(petSoulmateSchema), requireCredits('pet-soulmate'), async (req, res) => {
+  try {
+    const { imageUrl, base64Image } = req.body;
+
+    const imageBase64 = base64Image ? base64Image.split(',')[1] : imageUrl;
+
+    const result = await gemini.analyzePetSoulmate(imageBase64);
+
+    if (result.success) {
+      res.json({
+        success: true,
+        analysis: result.analysis,
+        model: result.model,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: result.error || 'Failed to analyze pet'
+      });
+    }
+  } catch (error) {
+    console.error('Pet soulmate error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// 13. Baby Face Prediction - 2세 얼굴 예측
+router.post('/baby-face', validateBody(babyFaceSchema), requireCredits('baby-face'), async (req, res) => {
+  try {
+    const { parent1Image, parent2Image, style } = req.body;
+
+    const parent1Base64 = parent1Image.split(',')[1];
+    const parent2Base64 = parent2Image.split(',')[1];
+
+    const result = await gemini.generateBabyFace(parent1Base64, parent2Base64, style);
+
+    if (result.success) {
+      res.json({
+        success: true,
+        imageData: result.imageData,
+        mimeType: result.mimeType,
+        model: result.model,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: result.error || 'Failed to generate baby face'
+      });
+    }
+  } catch (error) {
+    console.error('Baby face generation error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// 14. Personal Color Analysis - 퍼스널 컬러 진단
+router.post('/personal-color', validateBody(personalColorSchema), requireCredits('personal-color'), async (req, res) => {
+  try {
+    const { imageUrl, base64Image } = req.body;
+
+    const imageBase64 = base64Image ? base64Image.split(',')[1] : imageUrl;
+
+    const result = await gemini.analyzePersonalColor(imageBase64);
+
+    if (result.success) {
+      res.json({
+        success: true,
+        analysis: result.analysis,
+        model: result.model,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: result.error || 'Failed to analyze personal color'
+      });
+    }
+  } catch (error) {
+    console.error('Personal color analysis error:', error);
     res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'

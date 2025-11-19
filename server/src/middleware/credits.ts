@@ -34,6 +34,7 @@ export const CREDIT_COSTS = {
   'geumjjoki-test': 30, // 금쪽이 테스트
   // Image generation/editing services
   'profile-generator': 30, // AI 프로필 생성
+  'professional-headshot': 35, // AI 프로페셔널 헤드샷
   'caricature': 35, // 캐리커쳐 변환
   'id-photo': 25, // 증명사진
   'age-transform': 35, // 나이 변환
@@ -43,6 +44,12 @@ export const CREDIT_COSTS = {
   'hairstyle': 30, // 헤어스타일 변경
   'tattoo': 30, // 타투 시뮬레이션
   'lookalike': 20, // 닮은꼴 찾기
+  // New services
+  'pet-soulmate': 25, // AI 반려동물 소울메이트
+  'baby-face': 35, // 2세 얼굴 예측
+  'celebrity-doppelganger': 25, // 연예인 도플갱어 2.0
+  'personal-color': 30, // 퍼스널 컬러 진단
+  'deep-fortune-2025': 50, // 2025년 심층 신년운세
 } as const;
 
 /**

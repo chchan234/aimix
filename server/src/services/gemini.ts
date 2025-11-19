@@ -138,13 +138,41 @@ export async function generateStory(theme: string, length: 'short' | 'medium' | 
  * Image Generation & Editing Services
  */
 
-// 1. Profile Generator - AI 프로필 생성
+// 1. Professional Headshot - AI 프로페셔널 헤드샷 (이미지 업로드 방식으로 변경)
+export async function generateProfessionalHeadshot(imageBase64: string, style: string = 'professional') {
+  try {
+    const stylePrompts = {
+      professional: 'Transform this photo into a professional LinkedIn-style headshot. Studio lighting, clean neutral background (light gray or white), business professional attire, confident expression, perfect focus on face.',
+      business: 'Transform this into a formal business portrait. Premium studio quality, dark professional background, business formal attire, dignified and authoritative presence.',
+      casual: 'Transform this into a professional casual portrait. Natural lighting, soft background, business casual attire, friendly and approachable expression.'
+    };
+
+    const prompt = stylePrompts[style as keyof typeof stylePrompts] || stylePrompts.professional;
+
+    const response = await getClient().editImage(imageBase64, prompt);
+
+    return {
+      success: true,
+      imageData: response.imageData,
+      mimeType: response.mimeType,
+      model: 'gemini-2.0-flash-exp'
+    };
+  } catch (error) {
+    console.error('Professional headshot generation error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+// 구버전 호환성을 위해 유지
 export async function generateProfile(description: string, style: string = 'professional') {
   try {
     const prompt = `Create a high-quality ${style} profile picture with the following characteristics: ${description}.
     Style: ${style === 'professional' ? 'Professional headshot, business attire, neutral background' :
-            style === 'casual' ? 'Casual and friendly, relaxed setting' :
-            style === 'artistic' ? 'Creative and artistic, unique composition' : style}
+        style === 'casual' ? 'Casual and friendly, relaxed setting' :
+          style === 'artistic' ? 'Creative and artistic, unique composition' : style}
     Make it photorealistic and high resolution.`;
 
     const response = await getClient().generateImage(prompt);
@@ -456,12 +484,257 @@ ${categoryPrompts[category]}
   }
 }
 
+// NEW SERVICES
+
+// 12. Pet Soulmate - AI 반려동물 소울메이트
+export async function analyzePetSoulmate(imageBase64: string) {
+  try {
+    const prompt = `이 반려동물의 사진을 보고 재미있고 창의적으로 분석해주세요.
+
+다음 JSON 형식으로 응답해주세요:
+{
+  "animalType": "동물 종류 (예: 강아지, 고양이)",
+  "breed": "품종 (추정)",
+  "pastLife": {
+    "job": "전생의 직업 (예: 힙합 아티스트, 재벌 회장, 요가 강사 등)",
+    "era": "시대 (예: 1990년대, 고려시대 등)",
+    "description": "전생에 대한 재미있는 설명"
+  },
+  "mbti": "MBTI 성격 유형",
+  "mbtiDescription": "MBTI에 대한 설명",
+  "ownerCompatibility": {
+    "score": 95,
+    "description": "주인과의 궁합 설명"
+  },
+  "personalityTraits": ["성격 특징1", "성격 특징2", "성격 특징3"],
+  "funComment": "재미있는 한 줄 코멘트"
+}`;
+
+    const client = getClient();
+    const response = await client.analyzeImageWithText(imageBase64, prompt);
+
+    // Parse JSON from response
+    let analysis;
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        analysis = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('JSON not found in response');
+      }
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      return {
+        success: false,
+        error: 'Failed to parse analysis result'
+      };
+    }
+
+    return {
+      success: true,
+      analysis,
+      model: 'gemini-2.0-flash-exp'
+    };
+  } catch (error) {
+    console.error('Pet soulmate analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+// 13. Baby Face Prediction - 2세 얼굴 예측
+export async function generateBabyFace(parent1Base64: string, parent2Base64: string, style: string = 'normal') {
+  try {
+    const stylePrompt = style === 'idol'
+      ? 'Make the baby look especially attractive with ideal proportions, like a future K-pop idol or celebrity.'
+      : 'Generate a realistic baby face combining natural features from both parents.';
+
+    const prompt = `Analyze these two parent photos and generate a realistic prediction of what their future baby might look like.
+    Combine facial features from both parents:
+    - Eyes, nose, mouth shape
+    - Skin tone
+    - Face structure
+    ${stylePrompt}
+    Make it look like a cute 1-2 year old baby with natural, photorealistic quality.`;
+
+    // For multi-image input, we need a different approach
+    // Since the current API might not support multiple images directly,
+    // we'll analyze both and generate based on description
+    const client = getClient();
+
+    // First analyze both parents
+    const parent1Analysis = await client.analyzeImageWithText(parent1Base64, 'Describe this person\'s facial features in detail: face shape, eyes, nose, mouth, skin tone.');
+    const parent2Analysis = await client.analyzeImageWithText(parent2Base64, 'Describe this person\'s facial features in detail: face shape, eyes, nose, mouth, skin tone.');
+
+    // Generate baby based on combined features
+    const combinedPrompt = `Generate a realistic baby photo combining these features:
+    Parent 1: ${parent1Analysis}
+    Parent 2: ${parent2Analysis}
+    ${stylePrompt}
+    Create a cute 1-2 year old baby that looks like a natural blend of both parents.`;
+
+    const response = await client.generateImage(combinedPrompt);
+
+    return {
+      success: true,
+      imageData: response.imageData,
+      mimeType: response.mimeType,
+      model: 'gemini-2.0-flash-exp'
+    };
+  } catch (error) {
+    console.error('Baby face generation error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+// 14. Celebrity Doppelganger 2.0 - 연예인 도플갱어 상세 분석
+export async function findCelebrityDoppelganger(imageBase64: string) {
+  try {
+    const prompt = `이 사진 속 사람의 얼굴을 매우 상세하게 분석해주세요.
+
+한국 연예인(K-pop 아이돌, 배우, 가수) 중에서 이 사람과 가장 닮은 연예인 TOP 3을 찾아주세요.
+각 연예인에 대해 어떤 특징이 닮았는지 구체적으로 분석해주세요.
+
+다음 JSON 형식으로 응답해주세요:
+{
+  "faceAnalysis": {
+    "faceShape": "얼굴형 (예: 계란형, 둥근형 등)",
+    "eyeShape": "눈 모양 상세 설명",
+    "eyeSize": "눈 크기",
+    "noseShape": "코 모양 상세 설명",
+    "lipShape": "입술 모양 상세 설명",
+    "jawline": "턱선 설명",
+    "cheekbones": "광대 설명",
+    "overallImpression": "전체적인 인상"
+  },
+  "celebrityMatches": [
+    {
+      "name": "연예인 이름",
+      "similarity": 88,
+      "matchingFeatures": {
+        "eyes": "눈 부분이 닮은 이유 상세 설명",
+        "nose": "코 부분이 닮은 이유 상세 설명 (닮지 않으면 null)",
+        "lips": "입술 부분이 닮은 이유 상세 설명 (닮지 않으면 null)",
+        "face": "전체 얼굴형이 닮은 이유 상세 설명 (닮지 않으면 null)",
+        "overall": "전체적으로 닮은 이유 요약"
+      }
+    }
+  ],
+  "funComment": "재미있는 한 줄 코멘트"
+}`;
+
+    const client = getClient();
+    const response = await client.analyzeImageWithText(imageBase64, prompt);
+
+    // Parse JSON from response
+    let analysis;
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        analysis = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('JSON not found in response');
+      }
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      return {
+        success: false,
+        error: 'Failed to parse analysis result'
+      };
+    }
+
+    return {
+      success: true,
+      analysis,
+      model: 'gemini-2.0-flash-exp'
+    };
+  } catch (error) {
+    console.error('Celebrity doppelganger analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+// 15. Personal Color Analysis - 퍼스널 컬러 진단
+export async function analyzePersonalColor(imageBase64: string) {
+  try {
+    const prompt = `이 사진 속 사람의 피부톤을 분석하여 퍼스널 컬러를 진단해주세요.
+
+다음 JSON 형식으로 응답해주세요:
+{
+  "personalColor": "진단 결과 (Spring Warm, Summer Cool, Autumn Warm, Winter Cool 중 하나)",
+  "confidence": 85,
+  "skinAnalysis": {
+    "undertone": "피부 언더톤 (따뜻한, 차가운, 중성)",
+    "brightness": "피부 밝기 (밝음, 보통, 어두움)",
+    "saturation": "채도",
+    "description": "피부톤 상세 설명"
+  },
+  "recommendedColors": {
+    "best": ["어울리는 색상1", "어울리는 색상2", "어울리는 색상3"],
+    "avoid": ["피해야 할 색상1", "피해야 할 색상2"]
+  },
+  "makeupRecommendations": {
+    "lipstick": ["추천 립스틱 색상1", "추천 립스틱 색상2"],
+    "eyeshadow": ["추천 아이섀도우 톤"],
+    "blush": ["추천 블러셔 색상"]
+  },
+  "clothingRecommendations": {
+    "colors": ["옷 추천 색상1", "옷 추천 색상2", "옷 추천 색상3"],
+    "metals": "어울리는 금속 (골드 or 실버)",
+    "description": "어울리는 옷 스타일 설명"
+  },
+  "explanation": "이 진단 결과에 대한 상세한 설명"
+}`;
+
+    const client = getClient();
+    const response = await client.analyzeImageWithText(imageBase64, prompt);
+
+    // Parse JSON from response
+    let analysis;
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        analysis = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('JSON not found in response');
+      }
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      return {
+        success: false,
+        error: 'Failed to parse analysis result'
+      };
+    }
+
+    return {
+      success: true,
+      analysis,
+      model: 'gemini-2.0-flash-exp'
+    };
+  } catch (error) {
+    console.error('Personal color analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
 export default {
   generateText,
   analyzeNameMeaning,
   generateStory,
   // Image services
   generateProfile,
+  generateProfessionalHeadshot,
   generateCaricature,
   generateIdPhoto,
   transformAge,
@@ -470,4 +743,10 @@ export default {
   removeBackground,
   changeHairstyle,
   addTattoo,
+  findLookalike,
+  // New services
+  analyzePetSoulmate,
+  generateBabyFace,
+  findCelebrityDoppelganger,
+  analyzePersonalColor,
 };

@@ -45,12 +45,15 @@ import BackgroundRemovalPage from './pages/services/BackgroundRemovalPage';
 import HairstylePage from './pages/services/HairstylePage';
 import TattooPage from './pages/services/TattooPage';
 import LookalikePage from './pages/services/LookalikePage';
+import PetSoulmatePage from './pages/services/PetSoulmatePage';
+import BabyFacePage from './pages/services/BabyFacePage';
+import PersonalColorPage from './pages/services/PersonalColorPage';
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="relative flex h-auto min-h-screen w-full flex-col dark group/design-root overflow-x-hidden font-display bg-background-dark">
+    <div className="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden font-display bg-background text-foreground">
       {/* Header */}
       <Header onMenuClick={() => setSidebarOpen(true)} />
 
@@ -106,6 +109,9 @@ function App() {
             <Route path="/services/hairstyle" component={HairstylePage} />
             <Route path="/services/tattoo" component={TattooPage} />
             <Route path="/services/lookalike" component={LookalikePage} />
+            <Route path="/services/pet-soulmate" component={PetSoulmatePage} />
+            <Route path="/services/baby-face" component={BabyFacePage} />
+            <Route path="/services/personal-color" component={PersonalColorPage} />
 
             <Route path="/:rest*">
               {() => (
