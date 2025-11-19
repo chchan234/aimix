@@ -50,6 +50,7 @@ export default function EntertainmentPage() {
         description: t('services.entertainment.lookalike.description'),
         icon: 'compare',
         color: 'pink',
+        path: '/services/lookalike',
       },
     ],
   }), [t]);
@@ -111,6 +112,7 @@ export default function EntertainmentPage() {
           {services.fun.map((service, index) => (
             <div
               key={index}
+              onClick={() => service.path && setLocation(service.path)}
               className="flex flex-col gap-4 p-6 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 transition cursor-pointer"
             >
               <div

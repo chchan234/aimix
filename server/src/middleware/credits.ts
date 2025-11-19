@@ -42,6 +42,7 @@ export const CREDIT_COSTS = {
   'background-removal': 25, // 배경 제거
   'hairstyle': 30, // 헤어스타일 변경
   'tattoo': 30, // 타투 시뮬레이션
+  'lookalike': 20, // 닮은꼴 찾기
 } as const;
 
 /**

@@ -17,6 +17,7 @@ import {
   backgroundRemovalSchema,
   hairstyleSchema,
   tattooSchema,
+  lookalikeSchema,
 } from '../validation/ai-schemas.js';
 import * as gemini from '../services/gemini.js';
 
@@ -297,6 +298,37 @@ router.post('/tattoo', validateBody(tattooSchema), requireCredits('tattoo'), asy
     }
   } catch (error) {
     console.error('Tattoo simulation error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// 11. Lookalike Finder - 닮은꼴 찾기
+router.post('/lookalike', validateBody(lookalikeSchema), requireCredits('lookalike'), async (req, res) => {
+  try {
+    const { imageUrl, base64Image, category } = req.body;
+
+    const imageBase64 = base64Image ? base64Image.split(',')[1] : imageUrl;
+
+    const result = await gemini.findLookalike(imageBase64, category);
+
+    if (result.success) {
+      res.json({
+        success: true,
+        analysis: result.analysis,
+        category: result.category,
+        model: result.model,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: result.error || 'Failed to find lookalike'
+      });
+    }
+  } catch (error) {
+    console.error('Lookalike finder error:', error);
     res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'

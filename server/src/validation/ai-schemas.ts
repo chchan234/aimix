@@ -278,3 +278,17 @@ export type ColorizationInput = z.infer<typeof colorizationSchema>;
 export type BackgroundRemovalInput = z.infer<typeof backgroundRemovalSchema>;
 export type HairstyleInput = z.infer<typeof hairstyleSchema>;
 export type TattooInput = z.infer<typeof tattooSchema>;
+
+// Lookalike Schema
+export const lookalikeSchema = z.object({
+  imageUrl: imageUrl.optional(),
+  base64Image: base64Image.optional(),
+  category: z.enum(['celebrity', 'anime', 'animal'], {
+    errorMap: () => ({ message: 'Category must be celebrity, anime, or animal' })
+  }),
+}).refine(
+  (data) => data.imageUrl || data.base64Image,
+  'Either imageUrl or base64Image is required'
+);
+
+export type LookalikeInput = z.infer<typeof lookalikeSchema>;

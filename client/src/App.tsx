@@ -44,6 +44,7 @@ import ColorizationPage from './pages/services/ColorizationPage';
 import BackgroundRemovalPage from './pages/services/BackgroundRemovalPage';
 import HairstylePage from './pages/services/HairstylePage';
 import TattooPage from './pages/services/TattooPage';
+import LookalikePage from './pages/services/LookalikePage';
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -104,6 +105,7 @@ function App() {
             <Route path="/services/background-removal" component={BackgroundRemovalPage} />
             <Route path="/services/hairstyle" component={HairstylePage} />
             <Route path="/services/tattoo" component={TattooPage} />
+            <Route path="/services/lookalike" component={LookalikePage} />
 
             <Route path="/:rest*">
               {() => (

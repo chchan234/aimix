@@ -412,3 +412,8 @@ export async function getGeumjjokiQuestions() {
 export async function analyzeGeumjjoki(answers: number[]) {
   return apiRequest('/api/personality/geumjjoki-test', { answers });
 }
+
+// Lookalike Finder
+export async function findLookalike(base64Image: string, category: 'celebrity' | 'anime' | 'animal') {
+  return apiRequest('/api/image/lookalike', { base64Image, category });
+}

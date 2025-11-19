@@ -385,6 +385,77 @@ export async function addTattoo(imageBase64: string, tattooDescription: string, 
   }
 }
 
+// 11. Lookalike Finder - 닮은꼴 찾기
+export async function findLookalike(imageBase64: string, category: 'celebrity' | 'anime' | 'animal') {
+  try {
+    const categoryPrompts = {
+      celebrity: `한국 연예인(K-pop 아이돌, 배우, 가수) 중에서 이 사람과 가장 닮은 연예인을 찾아주세요.
+        닮은 연예인 3명을 유사도 순으로 분석해주세요.`,
+      anime: `애니메이션/만화 캐릭터(디즈니, 지브리, 일본 애니메이션 등) 중에서 이 사람과 가장 닮은 캐릭터를 찾아주세요.
+        닮은 캐릭터 3명을 유사도 순으로 분석해주세요.`,
+      animal: `동물 중에서 이 사람과 가장 닮은 동물을 찾아주세요.
+        닮은 동물 3가지를 유사도 순으로 분석해주세요.`
+    };
+
+    const prompt = `이 사진 속 사람의 얼굴을 분석해주세요.
+
+${categoryPrompts[category]}
+
+다음 JSON 형식으로 응답해주세요:
+{
+  "matches": [
+    {
+      "name": "닮은 대상 이름",
+      "similarity": 85,
+      "reason": "닮은 이유 설명 (눈매, 코, 입술, 전체적인 인상 등)",
+      "characteristics": ["특징1", "특징2", "특징3"]
+    }
+  ],
+  "faceAnalysis": {
+    "faceShape": "얼굴형",
+    "eyeType": "눈 특징",
+    "noseType": "코 특징",
+    "lipType": "입술 특징",
+    "overallImpression": "전체적인 인상"
+  },
+  "funComment": "재미있는 한 줄 코멘트"
+}`;
+
+    const client = getClient();
+    const response = await client.analyzeImageWithText(imageBase64, prompt);
+
+    // Parse JSON from response
+    let analysis;
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        analysis = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('JSON not found in response');
+      }
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      return {
+        success: false,
+        error: 'Failed to parse analysis result'
+      };
+    }
+
+    return {
+      success: true,
+      analysis,
+      category,
+      model: 'gemini-2.0-flash-exp'
+    };
+  } catch (error) {
+    console.error('Lookalike finder error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
 export default {
   generateText,
   analyzeNameMeaning,
