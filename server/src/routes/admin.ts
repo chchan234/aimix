@@ -183,6 +183,86 @@ router.get('/users/:userId', async (req: Request, res: Response) => {
   }
 });
 
+// Update user role
+router.put('/users/:userId/role', async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const { role } = req.body;
+    const adminId = (req as any).admin.id;
+
+    if (!['user', 'admin'].includes(role)) {
+      return res.status(400).json({ error: 'Invalid role. Must be "user" or "admin"' });
+    }
+
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, userId)
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    await db.update(users)
+      .set({ role, updatedAt: new Date() })
+      .where(eq(users.id, userId));
+
+    await db.insert(adminLogs).values({
+      adminId,
+      action: 'user_role_change',
+      targetType: 'user',
+      targetId: userId,
+      details: { oldRole: user.role, newRole: role, email: user.email },
+      ipAddress: getClientIP(req)
+    });
+
+    res.json({ success: true, newRole: role });
+  } catch (error) {
+    console.error('Update user role error:', error);
+    res.status(500).json({ error: 'Failed to update user role' });
+  }
+});
+
+// Delete user
+router.delete('/users/:userId', async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const adminId = (req as any).admin.id;
+
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, userId)
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Don't allow deleting admin users
+    if (user.role === 'admin') {
+      return res.status(403).json({ error: 'Cannot delete admin users' });
+    }
+
+    // Delete user's transactions first
+    await db.delete(transactions).where(eq(transactions.userId, userId));
+
+    // Delete user
+    await db.delete(users).where(eq(users.id, userId));
+
+    await db.insert(adminLogs).values({
+      adminId,
+      action: 'user_delete',
+      targetType: 'user',
+      targetId: userId,
+      details: { email: user.email },
+      ipAddress: getClientIP(req)
+    });
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Delete user error:', error);
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+});
+
 // ================================
 // Credit Management
 // ================================
@@ -243,6 +323,105 @@ router.post('/credits/charge', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Credit charge error:', error);
     res.status(500).json({ error: 'Failed to charge credits' });
+  }
+});
+
+// Deduct credits from user
+router.post('/credits/deduct', async (req: Request, res: Response) => {
+  try {
+    const { userId, amount, reason } = req.body;
+    const adminId = (req as any).admin.id;
+
+    if (!userId || !amount || amount <= 0) {
+      return res.status(400).json({ error: 'Invalid user ID or amount' });
+    }
+
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, userId)
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (user.credits < amount) {
+      return res.status(400).json({ error: 'Insufficient credits' });
+    }
+
+    const newCredits = user.credits - amount;
+
+    await db.update(users)
+      .set({
+        credits: newCredits,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId));
+
+    await db.insert(transactions).values({
+      userId,
+      type: 'use',
+      creditAmount: -amount,
+      creditBalanceAfter: newCredits,
+      paymentMethod: 'admin_deduct'
+    });
+
+    await db.insert(adminLogs).values({
+      adminId,
+      action: 'credit_deduct',
+      targetType: 'user',
+      targetId: userId,
+      details: {
+        amount,
+        reason: reason || 'Admin credit deduction',
+        newBalance: newCredits
+      },
+      ipAddress: getClientIP(req)
+    });
+
+    res.json({
+      success: true,
+      newCredits,
+      message: `Successfully deducted ${amount} credits from user`
+    });
+  } catch (error) {
+    console.error('Credit deduct error:', error);
+    res.status(500).json({ error: 'Failed to deduct credits' });
+  }
+});
+
+// Get credit history for a user
+router.get('/credits/history/:userId', async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const offset = (page - 1) * limit;
+
+    const [history, totalResult] = await Promise.all([
+      db.select()
+        .from(transactions)
+        .where(eq(transactions.userId, userId))
+        .orderBy(desc(transactions.createdAt))
+        .limit(limit)
+        .offset(offset),
+
+      db.select({ count: count() })
+        .from(transactions)
+        .where(eq(transactions.userId, userId))
+    ]);
+
+    res.json({
+      history,
+      pagination: {
+        page,
+        limit,
+        total: totalResult[0]?.count || 0,
+        pages: Math.ceil((totalResult[0]?.count || 0) / limit)
+      }
+    });
+  } catch (error) {
+    console.error('Credit history error:', error);
+    res.status(500).json({ error: 'Failed to fetch credit history' });
   }
 });
 
@@ -456,6 +635,27 @@ router.get('/logs', async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 50;
     const offset = (page - 1) * limit;
+    const action = req.query.action as string;
+    const startDate = req.query.startDate as string;
+    const endDate = req.query.endDate as string;
+
+    let whereConditions = [];
+
+    if (action) {
+      whereConditions.push(eq(adminLogs.action, action));
+    }
+
+    if (startDate) {
+      whereConditions.push(gte(adminLogs.createdAt, new Date(startDate)));
+    }
+
+    if (endDate) {
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      whereConditions.push(sql`${adminLogs.createdAt} <= ${end}`);
+    }
+
+    const whereClause = whereConditions.length > 0 ? and(...whereConditions) : undefined;
 
     const [logs, totalResult] = await Promise.all([
       db.select({
@@ -469,11 +669,14 @@ router.get('/logs', async (req: Request, res: Response) => {
         createdAt: adminLogs.createdAt
       })
         .from(adminLogs)
+        .where(whereClause)
         .orderBy(desc(adminLogs.createdAt))
         .limit(limit)
         .offset(offset),
 
-      db.select({ count: count() }).from(adminLogs)
+      db.select({ count: count() })
+        .from(adminLogs)
+        .where(whereClause)
     ]);
 
     res.json({
@@ -488,6 +691,98 @@ router.get('/logs', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Get logs error:', error);
     res.status(500).json({ error: 'Failed to fetch activity logs' });
+  }
+});
+
+// ================================
+// Export Data
+// ================================
+router.get('/export/users', async (req: Request, res: Response) => {
+  try {
+    const allUsers = await db.select({
+      id: users.id,
+      email: users.email,
+      username: users.username,
+      provider: users.provider,
+      credits: users.credits,
+      lifetimeCredits: users.lifetimeCredits,
+      role: users.role,
+      createdAt: users.createdAt
+    })
+      .from(users)
+      .orderBy(desc(users.createdAt));
+
+    // Generate CSV
+    const headers = ['ID', 'Email', 'Username', 'Provider', 'Credits', 'Lifetime Credits', 'Role', 'Created At'];
+    const csvRows = [headers.join(',')];
+
+    for (const user of allUsers) {
+      const row = [
+        user.id,
+        `"${user.email}"`,
+        `"${user.username || ''}"`,
+        user.provider,
+        user.credits,
+        user.lifetimeCredits,
+        user.role,
+        new Date(user.createdAt).toISOString()
+      ];
+      csvRows.push(row.join(','));
+    }
+
+    const csv = csvRows.join('\n');
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename=users_${new Date().toISOString().split('T')[0]}.csv`);
+    res.send(csv);
+  } catch (error) {
+    console.error('Export users error:', error);
+    res.status(500).json({ error: 'Failed to export users' });
+  }
+});
+
+router.get('/export/logs', async (req: Request, res: Response) => {
+  try {
+    const allLogs = await db.select({
+      id: adminLogs.id,
+      adminId: adminLogs.adminId,
+      action: adminLogs.action,
+      targetType: adminLogs.targetType,
+      targetId: adminLogs.targetId,
+      details: adminLogs.details,
+      ipAddress: adminLogs.ipAddress,
+      createdAt: adminLogs.createdAt
+    })
+      .from(adminLogs)
+      .orderBy(desc(adminLogs.createdAt))
+      .limit(1000);
+
+    // Generate CSV
+    const headers = ['ID', 'Admin ID', 'Action', 'Target Type', 'Target ID', 'Details', 'IP Address', 'Created At'];
+    const csvRows = [headers.join(',')];
+
+    for (const log of allLogs) {
+      const row = [
+        log.id,
+        log.adminId,
+        log.action,
+        log.targetType || '',
+        log.targetId || '',
+        `"${JSON.stringify(log.details || {}).replace(/"/g, '""')}"`,
+        log.ipAddress,
+        new Date(log.createdAt).toISOString()
+      ];
+      csvRows.push(row.join(','));
+    }
+
+    const csv = csvRows.join('\n');
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename=admin_logs_${new Date().toISOString().split('T')[0]}.csv`);
+    res.send(csv);
+  } catch (error) {
+    console.error('Export logs error:', error);
+    res.status(500).json({ error: 'Failed to export logs' });
   }
 });
 
