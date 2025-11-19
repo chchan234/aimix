@@ -191,8 +191,8 @@ app.use('/api/personality', personalityRoutes);
 // Results routes
 app.use('/api/results', resultsRoutes);
 
-// Admin routes (temporary)
-app.use('/api/admin', adminRoutes);
+// Admin routes (requires authentication)
+app.use('/api/admin', authenticateToken, adminRoutes);
 
 // Health service routes
 app.use('/api/health', healthRoutes);
