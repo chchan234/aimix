@@ -552,30 +552,105 @@ export async function generateBabyFace(parent1Base64: string, parent2Base64: str
     console.log(`Parent 2 image size: ${parent2Base64.length} chars`);
     console.log(`Style: ${style}`);
 
-    const stylePrompt = style === 'idol'
-      ? 'Make the baby look especially attractive with ideal proportions, like a future K-pop idol or celebrity.'
-      : 'Generate a realistic baby face combining natural features from both parents.';
-
-    // For multi-image input, we need a different approach
-    // Since the current API might not support multiple images directly,
-    // we'll analyze both and generate based on description
     const client = getClient();
+
+    // Detailed parent analysis prompt
+    const analysisPrompt = `이 사람의 얼굴 특징을 매우 상세하게 분석해주세요. 다음 항목들을 구체적으로 설명해주세요:
+
+1. 얼굴형: 계란형/둥근형/각진형/긴형/하트형 등
+2. 이마: 넓이, 높이, 모양
+3. 눈:
+   - 크기 (큰/중간/작은)
+   - 모양 (둥근/아몬드형/고양이눈/처진눈)
+   - 쌍꺼풀 유무 및 종류
+   - 눈 사이 거리
+   - 눈썹 모양과 굵기
+4. 코:
+   - 길이 (긴/중간/짧은)
+   - 콧대 높이
+   - 코끝 모양 (둥근/뾰족/올라간/내려간)
+   - 콧볼 너비
+5. 입:
+   - 입술 두께 (두꺼운/중간/얇은)
+   - 입술 모양
+   - 입꼬리 방향
+   - 인중 길이
+6. 턱과 광대:
+   - 턱선 모양
+   - 광대뼈 위치와 돌출 정도
+7. 피부톤: 밝기와 색조
+8. 전체적인 인상과 분위기
+
+각 특징을 구체적인 수치나 비유를 사용해 최대한 자세히 설명해주세요.`;
 
     // First analyze both parents
     console.log('📸 Analyzing parent 1 facial features...');
-    const parent1Analysis = await client.analyzeImageWithText(parent1Base64, 'Describe this person\'s facial features in detail: face shape, eyes, nose, mouth, skin tone.');
+    const parent1Analysis = await client.analyzeImageWithText(parent1Base64, analysisPrompt);
     console.log('✅ Parent 1 analysis complete:', parent1Analysis.substring(0, 100) + '...');
 
     console.log('📸 Analyzing parent 2 facial features...');
-    const parent2Analysis = await client.analyzeImageWithText(parent2Base64, 'Describe this person\'s facial features in detail: face shape, eyes, nose, mouth, skin tone.');
+    const parent2Analysis = await client.analyzeImageWithText(parent2Base64, analysisPrompt);
     console.log('✅ Parent 2 analysis complete:', parent2Analysis.substring(0, 100) + '...');
 
-    // Generate baby based on combined features
-    const combinedPrompt = `Generate a realistic baby photo combining these features:
-    Parent 1: ${parent1Analysis}
-    Parent 2: ${parent2Analysis}
-    ${stylePrompt}
-    Create a cute 1-2 year old baby that looks like a natural blend of both parents.`;
+    // Style-specific instructions
+    const styleInstructions = style === 'idol'
+      ? `스타일 지시사항:
+- 아이돌처럼 이상적인 비율과 매력적인 외모로 생성
+- 또렷한 이목구비와 밝은 피부톤
+- 큰 눈과 오똑한 코
+- 전체적으로 귀엽고 예쁜 인상`
+      : `스타일 지시사항:
+- 가장 현실적이고 자연스러운 아기 얼굴 생성
+- 부모의 특징이 자연스럽게 조합된 모습`;
+
+    // Generate baby based on combined features with detailed genetic guidance
+    const combinedPrompt = `두 부모의 얼굴 특징을 분석한 결과를 바탕으로 이들의 아기 얼굴을 생성해주세요.
+
+[부모 1 얼굴 특징]
+${parent1Analysis}
+
+[부모 2 얼굴 특징]
+${parent2Analysis}
+
+[유전적 특징 조합 가이드라인]
+아기의 각 부위는 다음과 같이 부모의 특징을 조합해주세요:
+
+1. 눈:
+   - 쌍꺼풀은 우성이므로, 한 명이라도 쌍꺼풀이면 아기도 쌍꺼풀
+   - 눈 크기는 두 부모의 중간 또는 큰 쪽을 따름
+   - 눈 모양은 두 부모의 특징을 블렌딩
+
+2. 코:
+   - 콧대 높이는 두 부모의 중간값
+   - 코끝 모양은 둘 중 하나를 선택적으로 반영
+   - 콧볼 너비는 중간값
+
+3. 입:
+   - 입술 두께는 두꺼운 쪽이 우성
+   - 입 모양은 두 부모의 블렌딩
+
+4. 얼굴형:
+   - 두 부모 얼굴형의 중간 형태
+   - 아기 특유의 통통한 볼살 반영
+
+5. 피부톤:
+   - 두 부모 피부톤의 중간값
+
+[아기 특징 반영]
+- 나이: 1-2세 아기
+- 아기 특유의 통통한 볼
+- 작고 귀여운 코
+- 맑고 큰 눈
+- 부드러운 피부결
+- 자연스러운 표정 (웃는 표정 또는 천진난만한 표정)
+
+${styleInstructions}
+
+[중요]
+- 반드시 두 부모의 특징이 명확하게 드러나는 아기를 생성해주세요
+- 부모를 보면 "닮았다"고 느낄 수 있도록 특징적인 부분을 강조해주세요
+- 고화질의 선명한 아기 사진을 생성해주세요
+- 배경은 단순하게, 아기 얼굴이 중심이 되도록 해주세요`;
 
     console.log('🎨 Generating baby face image...');
     console.log('Combined prompt length:', combinedPrompt.length);
