@@ -6,13 +6,6 @@ export default function SettingsPage() {
 
   // 설정 상태
   const [language, setLanguage] = useState(i18n.language);
-  const [timezone, setTimezone] = useState('Asia/Seoul');
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [pushNotifications, setPushNotifications] = useState(false);
-  const [marketingEmails, setMarketingEmails] = useState(true);
-  const [autoRecharge, setAutoRecharge] = useState(false);
-  const [autoRechargeAmount, setAutoRechargeAmount] = useState('10000');
-  const [autoRechargeThreshold, setAutoRechargeThreshold] = useState('100');
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);
@@ -21,16 +14,7 @@ export default function SettingsPage() {
   };
 
   const handleSaveSettings = () => {
-    const settings = {
-      timezone,
-      emailNotifications,
-      pushNotifications,
-      marketingEmails,
-      autoRecharge,
-      autoRechargeAmount,
-      autoRechargeThreshold,
-    };
-    localStorage.setItem('userSettings', JSON.stringify(settings));
+    localStorage.setItem('userSettings', JSON.stringify({}));
     alert(t('settings.settingsSaved'));
   };
 
@@ -55,7 +39,7 @@ export default function SettingsPage() {
           <h2 className="text-foreground text-xl font-bold mb-6">{t('settings.personal.title')}</h2>
 
           {/* 언어 */}
-          <div className="mb-6">
+          <div>
             <label className="text-foreground font-semibold mb-3 block">{t('settings.personal.language')}</label>
             <select
               value={language}
@@ -66,143 +50,6 @@ export default function SettingsPage() {
               <option value="en">English</option>
             </select>
           </div>
-
-          {/* 시간대 */}
-          <div>
-            <label className="text-foreground font-semibold mb-3 block">{t('settings.personal.timezone')}</label>
-            <select
-              value={timezone}
-              onChange={(e) => setTimezone(e.target.value)}
-              className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
-            >
-              <option value="Asia/Seoul">Seoul (UTC+9)</option>
-              <option value="America/New_York">New York (UTC-5)</option>
-              <option value="Europe/London">London (UTC+0)</option>
-              <option value="Asia/Tokyo">Tokyo (UTC+9)</option>
-            </select>
-          </div>
-        </div>
-
-        {/* 알림 설정 */}
-        <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10">
-          <h2 className="text-foreground text-xl font-bold mb-6">{t('settings.notifications.title')}</h2>
-
-          {/* 이메일 알림 */}
-          <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200 dark:border-white/10">
-            <div>
-              <p className="text-foreground font-semibold mb-1">{t('settings.notifications.email')}</p>
-              <p className="text-muted-foreground text-sm">{t('settings.notifications.emailDesc')}</p>
-            </div>
-            <button
-              onClick={() => setEmailNotifications(!emailNotifications)}
-              className={`relative w-14 h-8 rounded-full transition ${
-                emailNotifications ? 'bg-primary' : 'bg-gray-200 dark:bg-[#2a2436]'
-              }`}
-            >
-              <span
-                className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-transform ${
-                  emailNotifications ? 'translate-x-6' : 'translate-x-0'
-                }`}
-              ></span>
-            </button>
-          </div>
-
-          {/* 푸시 알림 */}
-          <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200 dark:border-white/10">
-            <div>
-              <p className="text-foreground font-semibold mb-1">{t('settings.notifications.push')}</p>
-              <p className="text-muted-foreground text-sm">{t('settings.notifications.pushDesc')}</p>
-            </div>
-            <button
-              onClick={() => setPushNotifications(!pushNotifications)}
-              className={`relative w-14 h-8 rounded-full transition ${
-                pushNotifications ? 'bg-primary' : 'bg-gray-200 dark:bg-[#2a2436]'
-              }`}
-            >
-              <span
-                className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-transform ${
-                  pushNotifications ? 'translate-x-6' : 'translate-x-0'
-                }`}
-              ></span>
-            </button>
-          </div>
-
-          {/* 마케팅 정보 */}
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-foreground font-semibold mb-1">{t('settings.notifications.marketing')}</p>
-              <p className="text-muted-foreground text-sm">{t('settings.notifications.marketingDesc')}</p>
-            </div>
-            <button
-              onClick={() => setMarketingEmails(!marketingEmails)}
-              className={`relative w-14 h-8 rounded-full transition ${
-                marketingEmails ? 'bg-primary' : 'bg-gray-200 dark:bg-[#2a2436]'
-              }`}
-            >
-              <span
-                className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-transform ${
-                  marketingEmails ? 'translate-x-6' : 'translate-x-0'
-                }`}
-              ></span>
-            </button>
-          </div>
-        </div>
-
-        {/* 크레딧 설정 */}
-        <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10">
-          <h2 className="text-foreground text-xl font-bold mb-6">{t('settings.credits.title')}</h2>
-
-          {/* 자동 충전 */}
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <p className="text-foreground font-semibold mb-1">{t('settings.credits.autoRecharge')}</p>
-              <p className="text-muted-foreground text-sm">{t('settings.credits.autoRechargeDesc')}</p>
-            </div>
-            <button
-              onClick={() => setAutoRecharge(!autoRecharge)}
-              className={`relative w-14 h-8 rounded-full transition ${
-                autoRecharge ? 'bg-primary' : 'bg-gray-200 dark:bg-[#2a2436]'
-              }`}
-            >
-              <span
-                className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full transition-transform ${
-                  autoRecharge ? 'translate-x-6' : 'translate-x-0'
-                }`}
-              ></span>
-            </button>
-          </div>
-
-          {/* 자동 충전 상세 설정 */}
-          {autoRecharge && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-white/10">
-              <div>
-                <label className="text-foreground font-semibold mb-3 block">{t('settings.credits.rechargeAmount')}</label>
-                <select
-                  value={autoRechargeAmount}
-                  onChange={(e) => setAutoRechargeAmount(e.target.value)}
-                  className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
-                >
-                  <option value="5000">₩5,000</option>
-                  <option value="10000">₩10,000</option>
-                  <option value="30000">₩30,000</option>
-                  <option value="50000">₩50,000</option>
-                </select>
-              </div>
-              <div>
-                <label className="text-foreground font-semibold mb-3 block">{t('settings.credits.rechargeThreshold')}</label>
-                <select
-                  value={autoRechargeThreshold}
-                  onChange={(e) => setAutoRechargeThreshold(e.target.value)}
-                  className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
-                >
-                  <option value="50">50 {t('settings.credits.threshold')}</option>
-                  <option value="100">100 {t('settings.credits.threshold')}</option>
-                  <option value="200">200 {t('settings.credits.threshold')}</option>
-                  <option value="500">500 {t('settings.credits.threshold')}</option>
-                </select>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* 보안 설정 */}

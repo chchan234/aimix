@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getCredits } from '../services/ai';
 
 interface CreditPackage {
   id: string;
@@ -22,7 +23,31 @@ export default function BuyCreditsPage() {
 
   const [selectedPackage, setSelectedPackage] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<string>('');
-  const [currentCredits] = useState(1200);
+  const [currentCredits, setCurrentCredits] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  // 크레딧 정보 가져오기
+  useEffect(() => {
+    const fetchCredits = async () => {
+      try {
+        const response = await getCredits();
+        if (response.success) {
+          setCurrentCredits(response.credits);
+        }
+      } catch (error) {
+        console.error('Failed to fetch credits:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (isLoggedIn) {
+      fetchCredits();
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   // 크레딧 패키지
   const packages: CreditPackage[] = [
@@ -32,12 +57,8 @@ export default function BuyCreditsPage() {
     { id: 'premium', credits: 30000, price: 179000, bonus: 10000 },
   ];
 
-  // 구매 내역
-  const [purchaseHistory] = useState<PurchaseHistory[]>([
-    { id: 1, credits: 5000, price: 39000, date: '2024.03.01', method: '카드결제' },
-    { id: 2, credits: 1000, price: 9900, date: '2024.02.15', method: '카카오페이' },
-    { id: 3, credits: 10000, price: 69000, date: '2024.01.20', method: '카드결제' },
-  ]);
+  // 구매 내역 (TODO: API에서 가져오기)
+  const [purchaseHistory] = useState<PurchaseHistory[]>([]);
 
   const handlePurchase = () => {
     if (!selectedPackage) {
@@ -74,7 +95,9 @@ export default function BuyCreditsPage() {
               <p className="text-white/90 text-sm font-medium">{t('buyCredits.current.title')}</p>
               <span className="material-symbols-outlined text-white/60 text-2xl">toll</span>
             </div>
-            <p className="text-white text-5xl font-bold mb-4">{currentCredits.toLocaleString()}</p>
+            <p className="text-white text-5xl font-bold mb-4">
+              {loading ? '...' : currentCredits.toLocaleString()}
+            </p>
             <div className="grid grid-cols-3 gap-4 text-white/80 text-sm">
               <div>
                 <p className="text-white/60 text-xs mb-1">{t('buyCredits.stats.thisMonth')}</p>
@@ -186,22 +209,28 @@ export default function BuyCreditsPage() {
           <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10">
             <h2 className="text-foreground text-xl font-serif font-bold mb-4">{t('buyCredits.history.title')}</h2>
             <div className="space-y-3">
-              {purchaseHistory.map((history) => (
-                <div key={history.id} className="bg-gray-50 dark:bg-[#2a2436] rounded-xl p-4 border border-gray-200 dark:border-white/10">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent font-bold text-lg">
-                      +{history.credits.toLocaleString()}
-                    </p>
-                    <span className="text-xs text-muted-foreground bg-pink-100/60 dark:bg-pink-900/30 px-2 py-1 rounded">
-                      {history.method}
-                    </span>
+              {purchaseHistory.length > 0 ? (
+                purchaseHistory.map((history) => (
+                  <div key={history.id} className="bg-gray-50 dark:bg-[#2a2436] rounded-xl p-4 border border-gray-200 dark:border-white/10">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent font-bold text-lg">
+                        +{history.credits.toLocaleString()}
+                      </p>
+                      <span className="text-xs text-muted-foreground bg-pink-100/60 dark:bg-pink-900/30 px-2 py-1 rounded">
+                        {history.method}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <p className="text-muted-foreground">{history.date}</p>
+                      <p className="text-foreground font-semibold">₩{history.price.toLocaleString()}</p>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <p className="text-muted-foreground">{history.date}</p>
-                    <p className="text-foreground font-semibold">₩{history.price.toLocaleString()}</p>
-                  </div>
+                ))
+              ) : (
+                <div className="text-center py-4 text-muted-foreground text-sm">
+                  구매 내역이 없습니다.
                 </div>
-              ))}
+              )}
             </div>
           </div>
 

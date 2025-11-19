@@ -1,6 +1,6 @@
 # 기술 스택 (Tech Stack)
 
-Face Reading AI 프로젝트에서 사용한 기술 스택 목록입니다.
+AIMIX AI 플랫폼에서 사용하는 기술 스택 목록입니다.
 
 ---
 
@@ -111,7 +111,8 @@ Face Reading AI 프로젝트에서 사용한 기술 스택 목록입니다.
 ### AI 및 외부 서비스
 | 기술 | 버전 | 용도 |
 |------|------|------|
-| OpenAI SDK | 6.8.1 | GPT 기반 얼굴 분석 AI |
+| Google Generative AI | 0.21.0 | Gemini 기반 이미지 생성/편집 |
+| OpenAI SDK | 6.8.1 | GPT 기반 텍스트/비전 분석 |
 | Supabase | 2.81.0 | 백엔드 서비스 (DB, 스토리지, 인증) |
 
 ### 파일 업로드
@@ -205,8 +206,9 @@ aiports.org/health    → 서버 헬스 체크
 - Tailwind CSS로 일관된 디자인 시스템
 
 ### ✅ AI 통합
-- OpenAI GPT-4 Vision 모델로 얼굴 분석
-- 다층 신경망 기반 이미지 인식
+- Google Gemini로 이미지 생성/편집
+- OpenAI GPT-4o-mini/Vision으로 텍스트/이미지 분석
+- 다양한 AI 서비스 30개 제공
 
 ### ✅ 다국어 지원
 - i18next로 한국어/영어 지원
@@ -261,4 +263,4 @@ npm run db:push
 
 ---
 
-**마지막 업데이트**: 2025-01-15
+**마지막 업데이트**: 2025-11-19

@@ -132,30 +132,50 @@ export default function LookalikePage() {
       {/* Introduction */}
       {step === 'intro' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              나와 닮은 존재는?
-            </h3>
-            <div className="space-y-4 text-muted-foreground">
-              <p>
-                AI가 당신의 얼굴을 분석하여 닮은꼴을 찾아드립니다.
-                세 가지 카테고리 중 선택하세요!
-              </p>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="material-symbols-outlined text-3xl text-pink-400">compare</span>
+              <h3 className="text-xl font-semibold text-foreground">
+                AI 닮은꼴 찾기
+              </h3>
+            </div>
+            <p className="text-muted-foreground mb-6">
+              AI가 당신의 얼굴을 분석하여 닮은꼴을 찾아드립니다.
+              연예인, 애니 캐릭터, 동물 중 원하는 카테고리를 선택하세요!
+            </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                {(Object.entries(CATEGORY_INFO) as [Category, typeof CATEGORY_INFO.celebrity][]).map(([key, info]) => (
-                  <div key={key} className={`p-4 rounded-lg border ${getCategoryColorClass(key)}`}>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="material-symbols-outlined">{info.icon}</span>
-                      <span className="font-semibold">{info.name}</span>
-                    </div>
-                    <p className="text-sm opacity-80">{info.description}</p>
-                  </div>
-                ))}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-pink-400">star</span>
+                  <span className="text-foreground font-medium">연예인</span>
+                </div>
+                <p className="text-muted-foreground text-sm">K-pop 아이돌, 배우</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-pink-400">smart_toy</span>
+                  <span className="text-foreground font-medium">애니 캐릭터</span>
+                </div>
+                <p className="text-muted-foreground text-sm">디즈니, 지브리, 애니</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-pink-400">pets</span>
+                  <span className="text-foreground font-medium">동물</span>
+                </div>
+                <p className="text-muted-foreground text-sm">강아지, 고양이, 야생</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-pink-400">face</span>
+                  <span className="text-foreground font-medium">얼굴 분석</span>
+                </div>
+                <p className="text-muted-foreground text-sm">눈, 코, 입, 얼굴형</p>
               </div>
             </div>
 
-            <div className="bg-pink-900/20 border border-pink-500 rounded-lg p-4 mt-6 mb-6">
+            <div className="bg-pink-900/20 border border-pink-500 rounded-lg p-4 mb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-foreground font-semibold">AI 닮은꼴 찾기</p>

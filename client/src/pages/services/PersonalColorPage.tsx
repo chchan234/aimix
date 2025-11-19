@@ -229,46 +229,50 @@ export default function PersonalColorPage() {
       {/* Introduction */}
       {step === 'intro' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              나만의 퍼스널 컬러를 찾아보세요
-            </h3>
-            <div className="space-y-4 text-muted-foreground">
-              <p>
-                AI가 당신의 피부톤을 분석하여 어울리는 퍼스널 컬러를 진단해드립니다.
-              </p>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="material-symbols-outlined text-3xl text-purple-400">palette</span>
+              <h3 className="text-xl font-semibold text-foreground">
+                퍼스널 컬러 진단
+              </h3>
+            </div>
+            <p className="text-muted-foreground mb-6">
+              AI가 당신의 피부톤을 분석하여 어울리는 퍼스널 컬러를 진단해드립니다.
+              봄/여름/가을/겨울 시즌 컬러와 함께 메이크업, 의류 색상을 추천받으세요.
+            </p>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
-                <div className="p-3 rounded-lg bg-pink-500/20 border border-pink-500/50 text-center">
-                  <span className="text-2xl block mb-1">🌸</span>
-                  <span className="text-sm text-pink-300">봄 웜톤</span>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-purple-400">face</span>
+                  <span className="text-foreground font-medium">피부톤 분석</span>
                 </div>
-                <div className="p-3 rounded-lg bg-blue-500/20 border border-blue-500/50 text-center">
-                  <span className="text-2xl block mb-1">🌊</span>
-                  <span className="text-sm text-blue-300">여름 쿨톤</span>
-                </div>
-                <div className="p-3 rounded-lg bg-orange-500/20 border border-orange-500/50 text-center">
-                  <span className="text-2xl block mb-1">🍂</span>
-                  <span className="text-sm text-orange-300">가을 웜톤</span>
-                </div>
-                <div className="p-3 rounded-lg bg-indigo-500/20 border border-indigo-500/50 text-center">
-                  <span className="text-2xl block mb-1">❄️</span>
-                  <span className="text-sm text-indigo-300">겨울 쿨톤</span>
-                </div>
+                <p className="text-muted-foreground text-sm">언더톤, 명도, 채도 분석</p>
               </div>
-
-              <div className="mt-4 space-y-2">
-                <p className="font-semibold text-foreground">진단 내용:</p>
-                <ul className="list-disc list-inside text-sm space-y-1">
-                  <li>피부톤 분석 (언더톤, 명도, 채도)</li>
-                  <li>추천 컬러 & 피해야 할 컬러</li>
-                  <li>메이크업 추천 (립스틱, 아이섀도우, 블러셔)</li>
-                  <li>의류 색상 & 액세서리 추천</li>
-                </ul>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-purple-400">colorize</span>
+                  <span className="text-foreground font-medium">컬러 추천</span>
+                </div>
+                <p className="text-muted-foreground text-sm">Best & Avoid 컬러</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-purple-400">brush</span>
+                  <span className="text-foreground font-medium">메이크업 추천</span>
+                </div>
+                <p className="text-muted-foreground text-sm">립, 아이섀도우, 블러셔</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-purple-400">checkroom</span>
+                  <span className="text-foreground font-medium">의류 추천</span>
+                </div>
+                <p className="text-muted-foreground text-sm">색상 & 액세서리</p>
               </div>
             </div>
 
-            <div className="bg-purple-900/20 border border-purple-500 rounded-lg p-4 mt-6 mb-6">
+            <div className="bg-purple-900/20 border border-purple-500 rounded-lg p-4 mb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-foreground font-semibold">퍼스널 컬러 진단</p>

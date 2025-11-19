@@ -63,6 +63,9 @@ function App() {
       {/* Header */}
       <Header onMenuClick={() => setSidebarOpen(true)} />
 
+      {/* Spacer for fixed header */}
+      <div className="h-16"></div>
+
       <div className="flex flex-1 w-full">
         {/* Left Sidebar */}
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
