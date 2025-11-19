@@ -342,6 +342,7 @@
       "entertainment": "Entertainment",
       "health": "Health/Wellness"
     },
+    "sortLabel": "Sort",
     "sort": {
       "label": "Sort:",
       "date": "Latest",
@@ -372,6 +373,8 @@
   "buyCredits": {
     "title": "Buy Credits",
     "subtitle": "Recharge credits to use AI services",
+    "selectPackage": "Select Credit Package",
+    "selectPayment": "Select Payment Method",
     "current": {
       "title": "Current Credits"
     },

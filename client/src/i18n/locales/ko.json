@@ -342,6 +342,7 @@
       "entertainment": "엔터테인먼트",
       "health": "건강/웰빙"
     },
+    "sortLabel": "정렬",
     "sort": {
       "label": "정렬:",
       "date": "최신순",
@@ -372,6 +373,8 @@
   "buyCredits": {
     "title": "크레딧 구매",
     "subtitle": "AI 서비스를 이용하기 위한 크레딧을 충전하세요",
+    "selectPackage": "크레딧 패키지 선택",
+    "selectPayment": "결제 방법 선택",
     "current": {
       "title": "현재 보유 크레딧"
     },
