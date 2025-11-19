@@ -210,15 +210,15 @@ export default function HomePage() {
   ], [t]);
 
   const colorClasses: Record<string, string> = {
-    purple: 'bg-purple-500/20 text-purple-400',
-    blue: 'bg-blue-500/20 text-blue-400',
-    green: 'bg-green-500/20 text-green-400',
-    yellow: 'bg-yellow-500/20 text-yellow-400',
-    orange: 'bg-orange-500/20 text-orange-400',
-    pink: 'bg-pink-500/20 text-pink-400',
-    indigo: 'bg-indigo-500/20 text-indigo-400',
-    red: 'bg-red-500/20 text-red-400',
-    cyan: 'bg-cyan-500/20 text-cyan-400',
+    purple: 'bg-purple-200/60 text-purple-700',
+    blue: 'bg-blue-200/60 text-blue-600',
+    green: 'bg-emerald-200/60 text-emerald-600',
+    yellow: 'bg-amber-200/60 text-amber-600',
+    orange: 'bg-orange-200/60 text-orange-600',
+    pink: 'bg-pink-200/60 text-pink-600',
+    indigo: 'bg-indigo-200/60 text-indigo-600',
+    red: 'bg-rose-200/60 text-rose-600',
+    cyan: 'bg-cyan-200/60 text-cyan-600',
   };
 
   // 랜덤으로 6개 선택
@@ -292,18 +292,18 @@ export default function HomePage() {
           className="bg-cover bg-center flex flex-col items-center justify-center overflow-hidden rounded-xl min-h-[140px]"
           style={{
             backgroundImage:
-              'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              'linear-gradient(135deg, #F48FB1 0%, #E1BEE7 50%, #F8BBD0 100%)',
           }}
         >
           <div className="flex flex-col items-center gap-2 p-6">
             {/* Weekly Update Badge */}
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-1">
-              <span className="material-symbols-outlined text-white text-sm">auto_awesome</span>
-              <span className="text-white text-sm font-medium">
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/40 backdrop-blur-md rounded-full border border-white/50 mb-1 shadow-sm">
+              <span className="material-symbols-outlined text-primary-foreground text-sm">auto_awesome</span>
+              <span className="text-primary-foreground text-sm font-medium">
                 {t('home.weeklyUpdate')}
               </span>
             </div>
-            <h1 className="text-white text-3xl md:text-4xl font-bold leading-tight text-center">
+            <h1 className="text-foreground text-3xl md:text-4xl font-serif font-bold leading-tight text-center drop-shadow-sm">
               The Essential AI Platform
             </h1>
           </div>
@@ -313,10 +313,10 @@ export default function HomePage() {
       {/* Popular This Week */}
       <div>
         <div className="px-4 pb-3 pt-5">
-          <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+          <h2 className="text-foreground text-[22px] font-serif font-bold leading-tight tracking-wide">
             {t('home.popularThisWeek')}
           </h2>
-          <p className="text-[#ab9eb7] text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             {t('home.popularSubtitle')}
           </p>
         </div>
@@ -328,27 +328,26 @@ export default function HomePage() {
               <div
                 key={index}
                 onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-                className="relative flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
+                className="relative flex flex-col gap-3 p-4 rounded-2xl glass-panel hover:bg-white/90 hover:scale-105 hover:shadow-2xl hover:shadow-pink-200/50 transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
               >
                 {/* 순위 뱃지 */}
-                <div className="absolute top-2 right-2 flex items-center justify-center w-8 h-8 bg-primary/20 rounded-full">
+                <div className="absolute top-2 right-2 flex items-center justify-center w-8 h-8 bg-gradient-to-br from-pink-300 to-purple-300 rounded-full shadow-md">
                   <span className="text-lg">{getRankBadge(index + 1)}</span>
                 </div>
 
                 <div
-                  className={`flex items-center justify-center w-12 h-12 ${
-                    colorClasses[service.color]
-                  } rounded-lg`}
+                  className={`flex items-center justify-center w-12 h-12 ${colorClasses[service.color]
+                    } rounded-lg`}
                 >
                   <span className="material-symbols-outlined text-2xl">
                     {service.icon}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className="text-white text-sm font-semibold leading-tight">
+                  <p className="text-foreground text-sm font-semibold leading-tight font-serif">
                     {service.title}
                   </p>
-                  <p className="text-[#ab9eb7] text-xs font-normal leading-normal">
+                  <p className="text-muted-foreground text-xs font-normal leading-normal line-clamp-2">
                     {service.description}
                   </p>
                   <p className="text-primary text-xs font-medium leading-normal mt-1">
@@ -356,12 +355,12 @@ export default function HomePage() {
                   </p>
                   {/* 평점 및 사용자 수 */}
                   <div className="flex items-center gap-2 mt-1 text-xs">
-                    <span className="flex items-center gap-0.5 text-yellow-400">
-                      <span className="material-symbols-outlined text-sm">star</span>
+                    <span className="flex items-center gap-0.5 text-amber-400">
+                      <span className="material-symbols-outlined text-sm fill-amber-400">star</span>
                       {service.rating}
                     </span>
-                    <span className="text-[#ab9eb7]">•</span>
-                    <span className="text-[#ab9eb7]">
+                    <span className="text-muted-foreground">•</span>
+                    <span className="text-muted-foreground">
                       {service.users.toLocaleString()} {t('home.users')}
                     </span>
                   </div>
@@ -377,27 +376,26 @@ export default function HomePage() {
             <div
               key={index}
               onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-              className="relative flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
+              className="relative flex flex-col gap-3 p-4 rounded-2xl glass-panel hover:bg-white/90 hover:scale-105 hover:shadow-2xl hover:shadow-pink-200/50 transition-all duration-300 cursor-pointer"
             >
               {/* 순위 뱃지 */}
-              <div className="absolute top-3 right-3 flex items-center justify-center w-10 h-10 bg-primary/20 rounded-full">
+              <div className="absolute top-3 right-3 flex items-center justify-center w-10 h-10 bg-gradient-to-br from-pink-300 to-purple-300 rounded-full shadow-md">
                 <span className="text-xl">{getRankBadge(index + 1)}</span>
               </div>
 
               <div
-                className={`flex items-center justify-center w-12 h-12 ${
-                  colorClasses[service.color]
-                } rounded-lg`}
+                className={`flex items-center justify-center w-12 h-12 ${colorClasses[service.color]
+                  } rounded-lg`}
               >
                 <span className="material-symbols-outlined text-2xl">
                   {service.icon}
                 </span>
               </div>
               <div className="flex flex-col gap-1">
-                <p className="text-white text-sm font-semibold leading-tight">
+                <p className="text-foreground text-sm font-semibold leading-tight font-serif">
                   {service.title}
                 </p>
-                <p className="text-[#ab9eb7] text-xs font-normal leading-normal">
+                <p className="text-muted-foreground text-xs font-normal leading-normal line-clamp-2">
                   {service.description}
                 </p>
                 <p className="text-primary text-xs font-medium leading-normal mt-1">
@@ -405,12 +403,12 @@ export default function HomePage() {
                 </p>
                 {/* 평점 및 사용자 수 */}
                 <div className="flex items-center gap-2 mt-1 text-xs">
-                  <span className="flex items-center gap-0.5 text-yellow-400">
+                  <span className="flex items-center gap-0.5 text-yellow-500">
                     <span className="material-symbols-outlined text-sm">star</span>
                     {service.rating}
                   </span>
-                  <span className="text-[#ab9eb7]">•</span>
-                  <span className="text-[#ab9eb7]">
+                  <span className="text-muted-foreground">•</span>
+                  <span className="text-muted-foreground">
                     {service.users.toLocaleString()} {t('home.users')}
                   </span>
                 </div>
@@ -422,7 +420,7 @@ export default function HomePage() {
 
       {/* Random Services */}
       <div>
-        <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
+        <h2 className="text-foreground text-[22px] font-serif font-bold leading-tight tracking-wide px-4 pb-3 pt-5">
           {t('home.quickStart')}
         </h2>
         {/* Mobile: Horizontal Scroll */}
@@ -432,22 +430,21 @@ export default function HomePage() {
               <div
                 key={index}
                 onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-                className="flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
+                className="flex flex-col gap-3 p-4 rounded-2xl glass-panel hover:bg-white/90 hover:scale-105 hover:shadow-2xl hover:shadow-pink-200/50 transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
               >
                 <div
-                  className={`flex items-center justify-center w-12 h-12 ${
-                    colorClasses[service.color]
-                  } rounded-lg`}
+                  className={`flex items-center justify-center w-12 h-12 ${colorClasses[service.color]
+                    } rounded-lg`}
                 >
                   <span className="material-symbols-outlined text-2xl">
                     {service.icon}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className="text-white text-sm font-semibold leading-tight">
+                  <p className="text-foreground text-sm font-semibold leading-tight font-serif">
                     {service.title}
                   </p>
-                  <p className="text-[#ab9eb7] text-xs font-normal leading-normal">
+                  <p className="text-muted-foreground text-xs font-normal leading-normal line-clamp-2">
                     {service.description}
                   </p>
                   <p className="text-primary text-xs font-medium leading-normal mt-1">
@@ -465,22 +462,21 @@ export default function HomePage() {
             <div
               key={index}
               onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-              className="flex flex-col gap-3 p-4 rounded-xl bg-sidebar-dark hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
+              className="flex flex-col gap-3 p-4 rounded-2xl glass-panel hover:bg-white/90 hover:scale-105 hover:shadow-2xl hover:shadow-pink-200/50 transition-all duration-300 cursor-pointer"
             >
               <div
-                className={`flex items-center justify-center w-12 h-12 ${
-                  colorClasses[service.color]
-                } rounded-lg`}
+                className={`flex items-center justify-center w-12 h-12 ${colorClasses[service.color]
+                  } rounded-lg`}
               >
                 <span className="material-symbols-outlined text-2xl">
                   {service.icon}
                 </span>
               </div>
               <div className="flex flex-col gap-1">
-                <p className="text-white text-sm font-semibold leading-tight">
+                <p className="text-foreground text-sm font-semibold leading-tight font-serif">
                   {service.title}
                 </p>
-                <p className="text-[#ab9eb7] text-xs font-normal leading-normal">
+                <p className="text-muted-foreground text-xs font-normal leading-normal line-clamp-2">
                   {service.description}
                 </p>
                 <p className="text-primary text-xs font-medium leading-normal mt-1">

@@ -8,30 +8,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#3e2775',
-        'background-light': '#f7f6f8',
-        'background-dark': '#17141e',
-        'sidebar-dark': '#201628',
-        border: 'hsl(var(--border))',
+        primary: '#F48FB1', // Soft Pink
+        'primary-foreground': '#FFFFFF',
+        'background-light': '#FFFFFF', // Pure White
+        'background-dark': '#FCE4EC', // Light Pink
+        'sidebar-dark': 'rgba(255, 255, 255, 0.85)', // Glassmorphism base
+        border: '#F3E5F5', // Light Lavender Border
         input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
+        ring: '#F48FB1',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: '#E1BEE7', // Lavender
+          foreground: '#4A3F47',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          DEFAULT: '#FCE4EC', // Light Pink
+          foreground: '#8B6F7A',
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: '#F8BBD0', // Coral Pink
+          foreground: '#4A3F47',
         },
         popover: {
           DEFAULT: 'hsl(var(--popover))',
@@ -43,7 +44,9 @@ export default {
         },
       },
       fontFamily: {
-        display: ['"DM Sans"', 'sans-serif'],
+        display: ['"Pretendard"', '"Noto Sans KR"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+        serif: ['"Noto Serif KR"', '"Pretendard"', 'serif'],
+        sans: ['"Pretendard"', '"Noto Sans KR"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',

@@ -71,12 +71,12 @@ export default function MyResultsPage() {
 
   const getCategoryColor = (category: string) => {
     const colors = {
-      fortune: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-      image: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-      entertainment: 'bg-pink-500/20 text-pink-400 border-pink-500/30',
-      health: 'bg-green-500/20 text-green-400 border-green-500/30',
+      fortune: 'bg-purple-200/60 text-purple-700 border-purple-300/50',
+      image: 'bg-blue-200/60 text-blue-600 border-blue-300/50',
+      entertainment: 'bg-pink-200/60 text-pink-600 border-pink-300/50',
+      health: 'bg-emerald-200/60 text-emerald-600 border-emerald-300/50',
     };
-    return colors[category as keyof typeof colors] || 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+    return colors[category as keyof typeof colors] || 'bg-gray-200/60 text-gray-600 border-gray-300/50';
   };
 
   // 필터링 및 정렬
@@ -116,12 +116,12 @@ export default function MyResultsPage() {
     <div className="max-w-7xl mx-auto">
       {/* 페이지 헤더 */}
       <div className="mb-8">
-        <h1 className="text-white text-3xl font-bold mb-2">{t('myResults.title')}</h1>
-        <p className="text-[#ab9eb7] text-sm">{t('myResults.subtitle')}</p>
+        <h1 className="text-foreground text-3xl font-serif font-bold mb-2">{t('myResults.title')}</h1>
+        <p className="text-muted-foreground text-sm">{t('myResults.subtitle')}</p>
       </div>
 
       {/* 필터 및 정렬 */}
-      <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10 mb-6">
+      <div className="glass-panel rounded-2xl p-6 mb-6">
         <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
           {/* 카테고리 필터 */}
           <div className="flex flex-wrap gap-2">
@@ -129,10 +129,10 @@ export default function MyResultsPage() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition ${
                   selectedCategory === category
-                    ? 'bg-primary text-white'
-                    : 'bg-[#2a2436] text-[#ab9eb7] hover:bg-[#3a3446]'
+                    ? 'bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md'
+                    : 'bg-white/60 text-muted-foreground hover:bg-pink-50/80 border border-pink-100/50'
                 }`}
               >
                 {getCategoryName(category)}
@@ -142,11 +142,11 @@ export default function MyResultsPage() {
 
           {/* 정렬 */}
           <div className="flex items-center gap-2">
-            <span className="text-[#ab9eb7] text-sm">{t('myResults.sortLabel')}:</span>
+            <span className="text-muted-foreground text-sm">{t('myResults.sortLabel')}:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'date' | 'credits')}
-              className="bg-[#2a2436] text-white px-3 py-2 rounded-lg border border-white/10 focus:border-primary focus:outline-none text-sm"
+              className="bg-white/60 text-foreground px-3 py-2 rounded-xl border border-pink-100/50 focus:border-pink-400 focus:outline-none text-sm"
             >
               <option value="date">{t('myResults.sort.date')}</option>
               <option value="credits">{t('myResults.sort.credits')}</option>
@@ -158,8 +158,8 @@ export default function MyResultsPage() {
         <div className="mt-4 pt-4 border-t border-white/10">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div>
-              <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.total')}</p>
-              <p className="text-white text-2xl font-bold">{results.length}</p>
+              <p className="text-muted-foreground text-xs mb-1">{t('myResults.stats.total')}</p>
+              <p className="text-foreground text-2xl font-bold">{results.length}</p>
             </div>
             <div>
               <p className="text-[#ab9eb7] text-xs mb-1">{t('myResults.stats.thisWeek')}</p>
@@ -194,15 +194,15 @@ export default function MyResultsPage() {
       {/* 결과물 그리드 */}
       {loading ? (
         <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-          <p className="text-[#ab9eb7] mt-4">결과물을 불러오는 중...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-400"></div>
+          <p className="text-muted-foreground mt-4">결과물을 불러오는 중...</p>
         </div>
       ) : filteredResults.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredResults.map((result) => (
             <div
               key={result.id}
-              className="bg-[#1a1625] rounded-2xl overflow-hidden border border-white/10 hover:border-primary/50 transition group"
+              className="glass-panel rounded-2xl overflow-hidden border border-pink-100/50 hover:border-pink-300 hover:shadow-xl hover:shadow-pink-200/50 transition group"
             >
               {/* 썸네일 */}
               <div className="relative aspect-square overflow-hidden">
@@ -241,14 +241,14 @@ export default function MyResultsPage() {
               {/* 정보 */}
               <div className="p-4">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-white font-semibold text-sm">{result.serviceName}</h3>
+                  <h3 className="text-foreground font-semibold text-sm">{result.serviceName}</h3>
                   <span className={`text-xs px-2 py-0.5 rounded border ${getCategoryColor(result.category)}`}>
                     {getCategoryName(result.category)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-[#ab9eb7]">{result.createdAt}</span>
-                  <span className="text-primary font-semibold">-{result.creditCost}</span>
+                  <span className="text-muted-foreground">{result.createdAt}</span>
+                  <span className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent font-semibold">-{result.creditCost}</span>
                 </div>
               </div>
             </div>
@@ -256,20 +256,20 @@ export default function MyResultsPage() {
         </div>
       ) : (
         /* 빈 상태 */
-        <div className="bg-[#1a1625] rounded-2xl p-12 border border-white/10 text-center">
+        <div className="glass-panel rounded-2xl p-12 text-center">
           <div className="flex flex-col items-center">
-            <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-              <span className="material-symbols-outlined text-primary text-5xl">search_off</span>
+            <div className="w-24 h-24 bg-gradient-to-br from-pink-200 to-purple-200 rounded-full flex items-center justify-center mb-4 shadow-lg">
+              <span className="material-symbols-outlined text-pink-600 text-5xl">search_off</span>
             </div>
-            <h3 className="text-white text-xl font-bold mb-2">{t('myResults.empty.title')}</h3>
-            <p className="text-[#ab9eb7] text-sm mb-6">
+            <h3 className="text-foreground text-xl font-serif font-bold mb-2">{t('myResults.empty.title')}</h3>
+            <p className="text-muted-foreground text-sm mb-6">
               {selectedCategory === 'all'
                 ? t('myResults.empty.description')
                 : t('myResults.empty.categoryDescription', { category: getCategoryName(selectedCategory) })}
             </p>
             <button
               onClick={() => setSelectedCategory('all')}
-              className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition"
+              className="px-6 py-3 bg-gradient-to-r from-pink-400 to-purple-400 text-white rounded-xl hover:from-pink-500 hover:to-purple-500 transition shadow-lg shadow-pink-300/50"
             >
               {t('myResults.empty.button')}
             </button>
@@ -281,17 +281,17 @@ export default function MyResultsPage() {
       {filteredResults.length > 0 && (
         <div className="mt-8 flex justify-center">
           <div className="flex items-center gap-2">
-            <button className="px-4 py-2 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition disabled:opacity-50 disabled:cursor-not-allowed">
+            <button className="px-4 py-2 bg-white/60 text-foreground rounded-xl hover:bg-pink-50/80 border border-pink-100/50 transition disabled:opacity-50 disabled:cursor-not-allowed">
               <span className="material-symbols-outlined text-xl">chevron_left</span>
             </button>
-            <button className="px-4 py-2 bg-primary text-white rounded-lg">1</button>
-            <button className="px-4 py-2 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition">
+            <button className="px-4 py-2 bg-gradient-to-r from-pink-400 to-purple-400 text-white rounded-xl shadow-md">1</button>
+            <button className="px-4 py-2 bg-white/60 text-foreground rounded-xl hover:bg-pink-50/80 border border-pink-100/50 transition">
               2
             </button>
-            <button className="px-4 py-2 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition">
+            <button className="px-4 py-2 bg-white/60 text-foreground rounded-xl hover:bg-pink-50/80 border border-pink-100/50 transition">
               3
             </button>
-            <button className="px-4 py-2 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition">
+            <button className="px-4 py-2 bg-white/60 text-foreground rounded-xl hover:bg-pink-50/80 border border-pink-100/50 transition">
               <span className="material-symbols-outlined text-xl">chevron_right</span>
             </button>
           </div>

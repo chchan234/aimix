@@ -124,8 +124,8 @@ export default function HelpPage() {
     <div className="max-w-5xl mx-auto">
       {/* 페이지 헤더 */}
       <div className="mb-8 text-center">
-        <h1 className="text-white text-4xl font-bold mb-3">{t('help.title')}</h1>
-        <p className="text-[#ab9eb7] text-lg">{t('help.subtitle')}</p>
+        <h1 className="text-foreground text-4xl font-serif font-bold mb-3">{t('help.title')}</h1>
+        <p className="text-muted-foreground text-lg">{t('help.subtitle')}</p>
       </div>
 
       {/* 검색 */}
@@ -136,9 +136,9 @@ export default function HelpPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t('help.search.placeholder')}
-            className="w-full bg-[#1a1625] text-white px-6 py-4 pr-12 rounded-2xl border border-white/10 focus:border-primary focus:outline-none"
+            className="w-full glass-panel text-foreground px-6 py-4 pr-12 rounded-2xl border border-border focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50"
           />
-          <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#ab9eb7] text-2xl">
+          <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground text-2xl">
             search
           </span>
         </div>
@@ -150,11 +150,10 @@ export default function HelpPage() {
           <button
             key={category.id}
             onClick={() => setSelectedCategory(category.id)}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition ${
-              selectedCategory === category.id
-                ? 'bg-primary text-white'
-                : 'bg-[#1a1625] text-[#ab9eb7] hover:bg-[#2a2436] border border-white/10'
-            }`}
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-medium transition ${selectedCategory === category.id
+                ? 'bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-lg shadow-pink-300/50'
+                : 'bg-white/70 text-muted-foreground hover:bg-pink-50/80 border border-pink-100/50'
+              }`}
           >
             <span className="material-symbols-outlined text-xl">{category.icon}</span>
             {category.name}
@@ -163,33 +162,32 @@ export default function HelpPage() {
       </div>
 
       {/* FAQ 목록 */}
-      <div className="bg-[#1a1625] rounded-2xl p-6 border border-white/10 mb-8">
-        <h2 className="text-white text-2xl font-bold mb-6">{t('help.faq.title')}</h2>
+      <div className="glass-panel rounded-2xl p-6 mb-8">
+        <h2 className="text-foreground text-2xl font-serif font-bold mb-6">{t('help.faq.title')}</h2>
 
         {filteredFaqs.length > 0 ? (
           <div className="space-y-3">
             {filteredFaqs.map((faq) => (
               <div
                 key={faq.id}
-                className="bg-[#2a2436] rounded-lg border border-white/10 overflow-hidden"
+                className="bg-white/40 rounded-lg border border-border overflow-hidden"
               >
                 <button
                   onClick={() => toggleFaq(faq.id)}
-                  className="w-full flex items-center justify-between p-5 text-left hover:bg-[#3a3446] transition"
+                  className="w-full flex items-center justify-between p-5 text-left hover:bg-white/60 transition"
                 >
-                  <span className="text-white font-semibold pr-4">{faq.question}</span>
+                  <span className="text-foreground font-semibold pr-4">{faq.question}</span>
                   <span
-                    className={`material-symbols-outlined text-primary transition-transform ${
-                      openFaq === faq.id ? 'rotate-180' : ''
-                    }`}
+                    className={`material-symbols-outlined text-primary transition-transform ${openFaq === faq.id ? 'rotate-180' : ''
+                      }`}
                   >
                     expand_more
                   </span>
                 </button>
 
                 {openFaq === faq.id && (
-                  <div className="px-5 pb-5 pt-2 border-t border-white/10">
-                    <p className="text-[#ab9eb7] leading-relaxed">{faq.answer}</p>
+                  <div className="px-5 pb-5 pt-2 border-t border-border">
+                    <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -197,10 +195,10 @@ export default function HelpPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="material-symbols-outlined text-primary text-3xl">search_off</span>
-            </div>
-            <p className="text-[#ab9eb7]">{t('help.noResults')}</p>
+          <div className="w-16 h-16 bg-gradient-to-br from-pink-200 to-purple-200 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="material-symbols-outlined text-pink-600 text-3xl">search_off</span>
+          </div>
+            <p className="text-muted-foreground">{t('help.noResults')}</p>
           </div>
         )}
       </div>
@@ -208,21 +206,21 @@ export default function HelpPage() {
       {/* 가이드 섹션 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {/* 시작하기 */}
-        <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 rounded-2xl p-6 border border-purple-500/20">
+        <div className="bg-gradient-to-br from-pink-100/80 to-purple-100/80 rounded-2xl p-6 border border-pink-200/50 shadow-sm">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-              <span className="material-symbols-outlined text-purple-400 text-2xl">
+            <div className="w-12 h-12 bg-gradient-to-br from-pink-300 to-purple-300 rounded-xl flex items-center justify-center shadow-md">
+              <span className="material-symbols-outlined text-white text-2xl">
                 rocket_launch
               </span>
             </div>
-            <h3 className="text-white text-xl font-bold">{t('help.guides.gettingStarted.title')}</h3>
+            <h3 className="text-foreground text-xl font-serif font-bold">{t('help.guides.gettingStarted.title')}</h3>
           </div>
-          <p className="text-[#ab9eb7] text-sm mb-4">
+          <p className="text-muted-foreground text-sm mb-4">
             {t('help.guides.gettingStarted.description')}
           </p>
           <button
             onClick={() => setIsGettingStartedOpen(true)}
-            className="text-purple-400 hover:text-purple-300 transition font-medium flex items-center gap-1"
+            className="text-pink-600 hover:text-pink-700 transition font-medium flex items-center gap-1"
           >
             {t('help.guides.gettingStarted.button')}
             <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -230,19 +228,19 @@ export default function HelpPage() {
         </div>
 
         {/* 서비스 가이드 */}
-        <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-2xl p-6 border border-blue-500/20">
+        <div className="bg-gradient-to-br from-blue-100/80 to-cyan-100/80 rounded-2xl p-6 border border-blue-200/50 shadow-sm">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-              <span className="material-symbols-outlined text-blue-400 text-2xl">menu_book</span>
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-300 to-cyan-300 rounded-xl flex items-center justify-center shadow-md">
+              <span className="material-symbols-outlined text-white text-2xl">menu_book</span>
             </div>
-            <h3 className="text-white text-xl font-bold">{t('help.guides.serviceGuide.title')}</h3>
+            <h3 className="text-foreground text-xl font-serif font-bold">{t('help.guides.serviceGuide.title')}</h3>
           </div>
-          <p className="text-[#ab9eb7] text-sm mb-4">
+          <p className="text-muted-foreground text-sm mb-4">
             {t('help.guides.serviceGuide.description')}
           </p>
           <button
             onClick={() => setIsServiceGuideOpen(true)}
-            className="text-blue-400 hover:text-blue-300 transition font-medium flex items-center gap-1"
+            className="text-blue-600 hover:text-blue-500 transition font-medium flex items-center gap-1"
           >
             {t('help.guides.serviceGuide.button')}
             <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -251,12 +249,12 @@ export default function HelpPage() {
       </div>
 
       {/* 문의하기 */}
-      <div className="bg-[#1a1625] rounded-2xl p-8 border border-white/10 text-center">
-        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-          <span className="material-symbols-outlined text-primary text-3xl">support_agent</span>
+      <div className="glass-panel rounded-2xl p-8 text-center">
+        <div className="w-16 h-16 bg-gradient-to-br from-pink-300 to-purple-300 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <span className="material-symbols-outlined text-white text-3xl">support_agent</span>
         </div>
-        <h3 className="text-white text-2xl font-bold mb-2">{t('help.contact.title')}</h3>
-        <p className="text-[#ab9eb7] mb-6">
+        <h3 className="text-foreground text-2xl font-serif font-bold mb-2">{t('help.contact.title')}</h3>
+        <p className="text-muted-foreground mb-6">
           {t('help.contact.description')}
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -265,7 +263,7 @@ export default function HelpPage() {
               setContactType('email');
               setIsContactFormOpen(true);
             }}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition font-medium flex items-center justify-center gap-2"
+            className="px-6 py-3 bg-gradient-to-r from-pink-400 to-purple-400 text-white rounded-xl hover:from-pink-500 hover:to-purple-500 transition font-medium flex items-center justify-center gap-2 shadow-lg shadow-pink-300/50"
           >
             <span className="material-symbols-outlined">email</span>
             {t('help.contact.buttons.email')}
@@ -275,15 +273,15 @@ export default function HelpPage() {
               setContactType('chat');
               setIsContactFormOpen(true);
             }}
-            className="px-6 py-3 bg-[#2a2436] text-white rounded-lg hover:bg-[#3a3446] transition font-medium flex items-center justify-center gap-2 border border-white/10"
+            className="px-6 py-3 bg-white/50 text-foreground rounded-lg hover:bg-white/80 transition font-medium flex items-center justify-center gap-2 border border-border"
           >
             <span className="material-symbols-outlined">chat</span>
             {t('help.contact.buttons.chat')}
           </button>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-white/10">
-          <p className="text-[#ab9eb7] text-sm">
+        <div className="mt-6 pt-6 border-t border-border">
+          <p className="text-muted-foreground text-sm">
             {t('help.contact.hours')}
           </p>
         </div>
