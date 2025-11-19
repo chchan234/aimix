@@ -747,35 +747,114 @@ export async function findCelebrityDoppelganger(imageBase64: string) {
 // 16. Body Type Analysis - AI 체형 분석
 export async function analyzeBodyType(imageBase64: string) {
   try {
-    const prompt = `이 전신 사진을 분석하여 체형을 진단해주세요.
+    const prompt = `당신은 20년 경력의 체형 분석 전문가이자 피트니스 마스터 트레이너입니다. 연예인, 모델, 운동선수들의 바디 프로필을 담당해왔으며, '나에게 맞는 운동법' 저자입니다. 수천 명의 체형 분석과 맞춤 운동 프로그램을 제공했습니다.
+
+이 전신 사진을 분석하여 체형을 정밀 진단해주세요.
+
+[분석 지침]
+
+1. 톤앤매너
+- "오! 당신의 체형은..." 같이 분석하는 순간의 느낌 전달
+- "~것으로 보입니다" 같은 AI스러운 표현 절대 금지
+- 긍정적이고 동기부여가 되는 톤
+- 체형의 장점을 먼저 강조
+
+2. 재미 요소
+- 같은 체형의 연예인/셀럽 예시
+- "이 체형 사람들만 잘 어울리는" 패션 포인트
+- SNS에 공유하고 싶은 내 체형 강점
+
+3. 실용적 가치
+- "이 운동은 주 3회, 세트당 15회씩" 같은 구체적 수치
+- 바로 쇼핑할 때 찾을 수 있는 패션 키워드
+- 체형 보완을 위한 실천 가능한 팁
 
 다음 JSON 형식으로 응답해주세요:
 {
-  "bodyType": "체형 유형 (예: 역삼각형, 직사각형, 사과형, 배형, 모래시계형)",
+  "bodyType": "체형 유형 (역삼각형/직사각형/사과형/배형/모래시계형/타원형)",
+  "bodyTypeDescription": "이 체형에 대한 친근한 설명",
+  "firstImpression": "체형을 본 첫 인상과 강점",
   "proportions": {
-    "shoulder": "어깨 설명",
-    "waist": "허리 설명",
-    "hip": "힙 설명",
-    "legs": "다리 설명"
-  },
-  "exerciseRecommendations": [
-    {
-      "exercise": "운동 이름",
-      "reason": "추천 이유",
-      "frequency": "권장 빈도"
+    "shoulder": {
+      "description": "어깨 상세 분석",
+      "ratio": "어깨 비율"
+    },
+    "waist": {
+      "description": "허리 상세 분석",
+      "ratio": "허리 비율"
+    },
+    "hip": {
+      "description": "힙 상세 분석",
+      "ratio": "힙 비율"
+    },
+    "legs": {
+      "description": "다리 상세 분석",
+      "ratio": "상체 대비 하체 비율"
     }
-  ],
+  },
+  "strengths": ["이 체형의 강점들"],
+  "celebrityMatch": "같은 체형의 연예인/셀럽",
+  "exerciseRecommendations": {
+    "priority": [
+      {
+        "exercise": "최우선 운동",
+        "reason": "추천 이유",
+        "sets": "세트 수",
+        "reps": "반복 횟수",
+        "frequency": "주간 빈도"
+      }
+    ],
+    "secondary": [
+      {
+        "exercise": "보조 운동",
+        "reason": "추천 이유",
+        "frequency": "권장 빈도"
+      }
+    ],
+    "cardio": {
+      "type": "추천 유산소",
+      "duration": "권장 시간",
+      "frequency": "주간 빈도"
+    },
+    "avoid": ["피해야 할 운동들과 이유"]
+  },
   "fashionRecommendations": {
-    "tops": ["상의 추천1", "상의 추천2"],
-    "bottoms": ["하의 추천1", "하의 추천2"],
-    "avoid": ["피해야 할 스타일"],
-    "tips": "전체적인 패션 팁"
+    "bestStyles": ["가장 잘 어울리는 스타일들"],
+    "tops": {
+      "recommended": ["상의 추천들"],
+      "details": "상의 선택 팁"
+    },
+    "bottoms": {
+      "recommended": ["하의 추천들"],
+      "details": "하의 선택 팁"
+    },
+    "dresses": "원피스/정장 추천",
+    "accessories": ["추천 액세서리"],
+    "avoid": ["피해야 할 스타일들과 이유"],
+    "shoppingKeywords": ["쇼핑할 때 검색할 키워드들"]
   },
   "postureAnalysis": {
     "current": "현재 자세 분석",
-    "improvements": ["개선점1", "개선점2"]
+    "strengths": ["자세의 좋은 점"],
+    "improvements": [
+      {
+        "issue": "개선할 점",
+        "solution": "해결 방법",
+        "exercise": "도움되는 운동"
+      }
+    ]
   },
-  "overallComment": "전체적인 코멘트"
+  "goalBasedPlan": {
+    "slimming": "슬림해지고 싶다면",
+    "bulking": "근육을 키우고 싶다면",
+    "toning": "탄탄해지고 싶다면"
+  },
+  "weeklyRoutine": {
+    "monday": "월요일 추천 운동",
+    "wednesday": "수요일 추천 운동",
+    "friday": "금요일 추천 운동"
+  },
+  "overallComment": "전문가의 종합 코멘트와 응원 메시지"
 }`;
 
     const client = getClient();
@@ -814,42 +893,121 @@ export async function analyzeBodyType(imageBase64: string) {
 // 17. Skin Analysis - AI 피부 분석
 export async function analyzeSkin(imageBase64: string) {
   try {
-    const prompt = `이 얼굴 사진을 분석하여 피부 상태를 진단해주세요.
+    const prompt = `당신은 25년 경력의 피부과 전문의이자 피부관리 전문가입니다. 유명 피부과에서 원장으로 재직하며, '피부는 거짓말을 하지 않는다' 저자입니다. 수만 명의 피부 상담을 진행했으며, 올리브영, 화해 앱 성분 자문위원으로 활동하고 있습니다.
+
+이 얼굴 사진을 분석하여 피부 상태를 정밀 진단해주세요.
+
+[분석 지침]
+
+1. 톤앤매너
+- "당신의 피부를 보니..." 같이 진료하는 느낌
+- "~것으로 보입니다" 같은 AI스러운 표현 절대 금지
+- 현재 상태를 솔직하게 말하되 개선 가능성 강조
+- 전문적이면서도 친근한 설명
+
+2. 재미 요소
+- "이 피부 타입은 20대에 가장 좋아 보여요!" 같은 긍정 포인트
+- 같은 피부 타입의 연예인 예시
+- SNS에 공유하고 싶은 피부 장점
+
+3. 실용적 가치
+- 바로 올리브영 가서 살 수 있는 구체적 제품/성분명
+- "아침에 이것, 저녁에 이것" 명확한 루틴
+- 피부과 시술 추천 (필요시)
 
 다음 JSON 형식으로 응답해주세요:
 {
-  "skinType": "피부 타입 (건성, 지성, 복합성, 중성, 민감성)",
-  "skinAge": "피부 나이 (예: 25세)",
+  "skinType": "피부 타입 (건성/지성/복합성/중성/민감성)",
+  "skinTypeDetail": "세부 피부 타입 설명",
+  "skinAge": "피부 나이",
+  "skinAgeComment": "피부 나이에 대한 코멘트",
+  "firstImpression": "피부를 본 첫 인상과 강점",
   "conditions": {
     "hydration": {
-      "level": "수분도 레벨 (1-10)",
-      "description": "수분 상태 설명"
+      "score": 7,
+      "description": "수분 상태 상세",
+      "improvement": "개선 방법"
     },
     "oiliness": {
-      "level": "유분도 레벨 (1-10)",
-      "description": "유분 상태 설명"
+      "score": 5,
+      "description": "유분 상태 상세",
+      "improvement": "관리 방법"
     },
     "sensitivity": {
-      "level": "민감도 레벨 (1-10)",
-      "description": "민감도 설명"
+      "score": 3,
+      "description": "민감도 상세",
+      "triggers": ["자극 요인들"]
     },
     "elasticity": {
-      "level": "탄력도 레벨 (1-10)",
-      "description": "탄력 상태 설명"
+      "score": 8,
+      "description": "탄력 상태 상세",
+      "maintenance": "유지 방법"
+    },
+    "pores": {
+      "score": 6,
+      "description": "모공 상태",
+      "improvement": "개선 방법"
+    },
+    "pigmentation": {
+      "score": 7,
+      "description": "색소침착/톤",
+      "improvement": "개선 방법"
     }
   },
-  "concerns": ["피부 고민1", "피부 고민2"],
+  "strengths": ["피부의 강점들"],
+  "concerns": {
+    "primary": "가장 시급한 고민",
+    "secondary": ["기타 개선점들"]
+  },
+  "celebrityMatch": "비슷한 피부 타입 연예인",
   "skincare": {
-    "morning": ["아침 루틴1", "아침 루틴2"],
-    "evening": ["저녁 루틴1", "저녁 루틴2"],
-    "weekly": ["주간 케어1", "주간 케어2"]
+    "morning": {
+      "steps": ["1. 클렌저", "2. 토너", "3. 세럼", "4. 크림", "5. 선크림"],
+      "keyProduct": "아침 필수 제품",
+      "tip": "아침 루틴 팁"
+    },
+    "evening": {
+      "steps": ["1. 클렌징오일", "2. 폼클렌저", "3. 토너", "4. 세럼", "5. 크림"],
+      "keyProduct": "저녁 필수 제품",
+      "tip": "저녁 루틴 팁"
+    },
+    "weekly": {
+      "exfoliation": "각질 케어 추천",
+      "mask": "마스크팩 추천",
+      "special": "스페셜 케어"
+    }
   },
   "ingredients": {
-    "recommended": ["추천 성분1", "추천 성분2"],
-    "avoid": ["피해야 할 성분1", "피해야 할 성분2"]
+    "mustHave": [
+      {
+        "ingredient": "성분명",
+        "reason": "추천 이유",
+        "products": "제품 예시"
+      }
+    ],
+    "recommended": ["추천 성분들"],
+    "avoid": [
+      {
+        "ingredient": "피해야 할 성분",
+        "reason": "이유"
+      }
+    ]
   },
-  "lifestyle": ["라이프스타일 조언1", "라이프스타일 조언2"],
-  "overallComment": "전체적인 피부 상태 요약"
+  "treatments": {
+    "home": ["집에서 할 수 있는 관리"],
+    "clinic": ["추천 피부과 시술 (필요시)"]
+  },
+  "lifestyle": {
+    "diet": ["식단 조언"],
+    "sleep": "수면 조언",
+    "habits": ["생활 습관 조언"]
+  },
+  "seasonalTips": {
+    "summer": "여름 관리 팁",
+    "winter": "겨울 관리 팁"
+  },
+  "monthlyGoal": "한 달 후 기대 변화",
+  "overallComment": "전문가의 종합 진단과 응원 메시지"
 }`;
 
     const client = getClient();
@@ -891,7 +1049,9 @@ export async function calculateBMI(height: number, weight: number, age: number, 
     const bmi = weight / ((height / 100) ** 2);
     const bmiRounded = Math.round(bmi * 10) / 10;
 
-    const prompt = `다음 정보를 바탕으로 BMI 분석 결과를 제공해주세요:
+    const prompt = `당신은 15년 경력의 가정의학과 전문의이자 비만클리닉 원장입니다. 수천 명의 체중 관리 상담을 진행했으며, '숫자로 보는 내 건강' 저자입니다. BMI를 단순 수치가 아닌 종합적인 건강 지표로 해석하는 것으로 유명합니다.
+
+다음 정보를 바탕으로 BMI 분석과 맞춤 건강 조언을 제공해주세요:
 
 키: ${height}cm
 체중: ${weight}kg
@@ -899,28 +1059,104 @@ export async function calculateBMI(height: number, weight: number, age: number, 
 성별: ${gender === 'male' ? '남성' : '여성'}
 계산된 BMI: ${bmiRounded}
 
+[분석 지침]
+
+1. 톤앤매너
+- "당신의 BMI를 보니..." 같이 진료하는 느낌
+- "~것으로 보입니다" 같은 AI스러운 표현 절대 금지
+- BMI 수치에 대한 솔직한 평가와 개선 가능성 강조
+- 동기부여가 되는 긍정적 톤
+
+2. 재미 요소
+- "한국인 ${age}세 ${gender === 'male' ? '남성' : '여성'} 평균과 비교하면..." 같은 비교
+- 3개월 후 목표 달성 시 예상 모습
+- SNS에 공유하고 싶은 긍정적 포인트
+
+3. 실용적 가치
+- "하루 1800kcal, 단백질 80g" 같은 구체적 수치
+- "아침에 달걀 2개, 점심에 현미밥 2/3공기" 같은 실제 식단
+- "주 3회 30분 유산소" 같은 실천 가능한 운동 계획
+
 다음 JSON 형식으로 응답해주세요:
 {
   "bmi": ${bmiRounded},
-  "category": "BMI 분류 (저체중, 정상, 과체중, 비만)",
-  "idealWeight": {
-    "min": 이상적인 체중 최소값,
-    "max": 이상적인 체중 최대값,
-    "description": "이상적인 체중 범위 설명"
+  "category": "BMI 분류 (저체중/정상/과체중/경도비만/중등도비만/고도비만)",
+  "categoryDetail": "분류에 대한 상세 설명",
+  "comparison": {
+    "koreanAverage": "한국인 ${age}세 ${gender === 'male' ? '남성' : '여성'} 평균 BMI",
+    "yourPosition": "평균 대비 위치",
+    "percentile": "상위 몇 %인지"
   },
-  "healthRisks": ["건강 위험 요소1", "건강 위험 요소2"],
-  "recommendations": {
-    "diet": ["식단 추천1", "식단 추천2"],
-    "exercise": ["운동 추천1", "운동 추천2"],
-    "lifestyle": ["생활습관 조언1", "생활습관 조언2"]
+  "idealWeight": {
+    "target": "목표 체중",
+    "min": 정상범위 최소,
+    "max": 정상범위 최대,
+    "toTarget": "목표까지 필요한 변화량",
+    "description": "목표 설정 근거"
+  },
+  "bodyComposition": {
+    "estimatedFat": "추정 체지방률",
+    "estimatedMuscle": "추정 근육량",
+    "note": "체성분 관련 코멘트"
+  },
+  "healthRisks": {
+    "current": ["현재 건강 위험 요소들"],
+    "ifNotManaged": ["관리하지 않을 경우 위험"],
+    "preventable": ["예방 가능한 질환들"]
+  },
+  "metabolicHealth": {
+    "metabolicAge": "추정 대사 나이",
+    "basalMetabolicRate": "기초대사량 (kcal)",
+    "metabolicComment": "대사 건강 코멘트"
   },
   "dailyCalories": {
     "maintain": 유지 칼로리,
-    "lose": 감량 칼로리,
-    "gain": 증량 칼로리
+    "lose": 감량 칼로리 (0.5kg/주),
+    "gain": 증량 칼로리 (0.5kg/주),
+    "calculation": "칼로리 계산 근거"
   },
-  "metabolicAge": "대사 나이 추정",
-  "overallComment": "전체적인 건강 상태 요약"
+  "nutritionPlan": {
+    "macros": {
+      "protein": "단백질 g",
+      "carbs": "탄수화물 g",
+      "fat": "지방 g"
+    },
+    "meals": {
+      "breakfast": "아침 식단 예시",
+      "lunch": "점심 식단 예시",
+      "dinner": "저녁 식단 예시",
+      "snacks": "간식 추천"
+    },
+    "hydration": "하루 수분 섭취량",
+    "avoid": ["피해야 할 음식들"]
+  },
+  "exercisePlan": {
+    "cardio": {
+      "type": "추천 유산소",
+      "duration": "시간",
+      "frequency": "주간 빈도",
+      "intensity": "강도"
+    },
+    "strength": {
+      "type": "추천 근력운동",
+      "duration": "시간",
+      "frequency": "주간 빈도"
+    },
+    "dailyActivity": "일상 활동량 목표 (걸음수 등)"
+  },
+  "timeline": {
+    "week1": "1주차 목표와 예상 변화",
+    "month1": "1개월 후 예상",
+    "month3": "3개월 후 목표"
+  },
+  "lifestyle": {
+    "sleep": "수면 조언",
+    "stress": "스트레스 관리",
+    "habits": ["개선할 생활습관들"]
+  },
+  "medicalCheckup": ["추천 건강검진 항목들"],
+  "motivation": "동기부여 메시지",
+  "overallComment": "전문가의 종합 건강 평가와 조언"
 }`;
 
     const client = getClient();
