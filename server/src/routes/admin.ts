@@ -30,7 +30,7 @@ router.get('/dashboard', async (req: Request, res: Response) => {
 
     // Total credits charged
     const totalCreditsResult = await db.select({
-      total: sql<number>`COALESCE(SUM(${transactions.creditAmount}), 0)`
+      total: sql<number>`COALESCE(SUM(${transactions.amount}), 0)`
     })
       .from(transactions)
       .where(eq(transactions.type, 'charge'));
@@ -38,7 +38,7 @@ router.get('/dashboard', async (req: Request, res: Response) => {
 
     // Credits charged this month
     const monthlyCreditsResult = await db.select({
-      total: sql<number>`COALESCE(SUM(${transactions.creditAmount}), 0)`
+      total: sql<number>`COALESCE(SUM(${transactions.amount}), 0)`
     })
       .from(transactions)
       .where(and(
@@ -47,25 +47,25 @@ router.get('/dashboard', async (req: Request, res: Response) => {
       ));
     const monthlyCreditsCharged = monthlyCreditsResult[0]?.total || 0;
 
-    // Total revenue
+    // Total revenue (from metadata if available)
     const totalRevenueResult = await db.select({
-      total: sql<number>`COALESCE(SUM(${transactions.actualAmount}), 0)`
+      total: sql<number>`COALESCE(SUM((${transactions.metadata}->>'actualAmount')::int), 0)`
     })
       .from(transactions)
       .where(and(
         eq(transactions.type, 'charge'),
-        sql`${transactions.actualAmount} > 0`
+        sql`(${transactions.metadata}->>'actualAmount')::int > 0`
       ));
     const totalRevenue = totalRevenueResult[0]?.total || 0;
 
     // Monthly revenue
     const monthlyRevenueResult = await db.select({
-      total: sql<number>`COALESCE(SUM(${transactions.actualAmount}), 0)`
+      total: sql<number>`COALESCE(SUM((${transactions.metadata}->>'actualAmount')::int), 0)`
     })
       .from(transactions)
       .where(and(
         eq(transactions.type, 'charge'),
-        sql`${transactions.actualAmount} > 0`,
+        sql`(${transactions.metadata}->>'actualAmount')::int > 0`,
         gte(transactions.createdAt, startDate)
       ));
     const monthlyRevenue = monthlyRevenueResult[0]?.total || 0;
@@ -283,6 +283,7 @@ router.post('/credits/charge', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    const creditsBefore = user.credits;
     const newCredits = user.credits + amount;
     const newLifetimeCredits = user.lifetimeCredits + amount;
 
@@ -297,9 +298,11 @@ router.post('/credits/charge', async (req: Request, res: Response) => {
     await db.insert(transactions).values({
       userId,
       type: 'charge',
-      creditAmount: amount,
-      creditBalanceAfter: newCredits,
-      paymentMethod: 'admin_gift'
+      amount: amount,
+      creditsBefore: creditsBefore,
+      creditsAfter: newCredits,
+      description: reason || 'Admin credit charge',
+      metadata: { method: 'admin_gift' }
     });
 
     await db.insert(adminLogs).values({
@@ -322,7 +325,14 @@ router.post('/credits/charge', async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('Credit charge error:', error);
-    res.status(500).json({ error: 'Failed to charge credits' });
+    console.error('Credit charge error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
+    });
+    res.status(500).json({
+      error: 'Failed to charge credits',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 });
 
@@ -348,6 +358,7 @@ router.post('/credits/deduct', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Insufficient credits' });
     }
 
+    const creditsBefore = user.credits;
     const newCredits = user.credits - amount;
 
     await db.update(users)
@@ -360,9 +371,11 @@ router.post('/credits/deduct', async (req: Request, res: Response) => {
     await db.insert(transactions).values({
       userId,
       type: 'use',
-      creditAmount: -amount,
-      creditBalanceAfter: newCredits,
-      paymentMethod: 'admin_deduct'
+      amount: -amount,
+      creditsBefore: creditsBefore,
+      creditsAfter: newCredits,
+      description: reason || 'Admin credit deduction',
+      metadata: { method: 'admin_deduct' }
     });
 
     await db.insert(adminLogs).values({
@@ -475,10 +488,11 @@ router.get('/analytics/user/:userId', async (req: Request, res: Response) => {
     const userTransactions = await db.select({
       id: transactions.id,
       type: transactions.type,
-      creditAmount: transactions.creditAmount,
-      creditBalanceAfter: transactions.creditBalanceAfter,
-      paymentMethod: transactions.paymentMethod,
-      actualAmount: transactions.actualAmount,
+      amount: transactions.amount,
+      creditsBefore: transactions.creditsBefore,
+      creditsAfter: transactions.creditsAfter,
+      description: transactions.description,
+      metadata: transactions.metadata,
       createdAt: transactions.createdAt
     })
       .from(transactions)
@@ -488,10 +502,11 @@ router.get('/analytics/user/:userId', async (req: Request, res: Response) => {
 
     const totals = userTransactions.reduce((acc, t) => {
       if (t.type === 'charge') {
-        acc.totalCharged += t.creditAmount;
-        acc.totalPaid += t.actualAmount || 0;
+        acc.totalCharged += t.amount;
+        const actualAmount = (t.metadata as any)?.actualAmount || 0;
+        acc.totalPaid += actualAmount;
       } else if (t.type === 'use') {
-        acc.totalUsed += Math.abs(t.creditAmount);
+        acc.totalUsed += Math.abs(t.amount);
       }
       return acc;
     }, { totalCharged: 0, totalUsed: 0, totalPaid: 0 });

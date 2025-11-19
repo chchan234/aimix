@@ -71,3 +71,4 @@ PROBLEM_SOLVED_SUMMARY.md
 REACT_ERROR_FIX.md
 update-env-vars.sh
 .playwright-mcp/
+.env*.local

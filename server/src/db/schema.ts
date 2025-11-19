@@ -177,20 +177,18 @@ export const selectServiceResultSchema = createSelectSchema(serviceResults);
 // ================================
 export const transactions = pgTable('transactions', {
   id: uuid('id').primaryKey().defaultRandom(),
-  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }),
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
 
   type: varchar('type', { length: 20 }).notNull(), // 'charge', 'use', 'refund'
-  creditAmount: integer('credit_amount').notNull(),
-  creditBalanceAfter: integer('credit_balance_after').notNull(),
+  amount: integer('amount').notNull(),
+  creditsBefore: integer('credits_before').notNull(),
+  creditsAfter: integer('credits_after').notNull(),
 
-  // Payment info
-  paymentMethod: varchar('payment_method', { length: 50 }),
-  paymentId: varchar('payment_id', { length: 100 }).unique(),
-  actualAmount: integer('actual_amount'), // KRW
-
-  // Service usage
-  serviceId: uuid('service_id').references(() => services.id),
-  resultId: uuid('result_id').references(() => serviceResults.id),
+  // Reference info
+  referenceId: uuid('reference_id'),
+  referenceType: varchar('reference_type', { length: 50 }),
+  description: text('description'),
+  metadata: jsonb('metadata'),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (table) => ({
