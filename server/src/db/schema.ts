@@ -27,6 +27,9 @@ export const users = pgTable('users', {
   subscriptionTier: varchar('subscription_tier', { length: 20 }), // 'basic', 'premium', 'pro'
   subscriptionEndDate: timestamp('subscription_end_date'),
 
+  // Role
+  role: varchar('role', { length: 20 }).notNull().default('user'), // 'user', 'admin'
+
   // Meta
   locale: varchar('locale', { length: 10 }).notNull().default('ko'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -198,6 +201,83 @@ export const insertTransactionSchema = createInsertSchema(transactions);
 export const selectTransactionSchema = createSelectSchema(transactions);
 
 // ================================
+// Admin Activity Logs Table
+// ================================
+export const adminLogs = pgTable('admin_logs', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  adminId: uuid('admin_id').references(() => users.id, { onDelete: 'set null' }),
+
+  action: varchar('action', { length: 100 }).notNull(), // 'credit_charge', 'user_update', 'announcement_create', etc.
+  targetType: varchar('target_type', { length: 50 }), // 'user', 'announcement', 'service', etc.
+  targetId: uuid('target_id'),
+
+  details: jsonb('details'), // Additional action details
+  ipAddress: varchar('ip_address', { length: 45 }),
+
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (table) => ({
+  adminIdx: index('idx_admin_logs_admin').on(table.adminId),
+  actionIdx: index('idx_admin_logs_action').on(table.action),
+  createdIdx: index('idx_admin_logs_created').on(table.createdAt),
+}));
+
+export const insertAdminLogSchema = createInsertSchema(adminLogs);
+export const selectAdminLogSchema = createSelectSchema(adminLogs);
+
+// ================================
+// Service Usage Logs Table
+// ================================
+export const serviceLogs = pgTable('service_logs', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
+
+  serviceType: varchar('service_type', { length: 100 }).notNull(),
+  creditUsed: integer('credit_used').notNull(),
+
+  // Request info
+  inputSummary: text('input_summary'), // Brief summary of input
+  processingTime: integer('processing_time'), // ms
+  success: boolean('success').notNull().default(true),
+  errorMessage: text('error_message'),
+
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (table) => ({
+  userIdx: index('idx_service_logs_user').on(table.userId),
+  serviceIdx: index('idx_service_logs_service').on(table.serviceType),
+  createdIdx: index('idx_service_logs_created').on(table.createdAt),
+}));
+
+export const insertServiceLogSchema = createInsertSchema(serviceLogs);
+export const selectServiceLogSchema = createSelectSchema(serviceLogs);
+
+// ================================
+// Announcements Table
+// ================================
+export const announcements = pgTable('announcements', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  adminId: uuid('admin_id').references(() => users.id, { onDelete: 'set null' }),
+
+  title: varchar('title', { length: 200 }).notNull(),
+  content: text('content').notNull(),
+
+  type: varchar('type', { length: 20 }).notNull().default('info'), // 'info', 'warning', 'update', 'event'
+  isActive: boolean('is_active').notNull().default(true),
+  isPinned: boolean('is_pinned').notNull().default(false),
+
+  startDate: timestamp('start_date'),
+  endDate: timestamp('end_date'),
+
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+}, (table) => ({
+  activeIdx: index('idx_announcements_active').on(table.isActive),
+  createdIdx: index('idx_announcements_created').on(table.createdAt),
+}));
+
+export const insertAnnouncementSchema = createInsertSchema(announcements);
+export const selectAnnouncementSchema = createSelectSchema(announcements);
+
+// ================================
 // Type exports
 // ================================
 export type User = typeof users.$inferSelect;
@@ -217,3 +297,12 @@ export type InsertServiceResult = typeof serviceResults.$inferInsert;
 
 export type Transaction = typeof transactions.$inferSelect;
 export type InsertTransaction = typeof transactions.$inferInsert;
+
+export type AdminLog = typeof adminLogs.$inferSelect;
+export type InsertAdminLog = typeof adminLogs.$inferInsert;
+
+export type ServiceLog = typeof serviceLogs.$inferSelect;
+export type InsertServiceLog = typeof serviceLogs.$inferInsert;
+
+export type Announcement = typeof announcements.$inferSelect;
+export type InsertAnnouncement = typeof announcements.$inferInsert;

@@ -286,7 +286,8 @@ router.post('/login', rateLimitByIP(5, 60 * 1000), async (req, res) => {
         email: user.email,
         username: user.username,
         credits: user.credits,
-        profileImageUrl: user.profile_image_url
+        profileImageUrl: user.profile_image_url,
+        role: user.role
       }
     });
 
@@ -398,7 +399,8 @@ router.post('/kakao', async (req, res) => {
         email: user.email,
         username: user.username,
         credits: user.credits,
-        profileImageUrl: user.profile_image_url
+        profileImageUrl: user.profile_image_url,
+        role: user.role
       }
     });
 
@@ -556,7 +558,8 @@ router.post('/kakao/callback', rateLimitByIP(10, 60 * 1000), async (req, res) =>
         email: user.email,
         username: user.username,
         credits: user.credits,
-        profileImageUrl: user.profile_image_url
+        profileImageUrl: user.profile_image_url,
+        role: user.role
       }
     });
 
@@ -609,7 +612,8 @@ router.get('/me', async (req, res) => {
         credits: user.credits,
         profileImageUrl: user.profile_image_url,
         provider: user.provider,
-        createdAt: user.created_at
+        createdAt: user.created_at,
+        role: user.role
       }
     });
 

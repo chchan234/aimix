@@ -14,6 +14,7 @@ import MyResultsPage from './pages/MyResultsPage';
 import BuyCreditsPage from './pages/BuyCreditsPage';
 import HelpPage from './pages/HelpPage';
 import KakaoCallback from './pages/KakaoCallback';
+import AdminPage from './pages/AdminPage';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 
@@ -83,6 +84,7 @@ function App() {
             <Route path="/my-results" component={MyResultsPage} />
             <Route path="/buy-credits" component={BuyCreditsPage} />
             <Route path="/help" component={HelpPage} />
+            <Route path="/admin" component={AdminPage} />
 
             {/* Category Pages */}
             <Route path="/fortune" component={FortunePage} />

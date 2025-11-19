@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
+import { isAdmin } from '../services/auth';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -200,6 +201,22 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
         {/* Bottom section */}
         <div className="flex flex-col gap-1">
+          {/* Admin menu - only visible for admin users */}
+          {isAdmin() && (
+            <Link href="/admin" onClick={handleLinkClick}>
+              <div className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition ${
+                location === '/admin'
+                  ? 'bg-primary'
+                  : 'hover:bg-primary/20'
+              }`}>
+                <span className={`material-symbols-outlined text-2xl ${
+                  location === '/admin' ? 'fill text-white' : 'text-white'
+                }`}>admin_panel_settings</span>
+                <p className="text-white text-sm font-medium leading-normal">운영 페이지</p>
+              </div>
+            </Link>
+          )}
+
           <Link href="/settings" onClick={handleLinkClick}>
             <div className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition ${
               location === '/settings'

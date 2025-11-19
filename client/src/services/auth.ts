@@ -15,6 +15,7 @@ export interface User {
   provider?: string;
   createdAt?: string;
   emailVerified?: boolean;
+  role?: string;
 }
 
 export interface AuthResponse {
@@ -128,6 +129,7 @@ export async function logout(): Promise<void> {
   localStorage.removeItem('isLoggedIn');
   localStorage.removeItem('username');
   localStorage.removeItem('userEmail');
+  localStorage.removeItem('userRole');
 }
 
 /**
@@ -193,6 +195,9 @@ export function saveAuthData(token: string, user: User) {
   localStorage.setItem('isLoggedIn', 'true');
   localStorage.setItem('username', user.username);
   localStorage.setItem('userEmail', user.email);
+  if (user.role) {
+    localStorage.setItem('userRole', user.role);
+  }
 }
 
 /**
@@ -200,6 +205,20 @@ export function saveAuthData(token: string, user: User) {
  */
 export function isLoggedIn(): boolean {
   return localStorage.getItem('authToken') !== null;
+}
+
+/**
+ * Get auth token
+ */
+export function getToken(): string | null {
+  return localStorage.getItem('authToken');
+}
+
+/**
+ * Check if current user is admin
+ */
+export function isAdmin(): boolean {
+  return localStorage.getItem('userRole') === 'admin';
 }
 
 // TypeScript declarations for Kakao SDK
