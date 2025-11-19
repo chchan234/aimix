@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import ExecuteButton from '../../components/ExecuteButton';
 import { transformAge } from '../../services/ai';
@@ -8,7 +7,6 @@ import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function AgeTransformPage() {
   const { t } = useTranslation();
-  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
   const [image, setImage] = useState<string | null>(null);
   const [targetAge, setTargetAge] = useState(30);

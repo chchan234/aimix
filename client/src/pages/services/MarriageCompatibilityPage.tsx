@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeMarriageCompatibility } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function MarriageCompatibilityPage() {
   const { t } = useTranslation();
-  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'input' | 'result'>('intro');
   const [person1Name, setPerson1Name] = useState('');
   const [person1BirthDate, setPerson1BirthDate] = useState('');

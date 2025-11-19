@@ -1,13 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzePalmistry } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function PalmistryPage() {
   const { t } = useTranslation();
-  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'input' | 'result'>('intro');
   const [hand, setHand] = useState<'left' | 'right'>('right');
   const [imagePreview, setImagePreview] = useState<string | null>(null);

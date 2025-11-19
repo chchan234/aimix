@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeHoroscope } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
@@ -22,7 +21,6 @@ const ZODIAC_SIGNS = [
 
 export default function HoroscopePage() {
   const { t } = useTranslation();
-  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'input' | 'result'>('intro');
   const [birthDate, setBirthDate] = useState('');
   const [zodiacSign, setZodiacSign] = useState('');
