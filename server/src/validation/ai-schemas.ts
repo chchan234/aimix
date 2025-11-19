@@ -335,3 +335,27 @@ export const professionalHeadshotSchema = z.object({
 );
 
 export type ProfessionalHeadshotInput = z.infer<typeof professionalHeadshotSchema>;
+
+// Body Analysis Schema
+export const bodyAnalysisSchema = z.object({
+  base64Image: base64Image,
+});
+
+export type BodyAnalysisInput = z.infer<typeof bodyAnalysisSchema>;
+
+// Skin Analysis Schema
+export const skinAnalysisSchema = z.object({
+  base64Image: base64Image,
+});
+
+export type SkinAnalysisInput = z.infer<typeof skinAnalysisSchema>;
+
+// BMI Calculator Schema
+export const bmiCalculatorSchema = z.object({
+  height: z.number().min(100).max(250),
+  weight: z.number().min(20).max(300),
+  age: z.number().min(10).max(120),
+  gender: z.enum(['male', 'female']),
+});
+
+export type BMICalculatorInput = z.infer<typeof bmiCalculatorSchema>;

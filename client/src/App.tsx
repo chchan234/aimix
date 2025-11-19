@@ -50,6 +50,11 @@ import PetSoulmatePage from './pages/services/PetSoulmatePage';
 import BabyFacePage from './pages/services/BabyFacePage';
 import PersonalColorPage from './pages/services/PersonalColorPage';
 
+// Service Pages - Health
+import BodyAnalysisPage from './pages/services/BodyAnalysisPage';
+import SkinAnalysisPage from './pages/services/SkinAnalysisPage';
+import BMICalculatorPage from './pages/services/BMICalculatorPage';
+
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -114,6 +119,11 @@ function App() {
             <Route path="/services/pet-soulmate" component={PetSoulmatePage} />
             <Route path="/services/baby-face" component={BabyFacePage} />
             <Route path="/services/personal-color" component={PersonalColorPage} />
+
+            {/* Service Detail Pages - Health */}
+            <Route path="/services/body-analysis" component={BodyAnalysisPage} />
+            <Route path="/services/skin-analysis" component={SkinAnalysisPage} />
+            <Route path="/services/bmi-calculator" component={BMICalculatorPage} />
 
             <Route path="/:rest*">
               {() => (

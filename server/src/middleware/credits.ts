@@ -50,6 +50,10 @@ export const CREDIT_COSTS = {
   'celebrity-doppelganger': 25, // 연예인 도플갱어 2.0
   'personal-color': 30, // 퍼스널 컬러 진단
   'deep-fortune-2025': 50, // 2025년 심층 신년운세
+  // Health services
+  'body-analysis': 25, // AI 체형 분석
+  'skin-analysis': 30, // AI 피부 분석
+  'bmi-calculator': 15, // AI BMI 계산기
 } as const;
 
 /**

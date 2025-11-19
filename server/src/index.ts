@@ -26,6 +26,7 @@ import resultsRoutes from './routes/results.js';
 import imageRoutes from './routes/image.js';
 import personalityRoutes from './routes/personality.js';
 import adminRoutes from './routes/admin.js';
+import healthRoutes from './routes/health.js';
 
 // Security: Validate critical environment variables
 function validateEnvironment() {
@@ -192,6 +193,9 @@ app.use('/api/results', resultsRoutes);
 
 // Admin routes (temporary)
 app.use('/api/admin', adminRoutes);
+
+// Health service routes
+app.use('/api/health', healthRoutes);
 
 // Test endpoint to get user count (requires authentication)
 app.get('/api/users/count', authenticateToken, async (req, res) => {

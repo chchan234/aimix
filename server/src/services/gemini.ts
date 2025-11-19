@@ -662,6 +662,220 @@ export async function findCelebrityDoppelganger(imageBase64: string) {
   }
 }
 
+// HEALTH SERVICES
+
+// 16. Body Type Analysis - AI 체형 분석
+export async function analyzeBodyType(imageBase64: string) {
+  try {
+    const prompt = `이 전신 사진을 분석하여 체형을 진단해주세요.
+
+다음 JSON 형식으로 응답해주세요:
+{
+  "bodyType": "체형 유형 (예: 역삼각형, 직사각형, 사과형, 배형, 모래시계형)",
+  "proportions": {
+    "shoulder": "어깨 설명",
+    "waist": "허리 설명",
+    "hip": "힙 설명",
+    "legs": "다리 설명"
+  },
+  "exerciseRecommendations": [
+    {
+      "exercise": "운동 이름",
+      "reason": "추천 이유",
+      "frequency": "권장 빈도"
+    }
+  ],
+  "fashionRecommendations": {
+    "tops": ["상의 추천1", "상의 추천2"],
+    "bottoms": ["하의 추천1", "하의 추천2"],
+    "avoid": ["피해야 할 스타일"],
+    "tips": "전체적인 패션 팁"
+  },
+  "postureAnalysis": {
+    "current": "현재 자세 분석",
+    "improvements": ["개선점1", "개선점2"]
+  },
+  "overallComment": "전체적인 코멘트"
+}`;
+
+    const client = getClient();
+    const response = await client.analyzeImageWithText(imageBase64, prompt);
+
+    let analysis;
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        analysis = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('JSON not found in response');
+      }
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      return {
+        success: false,
+        error: 'Failed to parse analysis result'
+      };
+    }
+
+    return {
+      success: true,
+      analysis,
+      model: 'gemini-2.0-flash-exp'
+    };
+  } catch (error) {
+    console.error('Body type analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+// 17. Skin Analysis - AI 피부 분석
+export async function analyzeSkin(imageBase64: string) {
+  try {
+    const prompt = `이 얼굴 사진을 분석하여 피부 상태를 진단해주세요.
+
+다음 JSON 형식으로 응답해주세요:
+{
+  "skinType": "피부 타입 (건성, 지성, 복합성, 중성, 민감성)",
+  "skinAge": "피부 나이 (예: 25세)",
+  "conditions": {
+    "hydration": {
+      "level": "수분도 레벨 (1-10)",
+      "description": "수분 상태 설명"
+    },
+    "oiliness": {
+      "level": "유분도 레벨 (1-10)",
+      "description": "유분 상태 설명"
+    },
+    "sensitivity": {
+      "level": "민감도 레벨 (1-10)",
+      "description": "민감도 설명"
+    },
+    "elasticity": {
+      "level": "탄력도 레벨 (1-10)",
+      "description": "탄력 상태 설명"
+    }
+  },
+  "concerns": ["피부 고민1", "피부 고민2"],
+  "skincare": {
+    "morning": ["아침 루틴1", "아침 루틴2"],
+    "evening": ["저녁 루틴1", "저녁 루틴2"],
+    "weekly": ["주간 케어1", "주간 케어2"]
+  },
+  "ingredients": {
+    "recommended": ["추천 성분1", "추천 성분2"],
+    "avoid": ["피해야 할 성분1", "피해야 할 성분2"]
+  },
+  "lifestyle": ["라이프스타일 조언1", "라이프스타일 조언2"],
+  "overallComment": "전체적인 피부 상태 요약"
+}`;
+
+    const client = getClient();
+    const response = await client.analyzeImageWithText(imageBase64, prompt);
+
+    let analysis;
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        analysis = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('JSON not found in response');
+      }
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      return {
+        success: false,
+        error: 'Failed to parse analysis result'
+      };
+    }
+
+    return {
+      success: true,
+      analysis,
+      model: 'gemini-2.0-flash-exp'
+    };
+  } catch (error) {
+    console.error('Skin analysis error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+// 18. BMI Calculator - AI BMI 계산기
+export async function calculateBMI(height: number, weight: number, age: number, gender: 'male' | 'female') {
+  try {
+    const bmi = weight / ((height / 100) ** 2);
+    const bmiRounded = Math.round(bmi * 10) / 10;
+
+    const prompt = `다음 정보를 바탕으로 BMI 분석 결과를 제공해주세요:
+
+키: ${height}cm
+체중: ${weight}kg
+나이: ${age}세
+성별: ${gender === 'male' ? '남성' : '여성'}
+계산된 BMI: ${bmiRounded}
+
+다음 JSON 형식으로 응답해주세요:
+{
+  "bmi": ${bmiRounded},
+  "category": "BMI 분류 (저체중, 정상, 과체중, 비만)",
+  "idealWeight": {
+    "min": 이상적인 체중 최소값,
+    "max": 이상적인 체중 최대값,
+    "description": "이상적인 체중 범위 설명"
+  },
+  "healthRisks": ["건강 위험 요소1", "건강 위험 요소2"],
+  "recommendations": {
+    "diet": ["식단 추천1", "식단 추천2"],
+    "exercise": ["운동 추천1", "운동 추천2"],
+    "lifestyle": ["생활습관 조언1", "생활습관 조언2"]
+  },
+  "dailyCalories": {
+    "maintain": 유지 칼로리,
+    "lose": 감량 칼로리,
+    "gain": 증량 칼로리
+  },
+  "metabolicAge": "대사 나이 추정",
+  "overallComment": "전체적인 건강 상태 요약"
+}`;
+
+    const client = getClient();
+    const response = await client.generateText(prompt);
+
+    let analysis;
+    try {
+      const jsonMatch = response.content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        analysis = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('JSON not found in response');
+      }
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      return {
+        success: false,
+        error: 'Failed to parse analysis result'
+      };
+    }
+
+    return {
+      success: true,
+      analysis,
+      model: 'gemini-1.5-flash'
+    };
+  } catch (error) {
+    console.error('BMI calculation error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
 // 15. Personal Color Analysis - 퍼스널 컬러 진단
 export async function analyzePersonalColor(imageBase64: string) {
   try {
@@ -749,4 +963,8 @@ export default {
   generateBabyFace,
   findCelebrityDoppelganger,
   analyzePersonalColor,
+  // Health services
+  analyzeBodyType,
+  analyzeSkin,
+  calculateBMI,
 };

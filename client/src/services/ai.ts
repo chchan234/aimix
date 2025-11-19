@@ -472,3 +472,18 @@ export async function analyzePersonalColor(base64Image: string) {
 export async function generateProfessionalHeadshot(base64Image: string, style: 'professional' | 'business' | 'casual' = 'professional') {
   return apiRequest('/api/image/professional-headshot', { base64Image, style });
 }
+
+// Body Type Analysis
+export async function analyzeBodyType(base64Image: string) {
+  return apiRequest('/api/health/body-analysis', { base64Image });
+}
+
+// Skin Analysis
+export async function analyzeSkin(base64Image: string) {
+  return apiRequest('/api/health/skin-analysis', { base64Image });
+}
+
+// BMI Calculator
+export async function calculateBMI(height: number, weight: number, age: number, gender: 'male' | 'female') {
+  return apiRequest('/api/health/bmi-calculator', { height, weight, age, gender });
+}
