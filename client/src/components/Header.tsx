@@ -90,6 +90,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
   }, []);
 
   const handleLogout = () => {
+    localStorage.removeItem('authToken');
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('username');
     setIsLoggedIn(false);
