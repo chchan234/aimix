@@ -310,7 +310,7 @@ export default function BMICalculatorPage() {
         <div className="space-y-6">
           {/* BMI Score */}
           <div className="bg-gradient-to-r from-green-900 to-teal-900 rounded-lg p-6 text-center">
-            <p className="text-muted-foreground text-sm mb-2">당신의 BMI</p>
+            <p className="text-white/70 text-sm mb-2">당신의 BMI</p>
             <h3 className={`text-5xl font-bold mb-2 ${getBMIColor(result.bmi)}`}>
               {result.bmi.toFixed(1)}
             </h3>

@@ -268,7 +268,7 @@ export default function BodyAnalysisPage() {
         <div className="space-y-6">
           {/* Body Type */}
           <div className="bg-gradient-to-r from-teal-900 to-cyan-900 rounded-lg p-6 text-center">
-            <p className="text-muted-foreground text-sm mb-2">당신의 체형</p>
+            <p className="text-white/70 text-sm mb-2">당신의 체형</p>
             <h3 className="text-2xl font-bold text-white mb-2">
               {result.bodyType}
             </h3>

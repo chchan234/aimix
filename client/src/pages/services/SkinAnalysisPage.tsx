@@ -293,7 +293,7 @@ export default function SkinAnalysisPage() {
         <div className="space-y-6">
           {/* Skin Type & Age */}
           <div className="bg-gradient-to-r from-pink-900 to-purple-900 rounded-lg p-6 text-center">
-            <p className="text-muted-foreground text-sm mb-2">당신의 피부 타입</p>
+            <p className="text-white/70 text-sm mb-2">당신의 피부 타입</p>
             <h3 className="text-2xl font-bold text-white mb-2">
               {result.skinType}
             </h3>
