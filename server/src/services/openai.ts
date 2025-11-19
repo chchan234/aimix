@@ -963,33 +963,136 @@ JSON 형식으로 응답해주세요:
  */
 export async function analyzeFaceReading(imageUrl: string, birthDate?: string) {
   try {
-    // Fetch template from DB using PromptManager
-    const { PromptManager } = await import('./prompt-engine/prompt-manager.js');
-    const promptManager = new PromptManager();
+    const birthDateInfo = birthDate ? `\n생년월일: ${birthDate}` : '';
 
-    const template = await promptManager.getTemplate('face-reading');
-    if (!template) {
-      throw new Error('Face reading prompt template not found');
-    }
+    const prompt = `당신은 40년 경력의 전통 관상학 대가입니다. 동양 관상학과 서양 골상학을 모두 마스터했으며, 수만 명의 관상을 봐온 최고 권위자입니다.
 
-    // Render prompt with variables
-    const birthDateInfo = birthDate ? `생년월일: ${birthDate}` : '';
-    const prompt = promptManager.renderPrompt(template.userPromptTemplate, { birthDateInfo });
+이 사진 속 사람의 관상을 정밀 분석해주세요.${birthDateInfo}
+
+[분석 지침]
+
+1. 전문성과 깊이
+- 각 부위별로 관상학적 의미를 상세히 설명
+- "왜 이런 해석인지" 관상학적 근거를 구체적으로 제시
+- 이 사람만의 특별한 관상 조합 해석
+- 전문 용어 사용 (예: 천정, 인당, 준두, 법령선 등)
+
+2. 톤앤매너
+- 친근하면서도 신뢰감 있는 전문가 톤
+- "~것으로 보입니다" 같은 AI스러운 표현 절대 금지
+- "당신의 관상을 보니...", "솔직히 말씀드리면..." 같은 자연스러운 표현 사용
+- 좋은 점은 강조하되, 주의점도 솔직하게 전달
+
+3. 재미 요소
+- 각 특징에 공감되는 포인트 포함
+- 비슷한 관상의 유명인 예시
+- SNS에 공유하고 싶은 인사이트
+- 관상학에서의 재미있는 해석
+
+4. 실용성
+- 관상에 맞는 구체적인 행동 조언
+- 피해야 할 것과 권장하는 것 명확히
+- 운을 좋게 하는 실천 가능한 팁
+
+다음 JSON 형식으로 응답해주세요:
+{
+  "overallFortune": {
+    "summary": "전체 관상 요약 (최소 3문장)",
+    "fortuneScore": 85,
+    "luckyAge": ["행운이 강한 나이대"],
+    "lifePath": "인생 흐름 예측"
+  },
+  "faceShape": {
+    "type": "얼굴형 (갸름한형/둥근형/각진형/긴형 등)",
+    "meaning": "이 얼굴형의 관상학적 의미 (최소 3문장)",
+    "characteristics": ["이 얼굴형의 성격 특성들"]
+  },
+  "forehead": {
+    "analysis": "이마(천정) 분석 - 높이, 넓이, 모양",
+    "meaning": "관상학적 의미 (지혜, 초년운)",
+    "fortune": "이마로 보는 운세"
+  },
+  "eyebrows": {
+    "shape": "눈썹 모양과 특징",
+    "meaning": "관상학적 의미 (형제운, 성격)",
+    "advice": "눈썹 관련 조언"
+  },
+  "eyes": {
+    "shape": "눈 모양과 특징 (크기, 간격, 눈꼬리 등)",
+    "meaning": "관상학적 의미 (중년운, 판단력, 인간관계)",
+    "fortune": "눈으로 보는 운세",
+    "innerNature": "눈에서 읽히는 내면"
+  },
+  "nose": {
+    "shape": "코(준두) 모양과 특징",
+    "meaning": "관상학적 의미 (재물운, 자존심)",
+    "wealthFortune": "코로 보는 재물운"
+  },
+  "mouth": {
+    "shape": "입과 입술 모양",
+    "meaning": "관상학적 의미 (말년운, 식복)",
+    "fortune": "입으로 보는 운세"
+  },
+  "ears": {
+    "shape": "귀 모양과 위치",
+    "meaning": "관상학적 의미 (초년운, 지혜)",
+    "fortune": "귀로 보는 운세"
+  },
+  "jawChin": {
+    "shape": "턱과 법령선",
+    "meaning": "관상학적 의미 (말년운, 리더십)",
+    "fortune": "턱으로 보는 운세"
+  },
+  "specialFeatures": {
+    "moles": "점의 위치와 의미 (있는 경우)",
+    "lines": "주름/선의 의미",
+    "uniquePoints": ["이 관상만의 특별한 점들"]
+  },
+  "fortuneByAge": {
+    "youth": "초년운 (1-30세)",
+    "middle": "중년운 (31-50세)",
+    "later": "말년운 (51세+)"
+  },
+  "personality": {
+    "strengths": ["관상으로 보는 강점들"],
+    "weaknesses": ["주의해야 할 점들"],
+    "hiddenTalents": ["숨겨진 재능"]
+  },
+  "wealth": {
+    "overall": "전체 재물운",
+    "earningStyle": "돈 버는 스타일",
+    "advice": "재물운 향상 조언"
+  },
+  "love": {
+    "style": "연애/결혼 스타일",
+    "idealPartner": "잘 맞는 상대 관상",
+    "advice": "연애운 조언"
+  },
+  "career": {
+    "suitableFields": ["적합한 직업/분야"],
+    "workStyle": "일하는 스타일",
+    "advice": "직업운 조언"
+  },
+  "health": {
+    "weakPoints": ["관상으로 보는 건강 주의점"],
+    "advice": "건강 조언"
+  },
+  "advice": {
+    "dos": ["관상에 맞게 이렇게 하세요"],
+    "donts": ["이것은 피하세요"],
+    "luckyItems": ["행운을 부르는 것들"]
+  },
+  "celebrityMatch": "비슷한 관상의 유명인과 공통점",
+  "funFact": "이 관상에 대한 재미있는 사실 또는 해석"
+}`;
 
     const response = await client.vision(imageUrl, prompt, {
       temperature: 0.7,
-      maxTokens: 2000,
+      maxTokens: 3000,
       responseFormat: 'json',
     });
 
     const analysis = client.parseJSON(response.content);
-
-    // Track performance
-    await promptManager.trackPerformance(
-      template.id,
-      response.usage.totalTokens,
-      response.responseTime
-    );
 
     return {
       success: true,
@@ -1037,40 +1140,142 @@ export async function analyzeFaceReadingFromBase64(base64Image: string, birthDat
  */
 export async function analyzeSaju(birthDate: string, birthTime: string, gender: 'male' | 'female') {
   try {
-    // Fetch template from DB using PromptManager
-    const { PromptManager } = await import('./prompt-engine/prompt-manager.js');
-    const promptManager = new PromptManager();
-
-    const template = await promptManager.getTemplate('saju');
-    if (!template) {
-      throw new Error('Saju prompt template not found');
-    }
-
-    // Render prompt with variables
     const genderKo = gender === 'male' ? '남성' : '여성';
-    const prompt = promptManager.renderPrompt(template.userPromptTemplate, {
-      birthDate,
-      birthTime,
-      gender: genderKo
-    });
+
+    const prompt = `당신은 30년 경력의 사주 명리학 대가입니다. 동양철학과 명리학을 깊이 연구했으며, 수만 건의 사주 상담 경험을 보유한 최고 권위자입니다.
+
+[의뢰인 정보]
+생년월일: ${birthDate}
+태어난 시간: ${birthTime}
+성별: ${genderKo}
+
+[분석 지침]
+
+1. 전문성과 깊이
+- 사주팔자를 정확히 세우고 각 기둥의 의미 설명
+- 오행(목화토금수)의 균형과 상생상극 관계 분석
+- 십성(비겁, 식상, 재성, 관성, 인성)의 배치와 의미
+- 12운성을 통한 운의 흐름 분석
+- "왜 이런 해석인지" 명리학적 근거를 구체적으로 제시
+
+2. 톤앤매너
+- 친근하면서도 신뢰감 있는 전문가 톤
+- "~것으로 보입니다" 같은 AI스러운 표현 절대 금지
+- "당신의 사주를 보니...", "솔직히 말씀드리면..." 같은 자연스러운 표현 사용
+- 좋은 점은 강조하되, 주의점도 솔직하게 전달
+
+3. 재미 요소
+- 공감되는 성격 포인트 ("이거 맞죠?")
+- 비슷한 사주의 유명인 예시
+- SNS에 공유하고 싶은 인사이트
+- 명리학에서의 독특한 해석
+
+4. 실용성
+- 사주에 맞는 구체적인 행동 조언
+- 피해야 할 것과 권장하는 것 명확히
+- 운을 좋게 하는 실천 가능한 팁
+
+다음 JSON 형식으로 응답해주세요:
+{
+  "fourPillars": {
+    "year": {
+      "heavenlyStem": "연간 (천간)",
+      "earthlyBranch": "연지 (지지)",
+      "meaning": "연주의 의미"
+    },
+    "month": {
+      "heavenlyStem": "월간",
+      "earthlyBranch": "월지",
+      "meaning": "월주의 의미"
+    },
+    "day": {
+      "heavenlyStem": "일간 (일주)",
+      "earthlyBranch": "일지",
+      "meaning": "일주의 의미 - 본인의 핵심"
+    },
+    "hour": {
+      "heavenlyStem": "시간",
+      "earthlyBranch": "시지",
+      "meaning": "시주의 의미"
+    },
+    "summary": "사주팔자 종합 해석 (최소 3문장)"
+  },
+  "fiveElements": {
+    "distribution": {
+      "wood": "목의 비율과 의미",
+      "fire": "화의 비율과 의미",
+      "earth": "토의 비율과 의미",
+      "metal": "금의 비율과 의미",
+      "water": "수의 비율과 의미"
+    },
+    "balance": "오행 균형 분석",
+    "dominant": "가장 강한 오행과 그 영향",
+    "lacking": "부족한 오행과 보완 방법"
+  },
+  "personality": {
+    "core": "핵심 성격 (일간 기준)",
+    "strengths": ["강점들"],
+    "weaknesses": ["약점들"],
+    "hiddenTraits": "숨겨진 성격"
+  },
+  "fortune": {
+    "overall": "전체 운세 흐름",
+    "currentLuck": "현재 대운 분석",
+    "luckyYears": ["좋은 해들"],
+    "cautionYears": ["조심할 해들"]
+  },
+  "wealth": {
+    "potential": "재물운 잠재력",
+    "earningStyle": "돈 버는 스타일",
+    "savingStyle": "돈 관리 스타일",
+    "advice": "재물운 향상 조언"
+  },
+  "career": {
+    "suitableFields": ["적합한 직업/분야"],
+    "workStyle": "일하는 스타일",
+    "successTiming": "성공하기 좋은 시기",
+    "advice": "직업운 조언"
+  },
+  "love": {
+    "style": "연애 스타일",
+    "idealPartner": "잘 맞는 배우자 사주",
+    "marriageTiming": "결혼 좋은 시기",
+    "advice": "연애/결혼운 조언"
+  },
+  "health": {
+    "weakOrgans": ["주의할 장기/부위"],
+    "advice": "건강 조언"
+  },
+  "relationships": {
+    "family": "가족 관계",
+    "friends": "친구/사회 관계",
+    "advice": "인간관계 조언"
+  },
+  "luckyElements": {
+    "colors": ["행운의 색상"],
+    "numbers": [3, 8],
+    "directions": ["좋은 방향"],
+    "items": ["행운의 아이템"]
+  },
+  "advice": {
+    "dos": ["이렇게 하세요"],
+    "donts": ["이것은 피하세요"],
+    "yearlyFocus": "올해 집중해야 할 것"
+  },
+  "famousMatch": "비슷한 사주의 유명인",
+  "summary": "종합 사주 분석 요약 (최소 5문장)"
+}`;
 
     const response = await client.chat(
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 2000,
+        maxTokens: 3000,
         responseFormat: 'json',
       }
     );
 
     const analysis = client.parseJSON(response.content);
-
-    // Track performance
-    await promptManager.trackPerformance(
-      template.id,
-      response.usage.totalTokens,
-      response.responseTime
-    );
 
     return {
       success: true,
