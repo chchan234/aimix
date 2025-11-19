@@ -80,7 +80,7 @@ export class GeminiClient {
           }]
         }],
         generationConfig: {
-          responseModalities: ['Image'],
+          responseModalities: ['Text', 'Image'],
         } as any
       });
 
@@ -89,15 +89,23 @@ export class GeminiClient {
       // Check if response contains image data
       const candidates = response.candidates;
       if (!candidates || candidates.length === 0) {
+        console.error('❌ No candidates in response:', JSON.stringify(response, null, 2));
         throw new Error('No image generated');
       }
 
+      const candidate = candidates[0];
+      if (!candidate.content || !candidate.content.parts) {
+        console.error('❌ No content or parts in candidate:', JSON.stringify(candidate, null, 2));
+        throw new Error('No content in response candidate');
+      }
+
       // Extract image from response
-      const imageData = candidates[0].content.parts.find(part =>
+      const imageData = candidate.content.parts.find(part =>
         'inlineData' in part && part.inlineData?.mimeType?.startsWith('image/')
       );
 
       if (!imageData || !('inlineData' in imageData) || !imageData.inlineData) {
+        console.error('❌ No image data found in parts:', JSON.stringify(candidate.content.parts, null, 2));
         throw new Error('No image data in response');
       }
 

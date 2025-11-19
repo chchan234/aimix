@@ -398,9 +398,9 @@ export default function PersonalColorPage() {
       {step === 'result' && result && (
         <div className="space-y-6">
           {/* Personal Color Type */}
-          <div className="bg-gradient-to-r from-purple-900 to-pink-900 rounded-lg p-6 text-center">
+          <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg p-6 text-center">
             <p className="text-4xl mb-2">{getPersonalColorEmoji(result.personalColor)}</p>
-            <h3 className="text-2xl font-bold text-foreground mb-2">
+            <h3 className="text-2xl font-bold text-white mb-2">
               {result.personalColor}
             </h3>
             <p className={`text-lg font-semibold ${getConfidenceColor(result.confidence)}`}>
@@ -566,7 +566,7 @@ export default function PersonalColorPage() {
           {/* Try Again */}
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 분석하기
           </button>

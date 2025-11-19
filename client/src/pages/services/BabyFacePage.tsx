@@ -149,7 +149,7 @@ export default function BabyFacePage() {
               </div>
             </div>
 
-            <div className="bg-pink-900/20 border border-pink-500 rounded-lg p-4 mt-6 mb-6">
+            <div className="bg-pink-50 dark:bg-pink-900/20 border border-pink-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-foreground font-semibold">2세 얼굴 예측</p>

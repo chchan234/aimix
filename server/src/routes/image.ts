@@ -375,8 +375,16 @@ router.post('/baby-face', validateBody(babyFaceSchema), requireCredits('baby-fac
   try {
     const { parent1Image, parent2Image, style } = req.body;
 
-    const parent1Base64 = parent1Image.split(',')[1];
-    const parent2Base64 = parent2Image.split(',')[1];
+    // Handle both data URL format and raw base64
+    const parent1Base64 = parent1Image.includes(',') ? parent1Image.split(',')[1] : parent1Image;
+    const parent2Base64 = parent2Image.includes(',') ? parent2Image.split(',')[1] : parent2Image;
+
+    if (!parent1Base64 || !parent2Base64) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid image data format'
+      });
+    }
 
     const result = await gemini.generateBabyFace(parent1Base64, parent2Base64, style);
 

@@ -547,17 +547,14 @@ export async function analyzePetSoulmate(imageBase64: string) {
 // 13. Baby Face Prediction - 2세 얼굴 예측
 export async function generateBabyFace(parent1Base64: string, parent2Base64: string, style: string = 'normal') {
   try {
+    console.log('🍼 Starting baby face generation...');
+    console.log(`Parent 1 image size: ${parent1Base64.length} chars`);
+    console.log(`Parent 2 image size: ${parent2Base64.length} chars`);
+    console.log(`Style: ${style}`);
+
     const stylePrompt = style === 'idol'
       ? 'Make the baby look especially attractive with ideal proportions, like a future K-pop idol or celebrity.'
       : 'Generate a realistic baby face combining natural features from both parents.';
-
-    const prompt = `Analyze these two parent photos and generate a realistic prediction of what their future baby might look like.
-    Combine facial features from both parents:
-    - Eyes, nose, mouth shape
-    - Skin tone
-    - Face structure
-    ${stylePrompt}
-    Make it look like a cute 1-2 year old baby with natural, photorealistic quality.`;
 
     // For multi-image input, we need a different approach
     // Since the current API might not support multiple images directly,
@@ -565,8 +562,13 @@ export async function generateBabyFace(parent1Base64: string, parent2Base64: str
     const client = getClient();
 
     // First analyze both parents
+    console.log('📸 Analyzing parent 1 facial features...');
     const parent1Analysis = await client.analyzeImageWithText(parent1Base64, 'Describe this person\'s facial features in detail: face shape, eyes, nose, mouth, skin tone.');
+    console.log('✅ Parent 1 analysis complete:', parent1Analysis.substring(0, 100) + '...');
+
+    console.log('📸 Analyzing parent 2 facial features...');
     const parent2Analysis = await client.analyzeImageWithText(parent2Base64, 'Describe this person\'s facial features in detail: face shape, eyes, nose, mouth, skin tone.');
+    console.log('✅ Parent 2 analysis complete:', parent2Analysis.substring(0, 100) + '...');
 
     // Generate baby based on combined features
     const combinedPrompt = `Generate a realistic baby photo combining these features:
@@ -575,16 +577,19 @@ export async function generateBabyFace(parent1Base64: string, parent2Base64: str
     ${stylePrompt}
     Create a cute 1-2 year old baby that looks like a natural blend of both parents.`;
 
+    console.log('🎨 Generating baby face image...');
+    console.log('Combined prompt length:', combinedPrompt.length);
     const response = await client.generateImage(combinedPrompt);
+    console.log('✅ Baby face image generated successfully');
 
     return {
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
-    console.error('Baby face generation error:', error);
+    console.error('❌ Baby face generation error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
