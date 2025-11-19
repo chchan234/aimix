@@ -593,7 +593,7 @@ router.get('/me', async (req, res) => {
     // Get user from database
     const { data: user, error } = await supabase
       .from('users')
-      .select('id, email, username, credits, profile_image_url, provider, created_at')
+      .select('id, email, username, credits, profile_image_url, provider, created_at, role')
       .eq('id', decoded.userId)
       .single();
 
