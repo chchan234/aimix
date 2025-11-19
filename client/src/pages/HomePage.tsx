@@ -331,7 +331,7 @@ export default function HomePage() {
               </span>
             </div>
             <h1 className="text-white text-3xl md:text-4xl font-bold leading-tight text-center">
-              The Essential AI Platform
+              The Essential AI PORT
             </h1>
           </div>
         </div>

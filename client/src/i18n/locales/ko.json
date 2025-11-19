@@ -41,7 +41,7 @@
   },
   "login": {
     "title": "로그인",
-    "subtitle": "AI Platform 계정으로 로그인하세요",
+    "subtitle": "AI PORT 계정으로 로그인하세요",
     "emailOrId": "이메일 또는 아이디",
     "emailPlaceholder": "이메일을 입력하세요",
     "password": "비밀번호",
@@ -491,7 +491,7 @@
     "guides": {
       "gettingStarted": {
         "title": "시작하기",
-        "description": "AI Platform을 처음 사용하시나요? 기본 사용법을 확인해보세요",
+        "description": "AI PORT를 처음 사용하시나요? 기본 사용법을 확인해보세요",
         "button": "가이드 보기"
       },
       "serviceGuide": {

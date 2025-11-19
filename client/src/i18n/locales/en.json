@@ -41,7 +41,7 @@
   },
   "login": {
     "title": "Login",
-    "subtitle": "Login with your AI Platform account",
+    "subtitle": "Login with your AI PORT account",
     "emailOrId": "Email or ID",
     "emailPlaceholder": "Enter your email",
     "password": "Password",
@@ -58,7 +58,7 @@
     "kakaoLoginError": "Kakao login failed"
   },
   "home": {
-    "heroTitle": "Explore various AI features on our integrated AI platform",
+    "heroTitle": "Explore various AI features on AI PORT",
     "heroButton": "Start for Free",
     "weeklyUpdate": "New AI services updated weekly",
     "quickStart": "Quick Start",
@@ -491,7 +491,7 @@
     "guides": {
       "gettingStarted": {
         "title": "Getting Started",
-        "description": "New to AI Platform? Check out the basic usage guide",
+        "description": "New to AI PORT? Check out the basic usage guide",
         "button": "View Guide"
       },
       "serviceGuide": {

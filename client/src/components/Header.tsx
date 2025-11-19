@@ -64,11 +64,9 @@ export default function Header({ onMenuClick }: HeaderProps) {
         document.documentElement.classList.remove('dark');
       }
     } else {
-      // 시스템 설정 확인
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        setTheme('dark');
-        document.documentElement.classList.add('dark');
-      }
+      // Default to light mode
+      setTheme('light');
+      document.documentElement.classList.remove('dark');
     }
   }, [i18n]);
 
@@ -142,7 +140,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             <div className="flex items-center gap-2 cursor-pointer">
               <span className="material-symbols-outlined text-3xl text-primary font-light">auto_awesome</span>
               <h1 className="text-2xl font-serif font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-pink-500 bg-clip-text text-transparent">
-                AI Platform
+                AI PORT
               </h1>
             </div>
           </Link>
