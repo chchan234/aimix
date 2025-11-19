@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { getStressQuestions, analyzeStress } from '../../services/ai';
+import { isLoggedIn } from '../../services/auth';
 
 interface Question {
   id: number;
@@ -41,6 +42,10 @@ export default function StressTestPage() {
   };
 
   const handleStartTest = () => {
+    if (!isLoggedIn()) {
+      alert('로그인이 필요한 서비스입니다. 로그인 후 이용해주세요.');
+      return;
+    }
     setStep('test');
   };
 

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzePersonalColor } from '../../services/ai';
+import { isLoggedIn } from '../../services/auth';
 
 interface SkinAnalysis {
   undertone: string;
@@ -152,6 +153,10 @@ export default function PersonalColorPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleStartTest = () => {
+    if (!isLoggedIn()) {
+      alert('로그인이 필요한 서비스입니다. 로그인 후 이용해주세요.');
+      return;
+    }
     setStep('upload');
   };
 

@@ -42,6 +42,7 @@ export default function HomePage() {
       icon: 'back_hand',
       color: 'green',
       category: 'fortune',
+      path: '/services/palmistry',
     },
     {
       title: t('services.fortune.horoscope.title'),
@@ -49,6 +50,7 @@ export default function HomePage() {
       icon: 'star',
       color: 'yellow',
       category: 'fortune',
+      path: '/services/horoscope',
     },
     {
       title: t('services.fortune.zodiac.title'),
@@ -56,6 +58,7 @@ export default function HomePage() {
       icon: 'pets',
       color: 'orange',
       category: 'fortune',
+      path: '/services/zodiac',
     },
     {
       title: t('services.fortune.loveCompatibility.title'),
@@ -63,6 +66,7 @@ export default function HomePage() {
       icon: 'favorite',
       color: 'pink',
       category: 'fortune',
+      path: '/services/love-compatibility',
     },
     {
       title: t('services.fortune.nameCompatibility.title'),
@@ -70,6 +74,7 @@ export default function HomePage() {
       icon: 'edit',
       color: 'indigo',
       category: 'fortune',
+      path: '/services/name-compatibility',
     },
     {
       title: t('services.fortune.marriageCompatibility.title'),
@@ -77,6 +82,7 @@ export default function HomePage() {
       icon: 'family_restroom',
       color: 'red',
       category: 'fortune',
+      path: '/services/marriage-compatibility',
     },
     // 이미지 편집
     {
@@ -85,6 +91,7 @@ export default function HomePage() {
       icon: 'account_circle',
       color: 'cyan',
       category: 'image',
+      path: '/services/profile-generator',
     },
     {
       title: t('services.image.caricature.title'),
@@ -92,6 +99,7 @@ export default function HomePage() {
       icon: 'draw',
       color: 'purple',
       category: 'image',
+      path: '/services/caricature',
     },
     {
       title: t('services.image.idPhoto.title'),
@@ -99,6 +107,7 @@ export default function HomePage() {
       icon: 'badge',
       color: 'blue',
       category: 'image',
+      path: '/services/id-photo',
     },
     {
       title: t('services.image.ageTransform.title'),
@@ -106,6 +115,7 @@ export default function HomePage() {
       icon: 'schedule',
       color: 'orange',
       category: 'image',
+      path: '/services/age-transform',
     },
     {
       title: t('services.image.genderSwap.title'),
@@ -113,6 +123,7 @@ export default function HomePage() {
       icon: 'wc',
       color: 'indigo',
       category: 'image',
+      path: '/services/gender-swap',
     },
     {
       title: t('services.image.colorization.title'),
@@ -120,6 +131,7 @@ export default function HomePage() {
       icon: 'palette',
       color: 'green',
       category: 'image',
+      path: '/services/colorization',
     },
     {
       title: t('services.image.backgroundRemoval.title'),
@@ -127,6 +139,7 @@ export default function HomePage() {
       icon: 'layers',
       color: 'yellow',
       category: 'image',
+      path: '/services/background-removal',
     },
     {
       title: t('services.image.hairstyle.title'),
@@ -134,6 +147,7 @@ export default function HomePage() {
       icon: 'face_retouching_natural',
       color: 'red',
       category: 'image',
+      path: '/services/hairstyle',
     },
     {
       title: t('services.image.tattoo.title'),
@@ -141,6 +155,7 @@ export default function HomePage() {
       icon: 'auto_awesome',
       color: 'purple',
       category: 'image',
+      path: '/services/tattoo',
     },
     // 엔터테인먼트
     {
@@ -149,6 +164,7 @@ export default function HomePage() {
       icon: 'psychology',
       color: 'purple',
       category: 'entertainment',
+      path: '/services/mbti-analysis',
     },
     {
       title: t('services.entertainment.enneagram.title'),
@@ -156,6 +172,7 @@ export default function HomePage() {
       icon: 'hub',
       color: 'blue',
       category: 'entertainment',
+      path: '/services/enneagram-test',
     },
     {
       title: t('services.entertainment.bigFive.title'),
@@ -163,6 +180,7 @@ export default function HomePage() {
       icon: 'workspaces',
       color: 'green',
       category: 'entertainment',
+      path: '/services/bigfive-test',
     },
     {
       title: t('services.entertainment.stress.title'),
@@ -170,6 +188,7 @@ export default function HomePage() {
       icon: 'spa',
       color: 'cyan',
       category: 'entertainment',
+      path: '/services/stress-test',
     },
     {
       title: t('services.entertainment.lookalike.title'),
@@ -177,6 +196,7 @@ export default function HomePage() {
       icon: 'compare',
       color: 'pink',
       category: 'entertainment',
+      path: '/services/lookalike',
     },
     {
       title: t('services.entertainment.goldenChild.title'),
@@ -184,6 +204,7 @@ export default function HomePage() {
       icon: 'child_care',
       color: 'orange',
       category: 'entertainment',
+      path: '/services/geumjjoki-test',
     },
     // 건강/웰빙
     {
@@ -192,6 +213,7 @@ export default function HomePage() {
       icon: 'accessibility',
       color: 'blue',
       category: 'health',
+      path: '/services/body-analysis',
     },
     {
       title: t('services.health.bmi.title'),
@@ -199,6 +221,7 @@ export default function HomePage() {
       icon: 'monitor_weight',
       color: 'green',
       category: 'health',
+      path: '/services/bmi-calculator',
     },
     {
       title: t('services.health.skinAnalysis.title'),
@@ -206,6 +229,7 @@ export default function HomePage() {
       icon: 'face_6',
       color: 'pink',
       category: 'health',
+      path: '/services/skin-analysis',
     },
   ], [t]);
 

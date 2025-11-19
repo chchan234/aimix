@@ -140,7 +140,13 @@ export default function ColorizationPage() {
           </div>
 
           <button
-            onClick={() => setStep('upload')}
+            onClick={() => {
+              if (!isLoggedIn()) {
+                alert('로그인이 필요한 서비스입니다. 로그인 후 이용해주세요.');
+                return;
+              }
+              setStep('upload');
+            }}
             className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-foreground font-semibold rounded-lg transition-colors"
           >
             시작하기

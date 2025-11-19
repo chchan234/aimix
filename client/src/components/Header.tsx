@@ -124,7 +124,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
   };
 
   return (
-    <header className="fixed top-0 z-40 w-full glass-panel border-b-0 rounded-b-2xl">
+    <header className="fixed top-0 z-40 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-white/10 shadow-sm">
       <div className="flex h-16 items-center justify-between px-6">
         {/* Left: Hamburger Menu + Logo */}
         <div className="flex items-center gap-4">

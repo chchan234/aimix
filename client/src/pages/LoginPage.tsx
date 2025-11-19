@@ -49,11 +49,11 @@ export default function LoginPage() {
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4">
       <div className="w-full max-w-md">
-        <div className="bg-sidebar-dark rounded-2xl p-8 shadow-2xl">
+        <div className="bg-white dark:bg-sidebar-dark rounded-2xl p-8 shadow-2xl border border-gray-200 dark:border-transparent">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-white text-3xl font-bold mb-2">{t('login.title')}</h1>
-            <p className="text-[#ab9eb7] text-sm">
+            <h1 className="text-foreground text-3xl font-bold mb-2">{t('login.title')}</h1>
+            <p className="text-muted-foreground text-sm">
               {t('login.subtitle')}
             </p>
           </div>
@@ -69,12 +69,12 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Email */}
             <div className="flex flex-col gap-2">
-              <label className="text-white text-sm font-medium">{t('login.emailOrId')}</label>
+              <label className="text-foreground text-sm font-medium">{t('login.emailOrId')}</label>
               <input
                 type="text"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="px-4 py-3 bg-background-dark text-white rounded-lg border border-white/10 focus:border-primary focus:outline-none transition"
+                className="px-4 py-3 bg-gray-100 dark:bg-background-dark text-foreground rounded-lg border border-gray-300 dark:border-white/10 focus:border-primary focus:outline-none transition"
                 placeholder={t('login.emailPlaceholder')}
                 required
                 disabled={isLoading}
@@ -83,12 +83,12 @@ export default function LoginPage() {
 
             {/* Password */}
             <div className="flex flex-col gap-2">
-              <label className="text-white text-sm font-medium">{t('login.password')}</label>
+              <label className="text-foreground text-sm font-medium">{t('login.password')}</label>
               <input
                 type="password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="px-4 py-3 bg-background-dark text-white rounded-lg border border-white/10 focus:border-primary focus:outline-none transition"
+                className="px-4 py-3 bg-gray-100 dark:bg-background-dark text-foreground rounded-lg border border-gray-300 dark:border-white/10 focus:border-primary focus:outline-none transition"
                 placeholder={t('login.passwordPlaceholder')}
                 required
                 disabled={isLoading}
@@ -118,9 +118,9 @@ export default function LoginPage() {
 
           {/* Divider */}
           <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 h-px bg-white/10"></div>
-            <span className="text-[#ab9eb7] text-sm">{t('login.or')}</span>
-            <div className="flex-1 h-px bg-white/10"></div>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-white/10"></div>
+            <span className="text-muted-foreground text-sm">{t('login.or')}</span>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-white/10"></div>
           </div>
 
           {/* Social Login Buttons */}
@@ -138,7 +138,7 @@ export default function LoginPage() {
 
           {/* Signup Link */}
           <div className="text-center mt-6">
-            <p className="text-[#ab9eb7] text-sm">
+            <p className="text-muted-foreground text-sm">
               {t('login.noAccount')}{' '}
               <button
                 onClick={handleKakaoLogin}

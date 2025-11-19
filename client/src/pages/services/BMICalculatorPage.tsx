@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { calculateBMI } from '../../services/ai';
+import { isLoggedIn } from '../../services/auth';
 
 interface BMIResult {
   bmi: number;
@@ -31,6 +32,10 @@ export default function BMICalculatorPage() {
   const [error, setError] = useState<string>('');
 
   const handleStartTest = () => {
+    if (!isLoggedIn()) {
+      alert('로그인이 필요한 서비스입니다. 로그인 후 이용해주세요.');
+      return;
+    }
     setStep('input');
   };
 
