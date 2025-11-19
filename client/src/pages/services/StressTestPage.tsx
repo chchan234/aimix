@@ -83,6 +83,14 @@ export default function StressTestPage() {
     }
   };
 
+  const handleReset = () => {
+    setStep('intro');
+    setCurrentQuestionIndex(0);
+    setAnswers(new Array(questions.length).fill(0));
+    setResult(null);
+    setError('');
+  };
+
   const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
 
   const getStressLevelColor = (level: number) => {
@@ -115,19 +123,43 @@ export default function StressTestPage() {
             </h3>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                현재 경험하고 있는 스트레스 수준을 4가지 영역에서 측정하고, AI가 개인 맞춤형 관리 방법을 제공합니다.
+                현재 경험하고 있는 스트레스 수준을 4가지 영역에서 측정하고,
+                AI가 개인 맞춤형 관리 방법을 제공합니다.
               </p>
-              <div className="bg-cyan-900/20 border border-cyan-500 rounded-lg p-4 mt-4">
-                <h4 className="font-semibold text-cyan-400 mb-2">측정 영역</h4>
-                <ul className="space-y-2">
-                  <li>• <strong>업무/커리어</strong>: 직장이나 학업 관련 스트레스</li>
-                  <li>• <strong>대인관계</strong>: 가족, 친구, 동료와의 관계</li>
-                  <li>• <strong>건강</strong>: 수면, 피로, 신체 증상</li>
-                  <li>• <strong>일상생활</strong>: 재정, 미래, 일상 관리</li>
-                </ul>
+
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="p-4 rounded-lg bg-cyan-500/20 border border-cyan-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-cyan-400">work</span>
+                    <span className="font-semibold text-cyan-400">업무/커리어</span>
+                  </div>
+                  <p className="text-sm opacity-80">직장이나 학업 관련 스트레스</p>
+                </div>
+                <div className="p-4 rounded-lg bg-cyan-500/20 border border-cyan-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-cyan-400">groups</span>
+                    <span className="font-semibold text-cyan-400">대인관계</span>
+                  </div>
+                  <p className="text-sm opacity-80">가족, 친구, 동료와의 관계</p>
+                </div>
+                <div className="p-4 rounded-lg bg-cyan-500/20 border border-cyan-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-cyan-400">favorite</span>
+                    <span className="font-semibold text-cyan-400">건강</span>
+                  </div>
+                  <p className="text-sm opacity-80">수면, 피로, 신체 증상</p>
+                </div>
+                <div className="p-4 rounded-lg bg-cyan-500/20 border border-cyan-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-cyan-400">home</span>
+                    <span className="font-semibold text-cyan-400">일상생활</span>
+                  </div>
+                  <p className="text-sm opacity-80">재정, 미래, 일상 관리</p>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground bg-cyan-900/10 p-3 rounded">
-                ⚠️ 이 테스트는 전문적인 의학적 진단을 대체할 수 없습니다. 심각한 스트레스나 정신 건강 문제가 있다면 전문가의 도움을 받으세요.
+
+              <p className="text-sm text-muted-foreground bg-cyan-900/10 p-3 rounded mt-4">
+                * 이 테스트는 전문적인 의학적 진단을 대체할 수 없습니다. 심각한 스트레스나 정신 건강 문제가 있다면 전문가의 도움을 받으세요.
               </p>
             </div>
 
@@ -147,7 +179,7 @@ export default function StressTestPage() {
               onClick={handleStartTest}
               className="w-full px-6 py-4 bg-cyan-600 hover:bg-cyan-700 text-foreground font-semibold rounded-lg transition-colors"
             >
-              측정 시작 (25 크레딧)
+              시작하기 (25 크레딧)
             </button>
           </div>
         </div>
@@ -266,7 +298,7 @@ export default function StressTestPage() {
                   <div className="w-full bg-gray-700 rounded-full h-2">
                     <div
                       className={getStressLevelBg(Math.round((score / 25) * 100))}
-                      style={{ width: `${(score / 25) * 100}%` }}
+                      style={{ width: `${(score / 25) * 100}%`, height: '0.5rem', borderRadius: '9999px' }}
                     />
                   </div>
                 </div>
@@ -367,6 +399,14 @@ export default function StressTestPage() {
               </div>
             </div>
           </div>
+
+          {/* Try Again */}
+          <button
+            onClick={handleReset}
+            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+          >
+            다시 테스트하기
+          </button>
         </div>
       )}
     </ServiceDetailLayout>

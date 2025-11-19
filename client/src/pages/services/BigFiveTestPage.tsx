@@ -84,6 +84,14 @@ export default function BigFiveTestPage() {
     }
   };
 
+  const handleReset = () => {
+    setStep('intro');
+    setCurrentQuestionIndex(0);
+    setAnswers(new Array(questions.length).fill(0));
+    setResult(null);
+    setError('');
+  };
+
   const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
 
   return (
@@ -102,17 +110,39 @@ export default function BigFiveTestPage() {
             </h3>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                Big Five(빅 파이브)는 가장 과학적으로 검증된 성격 분류 모델로, 5가지 핵심 특성(OCEAN)을 통해 개인의 성격을 이해합니다.
+                Big Five는 가장 과학적으로 검증된 성격 분류 모델로,
+                5가지 핵심 특성을 통해 개인의 성격을 이해합니다.
               </p>
-              <div className="bg-green-900/20 border border-green-500 rounded-lg p-4 mt-4">
-                <h4 className="font-semibold text-green-400 mb-2">5가지 성격 특성</h4>
-                <ul className="space-y-2">
-                  <li>• <strong>개방성 (Openness)</strong>: 새로운 경험과 아이디어에 대한 개방성</li>
-                  <li>• <strong>성실성 (Conscientiousness)</strong>: 목표 지향성과 자기 통제력</li>
-                  <li>• <strong>외향성 (Extraversion)</strong>: 사회적 상호작용에서 얻는 에너지</li>
-                  <li>• <strong>친화성 (Agreeableness)</strong>: 타인에 대한 배려와 협조성</li>
-                  <li>• <strong>신경성 (Neuroticism)</strong>: 정서적 안정성과 스트레스 대응</li>
-                </ul>
+
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-green-400">lightbulb</span>
+                    <span className="font-semibold text-green-400">개방성</span>
+                  </div>
+                  <p className="text-sm opacity-80">새로운 경험과 아이디어 수용</p>
+                </div>
+                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-green-400">task_alt</span>
+                    <span className="font-semibold text-green-400">성실성</span>
+                  </div>
+                  <p className="text-sm opacity-80">목표 지향성과 자기 통제력</p>
+                </div>
+                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-green-400">groups</span>
+                    <span className="font-semibold text-green-400">외향성</span>
+                  </div>
+                  <p className="text-sm opacity-80">사회적 상호작용 에너지</p>
+                </div>
+                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-green-400">handshake</span>
+                    <span className="font-semibold text-green-400">친화성</span>
+                  </div>
+                  <p className="text-sm opacity-80">타인에 대한 배려와 협조</p>
+                </div>
               </div>
             </div>
 
@@ -132,7 +162,7 @@ export default function BigFiveTestPage() {
               onClick={handleStartTest}
               className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-foreground font-semibold rounded-lg transition-colors"
             >
-              테스트 시작 (30 크레딧)
+              시작하기 (30 크레딧)
             </button>
           </div>
         </div>
@@ -334,6 +364,14 @@ export default function BigFiveTestPage() {
               </div>
             </div>
           </div>
+
+          {/* Try Again */}
+          <button
+            onClick={handleReset}
+            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+          >
+            다시 테스트하기
+          </button>
         </div>
       )}
     </ServiceDetailLayout>

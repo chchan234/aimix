@@ -90,6 +90,15 @@ export default function MBTIAnalysisPage() {
     }
   };
 
+  const handleReset = () => {
+    setStep('mbti-select');
+    setUserInputMBTI(null);
+    setCurrentQuestionIndex(0);
+    setAnswers(new Array(questions.length).fill(0));
+    setResult(null);
+    setError('');
+  };
+
   const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
 
   return (
@@ -108,18 +117,39 @@ export default function MBTIAnalysisPage() {
             </h3>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                MBTI(Myers-Briggs Type Indicator)는 가장 널리 사용되는 성격 유형 검사입니다.
-                자가 진단한 MBTI와 테스트 결과를 비교하여 더욱 정확한 분석을 제공합니다.
+                AI가 자가 진단한 MBTI와 테스트 결과를 비교 분석하여
+                더욱 정확한 성격 유형을 찾아드립니다.
               </p>
-              <div className="bg-purple-900/20 border border-purple-500 rounded-lg p-4 mt-4">
-                <h4 className="font-semibold text-purple-400 mb-2">분석 내용</h4>
-                <ul className="space-y-2">
-                  <li>• <strong>자가진단 비교</strong>: 입력한 MBTI와 테스트 결과 비교</li>
-                  <li>• <strong>성격 특성</strong>: 주요 특성, 강점, 약점 분석</li>
-                  <li>• <strong>대인관계</strong>: 소통 스타일, 궁합 유형</li>
-                  <li>• <strong>진로 적성</strong>: 적합한 직업, 업무 스타일</li>
-                  <li>• <strong>성장 조언</strong>: 개발 영역, 주의사항</li>
-                </ul>
+
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="p-4 rounded-lg bg-purple-500/20 border border-purple-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-purple-400">compare</span>
+                    <span className="font-semibold text-purple-400">자가진단 비교</span>
+                  </div>
+                  <p className="text-sm opacity-80">입력한 MBTI와 테스트 결과 비교</p>
+                </div>
+                <div className="p-4 rounded-lg bg-purple-500/20 border border-purple-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-purple-400">person</span>
+                    <span className="font-semibold text-purple-400">성격 특성</span>
+                  </div>
+                  <p className="text-sm opacity-80">주요 특성, 강점, 약점 분석</p>
+                </div>
+                <div className="p-4 rounded-lg bg-purple-500/20 border border-purple-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-purple-400">group</span>
+                    <span className="font-semibold text-purple-400">대인관계</span>
+                  </div>
+                  <p className="text-sm opacity-80">소통 스타일, 궁합 유형</p>
+                </div>
+                <div className="p-4 rounded-lg bg-purple-500/20 border border-purple-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-purple-400">work</span>
+                    <span className="font-semibold text-purple-400">진로 적성</span>
+                  </div>
+                  <p className="text-sm opacity-80">적합한 직업, 업무 스타일</p>
+                </div>
               </div>
             </div>
 
@@ -139,7 +169,7 @@ export default function MBTIAnalysisPage() {
               onClick={handleStartFromIntro}
               className="w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 text-foreground font-semibold rounded-lg transition-colors"
             >
-              테스트 시작 (35 크레딧)
+              시작하기 (35 크레딧)
             </button>
           </div>
         </div>
@@ -397,6 +427,14 @@ export default function MBTIAnalysisPage() {
               </div>
             </div>
           </div>
+
+          {/* Try Again */}
+          <button
+            onClick={handleReset}
+            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+          >
+            다시 테스트하기
+          </button>
         </div>
       )}
     </ServiceDetailLayout>

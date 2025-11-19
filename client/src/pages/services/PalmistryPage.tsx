@@ -2,13 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
-import ExecuteButton from '../../components/ExecuteButton';
 import { analyzePalmistry } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function PalmistryPage() {
   const { t } = useTranslation();
   const [, setLocation] = useLocation();
+  const [step, setStep] = useState<'intro' | 'input' | 'result'>('intro');
   const [hand, setHand] = useState<'left' | 'right'>('right');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -60,10 +60,16 @@ export default function PalmistryPage() {
       return;
     }
 
+    if (currentCredits < serviceCost) {
+      alert('크레딧이 부족합니다.');
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await analyzePalmistry(imagePreview, hand) as any;
       setResult(response);
+      setStep('result');
 
       if (response.credits?.remaining !== undefined) {
         setCurrentCredits(response.credits.remaining);
@@ -76,6 +82,12 @@ export default function PalmistryPage() {
     }
   };
 
+  const handleReset = () => {
+    setResult(null);
+    setImagePreview(null);
+    setStep('input');
+  };
+
   return (
     <ServiceDetailLayout
       title={t('services.fortune.palmistry.title')}
@@ -83,139 +95,222 @@ export default function PalmistryPage() {
       icon="back_hand"
       color="green"
     >
-      <div className="space-y-6">
-        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-green-500/20">
-          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
-          <p className="text-muted-foreground text-sm leading-relaxed">
-            손바닥 사진을 업로드하면 AI가 손금을 분석하여 운세와 성격을 알려드립니다.
-            생명선, 운명선, 감정선, 지능선, 재물선, 결혼선, 태양선을 포함한 종합 분석을 제공합니다.
-          </p>
-        </div>
+      {/* Intro Section */}
+      {step === 'intro' && (
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="material-symbols-outlined text-3xl text-green-400">back_hand</span>
+              <h3 className="text-xl font-semibold text-foreground">
+                AI 수상 분석
+              </h3>
+            </div>
+            <p className="text-muted-foreground mb-6">
+              손바닥 사진을 업로드하면 AI가 손금을 분석하여 운세와 성격을 알려드립니다.
+              생명선, 운명선, 감정선, 지능선, 재물선, 결혼선, 태양선을 포함한 종합 분석을 제공합니다.
+            </p>
 
-        {!result && (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-foreground font-medium mb-2">
-                손 선택
-              </label>
-              <div className="flex gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="hand"
-                    value="right"
-                    checked={hand === 'right'}
-                    onChange={(e) => setHand(e.target.value as 'right')}
-                    className="w-4 h-4 text-green-600"
-                  />
-                  <span className="text-foreground">오른손</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="hand"
-                    value="left"
-                    checked={hand === 'left'}
-                    onChange={(e) => setHand(e.target.value as 'left')}
-                    className="w-4 h-4 text-green-600"
-                  />
-                  <span className="text-foreground">왼손</span>
-                </label>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-green-400">health_and_safety</span>
+                  <span className="text-foreground font-medium">생명선</span>
+                </div>
+                <p className="text-muted-foreground text-sm">건강과 생명력 분석</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-green-400">psychology</span>
+                  <span className="text-foreground font-medium">지능선</span>
+                </div>
+                <p className="text-muted-foreground text-sm">지적 능력과 사고방식</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-green-400">favorite</span>
+                  <span className="text-foreground font-medium">감정선</span>
+                </div>
+                <p className="text-muted-foreground text-sm">감정과 인간관계</p>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-green-400">trending_up</span>
+                  <span className="text-foreground font-medium">운명선</span>
+                </div>
+                <p className="text-muted-foreground text-sm">인생 방향과 성공</p>
               </div>
             </div>
 
-            <div>
-              <label className="block text-foreground font-medium mb-2">
-                손바닥 이미지 업로드
-              </label>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-              />
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground hover:border-green-500 transition"
-              >
-                {imagePreview ? '이미지 변경하기' : '이미지 선택하기'}
-              </button>
-              <p className="text-muted-foreground text-xs mt-1">
-                손바닥이 선명하게 보이는 사진을 업로드해주세요
-              </p>
-            </div>
-
-            {imagePreview && (
-              <div className="rounded-lg overflow-hidden border border-green-500/20">
-                <img
-                  src={imagePreview}
-                  alt="Hand preview"
-                  className="w-full h-auto"
-                />
+            <div className="bg-green-900/20 border border-green-500 rounded-lg p-4 mb-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-foreground font-semibold">수상 분석</p>
+                  <p className="text-muted-foreground text-sm">AI 손금 분석</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-green-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                </div>
               </div>
-            )}
-
-            <ExecuteButton
-              credits={serviceCost}
-              currentCredits={currentCredits}
-              onClick={handleExecute}
-              loading={loading}
-              disabled={!imagePreview}
-            />
-          </div>
-        )}
-
-        {/* Result Display */}
-        {result?.analysis && (
-          <div className="space-y-4 animate-fadeIn">
-            <div className="bg-green-500/10 rounded-lg p-4 border border-green-500/20">
-              <h3 className="text-foreground font-semibold mb-3">🖐 수상 분석 결과</h3>
-
-              {result.analysis.handShape && (
-                <div className="mb-4 pb-4 border-b border-green-500/10">
-                  <h4 className="text-green-400 font-medium mb-2">손 모양</h4>
-                  <p className="text-foreground text-sm mb-1">{result.analysis.handShape.type}</p>
-                  <p className="text-muted-foreground text-sm">{result.analysis.handShape.description}</p>
-                </div>
-              )}
-
-              {result.analysis.majorLines && (
-                <div className="space-y-3">
-                  <h4 className="text-green-400 font-medium">주요 손금 분석</h4>
-                  {Object.entries(result.analysis.majorLines).map(([key, value]: [string, any]) => (
-                    <div key={key} className="bg-gray-50 dark:bg-[#0d0d0d] p-3 rounded">
-                      <p className="text-foreground font-medium text-sm mb-1">{value.description}</p>
-                      <p className="text-muted-foreground text-xs">{value.fortune}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {result.analysis.advice && result.analysis.advice.length > 0 && (
-                <div className="mt-4 pt-4 border-t border-green-500/10">
-                  <h4 className="text-green-400 font-medium mb-2">조언</h4>
-                  <ul className="space-y-1">
-                    {result.analysis.advice.map((item: string, idx: number) => (
-                      <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </div>
 
             <button
-              onClick={() => {
-                setResult(null);
-                setImagePreview(null);
-              }}
-              className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-foreground rounded-lg transition"
+              onClick={() => setStep('input')}
+              className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-foreground font-semibold rounded-lg transition-colors"
             >
-              다시 분석하기
+              시작하기 ({serviceCost} 크레딧)
             </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* Input Section */}
+      {step === 'input' && !loading && (
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <button
+              onClick={() => setStep('intro')}
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground mb-4 transition-colors"
+            >
+              <span className="material-symbols-outlined">arrow_back</span>
+              뒤로가기
+            </button>
+
+            <h3 className="text-lg font-semibold text-foreground mb-4">손바닥 사진 업로드</h3>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-foreground font-medium mb-2">
+                  손 선택
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => setHand('right')}
+                    className={`p-3 rounded-lg border text-center transition ${
+                      hand === 'right'
+                        ? 'border-green-500 bg-green-500/10 text-green-400'
+                        : 'border-gray-300 dark:border-gray-600 hover:border-gray-500 text-foreground'
+                    }`}
+                  >
+                    오른손
+                  </button>
+                  <button
+                    onClick={() => setHand('left')}
+                    className={`p-3 rounded-lg border text-center transition ${
+                      hand === 'left'
+                        ? 'border-green-500 bg-green-500/10 text-green-400'
+                        : 'border-gray-300 dark:border-gray-600 hover:border-gray-500 text-foreground'
+                    }`}
+                  >
+                    왼손
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-foreground font-medium mb-2">
+                  손바닥 이미지 업로드
+                </label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-foreground hover:border-green-500 transition"
+                >
+                  {imagePreview ? '이미지 변경하기' : '이미지 선택하기'}
+                </button>
+                <p className="text-muted-foreground text-xs mt-1">
+                  손바닥이 선명하게 보이는 사진을 업로드해주세요
+                </p>
+              </div>
+
+              {imagePreview && (
+                <div className="rounded-lg overflow-hidden border border-green-500/20">
+                  <img
+                    src={imagePreview}
+                    alt="Hand preview"
+                    className="w-full h-auto"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <button
+            onClick={handleExecute}
+            disabled={!imagePreview || currentCredits < serviceCost}
+            className={`w-full px-6 py-4 font-semibold rounded-lg transition-colors ${
+              imagePreview && currentCredits >= serviceCost
+                ? 'bg-green-600 hover:bg-green-700 text-foreground'
+                : 'bg-gray-600 text-muted-foreground cursor-not-allowed'
+            }`}
+          >
+            {currentCredits < serviceCost ? '크레딧 부족' : '분석하기'}
+          </button>
+        </div>
+      )}
+
+      {/* Loading */}
+      {loading && (
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-green-500 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">AI가 손금을 분석하고 있습니다...</p>
+        </div>
+      )}
+
+      {/* Result Section */}
+      {step === 'result' && result?.analysis && (
+        <div className="space-y-4 animate-fadeIn">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
+              <span className="material-symbols-outlined text-green-400">back_hand</span>
+              수상 분석 결과
+            </h3>
+
+            {result.analysis.handShape && (
+              <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                <h4 className="text-green-400 font-medium mb-2">손 모양</h4>
+                <p className="text-foreground text-sm mb-1">{result.analysis.handShape.type}</p>
+                <p className="text-muted-foreground text-sm">{result.analysis.handShape.description}</p>
+              </div>
+            )}
+
+            {result.analysis.majorLines && (
+              <div className="space-y-3">
+                <h4 className="text-green-400 font-medium">주요 손금 분석</h4>
+                {Object.entries(result.analysis.majorLines).map(([key, value]: [string, any]) => (
+                  <div key={key} className="bg-gray-50 dark:bg-gray-700 p-3 rounded">
+                    <p className="text-foreground font-medium text-sm mb-1">{value.description}</p>
+                    <p className="text-muted-foreground text-xs">{value.fortune}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {result.analysis.advice && result.analysis.advice.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <h4 className="text-green-400 font-medium mb-2">조언</h4>
+                <ul className="space-y-1">
+                  {result.analysis.advice.map((item: string, idx: number) => (
+                    <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={handleReset}
+            className="w-full px-4 py-3 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition"
+          >
+            다시 분석하기
+          </button>
+        </div>
+      )}
     </ServiceDetailLayout>
   );
 }

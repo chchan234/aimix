@@ -89,6 +89,14 @@ export default function EnneagramTestPage() {
     }
   };
 
+  const handleReset = () => {
+    setStep('intro');
+    setCurrentQuestionIndex(0);
+    setAnswers(new Array(questions.length).fill(0));
+    setResult(null);
+    setError('');
+  };
+
   const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
 
   return (
@@ -107,20 +115,39 @@ export default function EnneagramTestPage() {
             </h3>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                에니어그램은 9가지 성격 유형을 통해 사람들의 핵심 동기, 두려움, 욕구를 이해하는 성격 분류 체계입니다.
+                에니어그램은 9가지 성격 유형을 통해 사람들의 핵심 동기와
+                두려움을 이해하는 성격 분류 체계입니다.
               </p>
-              <p>
-                단순히 행동 패턴을 분류하는 것을 넘어, <strong className="text-green-400">왜 그렇게 행동하는지</strong>에 대한 깊은 통찰을 제공합니다.
-              </p>
-              <div className="bg-green-900/20 border border-green-500 rounded-lg p-4 mt-4">
-                <h4 className="font-semibold text-green-400 mb-2">테스트 내용</h4>
-                <ul className="space-y-2">
-                  <li>• 9가지 성격 유형 중 당신의 주 유형 분석</li>
-                  <li>• 날개(Wing) 유형과 그 영향 파악</li>
-                  <li>• 건강 수준별 행동 패턴 이해</li>
-                  <li>• 성장 방향과 스트레스 반응 분석</li>
-                  <li>• 대인관계 및 커리어 조언</li>
-                </ul>
+
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-green-400">psychology</span>
+                    <span className="font-semibold text-green-400">핵심 동기</span>
+                  </div>
+                  <p className="text-sm opacity-80">왜 그렇게 행동하는지 이해</p>
+                </div>
+                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-green-400">dashboard</span>
+                    <span className="font-semibold text-green-400">날개 유형</span>
+                  </div>
+                  <p className="text-sm opacity-80">인접 유형의 영향 분석</p>
+                </div>
+                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-green-400">trending_up</span>
+                    <span className="font-semibold text-green-400">성장 방향</span>
+                  </div>
+                  <p className="text-sm opacity-80">통합과 분열 방향 파악</p>
+                </div>
+                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-green-400">favorite</span>
+                    <span className="font-semibold text-green-400">건강 수준</span>
+                  </div>
+                  <p className="text-sm opacity-80">현재 상태와 개선점 분석</p>
+                </div>
               </div>
             </div>
 
@@ -140,7 +167,7 @@ export default function EnneagramTestPage() {
               onClick={handleStartTest}
               className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-foreground font-semibold rounded-lg transition-colors"
             >
-              테스트 시작 (30 크레딧)
+              시작하기 (30 크레딧)
             </button>
           </div>
         </div>
@@ -425,6 +452,14 @@ export default function EnneagramTestPage() {
               </div>
             </div>
           </div>
+
+          {/* Try Again */}
+          <button
+            onClick={handleReset}
+            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+          >
+            다시 테스트하기
+          </button>
         </div>
       )}
     </ServiceDetailLayout>

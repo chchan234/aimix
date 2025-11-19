@@ -84,6 +84,14 @@ export default function GeumjjokiTestPage() {
     }
   };
 
+  const handleReset = () => {
+    setStep('intro');
+    setCurrentQuestionIndex(0);
+    setAnswers(new Array(questions.length).fill(0));
+    setResult(null);
+    setError('');
+  };
+
   const getScoreColor = (score: number) => {
     if (score >= 20) return 'text-red-400';
     if (score >= 15) return 'text-orange-400';
@@ -120,16 +128,38 @@ export default function GeumjjokiTestPage() {
                 "금쪽같은 내새끼"에서 영감을 받은 재미있는 자가진단 테스트입니다.
                 일상 속 나의 행동 패턴과 습관을 진단해보세요!
               </p>
-              <div className="bg-orange-900/20 border border-orange-500 rounded-lg p-4 mt-4">
-                <h4 className="font-semibold text-orange-400 mb-2">5가지 카테고리</h4>
-                <ul className="space-y-2">
-                  <li>• <strong>충동성/자기조절</strong>: 참을성과 자제력</li>
-                  <li>• <strong>집중력/계획성</strong>: 주의력과 실행력</li>
-                  <li>• <strong>감정조절/대인관계</strong>: 감정 표현과 소통</li>
-                  <li>• <strong>생활습관/책임감</strong>: 일상 관리와 약속</li>
-                  <li>• <strong>디지털/SNS 습관</strong>: 스마트폰과 SNS 사용</li>
-                </ul>
+
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="p-4 rounded-lg bg-orange-500/20 border border-orange-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-orange-400">bolt</span>
+                    <span className="font-semibold text-orange-400">충동성</span>
+                  </div>
+                  <p className="text-sm opacity-80">참을성과 자제력 측정</p>
+                </div>
+                <div className="p-4 rounded-lg bg-orange-500/20 border border-orange-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-orange-400">center_focus_strong</span>
+                    <span className="font-semibold text-orange-400">집중력</span>
+                  </div>
+                  <p className="text-sm opacity-80">주의력과 계획성 측정</p>
+                </div>
+                <div className="p-4 rounded-lg bg-orange-500/20 border border-orange-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-orange-400">mood</span>
+                    <span className="font-semibold text-orange-400">감정조절</span>
+                  </div>
+                  <p className="text-sm opacity-80">감정 표현과 대인관계</p>
+                </div>
+                <div className="p-4 rounded-lg bg-orange-500/20 border border-orange-500">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="material-symbols-outlined text-orange-400">smartphone</span>
+                    <span className="font-semibold text-orange-400">디지털 습관</span>
+                  </div>
+                  <p className="text-sm opacity-80">스마트폰과 SNS 사용</p>
+                </div>
               </div>
+
               <div className="bg-orange-900/20 border border-orange-500 rounded-lg p-4 mt-4">
                 <h4 className="font-semibold text-orange-400 mb-2">등급 시스템</h4>
                 <ul className="space-y-1 text-sm">
@@ -158,7 +188,7 @@ export default function GeumjjokiTestPage() {
               onClick={handleStartTest}
               className="w-full px-6 py-4 bg-orange-600 hover:bg-orange-700 text-foreground font-semibold rounded-lg transition-colors"
             >
-              테스트 시작 (30 크레딧)
+              시작하기 (30 크레딧)
             </button>
           </div>
         </div>
@@ -365,6 +395,14 @@ export default function GeumjjokiTestPage() {
               <p><strong className="text-orange-400">조언:</strong> {result.analysis.forOthers?.advice}</p>
             </div>
           </div>
+
+          {/* Try Again */}
+          <button
+            onClick={handleReset}
+            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+          >
+            다시 테스트하기
+          </button>
         </div>
       )}
     </ServiceDetailLayout>

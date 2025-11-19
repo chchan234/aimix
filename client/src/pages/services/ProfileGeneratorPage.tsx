@@ -7,12 +7,12 @@ import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function ProfileGeneratorPage() {
   const [, setLocation] = useLocation();
+  const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [style, setStyle] = useState<'professional' | 'business' | 'casual'>('professional');
   const [loading, setLoading] = useState(false);
   const [resultImage, setResultImage] = useState<string | null>(null);
   const [currentCredits, setCurrentCredits] = useState(0);
-  const [showIntro, setShowIntro] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const serviceCost = 35;
@@ -61,6 +61,7 @@ export default function ProfileGeneratorPage() {
       if (response.success && response.imageData) {
         const imageBase64 = `data:${response.mimeType};base64,${response.imageData}`;
         setResultImage(imageBase64);
+        setStep('result');
 
         if (response.credits?.remaining !== undefined) {
           setCurrentCredits(response.credits.remaining);
@@ -77,6 +78,7 @@ export default function ProfileGeneratorPage() {
   };
 
   const handleReset = () => {
+    setStep('upload');
     setResultImage(null);
     setUploadedImage(null);
   };
@@ -87,54 +89,6 @@ export default function ProfileGeneratorPage() {
     { value: 'casual', label: '캐주얼', desc: '자연스러운 조명, 친근한 느낌' },
   ];
 
-  if (showIntro) {
-    return (
-      <ServiceDetailLayout
-        title="AI 프로페셔널 헤드샷"
-        description="셀카를 고품질 스튜디오 사진으로 변환"
-        icon="camera_alt"
-        color="cyan"
-      >
-        <div className="space-y-6">
-          <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-xl p-6 border border-cyan-500/30">
-            <h3 className="text-foreground text-xl font-bold mb-4">AI 프로페셔널 헤드샷</h3>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              평범한 셀카를 링크드인, 이력서, 사원증에 사용할 수 있는
-              고품질 스튜디오 사진으로 변환합니다.
-            </p>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-cyan-400 text-lg">check_circle</span>
-                스튜디오 촬영 비용 절감
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-cyan-400 text-lg">check_circle</span>
-                전문적인 조명과 배경 적용
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-cyan-400 text-lg">check_circle</span>
-                3가지 스타일 선택 가능
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-            <p className="text-muted-foreground text-sm">
-              <span className="text-cyan-400 font-semibold">{serviceCost} 크레딧</span>이 필요합니다
-            </p>
-          </div>
-
-          <button
-            onClick={() => setShowIntro(false)}
-            className="w-full py-4 bg-cyan-600 hover:bg-cyan-700 text-foreground font-semibold rounded-lg transition"
-          >
-            시작하기
-          </button>
-        </div>
-      </ServiceDetailLayout>
-    );
-  }
-
   return (
     <ServiceDetailLayout
       title="AI 프로페셔널 헤드샷"
@@ -142,112 +96,169 @@ export default function ProfileGeneratorPage() {
       icon="camera_alt"
       color="cyan"
     >
-      <div className="space-y-6">
-        {!resultImage && (
-          <>
-            {/* Image Upload */}
-            <div>
-              <label className="block text-foreground font-medium mb-3">사진 업로드</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                ref={fileInputRef}
-                className="hidden"
-              />
-              {!uploadedImage ? (
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center cursor-pointer hover:border-cyan-500 transition"
-                >
-                  <span className="material-symbols-outlined text-5xl text-gray-500 mb-3">
-                    add_photo_alternate
-                  </span>
-                  <p className="text-muted-foreground">클릭하여 사진 업로드</p>
-                  <p className="text-gray-500 text-sm mt-1">정면 얼굴 사진 권장</p>
-                </div>
-              ) : (
-                <div className="relative">
-                  <img
-                    src={uploadedImage}
-                    alt="Uploaded"
-                    className="w-full rounded-xl"
-                  />
-                  <button
-                    onClick={() => {
-                      setUploadedImage(null);
-                      if (fileInputRef.current) fileInputRef.current.value = '';
-                    }}
-                    className="absolute top-2 right-2 p-2 bg-black/50 rounded-full hover:bg-black/70 transition"
-                  >
-                    <span className="material-symbols-outlined text-foreground">close</span>
-                  </button>
-                </div>
-              )}
-            </div>
+      {/* Intro Step */}
+      {step === 'intro' && (
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
+              AI 프로페셔널 헤드샷
+            </h3>
+            <p className="text-muted-foreground mb-4">
+              평범한 셀카를 링크드인, 이력서, 사원증에 사용할 수 있는
+              고품질 스튜디오 사진으로 변환합니다.
+            </p>
 
-            {/* Style Selection */}
-            <div>
-              <label className="block text-foreground font-medium mb-3">스타일 선택</label>
-              <div className="grid grid-cols-1 gap-3">
-                {styleOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => setStyle(option.value as any)}
-                    className={`p-4 rounded-lg border text-left transition ${
-                      style === option.value
-                        ? 'border-cyan-500 bg-cyan-500/10'
-                        : 'border-gray-300 dark:border-gray-600 hover:border-gray-500'
-                    }`}
-                  >
-                    <p className={`font-semibold ${style === option.value ? 'text-cyan-400' : 'text-foreground'}`}>
-                      {option.label}
-                    </p>
-                    <p className="text-sm text-muted-foreground">{option.desc}</p>
-                  </button>
-                ))}
+            <div className="grid grid-cols-2 gap-3 mt-4">
+              <div className="p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                <span className="material-symbols-outlined text-cyan-400 text-2xl block mb-2">savings</span>
+                <p className="text-sm font-medium text-foreground">비용 절감</p>
+                <p className="text-xs text-muted-foreground">스튜디오 촬영 비용 절감</p>
+              </div>
+              <div className="p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                <span className="material-symbols-outlined text-cyan-400 text-2xl block mb-2">light_mode</span>
+                <p className="text-sm font-medium text-foreground">전문 조명</p>
+                <p className="text-xs text-muted-foreground">전문적인 조명과 배경</p>
+              </div>
+              <div className="p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                <span className="material-symbols-outlined text-cyan-400 text-2xl block mb-2">style</span>
+                <p className="text-sm font-medium text-foreground">다양한 스타일</p>
+                <p className="text-xs text-muted-foreground">3가지 스타일 선택</p>
+              </div>
+              <div className="p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                <span className="material-symbols-outlined text-cyan-400 text-2xl block mb-2">timer</span>
+                <p className="text-sm font-medium text-foreground">빠른 생성</p>
+                <p className="text-xs text-muted-foreground">즉시 결과 확인</p>
               </div>
             </div>
+          </div>
 
-            <ExecuteButton
-              credits={serviceCost}
-              currentCredits={currentCredits}
-              onClick={handleExecute}
-              loading={loading}
-              disabled={!uploadedImage}
-            />
-          </>
-        )}
-
-        {resultImage && (
-          <div className="space-y-4 animate-fadeIn">
-            <div className="bg-cyan-500/10 rounded-xl p-4 border border-cyan-500/20">
-              <h3 className="text-foreground font-semibold mb-3">생성된 프로필 사진</h3>
-              <img
-                src={resultImage}
-                alt="Professional Headshot"
-                className="w-full rounded-lg"
-              />
-            </div>
-
-            <div className="flex gap-3">
-              <a
-                href={resultImage}
-                download="professional-headshot.png"
-                className="flex-1 py-3 bg-green-600 hover:bg-green-700 text-foreground text-center rounded-lg transition"
-              >
-                다운로드
-              </a>
-              <button
-                onClick={handleReset}
-                className="flex-1 py-3 bg-cyan-600 hover:bg-cyan-700 text-foreground rounded-lg transition"
-              >
-                다시 생성
-              </button>
+          <div className="bg-cyan-900/20 border border-cyan-500 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-foreground font-semibold">AI 프로페셔널 헤드샷</p>
+                <p className="text-muted-foreground text-sm">셀카 → 스튜디오 품질</p>
+              </div>
+              <div className="text-right">
+                <p className="text-cyan-400 font-bold text-xl">{serviceCost} 크레딧</p>
+              </div>
             </div>
           </div>
-        )}
-      </div>
+
+          <button
+            onClick={() => setStep('upload')}
+            className="w-full px-6 py-4 bg-cyan-600 hover:bg-cyan-700 text-foreground font-semibold rounded-lg transition-colors"
+          >
+            시작하기
+          </button>
+        </div>
+      )}
+
+      {/* Upload Step */}
+      {step === 'upload' && (
+        <div className="space-y-6">
+          {/* Image Upload */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-foreground mb-4">사진 업로드</h3>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              ref={fileInputRef}
+              className="hidden"
+            />
+            {!uploadedImage ? (
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full p-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-cyan-500 transition-colors"
+              >
+                <span className="material-symbols-outlined text-4xl text-muted-foreground block mb-2">
+                  add_photo_alternate
+                </span>
+                <span className="text-muted-foreground">클릭하여 사진 업로드</span>
+                <p className="text-gray-500 text-sm mt-1">정면 얼굴 사진 권장</p>
+              </button>
+            ) : (
+              <div className="relative aspect-square max-w-sm mx-auto">
+                <img
+                  src={uploadedImage}
+                  alt="Uploaded"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+                <button
+                  onClick={() => {
+                    setUploadedImage(null);
+                    if (fileInputRef.current) fileInputRef.current.value = '';
+                  }}
+                  className="absolute top-2 right-2 p-2 bg-black/50 rounded-full hover:bg-black/70 transition"
+                >
+                  <span className="material-symbols-outlined text-foreground">close</span>
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Style Selection */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-foreground mb-4">스타일 선택</h3>
+            <div className="grid grid-cols-1 gap-3">
+              {styleOptions.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => setStyle(option.value as any)}
+                  className={`p-4 rounded-lg border text-left transition ${
+                    style === option.value
+                      ? 'border-cyan-500 bg-cyan-500/10'
+                      : 'border-gray-300 dark:border-gray-600 hover:border-gray-500'
+                  }`}
+                >
+                  <p className={`font-semibold ${style === option.value ? 'text-cyan-400' : 'text-foreground'}`}>
+                    {option.label}
+                  </p>
+                  <p className="text-sm text-muted-foreground">{option.desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <ExecuteButton
+            credits={serviceCost}
+            currentCredits={currentCredits}
+            onClick={handleExecute}
+            loading={loading}
+            disabled={!uploadedImage}
+          />
+        </div>
+      )}
+
+      {/* Result Step */}
+      {step === 'result' && resultImage && (
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-foreground mb-4">생성된 프로필 사진</h3>
+            <img
+              src={resultImage}
+              alt="Professional Headshot"
+              className="w-full rounded-lg"
+            />
+          </div>
+
+          <div className="flex gap-3">
+            <a
+              href={resultImage}
+              download="professional-headshot.png"
+              className="flex-1 py-3 bg-green-600 hover:bg-green-700 text-foreground text-center rounded-lg transition font-semibold"
+            >
+              다운로드
+            </a>
+            <button
+              onClick={handleReset}
+              className="flex-1 py-3 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition font-semibold"
+            >
+              다시 시도하기
+            </button>
+          </div>
+        </div>
+      )}
     </ServiceDetailLayout>
   );
 }

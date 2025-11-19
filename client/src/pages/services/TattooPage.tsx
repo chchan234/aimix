@@ -1,21 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import ExecuteButton from '../../components/ExecuteButton';
-import ImageUpload from '../../components/ImageUpload';
 import { addTattoo } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function TattooPage() {
   const { t } = useTranslation();
   const [, setLocation] = useLocation();
+  const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
   const [image, setImage] = useState<string | null>(null);
   const [tattooDescription, setTattooDescription] = useState('');
   const [placement, setPlacement] = useState('');
   const [loading, setLoading] = useState(false);
   const [resultImage, setResultImage] = useState<string | null>(null);
   const [currentCredits, setCurrentCredits] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const serviceCost = 30;
 
@@ -38,6 +39,17 @@ export default function TattooPage() {
     };
     fetchUserData();
   }, [setLocation]);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setImage(event.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleExecute = async () => {
     if (!image) {
@@ -62,6 +74,7 @@ export default function TattooPage() {
       if (response.success && response.imageData) {
         const imageBase64 = `data:${response.mimeType};base64,${response.imageData}`;
         setResultImage(imageBase64);
+        setStep('result');
 
         if (response.credits?.remaining !== undefined) {
           setCurrentCredits(response.credits.remaining);
@@ -77,6 +90,14 @@ export default function TattooPage() {
     }
   };
 
+  const handleReset = () => {
+    setStep('upload');
+    setResultImage(null);
+    setImage(null);
+    setTattooDescription('');
+    setPlacement('');
+  };
+
   return (
     <ServiceDetailLayout
       title={t('services.image.tattoo.title')}
@@ -84,81 +105,161 @@ export default function TattooPage() {
       icon="brush"
       color="teal"
     >
-      <div className="space-y-6">
-        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-teal-500/20">
-          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
-          <p className="text-muted-foreground text-sm leading-relaxed">
-            사진에 원하는 타투 디자인을 시뮬레이션합니다.
-          </p>
-        </div>
+      {/* Intro Step */}
+      {step === 'intro' && (
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
+              AI 타투 시뮬레이션
+            </h3>
+            <p className="text-muted-foreground mb-4">
+              사진에 원하는 타투 디자인을 미리 시뮬레이션합니다.
+              실제 타투를 하기 전에 다양한 디자인과 위치를 테스트해보세요.
+            </p>
 
-        {!resultImage && (
-          <div className="space-y-4">
-            <ImageUpload
-              onImageSelect={setImage}
-              label="사진 업로드"
-            />
-
-            {image && (
-              <>
-                <div>
-                  <label className="block text-foreground font-medium mb-2">
-                    타투 디자인
-                  </label>
-                  <input
-                    type="text"
-                    value={tattooDescription}
-                    onChange={(e) => setTattooDescription(e.target.value)}
-                    placeholder="예: 용 타투, 꽃 타투, 부족 문양 등"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground placeholder-gray-400 focus:outline-none focus:border-teal-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-foreground font-medium mb-2">
-                    타투 위치
-                  </label>
-                  <input
-                    type="text"
-                    value={placement}
-                    onChange={(e) => setPlacement(e.target.value)}
-                    placeholder="예: 팔, 등, 어깨, 손목 등"
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground placeholder-gray-400 focus:outline-none focus:border-teal-500"
-                  />
-                </div>
-              </>
-            )}
-
-            <ExecuteButton
-              credits={serviceCost}
-              currentCredits={currentCredits}
-              onClick={handleExecute}
-              loading={loading}
-              disabled={!image || !tattooDescription.trim() || !placement.trim()}
-            />
-          </div>
-        )}
-
-        {resultImage && (
-          <div className="space-y-4 animate-fadeIn">
-            <div className="bg-teal-500/10 rounded-lg p-4 border border-teal-500/20">
-              <h3 className="text-foreground font-semibold mb-3">타투 시뮬레이션 결과</h3>
-              <img
-                src={resultImage}
-                alt="Tattoo Simulation Result"
-                className="w-full rounded-lg"
-              />
+            <div className="grid grid-cols-2 gap-3 mt-4">
+              <div className="p-4 rounded-lg bg-teal-500/10 border border-teal-500/30">
+                <span className="material-symbols-outlined text-teal-400 text-2xl block mb-2">design_services</span>
+                <p className="text-sm font-medium text-foreground">다양한 디자인</p>
+                <p className="text-xs text-muted-foreground">용, 꽃, 문양 등</p>
+              </div>
+              <div className="p-4 rounded-lg bg-teal-500/10 border border-teal-500/30">
+                <span className="material-symbols-outlined text-teal-400 text-2xl block mb-2">location_on</span>
+                <p className="text-sm font-medium text-foreground">위치 선택</p>
+                <p className="text-xs text-muted-foreground">팔, 등, 어깨 등</p>
+              </div>
+              <div className="p-4 rounded-lg bg-teal-500/10 border border-teal-500/30">
+                <span className="material-symbols-outlined text-teal-400 text-2xl block mb-2">preview</span>
+                <p className="text-sm font-medium text-foreground">미리보기</p>
+                <p className="text-xs text-muted-foreground">시술 전 확인</p>
+              </div>
+              <div className="p-4 rounded-lg bg-teal-500/10 border border-teal-500/30">
+                <span className="material-symbols-outlined text-teal-400 text-2xl block mb-2">verified</span>
+                <p className="text-sm font-medium text-foreground">안전한 테스트</p>
+                <p className="text-xs text-muted-foreground">부담 없이 테스트</p>
+              </div>
             </div>
-
-            <button
-              onClick={() => setResultImage(null)}
-              className="w-full px-4 py-3 bg-teal-600 hover:bg-teal-700 text-foreground rounded-lg transition"
-            >
-              다시 생성하기
-            </button>
           </div>
-        )}
-      </div>
+
+          <div className="bg-teal-900/20 border border-teal-500 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-foreground font-semibold">AI 타투 시뮬레이션</p>
+                <p className="text-muted-foreground text-sm">원하는 타투 미리보기</p>
+              </div>
+              <div className="text-right">
+                <p className="text-teal-400 font-bold text-xl">{serviceCost} 크레딧</p>
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setStep('upload')}
+            className="w-full px-6 py-4 bg-teal-600 hover:bg-teal-700 text-foreground font-semibold rounded-lg transition-colors"
+          >
+            시작하기
+          </button>
+        </div>
+      )}
+
+      {/* Upload Step */}
+      {step === 'upload' && (
+        <div className="space-y-6">
+          {/* Image Upload */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-foreground mb-4">사진 업로드</h3>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              ref={fileInputRef}
+              className="hidden"
+            />
+            {!image ? (
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full p-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-teal-500 transition-colors"
+              >
+                <span className="material-symbols-outlined text-4xl text-muted-foreground block mb-2">
+                  add_photo_alternate
+                </span>
+                <span className="text-muted-foreground">클릭하여 사진 업로드</span>
+                <p className="text-gray-500 text-sm mt-1">타투를 적용할 부위가 보이는 사진</p>
+              </button>
+            ) : (
+              <div className="relative aspect-square max-w-sm mx-auto">
+                <img
+                  src={image}
+                  alt="Uploaded"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+                <button
+                  onClick={() => {
+                    setImage(null);
+                    if (fileInputRef.current) fileInputRef.current.value = '';
+                  }}
+                  className="absolute top-2 right-2 p-2 bg-black/50 rounded-full hover:bg-black/70 transition"
+                >
+                  <span className="material-symbols-outlined text-foreground">close</span>
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Tattoo Design */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-foreground mb-4">타투 디자인</h3>
+            <input
+              type="text"
+              value={tattooDescription}
+              onChange={(e) => setTattooDescription(e.target.value)}
+              placeholder="예: 용 타투, 꽃 타투, 부족 문양 등"
+              className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-foreground placeholder-gray-400 focus:outline-none focus:border-teal-500"
+            />
+          </div>
+
+          {/* Tattoo Placement */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-foreground mb-4">타투 위치</h3>
+            <input
+              type="text"
+              value={placement}
+              onChange={(e) => setPlacement(e.target.value)}
+              placeholder="예: 팔, 등, 어깨, 손목 등"
+              className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-foreground placeholder-gray-400 focus:outline-none focus:border-teal-500"
+            />
+          </div>
+
+          <ExecuteButton
+            credits={serviceCost}
+            currentCredits={currentCredits}
+            onClick={handleExecute}
+            loading={loading}
+            disabled={!image || !tattooDescription.trim() || !placement.trim()}
+          />
+        </div>
+      )}
+
+      {/* Result Step */}
+      {step === 'result' && resultImage && (
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-foreground mb-4">타투 시뮬레이션 결과</h3>
+            <img
+              src={resultImage}
+              alt="Tattoo Simulation Result"
+              className="w-full rounded-lg"
+            />
+          </div>
+
+          <button
+            onClick={handleReset}
+            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+          >
+            다시 시도하기
+          </button>
+        </div>
+      )}
     </ServiceDetailLayout>
   );
 }
