@@ -959,33 +959,80 @@ export async function calculateBMI(height: number, weight: number, age: number, 
 // 15. Personal Color Analysis - 퍼스널 컬러 진단
 export async function analyzePersonalColor(imageBase64: string) {
   try {
-    const prompt = `이 사진 속 사람의 피부톤을 분석하여 퍼스널 컬러를 진단해주세요.
+    const prompt = `당신은 15년 경력의 퍼스널컬러 전문 컨설턴트입니다. 연예인, 아나운서, 대기업 임원들의 이미지 컨설팅을 담당해왔으며, 수천 명의 컬러 진단 경험이 있습니다.
+
+이 사진 속 사람의 피부톤을 정밀 분석하여 퍼스널 컬러를 진단해주세요.
+
+[분석 지침]
+
+1. 전문적 분석
+- 피부의 언더톤, 명도, 채도를 정밀 분석
+- 눈동자 색, 머리카락 색, 입술 색도 함께 고려
+- 왜 이 퍼스널컬러인지 구체적인 근거 제시
+- 같은 계절 타입 내에서도 세부 타입(브라이트, 뮤트, 딥 등) 구분
+
+2. 톤앤매너
+- 전문가가 1:1 상담하는 것처럼 친근하면서도 신뢰감 있게
+- "~것으로 보입니다" 같은 AI스러운 표현 절대 금지
+- "당신의 피부톤을 보니...", "솔직히 말씀드리면..." 같은 자연스러운 표현 사용
+
+3. 실용적 조언
+- 추천 색상은 구체적인 색상명으로 (예: "코랄 핑크", "버건디", "머스타드")
+- 실제 쇼핑할 때 바로 찾을 수 있는 키워드 제공
+- 피해야 할 색상은 왜 피해야 하는지 이유도 설명
+
+4. 재미 요소
+- "이 색 입으면 피부가 확 떠요!" 같은 공감 포인트
+- SNS에 공유하고 싶은 꿀팁 포함
+- 연예인 예시 (비슷한 퍼스널컬러를 가진 연예인)
 
 다음 JSON 형식으로 응답해주세요:
 {
-  "personalColor": "진단 결과 (Spring Warm, Summer Cool, Autumn Warm, Winter Cool 중 하나)",
+  "personalColor": "진단 결과 (봄 웜톤/여름 쿨톤/가을 웜톤/겨울 쿨톤)",
+  "subType": "세부 타입 (예: 브라이트 스프링, 뮤트 서머, 딥 오텀, 트루 윈터 등)",
   "confidence": 85,
   "skinAnalysis": {
-    "undertone": "피부 언더톤 (따뜻한, 차가운, 중성)",
-    "brightness": "피부 밝기 (밝음, 보통, 어두움)",
-    "saturation": "채도",
-    "description": "피부톤 상세 설명"
+    "undertone": "피부 언더톤 상세 설명 (따뜻한/차가운/중성 + 구체적 특징)",
+    "brightness": "피부 밝기와 그 특징",
+    "saturation": "채도 분석",
+    "veins": "손목 혈관 색 기준 분석 (녹색/보라색/혼합)",
+    "description": "전체적인 피부톤 분석 (최소 3문장)"
+  },
+  "colorAnalysis": {
+    "eyeColor": "눈동자 색상 분석",
+    "hairColor": "자연 모발 색상 분석",
+    "lipColor": "입술 자연색 분석",
+    "harmony": "눈, 머리, 입술 색의 조화 분석"
   },
   "recommendedColors": {
-    "best": ["어울리는 색상1", "어울리는 색상2", "어울리는 색상3"],
-    "avoid": ["피해야 할 색상1", "피해야 할 색상2"]
+    "best": ["최고로 어울리는 색상1 (구체적 색상명)", "색상2", "색상3", "색상4", "색상5"],
+    "good": ["잘 어울리는 색상1", "색상2", "색상3"],
+    "avoid": ["피해야 할 색상1 (이유 포함)", "색상2 (이유 포함)"],
+    "whyBest": "왜 이 색상들이 가장 잘 어울리는지 설명",
+    "whyAvoid": "왜 이 색상들을 피해야 하는지 설명"
   },
   "makeupRecommendations": {
-    "lipstick": ["추천 립스틱 색상1", "추천 립스틱 색상2"],
-    "eyeshadow": ["추천 아이섀도우 톤"],
-    "blush": ["추천 블러셔 색상"]
+    "lipstick": ["추천 립스틱 색상1 (제품 타입 포함)", "색상2"],
+    "eyeshadow": ["추천 아이섀도우 색상과 팔레트 타입"],
+    "blush": ["추천 블러셔 색상"],
+    "foundation": "파운데이션 선택 팁",
+    "makeupTip": "이 퍼스널컬러를 위한 메이크업 꿀팁"
   },
   "clothingRecommendations": {
-    "colors": ["옷 추천 색상1", "옷 추천 색상2", "옷 추천 색상3"],
-    "metals": "어울리는 금속 (골드 or 실버)",
-    "description": "어울리는 옷 스타일 설명"
+    "bestColors": ["옷 베스트 색상1", "색상2", "색상3", "색상4", "색상5"],
+    "accentColors": ["포인트로 쓰기 좋은 색상1", "색상2"],
+    "metals": "어울리는 금속 (골드/실버/로즈골드) + 이유",
+    "patterns": "어울리는 패턴이나 프린트",
+    "styleDescription": "어울리는 전체적인 스타일 설명 (최소 3문장)"
   },
-  "explanation": "이 진단 결과에 대한 상세한 설명"
+  "hairColorRecommendation": {
+    "colors": ["추천 염색 색상1", "색상2", "색상3"],
+    "avoid": ["피해야 할 염색 색상"],
+    "tip": "헤어컬러 선택 팁"
+  },
+  "celebrityExample": "비슷한 퍼스널컬러를 가진 연예인 예시와 스타일링 참고 포인트",
+  "shoppingTip": "쇼핑할 때 이 키워드로 검색하세요! (실용적인 검색 키워드)",
+  "explanation": "종합적인 퍼스널컬러 진단 설명 (왜 이런 결과가 나왔는지, 어떻게 활용하면 좋은지 최소 5문장)"
 }`;
 
     const client = getClient();
