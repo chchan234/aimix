@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeLoveCompatibility } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function LoveCompatibilityPage() {
   const { t } = useTranslation();
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'input' | 'result'>('intro');
   const [person1BirthDate, setPerson1BirthDate] = useState('');
   const [person2BirthDate, setPerson2BirthDate] = useState('');
@@ -26,6 +28,23 @@ export default function LoveCompatibilityPage() {
     };
     fetchUserData();
   }, []);
+
+  // Auth state monitoring - redirect if logged out
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
 
   const handleExecute = async () => {
     if (!person1BirthDate || !person2BirthDate) {

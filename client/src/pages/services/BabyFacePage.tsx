@@ -1,9 +1,11 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { generateBabyFace } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
 
 export default function BabyFacePage() {
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
   const [parent1Image, setParent1Image] = useState<string>('');
   const [parent2Image, setParent2Image] = useState<string>('');
@@ -13,6 +15,23 @@ export default function BabyFacePage() {
   const [error, setError] = useState<string>('');
   const parent1InputRef = useRef<HTMLInputElement>(null);
   const parent2InputRef = useRef<HTMLInputElement>(null);
+
+  // Auth state monitoring - redirect if logged out
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
 
   const handleStartTest = () => {
     if (!isLoggedIn()) {

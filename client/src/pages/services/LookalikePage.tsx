@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { findLookalike } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
@@ -46,6 +47,7 @@ const CATEGORY_INFO = {
 };
 
 export default function LookalikePage() {
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
   const [selectedCategory, setSelectedCategory] = useState<Category>('celebrity');
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -53,6 +55,23 @@ export default function LookalikePage() {
   const [result, setResult] = useState<Analysis | null>(null);
   const [error, setError] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Auth state monitoring - redirect if logged out
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
 
   const handleStartTest = () => {
     if (!isLoggedIn()) {

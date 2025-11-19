@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { getStressQuestions, analyzeStress } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
@@ -16,6 +17,7 @@ const CATEGORY_NAMES: { [key: string]: string } = {
 };
 
 export default function StressTestPage() {
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'test' | 'result'>('intro');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -27,6 +29,23 @@ export default function StressTestPage() {
   useEffect(() => {
     loadQuestions();
   }, []);
+
+  // Auth state monitoring - redirect if logged out
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
 
   const loadQuestions = async () => {
     try {

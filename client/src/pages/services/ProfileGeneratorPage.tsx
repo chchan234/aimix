@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import ExecuteButton from '../../components/ExecuteButton';
 import { generateProfessionalHeadshot } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function ProfileGeneratorPage() {
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [style, setStyle] = useState<'professional' | 'business' | 'casual'>('professional');
@@ -26,6 +28,23 @@ export default function ProfileGeneratorPage() {
     };
     fetchUserData();
   }, []);
+
+  // Auth state monitoring - redirect if logged out
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

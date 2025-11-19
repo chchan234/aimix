@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzePetSoulmate } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
@@ -22,12 +23,30 @@ interface PetSoulmateResult {
 }
 
 export default function PetSoulmatePage() {
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
   const [imagePreview, setImagePreview] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PetSoulmateResult | null>(null);
   const [error, setError] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Auth state monitoring - redirect if logged out
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
 
   const handleStartTest = () => {
     if (!isLoggedIn()) {

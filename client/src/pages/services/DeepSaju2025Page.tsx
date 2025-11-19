@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeDeepSaju2025 } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
@@ -69,6 +70,7 @@ interface DeepSajuResult {
 }
 
 export default function DeepSaju2025Page() {
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'input' | 'result'>('intro');
   const [birthDate, setBirthDate] = useState('');
   const [birthTime, setBirthTime] = useState('');
@@ -91,6 +93,23 @@ export default function DeepSaju2025Page() {
     };
     fetchUserData();
   }, []);
+
+  // Auth state monitoring - redirect if logged out
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
 
   const handleExecute = async () => {
     if (!birthDate || !birthTime) {

@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeNameCompatibility } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function NameCompatibilityPage() {
   const { t } = useTranslation();
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'input' | 'result'>('intro');
   const [name1, setName1] = useState('');
   const [name2, setName2] = useState('');
@@ -26,6 +28,23 @@ export default function NameCompatibilityPage() {
     };
     fetchUserData();
   }, []);
+
+  // Auth state monitoring - redirect if logged out
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
 
   const handleExecute = async () => {
     if (!name1 || !name2) {

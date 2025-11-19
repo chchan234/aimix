@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { getEnneagramQuestions, analyzeEnneagram } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
@@ -21,6 +22,7 @@ const ENNEAGRAM_TYPE_NAMES: { [key: number]: string } = {
 };
 
 export default function EnneagramTestPage() {
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'test' | 'result'>('intro');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -32,6 +34,23 @@ export default function EnneagramTestPage() {
   useEffect(() => {
     loadQuestions();
   }, []);
+
+  // Auth state monitoring - redirect if logged out
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
 
   const handleStartTest = () => {
     if (!isLoggedIn()) {

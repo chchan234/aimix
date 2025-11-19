@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import ExecuteButton from '../../components/ExecuteButton';
 import { generateCaricature } from '../../services/ai';
@@ -7,6 +8,7 @@ import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 export default function CaricaturePage() {
   const { t } = useTranslation();
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
   const [image, setImage] = useState<string | null>(null);
   const [exaggerationLevel, setExaggerationLevel] = useState<'low' | 'medium' | 'high'>('medium');
@@ -28,6 +30,23 @@ export default function CaricaturePage() {
     };
     fetchUserData();
   }, []);
+
+  // Auth state monitoring - redirect if logged out
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

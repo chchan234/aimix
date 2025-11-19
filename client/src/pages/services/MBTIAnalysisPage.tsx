@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { getMBTIQuestions, analyzeMBTI } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
@@ -16,6 +17,7 @@ const MBTI_TYPES = [
 ];
 
 export default function MBTIAnalysisPage() {
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'mbti-select' | 'test' | 'result'>('intro');
   const [userInputMBTI, setUserInputMBTI] = useState<string | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -28,6 +30,23 @@ export default function MBTIAnalysisPage() {
   useEffect(() => {
     loadQuestions();
   }, []);
+
+  // Auth state monitoring - redirect if logged out
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
 
   const loadQuestions = async () => {
     try {
