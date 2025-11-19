@@ -18,24 +18,16 @@ export default function FaceReadingPage() {
   const serviceCost = 25;
 
   useEffect(() => {
-    if (!isLoggedIn()) {
-      alert('로그인 후 이용해주세요.');
-      setLocation('/');
-      return;
-    }
-
     const fetchUserData = async () => {
       try {
         const user = await getCurrentUser();
         setCurrentCredits(user.credits);
       } catch (error) {
         console.error('Failed to fetch user data:', error);
-        alert('로그인 후 이용해주세요.');
-        setLocation('/');
       }
     };
     fetchUserData();
-  }, [setLocation]);
+  }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

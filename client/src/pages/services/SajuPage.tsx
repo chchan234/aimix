@@ -20,25 +20,16 @@ export default function SajuPage() {
 
   // Fetch user credits on mount
   useEffect(() => {
-    // 로그인 체크
-    if (!isLoggedIn()) {
-      alert('로그인 후 이용해주세요.');
-      setLocation('/');
-      return;
-    }
-
     const fetchUserData = async () => {
       try {
         const user = await getCurrentUser();
         setCurrentCredits(user.credits);
       } catch (error) {
         console.error('Failed to fetch user data:', error);
-        alert('로그인 후 이용해주세요.');
-        setLocation('/');
       }
     };
     fetchUserData();
-  }, [setLocation]);
+  }, []);
 
   const handleExecute = async () => {
     if (!birthDate || !birthTime) {

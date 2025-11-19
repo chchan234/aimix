@@ -101,12 +101,12 @@ export default function FortunePage() {
       {/* Traditional Fortune */}
       <div>
         <h2 className="text-foreground text-xl font-serif font-bold px-4 pb-4">{t('pages.fortune.sections.traditional')}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 px-4">
           {services.traditional.map((service, index) => (
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className={`flex flex-col aspect-square gap-3 p-4 rounded-2xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition justify-center items-center text-center ${
+              className={`flex flex-col gap-2 p-3 rounded-xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
                 service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
               }`}
             >
@@ -136,12 +136,12 @@ export default function FortunePage() {
       {/* Western Fortune */}
       <div>
         <h2 className="text-foreground text-xl font-serif font-bold px-4 pb-4">{t('pages.fortune.sections.western')}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 px-4">
           {services.western.map((service, index) => (
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className={`flex flex-col aspect-square gap-3 p-4 rounded-2xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition justify-center items-center text-center ${
+              className={`flex flex-col gap-2 p-3 rounded-xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
                 service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
               }`}
             >
@@ -171,12 +171,12 @@ export default function FortunePage() {
       {/* Compatibility */}
       <div>
         <h2 className="text-foreground text-xl font-serif font-bold px-4 pb-4">{t('pages.fortune.sections.compatibility')}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 px-4">
           {services.compatibility.map((service, index) => (
             <div
               key={index}
               onClick={() => service.path && setLocation(service.path)}
-              className={`flex flex-col aspect-square gap-3 p-4 rounded-2xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-2xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition justify-center items-center text-center ${
+              className={`flex flex-col gap-2 p-3 rounded-xl bg-white/80 dark:bg-[#1a1625] border border-gray-200 dark:border-white/10 hover:bg-white dark:hover:bg-purple-950/60 hover:shadow-xl hover:shadow-pink-200/50 dark:hover:shadow-pink-900/30 transition ${
                 service.path ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
               }`}
             >

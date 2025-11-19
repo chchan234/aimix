@@ -269,6 +269,7 @@ export default function HomePage() {
       icon: 'account_circle',
       color: 'cyan',
       category: 'image',
+      path: '/services/profile-generator',
       rating: 4.8,
       users: 2876,
     },
@@ -278,6 +279,7 @@ export default function HomePage() {
       icon: 'psychology',
       color: 'purple',
       category: 'entertainment',
+      path: '/services/mbti-analysis',
       rating: 4.7,
       users: 2654,
     },
@@ -297,6 +299,7 @@ export default function HomePage() {
       icon: 'compare',
       color: 'pink',
       category: 'entertainment',
+      path: '/services/lookalike',
       rating: 4.5,
       users: 1543,
     },
@@ -396,12 +399,12 @@ export default function HomePage() {
         </div>
 
         {/* Desktop: Grid Layout */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
+        <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 px-4">
           {popularServices.map((service, index) => (
             <div
               key={index}
               onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-              className="relative flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
+              className="relative flex flex-col gap-2 p-3 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
             >
               {/* 순위 뱃지 */}
               <div className="absolute top-3 right-3 flex items-center justify-center w-10 h-10 bg-primary/20 rounded-full">
@@ -484,12 +487,12 @@ export default function HomePage() {
         </div>
 
         {/* Desktop: Grid Layout */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
+        <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 px-4">
           {randomServices.map((service, index) => (
             <div
               key={index}
               onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-              className="flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
+              className="flex flex-col gap-2 p-3 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
             >
               <div
                 className={`flex items-center justify-center w-12 h-12 ${
