@@ -16,6 +16,37 @@ export default function BabyFacePage() {
   const parent1InputRef = useRef<HTMLInputElement>(null);
   const parent2InputRef = useRef<HTMLInputElement>(null);
 
+  // Image compression function to reduce payload size
+  const compressImage = (base64: string, maxWidth: number = 800, quality: number = 0.7): Promise<string> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        // Scale down if larger than maxWidth
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+
+        // Also limit height to maintain reasonable aspect ratio
+        if (height > maxWidth) {
+          width = (width * maxWidth) / height;
+          height = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.src = base64;
+    });
+  };
+
   // Auth state monitoring - redirect if logged out
   useEffect(() => {
     const checkAuth = () => {
@@ -41,7 +72,7 @@ export default function BabyFacePage() {
     setStep('upload');
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, parent: 1 | 2) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, parent: 1 | 2) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -51,11 +82,16 @@ export default function BabyFacePage() {
     }
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
+      const originalBase64 = event.target?.result as string;
+
+      // Compress image to reduce payload size (max 800x800, quality 0.7)
+      const compressedBase64 = await compressImage(originalBase64, 800, 0.7);
+
       if (parent === 1) {
-        setParent1Image(event.target?.result as string);
+        setParent1Image(compressedBase64);
       } else {
-        setParent2Image(event.target?.result as string);
+        setParent2Image(compressedBase64);
       }
       setError('');
     };

@@ -1462,11 +1462,17 @@ function calculateMBTIScores(answers: number[]) {
 
   answers.forEach((answer, index) => {
     const question = mbtiQuestions[index];
-    const { axis, direction } = question;
+    const { axis, direction, reverse } = question;
+
+    // Apply reverse scoring if needed (5->1, 4->2, 3->3, 2->4, 1->5)
+    let adjustedAnswer = answer;
+    if (reverse) {
+      adjustedAnswer = 6 - answer;
+    }
 
     // Convert 1-5 scale to score
     // 1 = strongly disagree, 5 = strongly agree
-    const score = direction === 'positive' ? answer : (6 - answer);
+    const score = direction === 'positive' ? adjustedAnswer : (6 - adjustedAnswer);
 
     if (axis === 'EI') {
       scores.EI.E += score > 3 ? (score - 3) : 0;
@@ -1569,10 +1575,16 @@ function calculateEnneagramScores(answers: number[]): { [key: number]: number } 
 
   answers.forEach((answer, index) => {
     const question = enneagramQuestions[index];
-    const { type } = question;
+    const { type, reverse } = question;
+
+    // Apply reverse scoring if needed (5->1, 4->2, 3->3, 2->4, 1->5)
+    let adjustedAnswer = answer;
+    if (reverse) {
+      adjustedAnswer = 6 - answer;
+    }
 
     // Add answer score (1-5) to corresponding type
-    scores[type] += answer;
+    scores[type] += adjustedAnswer;
   });
 
   return scores;
@@ -1725,8 +1737,15 @@ function calculateBigFiveScores(answers: number[]): { [key: string]: number } {
 
   bigFiveQuestions.forEach((q, index) => {
     const answer = answers[index];
+
+    // Apply reverse scoring if needed (5->1, 4->2, 3->3, 2->4, 1->5)
+    let adjustedAnswer = answer;
+    if (q.reverse) {
+      adjustedAnswer = 6 - answer;
+    }
+
     // positive direction: answer as is, negative direction: inverted (6 - answer)
-    const score = q.direction === 'positive' ? answer : (6 - answer);
+    const score = q.direction === 'positive' ? adjustedAnswer : (6 - adjustedAnswer);
     scores[q.trait] += score;
   });
 
@@ -1845,7 +1864,15 @@ function calculateStressScores(answers: number[]): { [key: string]: number } {
   };
 
   stressQuestions.forEach((q, index) => {
-    scores[q.category] += answers[index];
+    const answer = answers[index];
+
+    // Apply reverse scoring if needed (5->1, 4->2, 3->3, 2->4, 1->5)
+    let adjustedAnswer = answer;
+    if (q.reverse) {
+      adjustedAnswer = 6 - answer;
+    }
+
+    scores[q.category] += adjustedAnswer;
   });
 
   return scores;
@@ -1958,7 +1985,15 @@ function calculateGeumjjokiScores(answers: number[]): { [key: string]: number } 
   };
 
   geumjjokiQuestions.forEach((q, index) => {
-    scores[q.category] += answers[index];
+    const answer = answers[index];
+
+    // Apply reverse scoring if needed (5->1, 4->2, 3->3, 2->4, 1->5)
+    let adjustedAnswer = answer;
+    if (q.reverse) {
+      adjustedAnswer = 6 - answer;
+    }
+
+    scores[q.category] += adjustedAnswer;
   });
 
   return scores;

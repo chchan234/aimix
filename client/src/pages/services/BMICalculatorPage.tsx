@@ -10,6 +10,7 @@ interface BMIResult {
   idealWeight: {
     min: number;
     max: number;
+    description?: string;
   };
   healthRisks: string[];
   recommendations: {
@@ -17,9 +18,13 @@ interface BMIResult {
     exercise: string[];
     lifestyle: string[];
   };
-  targetBMI: number;
-  weightToLose: number;
-  confidence: number;
+  dailyCalories?: {
+    maintain: number;
+    lose: number;
+    gain: number;
+  };
+  metabolicAge?: string;
+  overallComment?: string;
 }
 
 export default function BMICalculatorPage() {
@@ -350,33 +355,32 @@ export default function BMICalculatorPage() {
           </div>
 
           {/* Ideal Weight */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">target</span>
-              이상 체중
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center p-4 bg-green-500/20 rounded-lg">
-                <p className="text-muted-foreground text-sm">최소</p>
-                <p className="text-green-400 text-2xl font-bold">{result.idealWeight.min}kg</p>
+          {result.idealWeight && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">target</span>
+                이상 체중
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-4 bg-green-500/20 rounded-lg">
+                  <p className="text-muted-foreground text-sm">최소</p>
+                  <p className="text-green-400 text-2xl font-bold">{result.idealWeight.min}kg</p>
+                </div>
+                <div className="text-center p-4 bg-green-500/20 rounded-lg">
+                  <p className="text-muted-foreground text-sm">최대</p>
+                  <p className="text-green-400 text-2xl font-bold">{result.idealWeight.max}kg</p>
+                </div>
               </div>
-              <div className="text-center p-4 bg-green-500/20 rounded-lg">
-                <p className="text-muted-foreground text-sm">최대</p>
-                <p className="text-green-400 text-2xl font-bold">{result.idealWeight.max}kg</p>
-              </div>
+              {result.idealWeight.description && (
+                <p className="text-center text-muted-foreground mt-4">
+                  {result.idealWeight.description}
+                </p>
+              )}
             </div>
-            {result.weightToLose !== 0 && (
-              <p className="text-center text-muted-foreground mt-4">
-                정상 범위까지 {result.weightToLose > 0 ? '감량' : '증량'} 필요:
-                <span className={`font-bold ml-1 ${result.weightToLose > 0 ? 'text-orange-400' : 'text-blue-400'}`}>
-                  {Math.abs(result.weightToLose)}kg
-                </span>
-              </p>
-            )}
-          </div>
+          )}
 
           {/* Health Risks */}
-          {result.healthRisks.length > 0 && (
+          {result.healthRisks && result.healthRisks.length > 0 && (
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
               <h3 className="text-xl font-semibold text-foreground mb-4">
                 <span className="material-symbols-outlined align-middle mr-2">warning</span>
@@ -394,51 +398,92 @@ export default function BMICalculatorPage() {
           )}
 
           {/* Diet Recommendations */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">restaurant</span>
-              식단 추천
-            </h3>
-            <ul className="space-y-2">
-              {result.recommendations.diet.map((tip, index) => (
-                <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                  <span className="material-symbols-outlined text-green-400 text-sm mt-1">check_circle</span>
-                  {tip}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {result.recommendations?.diet && result.recommendations.diet.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">restaurant</span>
+                식단 추천
+              </h3>
+              <ul className="space-y-2">
+                {result.recommendations.diet.map((tip, index) => (
+                  <li key={index} className="flex items-start gap-2 text-muted-foreground">
+                    <span className="material-symbols-outlined text-green-400 text-sm mt-1">check_circle</span>
+                    {tip}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Exercise Recommendations */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">directions_run</span>
-              운동 추천
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {result.recommendations.exercise.map((exercise, index) => (
-                <span key={index} className="px-3 py-2 bg-green-500/20 text-green-400 rounded-lg text-sm">
-                  {exercise}
-                </span>
-              ))}
+          {result.recommendations?.exercise && result.recommendations.exercise.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">directions_run</span>
+                운동 추천
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {result.recommendations.exercise.map((exercise, index) => (
+                  <span key={index} className="px-3 py-2 bg-green-500/20 text-green-400 rounded-lg text-sm">
+                    {exercise}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Lifestyle Recommendations */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">self_improvement</span>
-              생활 습관 조언
-            </h3>
-            <ul className="space-y-2">
-              {result.recommendations.lifestyle.map((tip, index) => (
-                <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                  <span className="material-symbols-outlined text-green-400 text-sm mt-1">eco</span>
-                  {tip}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {result.recommendations?.lifestyle && result.recommendations.lifestyle.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">self_improvement</span>
+                생활 습관 조언
+              </h3>
+              <ul className="space-y-2">
+                {result.recommendations.lifestyle.map((tip, index) => (
+                  <li key={index} className="flex items-start gap-2 text-muted-foreground">
+                    <span className="material-symbols-outlined text-green-400 text-sm mt-1">eco</span>
+                    {tip}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Daily Calories */}
+          {result.dailyCalories && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">local_fire_department</span>
+                일일 칼로리
+              </h3>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center p-3 bg-blue-500/20 rounded-lg">
+                  <p className="text-muted-foreground text-xs">감량</p>
+                  <p className="text-blue-400 text-lg font-bold">{result.dailyCalories.lose}kcal</p>
+                </div>
+                <div className="text-center p-3 bg-green-500/20 rounded-lg">
+                  <p className="text-muted-foreground text-xs">유지</p>
+                  <p className="text-green-400 text-lg font-bold">{result.dailyCalories.maintain}kcal</p>
+                </div>
+                <div className="text-center p-3 bg-orange-500/20 rounded-lg">
+                  <p className="text-muted-foreground text-xs">증량</p>
+                  <p className="text-orange-400 text-lg font-bold">{result.dailyCalories.gain}kcal</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Overall Comment */}
+          {result.overallComment && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">summarize</span>
+                종합 평가
+              </h3>
+              <p className="text-muted-foreground">{result.overallComment}</p>
+            </div>
+          )}
 
           {/* Try Again */}
           <button

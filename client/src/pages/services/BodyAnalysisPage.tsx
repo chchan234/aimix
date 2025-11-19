@@ -6,20 +6,28 @@ import { isLoggedIn } from '../../services/auth';
 
 interface BodyAnalysisResult {
   bodyType: string;
-  characteristics: string[];
   proportions: {
     shoulder: string;
     waist: string;
     hip: string;
-    overall: string;
+    legs?: string;
   };
-  recommendations: {
-    exercise: string[];
-    fashion: string[];
-    posture: string[];
+  exerciseRecommendations?: {
+    exercise: string;
+    reason: string;
+    frequency: string;
+  }[];
+  fashionRecommendations?: {
+    tops: string[];
+    bottoms: string[];
+    avoid: string[];
+    tips: string;
   };
-  healthTips: string[];
-  confidence: number;
+  postureAnalysis?: {
+    current: string;
+    improvements: string[];
+  };
+  overallComment?: string;
 }
 
 export default function BodyAnalysisPage() {
@@ -264,113 +272,150 @@ export default function BodyAnalysisPage() {
             <h3 className="text-2xl font-bold text-white mb-2">
               {result.bodyType}
             </h3>
-            <p className="text-teal-300">신뢰도 {result.confidence}%</p>
-          </div>
-
-          {/* Characteristics */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">info</span>
-              체형 특징
-            </h3>
-            <ul className="space-y-2">
-              {result.characteristics.map((char, index) => (
-                <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                  <span className="material-symbols-outlined text-teal-400 text-sm mt-1">check_circle</span>
-                  {char}
-                </li>
-              ))}
-            </ul>
           </div>
 
           {/* Proportions */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">straighten</span>
-              비율 분석
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-muted-foreground text-sm">어깨</p>
-                <p className="text-foreground font-medium">{result.proportions.shoulder}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground text-sm">허리</p>
-                <p className="text-foreground font-medium">{result.proportions.waist}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground text-sm">힙</p>
-                <p className="text-foreground font-medium">{result.proportions.hip}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground text-sm">전체</p>
-                <p className="text-foreground font-medium">{result.proportions.overall}</p>
+          {result.proportions && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">straighten</span>
+                비율 분석
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                {result.proportions.shoulder && (
+                  <div>
+                    <p className="text-muted-foreground text-sm">어깨</p>
+                    <p className="text-foreground font-medium">{result.proportions.shoulder}</p>
+                  </div>
+                )}
+                {result.proportions.waist && (
+                  <div>
+                    <p className="text-muted-foreground text-sm">허리</p>
+                    <p className="text-foreground font-medium">{result.proportions.waist}</p>
+                  </div>
+                )}
+                {result.proportions.hip && (
+                  <div>
+                    <p className="text-muted-foreground text-sm">힙</p>
+                    <p className="text-foreground font-medium">{result.proportions.hip}</p>
+                  </div>
+                )}
+                {result.proportions.legs && (
+                  <div>
+                    <p className="text-muted-foreground text-sm">다리</p>
+                    <p className="text-foreground font-medium">{result.proportions.legs}</p>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
+          )}
 
           {/* Exercise Recommendations */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">fitness_center</span>
-              추천 운동
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {result.recommendations.exercise.map((exercise, index) => (
-                <span key={index} className="px-3 py-2 bg-teal-500/20 text-teal-400 rounded-lg text-sm">
-                  {exercise}
-                </span>
-              ))}
+          {result.exerciseRecommendations && result.exerciseRecommendations.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">fitness_center</span>
+                추천 운동
+              </h3>
+              <div className="space-y-4">
+                {result.exerciseRecommendations.map((rec, index) => (
+                  <div key={index} className="p-3 bg-teal-500/10 rounded-lg">
+                    <p className="text-teal-400 font-medium">{rec.exercise}</p>
+                    <p className="text-muted-foreground text-sm mt-1">{rec.reason}</p>
+                    <p className="text-muted-foreground text-xs mt-1">권장: {rec.frequency}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Fashion Recommendations */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">checkroom</span>
-              패션 추천
-            </h3>
-            <ul className="space-y-2">
-              {result.recommendations.fashion.map((tip, index) => (
-                <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                  <span className="material-symbols-outlined text-teal-400 text-sm mt-1">style</span>
-                  {tip}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {result.fashionRecommendations && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">checkroom</span>
+                패션 추천
+              </h3>
+              <div className="space-y-4">
+                {result.fashionRecommendations.tops && result.fashionRecommendations.tops.length > 0 && (
+                  <div>
+                    <p className="text-teal-400 text-sm font-medium mb-2">상의</p>
+                    <div className="flex flex-wrap gap-2">
+                      {result.fashionRecommendations.tops.map((top, index) => (
+                        <span key={index} className="px-3 py-1 bg-teal-500/20 text-teal-400 rounded-lg text-sm">
+                          {top}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {result.fashionRecommendations.bottoms && result.fashionRecommendations.bottoms.length > 0 && (
+                  <div>
+                    <p className="text-teal-400 text-sm font-medium mb-2">하의</p>
+                    <div className="flex flex-wrap gap-2">
+                      {result.fashionRecommendations.bottoms.map((bottom, index) => (
+                        <span key={index} className="px-3 py-1 bg-teal-500/20 text-teal-400 rounded-lg text-sm">
+                          {bottom}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {result.fashionRecommendations.avoid && result.fashionRecommendations.avoid.length > 0 && (
+                  <div>
+                    <p className="text-orange-400 text-sm font-medium mb-2">피해야 할 스타일</p>
+                    <div className="flex flex-wrap gap-2">
+                      {result.fashionRecommendations.avoid.map((item, index) => (
+                        <span key={index} className="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-lg text-sm">
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {result.fashionRecommendations.tips && (
+                  <p className="text-muted-foreground text-sm mt-2">{result.fashionRecommendations.tips}</p>
+                )}
+              </div>
+            </div>
+          )}
 
-          {/* Posture Tips */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">self_improvement</span>
-              자세 교정 팁
-            </h3>
-            <ul className="space-y-2">
-              {result.recommendations.posture.map((tip, index) => (
-                <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                  <span className="material-symbols-outlined text-teal-400 text-sm mt-1">tips_and_updates</span>
-                  {tip}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Posture Analysis */}
+          {result.postureAnalysis && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">self_improvement</span>
+                자세 분석
+              </h3>
+              {result.postureAnalysis.current && (
+                <p className="text-muted-foreground mb-3">{result.postureAnalysis.current}</p>
+              )}
+              {result.postureAnalysis.improvements && result.postureAnalysis.improvements.length > 0 && (
+                <div>
+                  <p className="text-teal-400 text-sm font-medium mb-2">개선점</p>
+                  <ul className="space-y-2">
+                    {result.postureAnalysis.improvements.map((tip, index) => (
+                      <li key={index} className="flex items-start gap-2 text-muted-foreground">
+                        <span className="material-symbols-outlined text-teal-400 text-sm mt-1">tips_and_updates</span>
+                        {tip}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
 
-          {/* Health Tips */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">health_and_safety</span>
-              건강 조언
-            </h3>
-            <ul className="space-y-2">
-              {result.healthTips.map((tip, index) => (
-                <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                  <span className="material-symbols-outlined text-green-400 text-sm mt-1">favorite</span>
-                  {tip}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Overall Comment */}
+          {result.overallComment && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">summarize</span>
+                종합 평가
+              </h3>
+              <p className="text-muted-foreground">{result.overallComment}</p>
+            </div>
+          )}
 
           {/* Try Again */}
           <button

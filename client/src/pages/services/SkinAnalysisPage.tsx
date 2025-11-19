@@ -6,24 +6,37 @@ import { isLoggedIn } from '../../services/auth';
 
 interface SkinAnalysisResult {
   skinType: string;
-  skinAge: number;
+  skinAge: number | string;
   conditions: {
-    hydration: number;
-    oiliness: number;
-    sensitivity: number;
-    elasticity: number;
+    hydration: {
+      level: number | string;
+      description: string;
+    };
+    oiliness: {
+      level: number | string;
+      description: string;
+    };
+    sensitivity: {
+      level: number | string;
+      description: string;
+    };
+    elasticity: {
+      level: number | string;
+      description: string;
+    };
   };
   concerns: string[];
-  recommendations: {
-    skincare: string[];
-    ingredients: string[];
-    lifestyle: string[];
-  };
-  routineSuggestion: {
+  skincare?: {
     morning: string[];
     evening: string[];
+    weekly?: string[];
   };
-  confidence: number;
+  ingredients?: {
+    recommended: string[];
+    avoid: string[];
+  };
+  lifestyle?: string[];
+  overallComment?: string;
 }
 
 export default function SkinAnalysisPage() {
@@ -110,11 +123,20 @@ export default function SkinAnalysisPage() {
     setError('');
   };
 
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return 'bg-green-500';
-    if (score >= 60) return 'bg-yellow-500';
-    if (score >= 40) return 'bg-orange-500';
+  const getScoreColor = (score: number | string) => {
+    const numScore = typeof score === 'string' ? parseInt(score) : score;
+    // Convert 1-10 scale to percentage for display
+    const percentage = numScore <= 10 ? numScore * 10 : numScore;
+    if (percentage >= 80) return 'bg-green-500';
+    if (percentage >= 60) return 'bg-yellow-500';
+    if (percentage >= 40) return 'bg-orange-500';
     return 'bg-red-500';
+  };
+
+  const normalizeScore = (score: number | string) => {
+    const numScore = typeof score === 'string' ? parseInt(score) : score;
+    // Convert 1-10 scale to percentage
+    return numScore <= 10 ? numScore * 10 : numScore;
   };
 
   return (
@@ -275,149 +297,212 @@ export default function SkinAnalysisPage() {
             <h3 className="text-2xl font-bold text-white mb-2">
               {result.skinType}
             </h3>
-            <p className="text-pink-300">피부 나이: {result.skinAge}세</p>
-            <p className="text-pink-300 text-sm">신뢰도 {result.confidence}%</p>
+            {result.skinAge && (
+              <p className="text-pink-300">피부 나이: {typeof result.skinAge === 'string' ? result.skinAge : `${result.skinAge}세`}</p>
+            )}
           </div>
 
           {/* Skin Conditions */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">analytics</span>
-              피부 상태 지표
-            </h3>
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-muted-foreground text-sm">수분도</span>
-                  <span className="text-foreground text-sm">{result.conditions.hydration}%</span>
-                </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <div className={`${getScoreColor(result.conditions.hydration)} h-2 rounded-full`} style={{ width: `${result.conditions.hydration}%` }}></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-muted-foreground text-sm">유분도</span>
-                  <span className="text-foreground text-sm">{result.conditions.oiliness}%</span>
-                </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <div className={`${getScoreColor(100 - result.conditions.oiliness)} h-2 rounded-full`} style={{ width: `${result.conditions.oiliness}%` }}></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-muted-foreground text-sm">민감도</span>
-                  <span className="text-foreground text-sm">{result.conditions.sensitivity}%</span>
-                </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <div className={`${getScoreColor(100 - result.conditions.sensitivity)} h-2 rounded-full`} style={{ width: `${result.conditions.sensitivity}%` }}></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-muted-foreground text-sm">탄력도</span>
-                  <span className="text-foreground text-sm">{result.conditions.elasticity}%</span>
-                </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <div className={`${getScoreColor(result.conditions.elasticity)} h-2 rounded-full`} style={{ width: `${result.conditions.elasticity}%` }}></div>
-                </div>
+          {result.conditions && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">analytics</span>
+                피부 상태 지표
+              </h3>
+              <div className="space-y-4">
+                {result.conditions.hydration && (
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <span className="text-muted-foreground text-sm">수분도</span>
+                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.hydration.level)}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className={`${getScoreColor(result.conditions.hydration.level)} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.hydration.level)}%` }}></div>
+                    </div>
+                    {result.conditions.hydration.description && (
+                      <p className="text-muted-foreground text-xs mt-1">{result.conditions.hydration.description}</p>
+                    )}
+                  </div>
+                )}
+                {result.conditions.oiliness && (
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <span className="text-muted-foreground text-sm">유분도</span>
+                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.oiliness.level)}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className={`${getScoreColor(100 - normalizeScore(result.conditions.oiliness.level))} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.oiliness.level)}%` }}></div>
+                    </div>
+                    {result.conditions.oiliness.description && (
+                      <p className="text-muted-foreground text-xs mt-1">{result.conditions.oiliness.description}</p>
+                    )}
+                  </div>
+                )}
+                {result.conditions.sensitivity && (
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <span className="text-muted-foreground text-sm">민감도</span>
+                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.sensitivity.level)}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className={`${getScoreColor(100 - normalizeScore(result.conditions.sensitivity.level))} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.sensitivity.level)}%` }}></div>
+                    </div>
+                    {result.conditions.sensitivity.description && (
+                      <p className="text-muted-foreground text-xs mt-1">{result.conditions.sensitivity.description}</p>
+                    )}
+                  </div>
+                )}
+                {result.conditions.elasticity && (
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <span className="text-muted-foreground text-sm">탄력도</span>
+                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.elasticity.level)}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className={`${getScoreColor(result.conditions.elasticity.level)} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.elasticity.level)}%` }}></div>
+                    </div>
+                    {result.conditions.elasticity.description && (
+                      <p className="text-muted-foreground text-xs mt-1">{result.conditions.elasticity.description}</p>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
-          </div>
+          )}
 
           {/* Concerns */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">warning</span>
-              주요 고민
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {result.concerns.map((concern, index) => (
-                <span key={index} className="px-3 py-2 bg-orange-500/20 text-orange-400 rounded-lg text-sm">
-                  {concern}
-                </span>
-              ))}
+          {result.concerns && result.concerns.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">warning</span>
+                주요 고민
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {result.concerns.map((concern, index) => (
+                  <span key={index} className="px-3 py-2 bg-orange-500/20 text-orange-400 rounded-lg text-sm">
+                    {concern}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-
-          {/* Skincare Recommendations */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">spa</span>
-              스킨케어 추천
-            </h3>
-            <ul className="space-y-2">
-              {result.recommendations.skincare.map((tip, index) => (
-                <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                  <span className="material-symbols-outlined text-pink-400 text-sm mt-1">check_circle</span>
-                  {tip}
-                </li>
-              ))}
-            </ul>
-          </div>
+          )}
 
           {/* Recommended Ingredients */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">science</span>
-              추천 성분
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {result.recommendations.ingredients.map((ingredient, index) => (
-                <span key={index} className="px-3 py-2 bg-pink-500/20 text-pink-400 rounded-lg text-sm">
-                  {ingredient}
-                </span>
-              ))}
+          {result.ingredients && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">science</span>
+                성분 추천
+              </h3>
+              {result.ingredients.recommended && result.ingredients.recommended.length > 0 && (
+                <div className="mb-4">
+                  <p className="text-pink-400 text-sm font-medium mb-2">추천 성분</p>
+                  <div className="flex flex-wrap gap-2">
+                    {result.ingredients.recommended.map((ingredient, index) => (
+                      <span key={index} className="px-3 py-2 bg-pink-500/20 text-pink-400 rounded-lg text-sm">
+                        {ingredient}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {result.ingredients.avoid && result.ingredients.avoid.length > 0 && (
+                <div>
+                  <p className="text-orange-400 text-sm font-medium mb-2">피해야 할 성분</p>
+                  <div className="flex flex-wrap gap-2">
+                    {result.ingredients.avoid.map((ingredient, index) => (
+                      <span key={index} className="px-3 py-2 bg-orange-500/20 text-orange-400 rounded-lg text-sm">
+                        {ingredient}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
+          )}
 
           {/* Routine Suggestion */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">schedule</span>
-              스킨케어 루틴
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <p className="text-yellow-400 font-semibold mb-2">
-                  <span className="material-symbols-outlined align-middle mr-1 text-sm">wb_sunny</span>
-                  모닝 루틴
-                </p>
-                <ol className="space-y-1 text-sm text-muted-foreground">
-                  {result.routineSuggestion.morning.map((step, index) => (
-                    <li key={index}>{index + 1}. {step}</li>
-                  ))}
-                </ol>
+          {result.skincare && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">schedule</span>
+                스킨케어 루틴
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {result.skincare.morning && result.skincare.morning.length > 0 && (
+                  <div>
+                    <p className="text-yellow-400 font-semibold mb-2">
+                      <span className="material-symbols-outlined align-middle mr-1 text-sm">wb_sunny</span>
+                      모닝 루틴
+                    </p>
+                    <ol className="space-y-1 text-sm text-muted-foreground">
+                      {result.skincare.morning.map((step, index) => (
+                        <li key={index}>{index + 1}. {step}</li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+                {result.skincare.evening && result.skincare.evening.length > 0 && (
+                  <div>
+                    <p className="text-indigo-400 font-semibold mb-2">
+                      <span className="material-symbols-outlined align-middle mr-1 text-sm">nights_stay</span>
+                      나이트 루틴
+                    </p>
+                    <ol className="space-y-1 text-sm text-muted-foreground">
+                      {result.skincare.evening.map((step, index) => (
+                        <li key={index}>{index + 1}. {step}</li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
               </div>
-              <div>
-                <p className="text-indigo-400 font-semibold mb-2">
-                  <span className="material-symbols-outlined align-middle mr-1 text-sm">nights_stay</span>
-                  나이트 루틴
-                </p>
-                <ol className="space-y-1 text-sm text-muted-foreground">
-                  {result.routineSuggestion.evening.map((step, index) => (
-                    <li key={index}>{index + 1}. {step}</li>
-                  ))}
-                </ol>
-              </div>
+              {result.skincare.weekly && result.skincare.weekly.length > 0 && (
+                <div className="mt-4">
+                  <p className="text-purple-400 font-semibold mb-2">
+                    <span className="material-symbols-outlined align-middle mr-1 text-sm">calendar_month</span>
+                    주간 케어
+                  </p>
+                  <ul className="space-y-1 text-sm text-muted-foreground">
+                    {result.skincare.weekly.map((step, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="material-symbols-outlined text-purple-400 text-sm mt-0.5">check</span>
+                        {step}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
-          </div>
+          )}
 
           {/* Lifestyle Tips */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">self_improvement</span>
-              생활 습관 조언
-            </h3>
-            <ul className="space-y-2">
-              {result.recommendations.lifestyle.map((tip, index) => (
-                <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                  <span className="material-symbols-outlined text-green-400 text-sm mt-1">eco</span>
-                  {tip}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {result.lifestyle && result.lifestyle.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">self_improvement</span>
+                생활 습관 조언
+              </h3>
+              <ul className="space-y-2">
+                {result.lifestyle.map((tip, index) => (
+                  <li key={index} className="flex items-start gap-2 text-muted-foreground">
+                    <span className="material-symbols-outlined text-green-400 text-sm mt-1">eco</span>
+                    {tip}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Overall Comment */}
+          {result.overallComment && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
+                <span className="material-symbols-outlined align-middle mr-2">summarize</span>
+                종합 평가
+              </h3>
+              <p className="text-muted-foreground">{result.overallComment}</p>
+            </div>
+          )}
 
           {/* Try Again */}
           <button

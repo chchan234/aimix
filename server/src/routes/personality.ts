@@ -23,14 +23,28 @@ import { geumjjokiQuestions } from '../data/geumjjoki-questions.js';
 
 const router = Router();
 
+/**
+ * Fisher-Yates shuffle algorithm for randomizing questions
+ */
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 // Get MBTI questions
 router.get('/mbti/questions', authenticateToken, async (req, res) => {
   try {
+    const shuffledQuestions = shuffleArray(mbtiQuestions);
     res.json({
       success: true,
-      questions: mbtiQuestions.map(q => ({
+      questions: shuffledQuestions.map(q => ({
         id: q.id,
         question: q.question,
+        reverse: q.reverse || false,
       }))
     });
   } catch (error) {
@@ -45,11 +59,13 @@ router.get('/mbti/questions', authenticateToken, async (req, res) => {
 // Get Enneagram questions
 router.get('/enneagram/questions', authenticateToken, async (req, res) => {
   try {
+    const shuffledQuestions = shuffleArray(enneagramQuestions);
     res.json({
       success: true,
-      questions: enneagramQuestions.map(q => ({
+      questions: shuffledQuestions.map(q => ({
         id: q.id,
         question: q.question,
+        reverse: q.reverse || false,
       }))
     });
   } catch (error) {
@@ -140,11 +156,13 @@ router.post('/enneagram-test', authenticateToken, validateBody(enneagramTestSche
 // Get Big Five questions
 router.get('/bigfive/questions', authenticateToken, async (req, res) => {
   try {
+    const shuffledQuestions = shuffleArray(bigFiveQuestions);
     res.json({
       success: true,
-      questions: bigFiveQuestions.map(q => ({
+      questions: shuffledQuestions.map(q => ({
         id: q.id,
         question: q.question,
+        reverse: q.reverse || false,
       }))
     });
   } catch (error) {
@@ -195,11 +213,13 @@ router.post('/bigfive-test', authenticateToken, validateBody(bigFiveTestSchema),
 // Get Stress questions
 router.get('/stress/questions', authenticateToken, async (req, res) => {
   try {
+    const shuffledQuestions = shuffleArray(stressQuestions);
     res.json({
       success: true,
-      questions: stressQuestions.map(q => ({
+      questions: shuffledQuestions.map(q => ({
         id: q.id,
         question: q.question,
+        reverse: q.reverse || false,
       }))
     });
   } catch (error) {
@@ -251,11 +271,13 @@ router.post('/stress-test', authenticateToken, validateBody(stressTestSchema), r
 // Get Geumjjoki questions
 router.get('/geumjjoki/questions', authenticateToken, async (req, res) => {
   try {
+    const shuffledQuestions = shuffleArray(geumjjokiQuestions);
     res.json({
       success: true,
-      questions: geumjjokiQuestions.map(q => ({
+      questions: shuffledQuestions.map(q => ({
         id: q.id,
         question: q.question,
+        reverse: q.reverse || false,
       }))
     });
   } catch (error) {
