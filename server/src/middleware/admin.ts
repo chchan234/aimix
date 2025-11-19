@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm';
 // Admin user check middleware
 export async function requireAdmin(req: Request, res: Response, next: NextFunction) {
   try {
-    const userId = (req as any).user?.id;
+    const userId = (req as any).user?.userId;
 
     if (!userId) {
       return res.status(401).json({ error: 'Authentication required' });
