@@ -111,11 +111,11 @@ export default function GeumjjokiTestPage() {
       {/* Introduction */}
       {step === 'intro' && (
         <div className="space-y-6">
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               나는 금쪽이일까?
             </h3>
-            <div className="space-y-4 text-gray-300">
+            <div className="space-y-4 text-muted-foreground">
               <p>
                 "금쪽같은 내새끼"에서 영감을 받은 재미있는 자가진단 테스트입니다.
                 일상 속 나의 행동 패턴과 습관을 진단해보세요!
@@ -145,8 +145,8 @@ export default function GeumjjokiTestPage() {
             <div className="bg-orange-900/20 border border-orange-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white font-semibold">금쪽이 테스트</p>
-                  <p className="text-gray-400 text-sm">30개의 질문 + AI 분석</p>
+                  <p className="text-foreground font-semibold">금쪽이 테스트</p>
+                  <p className="text-muted-foreground text-sm">30개의 질문 + AI 분석</p>
                 </div>
                 <div className="text-right">
                   <p className="text-orange-400 font-bold text-xl">30 크레딧</p>
@@ -156,7 +156,7 @@ export default function GeumjjokiTestPage() {
 
             <button
               onClick={handleStartTest}
-              className="w-full px-6 py-4 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors"
+              className="w-full px-6 py-4 bg-orange-600 hover:bg-orange-700 text-foreground font-semibold rounded-lg transition-colors"
             >
               테스트 시작 (30 크레딧)
             </button>
@@ -168,7 +168,7 @@ export default function GeumjjokiTestPage() {
       {step === 'test' && !loading && questions.length > 0 && (
         <div className="space-y-6">
           <div className="mb-6">
-            <div className="flex justify-between text-sm text-gray-400 mb-2">
+            <div className="flex justify-between text-sm text-muted-foreground mb-2">
               <span>진행률</span>
               <span>{currentQuestionIndex + 1} / {questions.length}</span>
             </div>
@@ -180,11 +180,11 @@ export default function GeumjjokiTestPage() {
             </div>
           </div>
 
-          <div className="bg-gray-800 rounded-lg p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <div className="text-sm text-orange-400 mb-2">
               질문 {currentQuestionIndex + 1}
             </div>
-            <p className="text-lg text-white mb-6">
+            <p className="text-lg text-foreground mb-6">
               {questions[currentQuestionIndex]?.question}
             </p>
 
@@ -201,8 +201,8 @@ export default function GeumjjokiTestPage() {
                   onClick={() => handleAnswer(option.value)}
                   className={`w-full px-6 py-3 rounded-lg transition-colors ${
                     answers[currentQuestionIndex] === option.value
-                      ? 'bg-orange-600 text-white'
-                      : 'bg-gray-700 hover:bg-gray-600 text-white'
+                      ? 'bg-orange-600 text-foreground'
+                      : 'bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-foreground'
                   }`}
                 >
                   {option.label}
@@ -213,7 +213,7 @@ export default function GeumjjokiTestPage() {
             {currentQuestionIndex > 0 && (
               <button
                 onClick={handlePrevious}
-                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-lg"
+                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground rounded-lg"
               >
                 이전 질문
               </button>
@@ -226,7 +226,7 @@ export default function GeumjjokiTestPage() {
       {loading && (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-orange-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">AI가 당신의 금쪽이 지수를 분석 중입니다...</p>
+          <p className="text-muted-foreground">AI가 당신의 금쪽이 지수를 분석 중입니다...</p>
         </div>
       )}
 
@@ -242,34 +242,34 @@ export default function GeumjjokiTestPage() {
         <div className="space-y-6">
           {/* Grade */}
           <div className={`bg-gradient-to-r ${getGradeColor(result.geumjjokiScore)} rounded-lg p-6`}>
-            <h3 className="text-xl font-semibold text-white mb-2">당신의 금쪽이 지수</h3>
+            <h3 className="text-xl font-semibold text-foreground mb-2">당신의 금쪽이 지수</h3>
             <div className="flex items-baseline gap-3 mb-2">
-              <span className="text-5xl font-bold text-white">{result.geumjjokiScore}</span>
+              <span className="text-5xl font-bold text-foreground">{result.geumjjokiScore}</span>
               <span className="text-2xl text-gray-200">/ 100</span>
             </div>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-3xl">{result.grade.emoji}</span>
-              <span className="text-2xl font-bold text-white">{result.grade.name}</span>
+              <span className="text-2xl font-bold text-foreground">{result.grade.name}</span>
             </div>
             <p className="text-gray-200">{result.grade.description}</p>
           </div>
 
           {/* Summary */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">종합 분석</h3>
-            <div className="space-y-3 text-gray-300">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">종합 분석</h3>
+            <div className="space-y-3 text-muted-foreground">
               <p><strong className="text-orange-400">유형:</strong> {result.analysis.summary.mainType}</p>
               <p className="text-lg italic">"{result.analysis.summary.oneLineComment}"</p>
             </div>
           </div>
 
           {/* Category Scores */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">카테고리별 점수</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">카테고리별 점수</h3>
             <div className="space-y-4">
               {Object.entries(result.categoryScores).map(([category, score]: [string, any]) => (
                 <div key={category}>
-                  <div className="flex justify-between text-sm text-gray-400 mb-1">
+                  <div className="flex justify-between text-sm text-muted-foreground mb-1">
                     <span>{CATEGORY_NAMES[category]}</span>
                     <span className={getScoreColor(score)}>{score} / 30</span>
                   </div>
@@ -285,21 +285,21 @@ export default function GeumjjokiTestPage() {
           </div>
 
           {/* Category Analysis */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">상세 분석</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">상세 분석</h3>
             <div className="space-y-4">
               {Object.entries(result.analysis.categoryAnalysis || {}).map(([category, data]: [string, any]) => (
                 <div key={category} className="border-l-4 border-orange-500 pl-4">
                   <h4 className="font-semibold text-orange-400 mb-2">
                     {CATEGORY_NAMES[category]} - {data.level}
                   </h4>
-                  <ul className="list-disc list-inside text-gray-300 space-y-1 text-sm">
+                  <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
                     {data.characteristics?.map((char: string, i: number) => (
                       <li key={i}>{char}</li>
                     ))}
                   </ul>
                   {data.impact && (
-                    <p className="mt-2 text-gray-400 text-sm">{data.impact}</p>
+                    <p className="mt-2 text-muted-foreground text-sm">{data.impact}</p>
                   )}
                 </div>
               ))}
@@ -307,12 +307,12 @@ export default function GeumjjokiTestPage() {
           </div>
 
           {/* Strengths & Challenges */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">강점과 개선점</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">강점과 개선점</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <h4 className="font-semibold text-green-400 mb-2">강점</h4>
-                <ul className="list-disc list-inside text-gray-300 space-y-1 text-sm">
+                <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
                   {result.analysis.strengths?.map((strength: string, i: number) => (
                     <li key={i}>{strength}</li>
                   ))}
@@ -320,7 +320,7 @@ export default function GeumjjokiTestPage() {
               </div>
               <div>
                 <h4 className="font-semibold text-yellow-400 mb-2">개선이 필요한 습관</h4>
-                <ul className="list-disc list-inside text-gray-300 space-y-1 text-sm">
+                <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
                   {result.analysis.challenges?.map((challenge: string, i: number) => (
                     <li key={i}>{challenge}</li>
                   ))}
@@ -330,12 +330,12 @@ export default function GeumjjokiTestPage() {
           </div>
 
           {/* Improvement */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">개선 가이드</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">개선 가이드</h3>
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold text-orange-400 mb-2">최우선 개선사항</h4>
-                <ul className="list-decimal list-inside text-gray-300 space-y-1">
+                <ul className="list-decimal list-inside text-muted-foreground space-y-1">
                   {result.analysis.improvement?.priority?.map((item: string, i: number) => (
                     <li key={i}>{item}</li>
                   ))}
@@ -343,14 +343,14 @@ export default function GeumjjokiTestPage() {
               </div>
               <div>
                 <h4 className="font-semibold text-blue-400 mb-2">실천 가능한 팁</h4>
-                <ul className="list-disc list-inside text-gray-300 space-y-1">
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   {result.analysis.improvement?.tips?.map((tip: string, i: number) => (
                     <li key={i}>{tip}</li>
                   ))}
                 </ul>
               </div>
               <div className="bg-orange-900/20 border border-orange-500 rounded-lg p-4">
-                <p className="text-gray-300 italic">
+                <p className="text-muted-foreground italic">
                   {result.analysis.improvement?.encouragement}
                 </p>
               </div>
@@ -358,9 +358,9 @@ export default function GeumjjokiTestPage() {
           </div>
 
           {/* For Others */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">주변 사람들을 위한</h3>
-            <div className="space-y-3 text-gray-300">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">주변 사람들을 위한</h3>
+            <div className="space-y-3 text-muted-foreground">
               <p><strong className="text-orange-400">그들이 느끼는 점:</strong> {result.analysis.forOthers?.howTheyFeel}</p>
               <p><strong className="text-orange-400">조언:</strong> {result.analysis.forOthers?.advice}</p>
             </div>

@@ -97,12 +97,12 @@ export default function ProfileGeneratorPage() {
       >
         <div className="space-y-6">
           <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-xl p-6 border border-cyan-500/30">
-            <h3 className="text-white text-xl font-bold mb-4">AI 프로페셔널 헤드샷</h3>
-            <p className="text-[#ab9eb7] leading-relaxed mb-4">
+            <h3 className="text-foreground text-xl font-bold mb-4">AI 프로페셔널 헤드샷</h3>
+            <p className="text-muted-foreground leading-relaxed mb-4">
               평범한 셀카를 링크드인, 이력서, 사원증에 사용할 수 있는
               고품질 스튜디오 사진으로 변환합니다.
             </p>
-            <ul className="space-y-2 text-sm text-[#ab9eb7]">
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-cyan-400 text-lg">check_circle</span>
                 스튜디오 촬영 비용 절감
@@ -118,15 +118,15 @@ export default function ProfileGeneratorPage() {
             </ul>
           </div>
 
-          <div className="bg-background-dark rounded-lg p-4 border border-gray-700">
-            <p className="text-[#ab9eb7] text-sm">
+          <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+            <p className="text-muted-foreground text-sm">
               <span className="text-cyan-400 font-semibold">{serviceCost} 크레딧</span>이 필요합니다
             </p>
           </div>
 
           <button
             onClick={() => setShowIntro(false)}
-            className="w-full py-4 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-lg transition"
+            className="w-full py-4 bg-cyan-600 hover:bg-cyan-700 text-foreground font-semibold rounded-lg transition"
           >
             시작하기
           </button>
@@ -147,7 +147,7 @@ export default function ProfileGeneratorPage() {
           <>
             {/* Image Upload */}
             <div>
-              <label className="block text-white font-medium mb-3">사진 업로드</label>
+              <label className="block text-foreground font-medium mb-3">사진 업로드</label>
               <input
                 type="file"
                 accept="image/*"
@@ -158,12 +158,12 @@ export default function ProfileGeneratorPage() {
               {!uploadedImage ? (
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-gray-600 rounded-xl p-8 text-center cursor-pointer hover:border-cyan-500 transition"
+                  className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center cursor-pointer hover:border-cyan-500 transition"
                 >
                   <span className="material-symbols-outlined text-5xl text-gray-500 mb-3">
                     add_photo_alternate
                   </span>
-                  <p className="text-[#ab9eb7]">클릭하여 사진 업로드</p>
+                  <p className="text-muted-foreground">클릭하여 사진 업로드</p>
                   <p className="text-gray-500 text-sm mt-1">정면 얼굴 사진 권장</p>
                 </div>
               ) : (
@@ -180,7 +180,7 @@ export default function ProfileGeneratorPage() {
                     }}
                     className="absolute top-2 right-2 p-2 bg-black/50 rounded-full hover:bg-black/70 transition"
                   >
-                    <span className="material-symbols-outlined text-white">close</span>
+                    <span className="material-symbols-outlined text-foreground">close</span>
                   </button>
                 </div>
               )}
@@ -188,7 +188,7 @@ export default function ProfileGeneratorPage() {
 
             {/* Style Selection */}
             <div>
-              <label className="block text-white font-medium mb-3">스타일 선택</label>
+              <label className="block text-foreground font-medium mb-3">스타일 선택</label>
               <div className="grid grid-cols-1 gap-3">
                 {styleOptions.map((option) => (
                   <button
@@ -197,13 +197,13 @@ export default function ProfileGeneratorPage() {
                     className={`p-4 rounded-lg border text-left transition ${
                       style === option.value
                         ? 'border-cyan-500 bg-cyan-500/10'
-                        : 'border-gray-600 hover:border-gray-500'
+                        : 'border-gray-300 dark:border-gray-600 hover:border-gray-500'
                     }`}
                   >
-                    <p className={`font-semibold ${style === option.value ? 'text-cyan-400' : 'text-white'}`}>
+                    <p className={`font-semibold ${style === option.value ? 'text-cyan-400' : 'text-foreground'}`}>
                       {option.label}
                     </p>
-                    <p className="text-sm text-[#ab9eb7]">{option.desc}</p>
+                    <p className="text-sm text-muted-foreground">{option.desc}</p>
                   </button>
                 ))}
               </div>
@@ -222,7 +222,7 @@ export default function ProfileGeneratorPage() {
         {resultImage && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-cyan-500/10 rounded-xl p-4 border border-cyan-500/20">
-              <h3 className="text-white font-semibold mb-3">생성된 프로필 사진</h3>
+              <h3 className="text-foreground font-semibold mb-3">생성된 프로필 사진</h3>
               <img
                 src={resultImage}
                 alt="Professional Headshot"
@@ -234,13 +234,13 @@ export default function ProfileGeneratorPage() {
               <a
                 href={resultImage}
                 download="professional-headshot.png"
-                className="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white text-center rounded-lg transition"
+                className="flex-1 py-3 bg-green-600 hover:bg-green-700 text-foreground text-center rounded-lg transition"
               >
                 다운로드
               </a>
               <button
                 onClick={handleReset}
-                className="flex-1 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition"
+                className="flex-1 py-3 bg-cyan-600 hover:bg-cyan-700 text-foreground rounded-lg transition"
               >
                 다시 생성
               </button>

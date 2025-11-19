@@ -96,11 +96,11 @@ export default function BigFiveTestPage() {
       {/* Introduction */}
       {step === 'intro' && (
         <div className="space-y-6">
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               Big Five 성격 테스트란?
             </h3>
-            <div className="space-y-4 text-gray-300">
+            <div className="space-y-4 text-muted-foreground">
               <p>
                 Big Five(빅 파이브)는 가장 과학적으로 검증된 성격 분류 모델로, 5가지 핵심 특성(OCEAN)을 통해 개인의 성격을 이해합니다.
               </p>
@@ -119,8 +119,8 @@ export default function BigFiveTestPage() {
             <div className="bg-green-900/20 border border-green-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white font-semibold">Big Five 성격 테스트</p>
-                  <p className="text-gray-400 text-sm">25개의 질문 + AI 분석</p>
+                  <p className="text-foreground font-semibold">Big Five 성격 테스트</p>
+                  <p className="text-muted-foreground text-sm">25개의 질문 + AI 분석</p>
                 </div>
                 <div className="text-right">
                   <p className="text-green-400 font-bold text-xl">30 크레딧</p>
@@ -130,7 +130,7 @@ export default function BigFiveTestPage() {
 
             <button
               onClick={handleStartTest}
-              className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"
+              className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-foreground font-semibold rounded-lg transition-colors"
             >
               테스트 시작 (30 크레딧)
             </button>
@@ -142,7 +142,7 @@ export default function BigFiveTestPage() {
       {step === 'test' && !loading && questions.length > 0 && (
         <div className="space-y-6">
           <div className="mb-6">
-            <div className="flex justify-between text-sm text-gray-400 mb-2">
+            <div className="flex justify-between text-sm text-muted-foreground mb-2">
               <span>진행률</span>
               <span>{currentQuestionIndex + 1} / {questions.length}</span>
             </div>
@@ -154,8 +154,8 @@ export default function BigFiveTestPage() {
             </div>
           </div>
 
-          <div className="bg-gray-800 rounded-lg p-6">
-            <p className="text-lg text-white mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <p className="text-lg text-foreground mb-6">
               {questions[currentQuestionIndex]?.question}
             </p>
 
@@ -172,8 +172,8 @@ export default function BigFiveTestPage() {
                   onClick={() => handleAnswer(option.value)}
                   className={`w-full px-6 py-3 rounded-lg transition-colors ${
                     answers[currentQuestionIndex] === option.value
-                      ? 'bg-green-600 text-white'
-                      : 'bg-gray-700 hover:bg-gray-600 text-white'
+                      ? 'bg-green-600 text-foreground'
+                      : 'bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-foreground'
                   }`}
                 >
                   {option.label}
@@ -184,7 +184,7 @@ export default function BigFiveTestPage() {
             {currentQuestionIndex > 0 && (
               <button
                 onClick={handlePrevious}
-                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-lg"
+                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground rounded-lg"
               >
                 이전 질문
               </button>
@@ -197,7 +197,7 @@ export default function BigFiveTestPage() {
       {loading && (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-green-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">AI가 분석 중입니다...</p>
+          <p className="text-muted-foreground">AI가 분석 중입니다...</p>
         </div>
       )}
 
@@ -213,13 +213,13 @@ export default function BigFiveTestPage() {
         <div className="space-y-6">
           {/* Summary */}
           <div className="bg-gradient-to-r from-green-900 to-teal-900 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">종합 분석</h3>
-            <p className="text-gray-300 leading-relaxed">{result.analysis.summary.overview}</p>
+            <h3 className="text-xl font-semibold text-foreground mb-4">종합 분석</h3>
+            <p className="text-muted-foreground leading-relaxed">{result.analysis.summary.overview}</p>
             <div className="mt-4">
               <h4 className="font-semibold text-green-300 mb-2">두드러진 특성</h4>
               <div className="flex flex-wrap gap-2">
                 {result.analysis.summary.dominantTraits.map((trait: string, i: number) => (
-                  <span key={i} className="px-3 py-1 bg-green-700 text-white rounded-full text-sm">
+                  <span key={i} className="px-3 py-1 bg-green-700 text-foreground rounded-full text-sm">
                     {trait}
                   </span>
                 ))}
@@ -228,12 +228,12 @@ export default function BigFiveTestPage() {
           </div>
 
           {/* Trait Scores */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">특성별 점수</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">특성별 점수</h3>
             <div className="space-y-4">
               {Object.entries(result.traitScores).map(([trait, score]: [string, any]) => (
                 <div key={trait}>
-                  <div className="flex justify-between text-sm text-gray-400 mb-1">
+                  <div className="flex justify-between text-sm text-muted-foreground mb-1">
                     <span>{TRAIT_NAMES[trait]}</span>
                     <span>{score}/25점</span>
                   </div>
@@ -250,15 +250,15 @@ export default function BigFiveTestPage() {
 
           {/* Trait Details */}
           {Object.entries(result.analysis.traits).map(([trait, data]: [string, any]) => (
-            <div key={trait} className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-white mb-2">
+            <div key={trait} className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-2">
                 {TRAIT_NAMES[trait]} - {data.level}
               </h3>
-              <p className="text-gray-300 mb-4">{data.description}</p>
+              <p className="text-muted-foreground mb-4">{data.description}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <h4 className="font-semibold text-green-400 mb-2">강점</h4>
-                  <ul className="list-disc list-inside text-gray-300 space-y-1">
+                  <ul className="list-disc list-inside text-muted-foreground space-y-1">
                     {data.strengths.map((s: string, i: number) => (
                       <li key={i}>{s}</li>
                     ))}
@@ -266,7 +266,7 @@ export default function BigFiveTestPage() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-yellow-400 mb-2">어려움</h4>
-                  <ul className="list-disc list-inside text-gray-300 space-y-1">
+                  <ul className="list-disc list-inside text-muted-foreground space-y-1">
                     {data.challenges.map((c: string, i: number) => (
                       <li key={i}>{c}</li>
                     ))}
@@ -277,8 +277,8 @@ export default function BigFiveTestPage() {
           ))}
 
           {/* Career */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">커리어</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">커리어</h3>
             <div className="space-y-3">
               <div>
                 <h4 className="font-semibold text-green-400 mb-2">적합한 분야</h4>
@@ -290,15 +290,15 @@ export default function BigFiveTestPage() {
                   ))}
                 </div>
               </div>
-              <p className="text-gray-300"><strong className="text-green-400">업무 스타일:</strong> {result.analysis.career.workStyle}</p>
-              <p className="text-gray-300"><strong className="text-green-400">팀 역할:</strong> {result.analysis.career.teamRole}</p>
+              <p className="text-muted-foreground"><strong className="text-green-400">업무 스타일:</strong> {result.analysis.career.workStyle}</p>
+              <p className="text-muted-foreground"><strong className="text-green-400">팀 역할:</strong> {result.analysis.career.teamRole}</p>
             </div>
           </div>
 
           {/* Relationships */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">대인관계</h3>
-            <div className="space-y-3 text-gray-300">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">대인관계</h3>
+            <div className="space-y-3 text-muted-foreground">
               <p><strong className="text-green-400">스타일:</strong> {result.analysis.relationships.interpersonalStyle}</p>
               <div>
                 <h4 className="font-semibold text-green-400 mb-2">의사소통 팁</h4>
@@ -313,12 +313,12 @@ export default function BigFiveTestPage() {
           </div>
 
           {/* Growth */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">성장 조언</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">성장 조언</h3>
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold text-green-400 mb-2">추천사항</h4>
-                <ul className="list-disc list-inside text-gray-300 space-y-1">
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   {result.analysis.growth.recommendations.map((rec: string, i: number) => (
                     <li key={i}>{rec}</li>
                   ))}
@@ -326,7 +326,7 @@ export default function BigFiveTestPage() {
               </div>
               <div>
                 <h4 className="font-semibold text-yellow-400 mb-2">균형 조언</h4>
-                <ul className="list-disc list-inside text-gray-300 space-y-1">
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   {result.analysis.growth.balanceTips.map((tip: string, i: number) => (
                     <li key={i}>{tip}</li>
                   ))}

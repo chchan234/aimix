@@ -84,20 +84,20 @@ export default function BabyFacePage() {
     >
       <div className="space-y-6">
         {showIntro && !resultImage && (
-          <div className="bg-background-dark rounded-lg p-4 border border-pink-500/20">
-            <h3 className="text-white font-semibold mb-2">서비스 안내</h3>
-            <p className="text-[#ab9eb7] text-sm leading-relaxed mb-3">
+          <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-pink-500/20">
+            <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
+            <p className="text-muted-foreground text-sm leading-relaxed mb-3">
               두 부모의 얼굴 사진을 업로드하면 AI가 미래 아이의 얼굴을 예측합니다.
               일반 스타일과 아이돌 버전 중 선택할 수 있습니다.
             </p>
-            <ul className="text-[#ab9eb7] text-sm space-y-1">
+            <ul className="text-muted-foreground text-sm space-y-1">
               <li>• 정면 얼굴이 잘 보이는 사진을 사용하세요</li>
               <li>• 두 사람의 얼굴이 선명하게 나온 사진이 좋습니다</li>
               <li>• 결과는 재미용이며 실제와 다를 수 있습니다</li>
             </ul>
             <button
               onClick={() => setShowIntro(false)}
-              className="mt-4 w-full px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition"
+              className="mt-4 w-full px-4 py-2 bg-pink-600 hover:bg-pink-700 text-foreground rounded-lg transition"
             >
               시작하기
             </button>
@@ -121,14 +121,14 @@ export default function BabyFacePage() {
               </div>
             </div>
 
-            <div className="bg-background-dark rounded-lg p-4 border border-pink-500/20">
-              <h3 className="text-white font-semibold mb-3">스타일 선택</h3>
+            <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-pink-500/20">
+              <h3 className="text-foreground font-semibold mb-3">스타일 선택</h3>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => setStyle('normal')}
                   className={`px-4 py-3 rounded-lg transition text-sm font-medium ${
                     style === 'normal'
-                      ? 'bg-pink-600 text-white'
+                      ? 'bg-pink-600 text-foreground'
                       : 'bg-pink-500/20 text-pink-400 hover:bg-pink-500/30'
                   }`}
                 >
@@ -138,7 +138,7 @@ export default function BabyFacePage() {
                   onClick={() => setStyle('idol')}
                   className={`px-4 py-3 rounded-lg transition text-sm font-medium ${
                     style === 'idol'
-                      ? 'bg-pink-600 text-white'
+                      ? 'bg-pink-600 text-foreground'
                       : 'bg-pink-500/20 text-pink-400 hover:bg-pink-500/30'
                   }`}
                 >
@@ -160,7 +160,7 @@ export default function BabyFacePage() {
         {resultImage && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-pink-500/10 rounded-lg p-4 border border-pink-500/20">
-              <h3 className="text-white font-semibold mb-3">
+              <h3 className="text-foreground font-semibold mb-3">
                 예측된 아이 얼굴 {style === 'idol' ? '(아이돌 버전)' : ''}
               </h3>
               <img
@@ -172,7 +172,7 @@ export default function BabyFacePage() {
 
             <button
               onClick={handleReset}
-              className="w-full px-4 py-3 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition"
+              className="w-full px-4 py-3 bg-pink-600 hover:bg-pink-700 text-foreground rounded-lg transition"
             >
               다시 예측하기
             </button>

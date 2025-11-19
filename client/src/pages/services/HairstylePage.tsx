@@ -79,12 +79,12 @@ export default function HairstylePage() {
       color="red"
     >
       <div className="space-y-6">
-        <div className="bg-background-dark rounded-lg p-4 border border-red-500/20">
-          <h3 className="text-white font-semibold mb-2">서비스 안내</h3>
-          <p className="text-[#ab9eb7] text-sm leading-relaxed">
+        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-red-500/20">
+          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             사진 속 헤어스타일을 원하는 스타일로 변환합니다.
           </p>
-          <ul className="text-[#ab9eb7] text-sm mt-2 space-y-1">
+          <ul className="text-muted-foreground text-sm mt-2 space-y-1">
             <li>• 예: 파마, 단발머리, 긴 웨이브 머리, 짧은 파마, 투블럭 등</li>
           </ul>
         </div>
@@ -98,7 +98,7 @@ export default function HairstylePage() {
 
             {image && (
               <div>
-                <label className="block text-white font-medium mb-2">
+                <label className="block text-foreground font-medium mb-2">
                   원하는 헤어스타일
                 </label>
                 <input
@@ -106,7 +106,7 @@ export default function HairstylePage() {
                   value={hairstyleDescription}
                   onChange={(e) => setHairstyleDescription(e.target.value)}
                   placeholder="예: 긴 웨이브 머리, 짧은 단발머리, 펌 머리 등"
-                  className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-500"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground placeholder-gray-400 focus:outline-none focus:border-red-500"
                 />
               </div>
             )}
@@ -124,7 +124,7 @@ export default function HairstylePage() {
         {resultImage && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-red-500/10 rounded-lg p-4 border border-red-500/20">
-              <h3 className="text-white font-semibold mb-3">헤어스타일 변환 결과</h3>
+              <h3 className="text-foreground font-semibold mb-3">헤어스타일 변환 결과</h3>
               <img
                 src={resultImage}
                 alt="Hairstyle Transform Result"
@@ -134,7 +134,7 @@ export default function HairstylePage() {
 
             <button
               onClick={() => setResultImage(null)}
-              className="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
+              className="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-foreground rounded-lg transition"
             >
               다시 생성하기
             </button>

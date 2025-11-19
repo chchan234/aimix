@@ -84,9 +84,9 @@ export default function PalmistryPage() {
       color="green"
     >
       <div className="space-y-6">
-        <div className="bg-background-dark rounded-lg p-4 border border-green-500/20">
-          <h3 className="text-white font-semibold mb-2">서비스 안내</h3>
-          <p className="text-[#ab9eb7] text-sm leading-relaxed">
+        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-green-500/20">
+          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             손바닥 사진을 업로드하면 AI가 손금을 분석하여 운세와 성격을 알려드립니다.
             생명선, 운명선, 감정선, 지능선, 재물선, 결혼선, 태양선을 포함한 종합 분석을 제공합니다.
           </p>
@@ -95,7 +95,7 @@ export default function PalmistryPage() {
         {!result && (
           <div className="space-y-4">
             <div>
-              <label className="block text-white font-medium mb-2">
+              <label className="block text-foreground font-medium mb-2">
                 손 선택
               </label>
               <div className="flex gap-4">
@@ -108,7 +108,7 @@ export default function PalmistryPage() {
                     onChange={(e) => setHand(e.target.value as 'right')}
                     className="w-4 h-4 text-green-600"
                   />
-                  <span className="text-white">오른손</span>
+                  <span className="text-foreground">오른손</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -119,13 +119,13 @@ export default function PalmistryPage() {
                     onChange={(e) => setHand(e.target.value as 'left')}
                     className="w-4 h-4 text-green-600"
                   />
-                  <span className="text-white">왼손</span>
+                  <span className="text-foreground">왼손</span>
                 </label>
               </div>
             </div>
 
             <div>
-              <label className="block text-white font-medium mb-2">
+              <label className="block text-foreground font-medium mb-2">
                 손바닥 이미지 업로드
               </label>
               <input
@@ -137,11 +137,11 @@ export default function PalmistryPage() {
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white hover:border-green-500 transition"
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground hover:border-green-500 transition"
               >
                 {imagePreview ? '이미지 변경하기' : '이미지 선택하기'}
               </button>
-              <p className="text-[#ab9eb7] text-xs mt-1">
+              <p className="text-muted-foreground text-xs mt-1">
                 손바닥이 선명하게 보이는 사진을 업로드해주세요
               </p>
             </div>
@@ -170,13 +170,13 @@ export default function PalmistryPage() {
         {result?.analysis && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-green-500/10 rounded-lg p-4 border border-green-500/20">
-              <h3 className="text-white font-semibold mb-3">🖐 수상 분석 결과</h3>
+              <h3 className="text-foreground font-semibold mb-3">🖐 수상 분석 결과</h3>
 
               {result.analysis.handShape && (
                 <div className="mb-4 pb-4 border-b border-green-500/10">
                   <h4 className="text-green-400 font-medium mb-2">손 모양</h4>
-                  <p className="text-white text-sm mb-1">{result.analysis.handShape.type}</p>
-                  <p className="text-[#ab9eb7] text-sm">{result.analysis.handShape.description}</p>
+                  <p className="text-foreground text-sm mb-1">{result.analysis.handShape.type}</p>
+                  <p className="text-muted-foreground text-sm">{result.analysis.handShape.description}</p>
                 </div>
               )}
 
@@ -184,9 +184,9 @@ export default function PalmistryPage() {
                 <div className="space-y-3">
                   <h4 className="text-green-400 font-medium">주요 손금 분석</h4>
                   {Object.entries(result.analysis.majorLines).map(([key, value]: [string, any]) => (
-                    <div key={key} className="bg-background-dark p-3 rounded">
-                      <p className="text-white font-medium text-sm mb-1">{value.description}</p>
-                      <p className="text-[#ab9eb7] text-xs">{value.fortune}</p>
+                    <div key={key} className="bg-gray-50 dark:bg-[#0d0d0d] p-3 rounded">
+                      <p className="text-foreground font-medium text-sm mb-1">{value.description}</p>
+                      <p className="text-muted-foreground text-xs">{value.fortune}</p>
                     </div>
                   ))}
                 </div>
@@ -197,7 +197,7 @@ export default function PalmistryPage() {
                   <h4 className="text-green-400 font-medium mb-2">조언</h4>
                   <ul className="space-y-1">
                     {result.analysis.advice.map((item: string, idx: number) => (
-                      <li key={idx} className="text-[#ab9eb7] text-sm">• {item}</li>
+                      <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
                     ))}
                   </ul>
                 </div>
@@ -209,7 +209,7 @@ export default function PalmistryPage() {
                 setResult(null);
                 setImagePreview(null);
               }}
-              className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition"
+              className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-foreground rounded-lg transition"
             >
               다시 분석하기
             </button>

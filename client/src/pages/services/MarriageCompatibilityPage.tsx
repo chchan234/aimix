@@ -74,9 +74,9 @@ export default function MarriageCompatibilityPage() {
       color="red"
     >
       <div className="space-y-6">
-        <div className="bg-background-dark rounded-lg p-4 border border-red-500/20">
-          <h3 className="text-white font-semibold mb-2">서비스 안내</h3>
-          <p className="text-[#ab9eb7] text-sm leading-relaxed">
+        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-red-500/20">
+          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             두 사람의 이름과 생년월일을 기반으로 결혼 궁합을 종합적으로 분석합니다.
             사주 궁합, 이름 궁합, 세부 결혼 궁합 항목을 포함한 100점 만점 평가를 제공합니다.
           </p>
@@ -84,11 +84,11 @@ export default function MarriageCompatibilityPage() {
 
         {!result && (
           <div className="space-y-4">
-            <div className="bg-background-dark/50 rounded-lg p-4 border border-red-500/10">
-              <h4 className="text-white font-medium mb-3">첫 번째 사람</h4>
+            <div className="bg-gray-50 dark:bg-[#0d0d0d]/50 rounded-lg p-4 border border-red-500/10">
+              <h4 className="text-foreground font-medium mb-3">첫 번째 사람</h4>
               <div className="space-y-3">
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-foreground text-sm font-medium mb-2">
                     이름
                   </label>
                   <input
@@ -96,28 +96,28 @@ export default function MarriageCompatibilityPage() {
                     value={person1Name}
                     onChange={(e) => setPerson1Name(e.target.value)}
                     placeholder="홍길동"
-                    className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white focus:outline-none focus:border-red-500"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground focus:outline-none focus:border-red-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-foreground text-sm font-medium mb-2">
                     생년월일
                   </label>
                   <input
                     type="date"
                     value={person1BirthDate}
                     onChange={(e) => setPerson1BirthDate(e.target.value)}
-                    className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white focus:outline-none focus:border-red-500"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground focus:outline-none focus:border-red-500"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="bg-background-dark/50 rounded-lg p-4 border border-red-500/10">
-              <h4 className="text-white font-medium mb-3">두 번째 사람</h4>
+            <div className="bg-gray-50 dark:bg-[#0d0d0d]/50 rounded-lg p-4 border border-red-500/10">
+              <h4 className="text-foreground font-medium mb-3">두 번째 사람</h4>
               <div className="space-y-3">
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-foreground text-sm font-medium mb-2">
                     이름
                   </label>
                   <input
@@ -125,18 +125,18 @@ export default function MarriageCompatibilityPage() {
                     value={person2Name}
                     onChange={(e) => setPerson2Name(e.target.value)}
                     placeholder="김영희"
-                    className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white focus:outline-none focus:border-red-500"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground focus:outline-none focus:border-red-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-foreground text-sm font-medium mb-2">
                     생년월일
                   </label>
                   <input
                     type="date"
                     value={person2BirthDate}
                     onChange={(e) => setPerson2BirthDate(e.target.value)}
-                    className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white focus:outline-none focus:border-red-500"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground focus:outline-none focus:border-red-500"
                   />
                 </div>
               </div>
@@ -155,14 +155,14 @@ export default function MarriageCompatibilityPage() {
         {result?.analysis && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-red-500/10 rounded-lg p-4 border border-red-500/20">
-              <h3 className="text-white font-semibold mb-3">💑 결혼 궁합</h3>
+              <h3 className="text-foreground font-semibold mb-3">💑 결혼 궁합</h3>
 
               <div className="mb-4 pb-4 border-b border-red-500/10 text-center">
                 <div className="text-4xl font-bold text-red-400 mb-2">
                   {result.analysis.overallScore}점
                 </div>
-                <div className="text-white text-lg mb-2">{result.analysis.grade}</div>
-                <p className="text-[#ab9eb7] text-sm">{result.analysis.suitability}</p>
+                <div className="text-foreground text-lg mb-2">{result.analysis.grade}</div>
+                <p className="text-muted-foreground text-sm">{result.analysis.suitability}</p>
               </div>
 
               {result.analysis.sajuCompatibility && (
@@ -171,13 +171,13 @@ export default function MarriageCompatibilityPage() {
                     사주 궁합 ({result.analysis.sajuCompatibility.score}/{result.analysis.sajuCompatibility.maxScore}점)
                   </h4>
                   <div className="space-y-2">
-                    <div className="bg-background-dark p-2 rounded">
-                      <span className="text-[#ab9eb7] text-xs">오행 상생상극:</span>
-                      <p className="text-white text-sm">{result.analysis.sajuCompatibility.elementHarmony.analysis}</p>
+                    <div className="bg-gray-50 dark:bg-[#0d0d0d] p-2 rounded">
+                      <span className="text-muted-foreground text-xs">오행 상생상극:</span>
+                      <p className="text-foreground text-sm">{result.analysis.sajuCompatibility.elementHarmony.analysis}</p>
                     </div>
-                    <div className="bg-background-dark p-2 rounded">
-                      <span className="text-[#ab9eb7] text-xs">음양 조화:</span>
-                      <p className="text-white text-sm">{result.analysis.sajuCompatibility.yinYangBalance.analysis}</p>
+                    <div className="bg-gray-50 dark:bg-[#0d0d0d] p-2 rounded">
+                      <span className="text-muted-foreground text-xs">음양 조화:</span>
+                      <p className="text-foreground text-sm">{result.analysis.sajuCompatibility.yinYangBalance.analysis}</p>
                     </div>
                   </div>
                 </div>
@@ -189,9 +189,9 @@ export default function MarriageCompatibilityPage() {
                     이름 궁합 ({result.analysis.nameCompatibility.score}/{result.analysis.nameCompatibility.maxScore}점)
                   </h4>
                   <div className="space-y-2">
-                    <div className="bg-background-dark p-2 rounded">
-                      <span className="text-[#ab9eb7] text-xs">획수 조화:</span>
-                      <p className="text-white text-sm">{result.analysis.nameCompatibility.strokeHarmony.analysis}</p>
+                    <div className="bg-gray-50 dark:bg-[#0d0d0d] p-2 rounded">
+                      <span className="text-muted-foreground text-xs">획수 조화:</span>
+                      <p className="text-foreground text-sm">{result.analysis.nameCompatibility.strokeHarmony.analysis}</p>
                     </div>
                   </div>
                 </div>
@@ -202,12 +202,12 @@ export default function MarriageCompatibilityPage() {
                   <h4 className="text-red-400 font-medium mb-2">세부 결혼 궁합</h4>
                   <div className="grid gap-2">
                     {Object.entries(result.analysis.detailedAnalysis).map(([key, value]: [string, any]) => (
-                      <div key={key} className="bg-background-dark p-2 rounded">
+                      <div key={key} className="bg-gray-50 dark:bg-[#0d0d0d] p-2 rounded">
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-[#ab9eb7] text-xs capitalize">{key}:</span>
-                          <span className="text-white text-xs font-medium">{value.score}점</span>
+                          <span className="text-muted-foreground text-xs capitalize">{key}:</span>
+                          <span className="text-foreground text-xs font-medium">{value.score}점</span>
                         </div>
-                        <p className="text-white text-sm">{value.analysis}</p>
+                        <p className="text-foreground text-sm">{value.analysis}</p>
                       </div>
                     ))}
                   </div>
@@ -217,9 +217,9 @@ export default function MarriageCompatibilityPage() {
               {result.analysis.bestMarriageTiming && (
                 <div className="mb-4 pb-4 border-b border-red-500/10">
                   <h4 className="text-red-400 font-medium mb-2">결혼 적기</h4>
-                  <p className="text-white text-sm mb-2">{result.analysis.bestMarriageTiming.reason}</p>
+                  <p className="text-foreground text-sm mb-2">{result.analysis.bestMarriageTiming.reason}</p>
                   {result.analysis.bestMarriageTiming.recommendedPeriods && (
-                    <div className="text-[#ab9eb7] text-xs">
+                    <div className="text-muted-foreground text-xs">
                       추천: {result.analysis.bestMarriageTiming.recommendedPeriods.join(', ')}
                     </div>
                   )}
@@ -232,20 +232,20 @@ export default function MarriageCompatibilityPage() {
                   <div className="space-y-2">
                     {result.analysis.advice.strengths && (
                       <div>
-                        <h5 className="text-[#ab9eb7] text-xs mb-1">강점</h5>
+                        <h5 className="text-muted-foreground text-xs mb-1">강점</h5>
                         <ul className="space-y-1">
                           {result.analysis.advice.strengths.map((item: string, idx: number) => (
-                            <li key={idx} className="text-white text-sm">• {item}</li>
+                            <li key={idx} className="text-foreground text-sm">• {item}</li>
                           ))}
                         </ul>
                       </div>
                     )}
                     {result.analysis.advice.tips && (
                       <div>
-                        <h5 className="text-[#ab9eb7] text-xs mb-1">행복한 결혼을 위한 조언</h5>
+                        <h5 className="text-muted-foreground text-xs mb-1">행복한 결혼을 위한 조언</h5>
                         <ul className="space-y-1">
                           {result.analysis.advice.tips.map((tip: string, idx: number) => (
-                            <li key={idx} className="text-white text-sm">• {tip}</li>
+                            <li key={idx} className="text-foreground text-sm">• {tip}</li>
                           ))}
                         </ul>
                       </div>
@@ -257,7 +257,7 @@ export default function MarriageCompatibilityPage() {
 
             <button
               onClick={() => setResult(null)}
-              className="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
+              className="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-foreground rounded-lg transition"
             >
               다시 분석하기
             </button>

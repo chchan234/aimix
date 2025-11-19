@@ -74,9 +74,9 @@ export default function IdPhotoPage() {
       color="blue"
     >
       <div className="space-y-6">
-        <div className="bg-background-dark rounded-lg p-4 border border-blue-500/20">
-          <h3 className="text-white font-semibold mb-2">서비스 안내</h3>
-          <p className="text-[#ab9eb7] text-sm leading-relaxed">
+        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-blue-500/20">
+          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             사진을 전문적인 증명사진 형식으로 변환합니다.
           </p>
         </div>
@@ -90,13 +90,13 @@ export default function IdPhotoPage() {
 
             {image && (
               <div>
-                <label className="block text-white font-medium mb-2">
+                <label className="block text-foreground font-medium mb-2">
                   배경색
                 </label>
                 <select
                   value={backgroundColor}
                   onChange={(e) => setBackgroundColor(e.target.value as any)}
-                  className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground focus:outline-none focus:border-blue-500"
                 >
                   <option value="white">흰색</option>
                   <option value="blue">파란색</option>
@@ -118,7 +118,7 @@ export default function IdPhotoPage() {
         {resultImage && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-blue-500/10 rounded-lg p-4 border border-blue-500/20">
-              <h3 className="text-white font-semibold mb-3">증명사진 결과</h3>
+              <h3 className="text-foreground font-semibold mb-3">증명사진 결과</h3>
               <img
                 src={resultImage}
                 alt="ID Photo Result"
@@ -128,7 +128,7 @@ export default function IdPhotoPage() {
 
             <button
               onClick={() => setResultImage(null)}
-              className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+              className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-foreground rounded-lg transition"
             >
               다시 생성하기
             </button>

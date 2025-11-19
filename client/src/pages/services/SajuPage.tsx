@@ -72,9 +72,9 @@ export default function SajuPage() {
     >
       <div className="space-y-6">
         {/* Service Description */}
-        <div className="bg-background-dark rounded-lg p-4 border border-purple-500/20">
-          <h3 className="text-white font-semibold mb-2">서비스 안내</h3>
-          <p className="text-[#ab9eb7] text-sm leading-relaxed">
+        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-purple-500/20">
+          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             생년월일과 태어난 시간을 기반으로 사주팔자를 분석하고,
             오행의 균형과 운세를 예측해드립니다. AI가 전통 명리학을
             바탕으로 당신의 사주를 해석합니다.
@@ -85,34 +85,34 @@ export default function SajuPage() {
         {!result && (
           <div className="space-y-4">
             <div>
-              <label className="block text-white font-medium mb-2">
+              <label className="block text-foreground font-medium mb-2">
                 생년월일
               </label>
               <input
                 type="date"
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
-                className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground focus:outline-none focus:border-purple-500"
               />
             </div>
 
             <div>
-              <label className="block text-white font-medium mb-2">
+              <label className="block text-foreground font-medium mb-2">
                 태어난 시간
               </label>
               <input
                 type="time"
                 value={birthTime}
                 onChange={(e) => setBirthTime(e.target.value)}
-                className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground focus:outline-none focus:border-purple-500"
               />
-              <p className="text-[#ab9eb7] text-xs mt-1">
+              <p className="text-muted-foreground text-xs mt-1">
                 모르는 경우 대략적인 시간을 입력해주세요
               </p>
             </div>
 
             <div>
-              <label className="block text-white font-medium mb-2">
+              <label className="block text-foreground font-medium mb-2">
                 성별
               </label>
               <div className="flex gap-4">
@@ -125,7 +125,7 @@ export default function SajuPage() {
                     onChange={(e) => setGender(e.target.value as 'male')}
                     className="w-4 h-4 text-purple-600"
                   />
-                  <span className="text-white">남성</span>
+                  <span className="text-foreground">남성</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -136,7 +136,7 @@ export default function SajuPage() {
                     onChange={(e) => setGender(e.target.value as 'female')}
                     className="w-4 h-4 text-purple-600"
                   />
-                  <span className="text-white">여성</span>
+                  <span className="text-foreground">여성</span>
                 </label>
               </div>
             </div>
@@ -154,86 +154,86 @@ export default function SajuPage() {
         {/* Result */}
         {result && (
           <div className="space-y-4">
-            <div className="bg-background-dark rounded-lg p-6 border border-purple-500/20">
-              <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+            <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-6 border border-purple-500/20">
+              <h3 className="text-foreground font-semibold mb-4 flex items-center gap-2">
                 <span className="material-symbols-outlined">auto_awesome</span>
                 분석 결과
               </h3>
-              <div className="text-[#ab9eb7] space-y-4">
+              <div className="text-muted-foreground space-y-4">
                 {result.analysis ? (
                   <div className="space-y-4">
                     {result.analysis.saju && (
                       <div>
-                        <h4 className="text-white font-medium mb-2">사주팔자</h4>
+                        <h4 className="text-foreground font-medium mb-2">사주팔자</h4>
                         <p className="text-sm">{result.analysis.saju}</p>
                       </div>
                     )}
                     {result.analysis.elements && typeof result.analysis.elements === 'object' && (
                       <div>
-                        <h4 className="text-white font-medium mb-2">오행 분석</h4>
+                        <h4 className="text-foreground font-medium mb-2">오행 분석</h4>
                         <div className="grid grid-cols-5 gap-2 text-sm">
                           <div className="bg-green-900/20 p-2 rounded text-center">
                             <div className="text-green-400">목(木)</div>
-                            <div className="text-white mt-1">{result.analysis.elements.wood || 0}</div>
+                            <div className="text-foreground mt-1">{result.analysis.elements.wood || 0}</div>
                           </div>
                           <div className="bg-red-900/20 p-2 rounded text-center">
                             <div className="text-red-400">화(火)</div>
-                            <div className="text-white mt-1">{result.analysis.elements.fire || 0}</div>
+                            <div className="text-foreground mt-1">{result.analysis.elements.fire || 0}</div>
                           </div>
                           <div className="bg-yellow-900/20 p-2 rounded text-center">
                             <div className="text-yellow-400">토(土)</div>
-                            <div className="text-white mt-1">{result.analysis.elements.earth || 0}</div>
+                            <div className="text-foreground mt-1">{result.analysis.elements.earth || 0}</div>
                           </div>
                           <div className="bg-gray-400/20 p-2 rounded text-center">
-                            <div className="text-gray-300">금(金)</div>
-                            <div className="text-white mt-1">{result.analysis.elements.metal || 0}</div>
+                            <div className="text-muted-foreground">금(金)</div>
+                            <div className="text-foreground mt-1">{result.analysis.elements.metal || 0}</div>
                           </div>
                           <div className="bg-blue-900/20 p-2 rounded text-center">
                             <div className="text-blue-400">수(水)</div>
-                            <div className="text-white mt-1">{result.analysis.elements.water || 0}</div>
+                            <div className="text-foreground mt-1">{result.analysis.elements.water || 0}</div>
                           </div>
                         </div>
                       </div>
                     )}
                     {result.analysis.personality && (
                       <div>
-                        <h4 className="text-white font-medium mb-2">성격과 재능</h4>
+                        <h4 className="text-foreground font-medium mb-2">성격과 재능</h4>
                         <p className="text-sm">{result.analysis.personality}</p>
                       </div>
                     )}
                     {result.analysis.wealth && (
                       <div>
-                        <h4 className="text-white font-medium mb-2">재물운</h4>
+                        <h4 className="text-foreground font-medium mb-2">재물운</h4>
                         <p className="text-sm">{result.analysis.wealth}</p>
                       </div>
                     )}
                     {result.analysis.health && (
                       <div>
-                        <h4 className="text-white font-medium mb-2">건강운</h4>
+                        <h4 className="text-foreground font-medium mb-2">건강운</h4>
                         <p className="text-sm">{result.analysis.health}</p>
                       </div>
                     )}
                     {result.analysis.love && (
                       <div>
-                        <h4 className="text-white font-medium mb-2">연애운</h4>
+                        <h4 className="text-foreground font-medium mb-2">연애운</h4>
                         <p className="text-sm">{result.analysis.love}</p>
                       </div>
                     )}
                     {result.analysis.career && (
                       <div>
-                        <h4 className="text-white font-medium mb-2">사업운</h4>
+                        <h4 className="text-foreground font-medium mb-2">사업운</h4>
                         <p className="text-sm">{result.analysis.career}</p>
                       </div>
                     )}
                     {result.analysis.yearlyFortune && (
                       <div>
-                        <h4 className="text-white font-medium mb-2">올해 운세</h4>
+                        <h4 className="text-foreground font-medium mb-2">올해 운세</h4>
                         <p className="text-sm">{result.analysis.yearlyFortune}</p>
                       </div>
                     )}
                     {result.analysis.advice && (
                       <div>
-                        <h4 className="text-white font-medium mb-2">조언</h4>
+                        <h4 className="text-foreground font-medium mb-2">조언</h4>
                         <p className="text-sm">{result.analysis.advice}</p>
                       </div>
                     )}
@@ -248,7 +248,7 @@ export default function SajuPage() {
 
             <button
               onClick={() => setResult(null)}
-              className="w-full py-3 px-6 bg-background-dark hover:bg-gray-700 text-white rounded-lg transition"
+              className="w-full py-3 px-6 bg-gray-50 dark:bg-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-gray-700 text-foreground rounded-lg transition"
             >
               다시 분석하기
             </button>

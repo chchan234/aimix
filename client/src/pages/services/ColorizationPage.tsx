@@ -73,9 +73,9 @@ export default function ColorizationPage() {
       color="green"
     >
       <div className="space-y-6">
-        <div className="bg-background-dark rounded-lg p-4 border border-green-500/20">
-          <h3 className="text-white font-semibold mb-2">서비스 안내</h3>
-          <p className="text-[#ab9eb7] text-sm leading-relaxed">
+        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-green-500/20">
+          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             흑백 사진을 컬러로 변환합니다.
           </p>
         </div>
@@ -100,7 +100,7 @@ export default function ColorizationPage() {
         {resultImage && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-green-500/10 rounded-lg p-4 border border-green-500/20">
-              <h3 className="text-white font-semibold mb-3">컬러화 결과</h3>
+              <h3 className="text-foreground font-semibold mb-3">컬러화 결과</h3>
               <img
                 src={resultImage}
                 alt="Colorization Result"
@@ -110,7 +110,7 @@ export default function ColorizationPage() {
 
             <button
               onClick={() => setResultImage(null)}
-              className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition"
+              className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-foreground rounded-lg transition"
             >
               다시 생성하기
             </button>

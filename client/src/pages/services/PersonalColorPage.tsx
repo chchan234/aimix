@@ -229,11 +229,11 @@ export default function PersonalColorPage() {
       {/* Introduction */}
       {step === 'intro' && (
         <div className="space-y-6">
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               나만의 퍼스널 컬러를 찾아보세요
             </h3>
-            <div className="space-y-4 text-gray-300">
+            <div className="space-y-4 text-muted-foreground">
               <p>
                 AI가 당신의 피부톤을 분석하여 어울리는 퍼스널 컬러를 진단해드립니다.
               </p>
@@ -258,7 +258,7 @@ export default function PersonalColorPage() {
               </div>
 
               <div className="mt-4 space-y-2">
-                <p className="font-semibold text-white">진단 내용:</p>
+                <p className="font-semibold text-foreground">진단 내용:</p>
                 <ul className="list-disc list-inside text-sm space-y-1">
                   <li>피부톤 분석 (언더톤, 명도, 채도)</li>
                   <li>추천 컬러 & 피해야 할 컬러</li>
@@ -271,8 +271,8 @@ export default function PersonalColorPage() {
             <div className="bg-purple-900/20 border border-purple-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white font-semibold">퍼스널 컬러 진단</p>
-                  <p className="text-gray-400 text-sm">피부톤 분석 + 컬러 추천</p>
+                  <p className="text-foreground font-semibold">퍼스널 컬러 진단</p>
+                  <p className="text-muted-foreground text-sm">피부톤 분석 + 컬러 추천</p>
                 </div>
                 <div className="text-right">
                   <p className="text-purple-400 font-bold text-xl">20 크레딧</p>
@@ -282,7 +282,7 @@ export default function PersonalColorPage() {
 
             <button
               onClick={handleStartTest}
-              className="w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
+              className="w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 text-foreground font-semibold rounded-lg transition-colors"
             >
               시작하기 (20 크레딧)
             </button>
@@ -294,8 +294,8 @@ export default function PersonalColorPage() {
       {step === 'upload' && !loading && (
         <div className="space-y-6">
           {/* Image Upload */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">사진 업로드</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">사진 업로드</h3>
 
             <input
               type="file"
@@ -315,19 +315,19 @@ export default function PersonalColorPage() {
                   />
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="absolute bottom-2 right-2 p-2 bg-gray-800/80 rounded-lg hover:bg-gray-700"
+                    className="absolute bottom-2 right-2 p-2 bg-white dark:bg-gray-800/80 rounded-lg hover:bg-gray-700"
                   >
-                    <span className="material-symbols-outlined text-white">refresh</span>
+                    <span className="material-symbols-outlined text-foreground">refresh</span>
                   </button>
                 </div>
               </div>
             ) : (
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full p-8 border-2 border-dashed border-gray-600 rounded-lg hover:border-purple-500 transition-colors"
+                className="w-full p-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-purple-500 transition-colors"
               >
-                <span className="material-symbols-outlined text-4xl text-gray-400 block mb-2">add_photo_alternate</span>
-                <span className="text-gray-400">클릭하여 사진 업로드</span>
+                <span className="material-symbols-outlined text-4xl text-muted-foreground block mb-2">add_photo_alternate</span>
+                <span className="text-muted-foreground">클릭하여 사진 업로드</span>
               </button>
             )}
 
@@ -342,8 +342,8 @@ export default function PersonalColorPage() {
             disabled={!imagePreview}
             className={`w-full px-6 py-4 font-semibold rounded-lg transition-colors ${
               imagePreview
-                ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                ? 'bg-purple-600 hover:bg-purple-700 text-foreground'
+                : 'bg-gray-600 text-muted-foreground cursor-not-allowed'
             }`}
           >
             분석하기
@@ -355,7 +355,7 @@ export default function PersonalColorPage() {
       {loading && (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">AI가 퍼스널 컬러를 분석하고 있습니다...</p>
+          <p className="text-muted-foreground">AI가 퍼스널 컬러를 분석하고 있습니다...</p>
         </div>
       )}
 
@@ -372,7 +372,7 @@ export default function PersonalColorPage() {
           {/* Personal Color Type */}
           <div className="bg-gradient-to-r from-purple-900 to-pink-900 rounded-lg p-6 text-center">
             <p className="text-4xl mb-2">{getPersonalColorEmoji(result.personalColor)}</p>
-            <h3 className="text-2xl font-bold text-white mb-2">
+            <h3 className="text-2xl font-bold text-foreground mb-2">
               {result.personalColor}
             </h3>
             <p className={`text-lg font-semibold ${getConfidenceColor(result.confidence)}`}>
@@ -381,33 +381,33 @@ export default function PersonalColorPage() {
           </div>
 
           {/* Skin Analysis */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               <span className="material-symbols-outlined align-middle mr-2">face</span>
               피부톤 분석
             </h3>
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
-                <p className="text-gray-400 text-sm">언더톤</p>
-                <p className="text-white font-medium">{result.skinAnalysis.undertone}</p>
+                <p className="text-muted-foreground text-sm">언더톤</p>
+                <p className="text-foreground font-medium">{result.skinAnalysis.undertone}</p>
               </div>
               <div>
-                <p className="text-gray-400 text-sm">명도</p>
-                <p className="text-white font-medium">{result.skinAnalysis.brightness}</p>
+                <p className="text-muted-foreground text-sm">명도</p>
+                <p className="text-foreground font-medium">{result.skinAnalysis.brightness}</p>
               </div>
               <div className="col-span-2">
-                <p className="text-gray-400 text-sm">채도</p>
-                <p className="text-white font-medium">{result.skinAnalysis.saturation}</p>
+                <p className="text-muted-foreground text-sm">채도</p>
+                <p className="text-foreground font-medium">{result.skinAnalysis.saturation}</p>
               </div>
             </div>
-            <div className="pt-4 border-t border-gray-700">
-              <p className="text-gray-300">{result.skinAnalysis.description}</p>
+            <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+              <p className="text-muted-foreground">{result.skinAnalysis.description}</p>
             </div>
           </div>
 
           {/* Recommended Colors */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               <span className="material-symbols-outlined align-middle mr-2">palette</span>
               추천 컬러
             </h3>
@@ -421,7 +421,7 @@ export default function PersonalColorPage() {
                       className="w-4 h-4 rounded-full border border-gray-500"
                       style={{ backgroundColor: getColorHex(color) }}
                     />
-                    <span className="text-white text-sm">{color}</span>
+                    <span className="text-foreground text-sm">{color}</span>
                   </div>
                 ))}
               </div>
@@ -436,7 +436,7 @@ export default function PersonalColorPage() {
                       className="w-4 h-4 rounded-full border border-gray-500"
                       style={{ backgroundColor: getColorHex(color) }}
                     />
-                    <span className="text-white text-sm">{color}</span>
+                    <span className="text-foreground text-sm">{color}</span>
                   </div>
                 ))}
               </div>
@@ -444,15 +444,15 @@ export default function PersonalColorPage() {
           </div>
 
           {/* Makeup Recommendations */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               <span className="material-symbols-outlined align-middle mr-2">brush</span>
               메이크업 추천
             </h3>
 
             <div className="space-y-4">
               <div>
-                <p className="text-gray-400 text-sm mb-2">립스틱</p>
+                <p className="text-muted-foreground text-sm mb-2">립스틱</p>
                 <div className="flex flex-wrap gap-2">
                   {result.makeupRecommendations.lipstick.map((color, index) => (
                     <span key={index} className="px-3 py-1 bg-pink-500/20 text-pink-300 rounded-full text-sm">
@@ -463,7 +463,7 @@ export default function PersonalColorPage() {
               </div>
 
               <div>
-                <p className="text-gray-400 text-sm mb-2">아이섀도우</p>
+                <p className="text-muted-foreground text-sm mb-2">아이섀도우</p>
                 <div className="flex flex-wrap gap-2">
                   {result.makeupRecommendations.eyeshadow.map((color, index) => (
                     <span key={index} className="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-full text-sm">
@@ -474,7 +474,7 @@ export default function PersonalColorPage() {
               </div>
 
               <div>
-                <p className="text-gray-400 text-sm mb-2">블러셔</p>
+                <p className="text-muted-foreground text-sm mb-2">블러셔</p>
                 <div className="flex flex-wrap gap-2">
                   {result.makeupRecommendations.blush.map((color, index) => (
                     <span key={index} className="px-3 py-1 bg-rose-500/20 text-rose-300 rounded-full text-sm">
@@ -487,15 +487,15 @@ export default function PersonalColorPage() {
           </div>
 
           {/* Clothing Recommendations */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               <span className="material-symbols-outlined align-middle mr-2">checkroom</span>
               의류 추천
             </h3>
 
             <div className="space-y-4">
               <div>
-                <p className="text-gray-400 text-sm mb-2">추천 의류 색상</p>
+                <p className="text-muted-foreground text-sm mb-2">추천 의류 색상</p>
                 <div className="flex flex-wrap gap-2">
                   {result.clothingRecommendations.colors.map((color, index) => (
                     <div key={index} className="flex items-center gap-2 px-3 py-2 bg-gray-700 rounded-lg">
@@ -503,42 +503,42 @@ export default function PersonalColorPage() {
                         className="w-4 h-4 rounded-full border border-gray-500"
                         style={{ backgroundColor: getColorHex(color) }}
                       />
-                      <span className="text-white text-sm">{color}</span>
+                      <span className="text-foreground text-sm">{color}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <p className="text-gray-400 text-sm mb-2">추천 메탈</p>
+                <p className="text-muted-foreground text-sm mb-2">추천 메탈</p>
                 <span className={`px-4 py-2 rounded-lg inline-block ${
                   result.clothingRecommendations.metals.includes('골드')
                     ? 'bg-yellow-500/20 text-yellow-300'
-                    : 'bg-gray-500/20 text-gray-300'
+                    : 'bg-gray-500/20 text-muted-foreground'
                 }`}>
                   {result.clothingRecommendations.metals}
                 </span>
               </div>
 
-              <div className="pt-4 border-t border-gray-700">
-                <p className="text-gray-300">{result.clothingRecommendations.description}</p>
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-muted-foreground">{result.clothingRecommendations.description}</p>
               </div>
             </div>
           </div>
 
           {/* Explanation */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               <span className="material-symbols-outlined align-middle mr-2">info</span>
               상세 설명
             </h3>
-            <p className="text-gray-300 leading-relaxed">{result.explanation}</p>
+            <p className="text-muted-foreground leading-relaxed">{result.explanation}</p>
           </div>
 
           {/* Try Again */}
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-500 text-white font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 분석하기
           </button>

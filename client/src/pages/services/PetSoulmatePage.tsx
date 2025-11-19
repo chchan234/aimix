@@ -98,11 +98,11 @@ export default function PetSoulmatePage() {
       {/* Introduction */}
       {step === 'intro' && (
         <div className="space-y-6">
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               우리 아이의 소울메이트 분석
             </h3>
-            <div className="space-y-4 text-gray-300">
+            <div className="space-y-4 text-muted-foreground">
               <p>
                 AI가 반려동물의 사진을 분석하여 전생, MBTI, 성격 특성을 알아냅니다.
                 당신과 반려동물의 궁합도 확인해보세요!
@@ -143,8 +143,8 @@ export default function PetSoulmatePage() {
             <div className="bg-orange-900/20 border border-orange-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white font-semibold">AI 반려동물 소울메이트</p>
-                  <p className="text-gray-400 text-sm">전생 + MBTI + 궁합 분석</p>
+                  <p className="text-foreground font-semibold">AI 반려동물 소울메이트</p>
+                  <p className="text-muted-foreground text-sm">전생 + MBTI + 궁합 분석</p>
                 </div>
                 <div className="text-right">
                   <p className="text-orange-400 font-bold text-xl">15 크레딧</p>
@@ -154,7 +154,7 @@ export default function PetSoulmatePage() {
 
             <button
               onClick={handleStartTest}
-              className="w-full px-6 py-4 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors"
+              className="w-full px-6 py-4 bg-orange-600 hover:bg-orange-700 text-foreground font-semibold rounded-lg transition-colors"
             >
               시작하기 (15 크레딧)
             </button>
@@ -166,8 +166,8 @@ export default function PetSoulmatePage() {
       {step === 'upload' && !loading && (
         <div className="space-y-6">
           {/* Image Upload */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">반려동물 사진 업로드</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">반려동물 사진 업로드</h3>
 
             <input
               type="file"
@@ -187,19 +187,19 @@ export default function PetSoulmatePage() {
                   />
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="absolute bottom-2 right-2 p-2 bg-gray-800/80 rounded-lg hover:bg-gray-700"
+                    className="absolute bottom-2 right-2 p-2 bg-white dark:bg-gray-800/80 rounded-lg hover:bg-gray-700"
                   >
-                    <span className="material-symbols-outlined text-white">refresh</span>
+                    <span className="material-symbols-outlined text-foreground">refresh</span>
                   </button>
                 </div>
               </div>
             ) : (
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full p-8 border-2 border-dashed border-gray-600 rounded-lg hover:border-orange-500 transition-colors"
+                className="w-full p-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-orange-500 transition-colors"
               >
-                <span className="material-symbols-outlined text-4xl text-gray-400 block mb-2">add_photo_alternate</span>
-                <span className="text-gray-400">클릭하여 사진 업로드</span>
+                <span className="material-symbols-outlined text-4xl text-muted-foreground block mb-2">add_photo_alternate</span>
+                <span className="text-muted-foreground">클릭하여 사진 업로드</span>
               </button>
             )}
 
@@ -214,8 +214,8 @@ export default function PetSoulmatePage() {
             disabled={!imagePreview}
             className={`w-full px-6 py-4 font-semibold rounded-lg transition-colors ${
               imagePreview
-                ? 'bg-orange-600 hover:bg-orange-700 text-white'
-                : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                ? 'bg-orange-600 hover:bg-orange-700 text-foreground'
+                : 'bg-gray-600 text-muted-foreground cursor-not-allowed'
             }`}
           >
             분석하기
@@ -227,7 +227,7 @@ export default function PetSoulmatePage() {
       {loading && (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-orange-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">AI가 반려동물을 분석하고 있습니다...</p>
+          <p className="text-muted-foreground">AI가 반려동물을 분석하고 있습니다...</p>
         </div>
       )}
 
@@ -243,64 +243,64 @@ export default function PetSoulmatePage() {
         <div className="space-y-6">
           {/* Fun Comment */}
           <div className="bg-gradient-to-r from-orange-900 to-amber-900 rounded-lg p-6">
-            <p className="text-xl text-white font-semibold text-center">
+            <p className="text-xl text-foreground font-semibold text-center">
               "{result.funComment}"
             </p>
           </div>
 
           {/* Animal Info */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">기본 정보</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">기본 정보</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-gray-400 text-sm">동물 종류</p>
-                <p className="text-white text-lg font-semibold">{result.animalType}</p>
+                <p className="text-muted-foreground text-sm">동물 종류</p>
+                <p className="text-foreground text-lg font-semibold">{result.animalType}</p>
               </div>
               <div>
-                <p className="text-gray-400 text-sm">품종</p>
-                <p className="text-white text-lg font-semibold">{result.breed}</p>
+                <p className="text-muted-foreground text-sm">품종</p>
+                <p className="text-foreground text-lg font-semibold">{result.breed}</p>
               </div>
             </div>
           </div>
 
           {/* Past Life */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               <span className="material-symbols-outlined align-middle mr-2 text-orange-400">history</span>
               전생 분석
             </h3>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-gray-400 text-sm">시대</p>
-                  <p className="text-white font-semibold">{result.pastLife.era}</p>
+                  <p className="text-muted-foreground text-sm">시대</p>
+                  <p className="text-foreground font-semibold">{result.pastLife.era}</p>
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm">직업</p>
+                  <p className="text-muted-foreground text-sm">직업</p>
                   <p className="text-orange-400 font-semibold">{result.pastLife.job}</p>
                 </div>
               </div>
-              <div className="pt-4 border-t border-gray-700">
-                <p className="text-gray-300">{result.pastLife.description}</p>
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-muted-foreground">{result.pastLife.description}</p>
               </div>
             </div>
           </div>
 
           {/* MBTI */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               <span className="material-symbols-outlined align-middle mr-2 text-orange-400">psychology</span>
               MBTI 분석
             </h3>
             <div className="text-center mb-4">
               <span className="text-4xl font-bold text-orange-400">{result.mbti}</span>
             </div>
-            <p className="text-gray-300">{result.mbtiDescription}</p>
+            <p className="text-muted-foreground">{result.mbtiDescription}</p>
           </div>
 
           {/* Owner Compatibility */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               <span className="material-symbols-outlined align-middle mr-2 text-orange-400">favorite</span>
               주인과의 궁합
             </h3>
@@ -309,12 +309,12 @@ export default function PetSoulmatePage() {
                 {result.ownerCompatibility.score}%
               </span>
             </div>
-            <p className="text-gray-300 text-center">{result.ownerCompatibility.description}</p>
+            <p className="text-muted-foreground text-center">{result.ownerCompatibility.description}</p>
           </div>
 
           {/* Personality Traits */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               <span className="material-symbols-outlined align-middle mr-2 text-orange-400">star</span>
               성격 특성
             </h3>
@@ -333,7 +333,7 @@ export default function PetSoulmatePage() {
           {/* Try Again */}
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-500 text-white font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다른 사진으로 다시 분석하기
           </button>

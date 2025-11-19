@@ -74,9 +74,9 @@ export default function AgeTransformPage() {
       color="orange"
     >
       <div className="space-y-6">
-        <div className="bg-background-dark rounded-lg p-4 border border-orange-500/20">
-          <h3 className="text-white font-semibold mb-2">서비스 안내</h3>
-          <p className="text-[#ab9eb7] text-sm leading-relaxed">
+        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-orange-500/20">
+          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             사진 속 사람의 나이를 변환합니다.
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function AgeTransformPage() {
 
             {image && (
               <div>
-                <label className="block text-white font-medium mb-2">
+                <label className="block text-foreground font-medium mb-2">
                   목표 나이: {targetAge}세
                 </label>
                 <input
@@ -117,7 +117,7 @@ export default function AgeTransformPage() {
         {resultImage && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-orange-500/10 rounded-lg p-4 border border-orange-500/20">
-              <h3 className="text-white font-semibold mb-3">나이 변환 결과 ({targetAge}세)</h3>
+              <h3 className="text-foreground font-semibold mb-3">나이 변환 결과 ({targetAge}세)</h3>
               <img
                 src={resultImage}
                 alt="Age Transform Result"
@@ -127,7 +127,7 @@ export default function AgeTransformPage() {
 
             <button
               onClick={() => setResultImage(null)}
-              className="w-full px-4 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition"
+              className="w-full px-4 py-3 bg-orange-600 hover:bg-orange-700 text-foreground rounded-lg transition"
             >
               다시 생성하기
             </button>

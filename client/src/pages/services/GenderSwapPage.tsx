@@ -73,9 +73,9 @@ export default function GenderSwapPage() {
       color="indigo"
     >
       <div className="space-y-6">
-        <div className="bg-background-dark rounded-lg p-4 border border-indigo-500/20">
-          <h3 className="text-white font-semibold mb-2">서비스 안내</h3>
-          <p className="text-[#ab9eb7] text-sm leading-relaxed">
+        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-indigo-500/20">
+          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             사진 속 사람의 성별을 변환합니다.
           </p>
         </div>
@@ -100,7 +100,7 @@ export default function GenderSwapPage() {
         {resultImage && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-indigo-500/10 rounded-lg p-4 border border-indigo-500/20">
-              <h3 className="text-white font-semibold mb-3">성별 변환 결과</h3>
+              <h3 className="text-foreground font-semibold mb-3">성별 변환 결과</h3>
               <img
                 src={resultImage}
                 alt="Gender Swap Result"
@@ -110,7 +110,7 @@ export default function GenderSwapPage() {
 
             <button
               onClick={() => setResultImage(null)}
-              className="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition"
+              className="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-foreground rounded-lg transition"
             >
               다시 생성하기
             </button>

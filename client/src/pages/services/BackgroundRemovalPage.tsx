@@ -74,9 +74,9 @@ export default function BackgroundRemovalPage() {
       color="yellow"
     >
       <div className="space-y-6">
-        <div className="bg-background-dark rounded-lg p-4 border border-yellow-500/20">
-          <h3 className="text-white font-semibold mb-2">서비스 안내</h3>
-          <p className="text-[#ab9eb7] text-sm leading-relaxed">
+        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-yellow-500/20">
+          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             사진의 배경을 제거하거나 새로운 배경으로 교체합니다.
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function BackgroundRemovalPage() {
 
             {image && (
               <div>
-                <label className="block text-white font-medium mb-2">
+                <label className="block text-foreground font-medium mb-2">
                   새 배경 (선택사항)
                 </label>
                 <input
@@ -98,7 +98,7 @@ export default function BackgroundRemovalPage() {
                   value={newBackground}
                   onChange={(e) => setNewBackground(e.target.value)}
                   placeholder="예: 흰색 배경, 자연 풍경, 도시 야경 등 (비워두면 배경만 제거)"
-                  className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500"
+                  className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground placeholder-gray-400 focus:outline-none focus:border-yellow-500"
                 />
               </div>
             )}
@@ -116,7 +116,7 @@ export default function BackgroundRemovalPage() {
         {resultImage && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-yellow-500/10 rounded-lg p-4 border border-yellow-500/20">
-              <h3 className="text-white font-semibold mb-3">배경 제거 결과</h3>
+              <h3 className="text-foreground font-semibold mb-3">배경 제거 결과</h3>
               <img
                 src={resultImage}
                 alt="Background Removal Result"
@@ -126,7 +126,7 @@ export default function BackgroundRemovalPage() {
 
             <button
               onClick={() => setResultImage(null)}
-              className="w-full px-4 py-3 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition"
+              className="w-full px-4 py-3 bg-yellow-600 hover:bg-yellow-700 text-foreground rounded-lg transition"
             >
               다시 생성하기
             </button>

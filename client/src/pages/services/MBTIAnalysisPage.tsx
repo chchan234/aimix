@@ -102,11 +102,11 @@ export default function MBTIAnalysisPage() {
       {/* Introduction */}
       {step === 'intro' && (
         <div className="space-y-6">
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               MBTI 심층분석이란?
             </h3>
-            <div className="space-y-4 text-gray-300">
+            <div className="space-y-4 text-muted-foreground">
               <p>
                 MBTI(Myers-Briggs Type Indicator)는 가장 널리 사용되는 성격 유형 검사입니다.
                 자가 진단한 MBTI와 테스트 결과를 비교하여 더욱 정확한 분석을 제공합니다.
@@ -126,8 +126,8 @@ export default function MBTIAnalysisPage() {
             <div className="bg-purple-900/20 border border-purple-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white font-semibold">MBTI 심층분석</p>
-                  <p className="text-gray-400 text-sm">40개의 질문 + AI 분석</p>
+                  <p className="text-foreground font-semibold">MBTI 심층분석</p>
+                  <p className="text-muted-foreground text-sm">40개의 질문 + AI 분석</p>
                 </div>
                 <div className="text-right">
                   <p className="text-purple-400 font-bold text-xl">35 크레딧</p>
@@ -137,7 +137,7 @@ export default function MBTIAnalysisPage() {
 
             <button
               onClick={handleStartFromIntro}
-              className="w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
+              className="w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 text-foreground font-semibold rounded-lg transition-colors"
             >
               테스트 시작 (35 크레딧)
             </button>
@@ -148,12 +148,12 @@ export default function MBTIAnalysisPage() {
       {/* MBTI Selection */}
       {step === 'mbti-select' && (
         <div className="space-y-6">
-          <div className="bg-gray-800 rounded-lg p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <div className="text-center mb-8">
-              <h3 className="text-xl font-semibold text-white mb-4">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
                 자신의 MBTI를 알고 계신가요?
               </h3>
-              <p className="text-gray-400">
+              <p className="text-muted-foreground">
                 알고 있다면 선택해주세요. 테스트 결과와 비교 분석해드립니다.
               </p>
             </div>
@@ -163,7 +163,7 @@ export default function MBTIAnalysisPage() {
                 <button
                   key={type}
                   onClick={() => handleMBTIInput(type)}
-                  className="px-4 py-3 bg-gray-700 hover:bg-purple-600 text-white rounded-lg transition-colors"
+                  className="px-4 py-3 bg-gray-700 hover:bg-purple-600 text-foreground rounded-lg transition-colors"
                 >
                   {type}
                 </button>
@@ -172,7 +172,7 @@ export default function MBTIAnalysisPage() {
 
             <button
               onClick={() => handleMBTIInput(null)}
-              className="w-full px-6 py-3 bg-gray-600 hover:bg-gray-500 text-white rounded-lg transition-colors"
+              className="w-full px-6 py-3 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground rounded-lg transition-colors"
             >
               잘 모르겠어요 (테스트만 진행)
             </button>
@@ -185,7 +185,7 @@ export default function MBTIAnalysisPage() {
         <div className="space-y-6">
           {/* Progress Bar */}
           <div className="mb-6">
-            <div className="flex justify-between text-sm text-gray-400 mb-2">
+            <div className="flex justify-between text-sm text-muted-foreground mb-2">
               <span>진행률</span>
               <span>{currentQuestionIndex + 1} / {questions.length}</span>
             </div>
@@ -198,8 +198,8 @@ export default function MBTIAnalysisPage() {
           </div>
 
           {/* Question */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <p className="text-lg text-white mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <p className="text-lg text-foreground mb-6">
               {questions[currentQuestionIndex]?.question}
             </p>
 
@@ -217,8 +217,8 @@ export default function MBTIAnalysisPage() {
                   onClick={() => handleAnswer(option.value)}
                   className={`w-full px-6 py-3 rounded-lg transition-colors ${
                     answers[currentQuestionIndex] === option.value
-                      ? 'bg-purple-600 text-white'
-                      : 'bg-gray-700 hover:bg-gray-600 text-white'
+                      ? 'bg-purple-600 text-foreground'
+                      : 'bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-foreground'
                   }`}
                 >
                   {option.label}
@@ -230,7 +230,7 @@ export default function MBTIAnalysisPage() {
             {currentQuestionIndex > 0 && (
               <button
                 onClick={handlePrevious}
-                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-lg"
+                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground rounded-lg"
               >
                 이전 질문
               </button>
@@ -243,7 +243,7 @@ export default function MBTIAnalysisPage() {
       {loading && (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">AI가 분석 중입니다...</p>
+          <p className="text-muted-foreground">AI가 분석 중입니다...</p>
         </div>
       )}
 
@@ -259,46 +259,46 @@ export default function MBTIAnalysisPage() {
         <div className="space-y-6">
           {/* Comparison */}
           {result.analysis.comparison && (
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">결과 비교</h3>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">결과 비교</h3>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                  <p className="text-gray-400 text-sm">입력한 MBTI</p>
+                  <p className="text-muted-foreground text-sm">입력한 MBTI</p>
                   <p className="text-2xl font-bold text-purple-400">
                     {result.analysis.comparison.userInput || '없음'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm">테스트 결과</p>
+                  <p className="text-muted-foreground text-sm">테스트 결과</p>
                   <p className="text-2xl font-bold text-blue-400">
                     {result.testResultMBTI}
                   </p>
                 </div>
               </div>
-              <p className="text-gray-300">{result.analysis.comparison.match}</p>
+              <p className="text-muted-foreground">{result.analysis.comparison.match}</p>
             </div>
           )}
 
           {/* Final MBTI */}
           <div className="bg-gradient-to-r from-purple-900 to-blue-900 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-2">최종 결과</h3>
-            <p className="text-4xl font-bold text-white mb-2">
+            <h3 className="text-xl font-semibold text-foreground mb-2">최종 결과</h3>
+            <p className="text-4xl font-bold text-foreground mb-2">
               {result.analysis.finalMBTI.type}
             </p>
-            <p className="text-gray-300">
+            <p className="text-muted-foreground">
               확신도: {result.analysis.finalMBTI.confidence}
             </p>
           </div>
 
           {/* Axis Scores */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">축별 점수</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">축별 점수</h3>
             <div className="space-y-4">
               {Object.entries(result.axisScores).map(([axis, scores]: [string, any]) => {
                 const [first, second] = axis.split('');
                 return (
                   <div key={axis}>
-                    <div className="flex justify-between text-sm text-gray-400 mb-1">
+                    <div className="flex justify-between text-sm text-muted-foreground mb-1">
                       <span>{first}: {scores[first]}%</span>
                       <span>{second}: {scores[second]}%</span>
                     </div>
@@ -315,12 +315,12 @@ export default function MBTIAnalysisPage() {
           </div>
 
           {/* Personality */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">성격 특성</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">성격 특성</h3>
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold text-purple-400 mb-2">주요 특성</h4>
-                <ul className="list-disc list-inside text-gray-300 space-y-1">
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   {result.analysis.personality.traits.map((trait: string, i: number) => (
                     <li key={i}>{trait}</li>
                   ))}
@@ -328,7 +328,7 @@ export default function MBTIAnalysisPage() {
               </div>
               <div>
                 <h4 className="font-semibold text-green-400 mb-2">강점</h4>
-                <ul className="list-disc list-inside text-gray-300 space-y-1">
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   {result.analysis.personality.strengths.map((strength: string, i: number) => (
                     <li key={i}>{strength}</li>
                   ))}
@@ -336,7 +336,7 @@ export default function MBTIAnalysisPage() {
               </div>
               <div>
                 <h4 className="font-semibold text-yellow-400 mb-2">약점</h4>
-                <ul className="list-disc list-inside text-gray-300 space-y-1">
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   {result.analysis.personality.weaknesses.map((weakness: string, i: number) => (
                     <li key={i}>{weakness}</li>
                   ))}
@@ -346,9 +346,9 @@ export default function MBTIAnalysisPage() {
           </div>
 
           {/* Relationships */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">대인관계</h3>
-            <div className="space-y-3 text-gray-300">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">대인관계</h3>
+            <div className="space-y-3 text-muted-foreground">
               <p><strong className="text-purple-400">소통:</strong> {result.analysis.relationships.communicationStyle}</p>
               <p><strong className="text-purple-400">우정:</strong> {result.analysis.relationships.friendshipStyle}</p>
               <p><strong className="text-purple-400">연애:</strong> {result.analysis.relationships.loveStyle}</p>
@@ -357,8 +357,8 @@ export default function MBTIAnalysisPage() {
           </div>
 
           {/* Career */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">직업 및 진로</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">직업 및 진로</h3>
             <div className="space-y-3">
               <div>
                 <h4 className="font-semibold text-purple-400 mb-2">적합한 직업</h4>
@@ -370,15 +370,15 @@ export default function MBTIAnalysisPage() {
                   ))}
                 </div>
               </div>
-              <p className="text-gray-300"><strong className="text-purple-400">업무 스타일:</strong> {result.analysis.career.workStyle}</p>
-              <p className="text-gray-300"><strong className="text-purple-400">리더십:</strong> {result.analysis.career.leadershipStyle}</p>
+              <p className="text-muted-foreground"><strong className="text-purple-400">업무 스타일:</strong> {result.analysis.career.workStyle}</p>
+              <p className="text-muted-foreground"><strong className="text-purple-400">리더십:</strong> {result.analysis.career.leadershipStyle}</p>
             </div>
           </div>
 
           {/* Growth */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">성장 조언</h3>
-            <div className="space-y-4 text-gray-300">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">성장 조언</h3>
+            <div className="space-y-4 text-muted-foreground">
               <div>
                 <h4 className="font-semibold text-green-400 mb-2">개발 영역</h4>
                 <ul className="list-disc list-inside space-y-1">

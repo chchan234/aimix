@@ -82,9 +82,9 @@ export default function HoroscopePage() {
       color="yellow"
     >
       <div className="space-y-6">
-        <div className="bg-background-dark rounded-lg p-4 border border-yellow-500/20">
-          <h3 className="text-white font-semibold mb-2">서비스 안내</h3>
-          <p className="text-[#ab9eb7] text-sm leading-relaxed">
+        <div className="bg-gray-50 dark:bg-[#0d0d0d] rounded-lg p-4 border border-yellow-500/20">
+          <h3 className="text-foreground font-semibold mb-2">서비스 안내</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
             서양 점성술을 기반으로 별자리 운세를 제공합니다.
             오늘, 이번 주, 이번 달, 올해의 운세와 함께 세부 운세를 확인하세요.
           </p>
@@ -93,25 +93,25 @@ export default function HoroscopePage() {
         {!result && (
           <div className="space-y-4">
             <div>
-              <label className="block text-white font-medium mb-2">
+              <label className="block text-foreground font-medium mb-2">
                 생년월일
               </label>
               <input
                 type="date"
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
-                className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground focus:outline-none focus:border-yellow-500"
               />
             </div>
 
             <div>
-              <label className="block text-white font-medium mb-2">
+              <label className="block text-foreground font-medium mb-2">
                 별자리 (선택사항)
               </label>
               <select
                 value={zodiacSign}
                 onChange={(e) => setZodiacSign(e.target.value)}
-                className="w-full px-4 py-3 bg-background-dark border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d0d0d] border border-gray-300 dark:border-gray-600 rounded-lg text-foreground focus:outline-none focus:border-yellow-500"
               >
                 <option value="">자동 판별</option>
                 {ZODIAC_SIGNS.map((sign) => (
@@ -120,7 +120,7 @@ export default function HoroscopePage() {
                   </option>
                 ))}
               </select>
-              <p className="text-[#ab9eb7] text-xs mt-1">
+              <p className="text-muted-foreground text-xs mt-1">
                 비워두면 생년월일로 자동 판별됩니다
               </p>
             </div>
@@ -138,32 +138,32 @@ export default function HoroscopePage() {
         {result?.analysis && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-yellow-500/10 rounded-lg p-4 border border-yellow-500/20">
-              <h3 className="text-white font-semibold mb-3">⭐ 별자리 운세</h3>
+              <h3 className="text-foreground font-semibold mb-3">⭐ 별자리 운세</h3>
 
               {result.analysis.zodiacSign && (
                 <div className="mb-4 pb-4 border-b border-yellow-500/10">
                   <h4 className="text-yellow-400 font-medium mb-2">
                     {result.analysis.zodiacSign.name}
                   </h4>
-                  <p className="text-[#ab9eb7] text-sm">{result.analysis.zodiacSign.period}</p>
-                  <p className="text-white text-sm mt-2">{result.analysis.zodiacSign.element}</p>
+                  <p className="text-muted-foreground text-sm">{result.analysis.zodiacSign.period}</p>
+                  <p className="text-foreground text-sm mt-2">{result.analysis.zodiacSign.element}</p>
                 </div>
               )}
 
               <div className="space-y-3">
                 <div>
                   <h4 className="text-yellow-400 font-medium mb-2">오늘의 운세</h4>
-                  <p className="text-white text-sm">{result.analysis.dailyFortune}</p>
+                  <p className="text-foreground text-sm">{result.analysis.dailyFortune}</p>
                 </div>
 
                 <div>
                   <h4 className="text-yellow-400 font-medium mb-2">이번 주 운세</h4>
-                  <p className="text-white text-sm">{result.analysis.weeklyFortune}</p>
+                  <p className="text-foreground text-sm">{result.analysis.weeklyFortune}</p>
                 </div>
 
                 <div>
                   <h4 className="text-yellow-400 font-medium mb-2">이번 달 운세</h4>
-                  <p className="text-white text-sm">{result.analysis.monthlyFortune}</p>
+                  <p className="text-foreground text-sm">{result.analysis.monthlyFortune}</p>
                 </div>
               </div>
 
@@ -172,14 +172,14 @@ export default function HoroscopePage() {
                   <h4 className="text-yellow-400 font-medium mb-2">행운의 요소</h4>
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div>
-                      <span className="text-[#ab9eb7]">숫자:</span>
-                      <span className="text-white ml-2">
+                      <span className="text-muted-foreground">숫자:</span>
+                      <span className="text-foreground ml-2">
                         {result.analysis.luckyElements.numbers?.join(', ')}
                       </span>
                     </div>
                     <div>
-                      <span className="text-[#ab9eb7]">색상:</span>
-                      <span className="text-white ml-2">
+                      <span className="text-muted-foreground">색상:</span>
+                      <span className="text-foreground ml-2">
                         {result.analysis.luckyElements.colors?.join(', ')}
                       </span>
                     </div>
@@ -190,7 +190,7 @@ export default function HoroscopePage() {
 
             <button
               onClick={() => setResult(null)}
-              className="w-full px-4 py-3 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition"
+              className="w-full px-4 py-3 bg-yellow-600 hover:bg-yellow-700 text-foreground rounded-lg transition"
             >
               다시 분석하기
             </button>

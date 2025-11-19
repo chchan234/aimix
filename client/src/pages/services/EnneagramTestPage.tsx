@@ -101,11 +101,11 @@ export default function EnneagramTestPage() {
       {/* Introduction */}
       {step === 'intro' && (
         <div className="space-y-6">
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               에니어그램이란?
             </h3>
-            <div className="space-y-4 text-gray-300">
+            <div className="space-y-4 text-muted-foreground">
               <p>
                 에니어그램은 9가지 성격 유형을 통해 사람들의 핵심 동기, 두려움, 욕구를 이해하는 성격 분류 체계입니다.
               </p>
@@ -127,8 +127,8 @@ export default function EnneagramTestPage() {
             <div className="bg-green-900/20 border border-green-500 rounded-lg p-4 mt-6 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white font-semibold">에니어그램 테스트</p>
-                  <p className="text-gray-400 text-sm">약 20개의 질문 + AI 분석</p>
+                  <p className="text-foreground font-semibold">에니어그램 테스트</p>
+                  <p className="text-muted-foreground text-sm">약 20개의 질문 + AI 분석</p>
                 </div>
                 <div className="text-right">
                   <p className="text-green-400 font-bold text-xl">30 크레딧</p>
@@ -138,7 +138,7 @@ export default function EnneagramTestPage() {
 
             <button
               onClick={handleStartTest}
-              className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"
+              className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-foreground font-semibold rounded-lg transition-colors"
             >
               테스트 시작 (30 크레딧)
             </button>
@@ -151,7 +151,7 @@ export default function EnneagramTestPage() {
         <div className="space-y-6">
           {/* Progress Bar */}
           <div className="mb-6">
-            <div className="flex justify-between text-sm text-gray-400 mb-2">
+            <div className="flex justify-between text-sm text-muted-foreground mb-2">
               <span>진행률</span>
               <span>{currentQuestionIndex + 1} / {questions.length}</span>
             </div>
@@ -164,8 +164,8 @@ export default function EnneagramTestPage() {
           </div>
 
           {/* Question */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <p className="text-lg text-white mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <p className="text-lg text-foreground mb-6">
               {questions[currentQuestionIndex]?.question}
             </p>
 
@@ -183,8 +183,8 @@ export default function EnneagramTestPage() {
                   onClick={() => handleAnswer(option.value)}
                   className={`w-full px-6 py-3 rounded-lg transition-colors ${
                     answers[currentQuestionIndex] === option.value
-                      ? 'bg-green-600 text-white'
-                      : 'bg-gray-700 hover:bg-gray-600 text-white'
+                      ? 'bg-green-600 text-foreground'
+                      : 'bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-foreground'
                   }`}
                 >
                   {option.label}
@@ -196,7 +196,7 @@ export default function EnneagramTestPage() {
             {currentQuestionIndex > 0 && (
               <button
                 onClick={handlePrevious}
-                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-lg"
+                className="mt-6 px-6 py-2 bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 text-foreground rounded-lg"
               >
                 이전 질문
               </button>
@@ -209,7 +209,7 @@ export default function EnneagramTestPage() {
       {loading && (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-green-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">AI가 분석 중입니다...</p>
+          <p className="text-muted-foreground">AI가 분석 중입니다...</p>
         </div>
       )}
 
@@ -225,32 +225,32 @@ export default function EnneagramTestPage() {
         <div className="space-y-6">
           {/* Main Type */}
           <div className="bg-gradient-to-r from-green-900 to-teal-900 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-2">당신의 유형</h3>
-            <p className="text-4xl font-bold text-white mb-2">
+            <h3 className="text-xl font-semibold text-foreground mb-2">당신의 유형</h3>
+            <p className="text-4xl font-bold text-foreground mb-2">
               {result.mainType}번 유형
             </p>
             <p className="text-2xl text-green-300 mb-2">
               {result.analysis.mainType.name}
             </p>
-            <p className="text-xl text-gray-300">
+            <p className="text-xl text-muted-foreground">
               {result.analysis.mainType.nickname}
             </p>
             {result.wingType && (
-              <p className="mt-4 text-gray-300">
+              <p className="mt-4 text-muted-foreground">
                 날개: {result.wingType}번 ({ENNEAGRAM_TYPE_NAMES[result.wingType]})
               </p>
             )}
           </div>
 
           {/* Type Scores */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">유형별 점수</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">유형별 점수</h3>
             <div className="space-y-3">
               {Object.entries(result.typeScores)
                 .sort(([, a]: [any, any], [, b]: [any, any]) => b - a)
                 .map(([type, score]: [string, any]) => (
                   <div key={type}>
-                    <div className="flex justify-between text-sm text-gray-400 mb-1">
+                    <div className="flex justify-between text-sm text-muted-foreground mb-1">
                       <span>{type}번 - {ENNEAGRAM_TYPE_NAMES[parseInt(type)]}</span>
                       <span>{score}점</span>
                     </div>
@@ -266,20 +266,20 @@ export default function EnneagramTestPage() {
           </div>
 
           {/* Core Motivation & Fear */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">핵심 특성</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">핵심 특성</h3>
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold text-green-400 mb-2">핵심 동기</h4>
-                <p className="text-gray-300">{result.analysis.mainType.coreMotivation}</p>
+                <p className="text-muted-foreground">{result.analysis.mainType.coreMotivation}</p>
               </div>
               <div>
                 <h4 className="font-semibold text-red-400 mb-2">근본적 두려움</h4>
-                <p className="text-gray-300">{result.analysis.mainType.coreFear}</p>
+                <p className="text-muted-foreground">{result.analysis.mainType.coreFear}</p>
               </div>
               <div>
                 <h4 className="font-semibold text-purple-400 mb-2">기본 성격 특성</h4>
-                <ul className="list-disc list-inside text-gray-300 space-y-1">
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   {result.analysis.mainType.traits.map((trait: string, i: number) => (
                     <li key={i}>{trait}</li>
                   ))}
@@ -290,9 +290,9 @@ export default function EnneagramTestPage() {
 
           {/* Wing Influence */}
           {result.wingType && (
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">날개의 영향</h3>
-              <div className="space-y-3 text-gray-300">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">날개의 영향</h3>
+              <div className="space-y-3 text-muted-foreground">
                 <p><strong className="text-green-400">영향:</strong> {result.analysis.wing.influence}</p>
                 <p><strong className="text-green-400">조합:</strong> {result.analysis.wing.combination}</p>
                 <div>
@@ -308,47 +308,47 @@ export default function EnneagramTestPage() {
           )}
 
           {/* Health Levels */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">건강 수준</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">건강 수준</h3>
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold text-green-400 mb-2">건강한 상태</h4>
-                <p className="text-gray-300">{result.analysis.healthLevels.healthy}</p>
+                <p className="text-muted-foreground">{result.analysis.healthLevels.healthy}</p>
               </div>
               <div>
                 <h4 className="font-semibold text-yellow-400 mb-2">보통 상태</h4>
-                <p className="text-gray-300">{result.analysis.healthLevels.average}</p>
+                <p className="text-muted-foreground">{result.analysis.healthLevels.average}</p>
               </div>
               <div>
                 <h4 className="font-semibold text-red-400 mb-2">불건강한 상태</h4>
-                <p className="text-gray-300">{result.analysis.healthLevels.unhealthy}</p>
+                <p className="text-muted-foreground">{result.analysis.healthLevels.unhealthy}</p>
               </div>
               <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4 mt-4">
                 <h4 className="font-semibold text-blue-400 mb-2">현재 상태 평가</h4>
-                <p className="text-gray-300">{result.analysis.healthLevels.currentAssessment}</p>
+                <p className="text-muted-foreground">{result.analysis.healthLevels.currentAssessment}</p>
               </div>
             </div>
           </div>
 
           {/* Growth Directions */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">성장 방향</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">성장 방향</h3>
             <div className="space-y-4">
               <div className="bg-green-900/30 border border-green-500 rounded-lg p-4">
                 <h4 className="font-semibold text-green-400 mb-2">
                   통합 방향 (성장 시 → {result.analysis.growth.integrationDirection.toType}번)
                 </h4>
-                <p className="text-gray-300">{result.analysis.growth.integrationDirection.description}</p>
+                <p className="text-muted-foreground">{result.analysis.growth.integrationDirection.description}</p>
               </div>
               <div className="bg-orange-900/30 border border-orange-500 rounded-lg p-4">
                 <h4 className="font-semibold text-orange-400 mb-2">
                   분열 방향 (스트레스 시 → {result.analysis.growth.disintegrationDirection.toType}번)
                 </h4>
-                <p className="text-gray-300">{result.analysis.growth.disintegrationDirection.description}</p>
+                <p className="text-muted-foreground">{result.analysis.growth.disintegrationDirection.description}</p>
               </div>
               <div>
                 <h4 className="font-semibold text-purple-400 mb-2">성장 실천 방법</h4>
-                <ul className="list-disc list-inside text-gray-300 space-y-1">
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   {result.analysis.growth.practices.map((practice: string, i: number) => (
                     <li key={i}>{practice}</li>
                   ))}
@@ -358,9 +358,9 @@ export default function EnneagramTestPage() {
           </div>
 
           {/* Relationships */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">대인관계</h3>
-            <div className="space-y-3 text-gray-300">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">대인관계</h3>
+            <div className="space-y-3 text-muted-foreground">
               <p><strong className="text-green-400">관계 스타일:</strong> {result.analysis.relationships.style}</p>
               <p><strong className="text-green-400">갈등 대응:</strong> {result.analysis.relationships.conflictStyle}</p>
               <div>
@@ -377,8 +377,8 @@ export default function EnneagramTestPage() {
           </div>
 
           {/* Career */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">직업 및 커리어</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">직업 및 커리어</h3>
             <div className="space-y-3">
               <div>
                 <h4 className="font-semibold text-green-400 mb-2">적합한 직업</h4>
@@ -390,15 +390,15 @@ export default function EnneagramTestPage() {
                   ))}
                 </div>
               </div>
-              <p className="text-gray-300"><strong className="text-green-400">선호 환경:</strong> {result.analysis.career.workEnvironment}</p>
-              <p className="text-gray-300"><strong className="text-green-400">리더십:</strong> {result.analysis.career.leadershipStyle}</p>
+              <p className="text-muted-foreground"><strong className="text-green-400">선호 환경:</strong> {result.analysis.career.workEnvironment}</p>
+              <p className="text-muted-foreground"><strong className="text-green-400">리더십:</strong> {result.analysis.career.leadershipStyle}</p>
             </div>
           </div>
 
           {/* Development */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">자기개발</h3>
-            <div className="space-y-4 text-gray-300">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">자기개발</h3>
+            <div className="space-y-4 text-muted-foreground">
               <div>
                 <h4 className="font-semibold text-blue-400 mb-2">핵심 개발 과제</h4>
                 <ul className="list-disc list-inside space-y-1">
