@@ -267,20 +267,67 @@ export default function HoroscopePage() {
             )}
 
             <div className="space-y-3">
-              <div>
-                <h4 className="text-yellow-600 dark:text-yellow-400 font-medium mb-2">오늘의 운세</h4>
-                <p className="text-foreground text-sm">{result.analysis.dailyFortune}</p>
-              </div>
+              {result.analysis.dailyFortune && (
+                <div>
+                  <h4 className="text-yellow-600 dark:text-yellow-400 font-medium mb-2">오늘의 운세</h4>
+                  <p className="text-foreground text-sm mb-1">{result.analysis.dailyFortune.overall}</p>
+                  {result.analysis.dailyFortune.tip && (
+                    <p className="text-muted-foreground text-xs mb-1">💡 {result.analysis.dailyFortune.tip}</p>
+                  )}
+                  {result.analysis.dailyFortune.warning && (
+                    <p className="text-red-600 dark:text-red-400 text-xs mb-1">⚠️ {result.analysis.dailyFortune.warning}</p>
+                  )}
+                  {result.analysis.dailyFortune.luckyTime && (
+                    <p className="text-muted-foreground text-xs">⏰ 행운의 시간: {result.analysis.dailyFortune.luckyTime}</p>
+                  )}
+                </div>
+              )}
 
-              <div>
-                <h4 className="text-yellow-600 dark:text-yellow-400 font-medium mb-2">이번 주 운세</h4>
-                <p className="text-foreground text-sm">{result.analysis.weeklyFortune}</p>
-              </div>
+              {result.analysis.weeklyFortune && (
+                <div>
+                  <h4 className="text-yellow-600 dark:text-yellow-400 font-medium mb-2">이번 주 운세</h4>
+                  <p className="text-foreground text-sm mb-1">{result.analysis.weeklyFortune.overview}</p>
+                  {result.analysis.weeklyFortune.bestDay && (
+                    <p className="text-green-600 dark:text-green-400 text-xs mb-1">✨ 최고의 날: {result.analysis.weeklyFortune.bestDay}</p>
+                  )}
+                  {result.analysis.weeklyFortune.cautionDay && (
+                    <p className="text-orange-600 dark:text-orange-400 text-xs">⚠️ 주의할 날: {result.analysis.weeklyFortune.cautionDay}</p>
+                  )}
+                </div>
+              )}
 
-              <div>
-                <h4 className="text-yellow-600 dark:text-yellow-400 font-medium mb-2">이번 달 운세</h4>
-                <p className="text-foreground text-sm">{result.analysis.monthlyFortune}</p>
-              </div>
+              {result.analysis.monthlyFortune && (
+                <div>
+                  <h4 className="text-yellow-600 dark:text-yellow-400 font-medium mb-2">이번 달 운세</h4>
+                  <p className="text-foreground text-sm mb-2">{result.analysis.monthlyFortune.overview}</p>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    {result.analysis.monthlyFortune.week1 && (
+                      <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                        <span className="text-yellow-600 dark:text-yellow-400">1주차:</span>
+                        <p className="text-muted-foreground">{result.analysis.monthlyFortune.week1}</p>
+                      </div>
+                    )}
+                    {result.analysis.monthlyFortune.week2 && (
+                      <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                        <span className="text-yellow-600 dark:text-yellow-400">2주차:</span>
+                        <p className="text-muted-foreground">{result.analysis.monthlyFortune.week2}</p>
+                      </div>
+                    )}
+                    {result.analysis.monthlyFortune.week3 && (
+                      <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                        <span className="text-yellow-600 dark:text-yellow-400">3주차:</span>
+                        <p className="text-muted-foreground">{result.analysis.monthlyFortune.week3}</p>
+                      </div>
+                    )}
+                    {result.analysis.monthlyFortune.week4 && (
+                      <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                        <span className="text-yellow-600 dark:text-yellow-400">4주차:</span>
+                        <p className="text-muted-foreground">{result.analysis.monthlyFortune.week4}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             {result.analysis.luckyElements && (
