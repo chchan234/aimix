@@ -88,7 +88,7 @@ router.post('/confirm', authenticateToken, async (req, res) => {
     }
 
     // 3. 주문 이름에서 크레딧 수 추출
-    const credits = parseInt(paymentResult.orderName.match(/\d+/)?.[0] || '0', 10);
+    let credits = parseInt(paymentResult.orderName.match(/\d+/)?.[0] || '0', 10);
     if (credits === 0) {
       // orderName에서 크레딧 추출 실패 시 패키지 매핑
       const packageMatch = Object.values(CREDIT_PACKAGES).find(
@@ -97,6 +97,7 @@ router.post('/confirm', authenticateToken, async (req, res) => {
       if (!packageMatch) {
         return res.status(400).json({ error: 'Invalid order name' });
       }
+      credits = packageMatch.credits;
     }
 
     // 4. 사용자 정보 조회
