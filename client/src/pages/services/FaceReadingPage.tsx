@@ -279,76 +279,137 @@ export default function FaceReadingPage() {
 
             {result.analysis ? (
               <div className="space-y-4 text-muted-foreground">
-                {result.analysis.overallImpression && (
-                  <div>
-                    <h4 className="text-foreground font-medium mb-2">전체적인 인상</h4>
-                    <p className="text-sm">{result.analysis.overallImpression}</p>
+                {/* 종합 운세 */}
+                {result.analysis.overallFortune && (
+                  <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-500/30">
+                    <h4 className="text-foreground font-medium mb-2">종합 운세</h4>
+                    <p className="text-sm mb-2">{result.analysis.overallFortune.summary}</p>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div>
+                        <span className="text-blue-400">운세 점수:</span> {result.analysis.overallFortune.fortuneScore}점
+                      </div>
+                      <div>
+                        <span className="text-blue-400">인생 흐름:</span> {result.analysis.overallFortune.lifePath}
+                      </div>
+                    </div>
+                    {result.analysis.overallFortune.luckyAge && Array.isArray(result.analysis.overallFortune.luckyAge) && (
+                      <div className="mt-2 text-xs">
+                        <span className="text-blue-400">행운의 나이:</span> {result.analysis.overallFortune.luckyAge.join(', ')}
+                      </div>
+                    )}
                   </div>
                 )}
 
+                {/* 얼굴형 */}
                 {result.analysis.faceShape && (
                   <div>
                     <h4 className="text-foreground font-medium mb-2">얼굴형</h4>
                     <p className="text-sm">
                       <span className="text-blue-400">{result.analysis.faceShape.type}</span> - {result.analysis.faceShape.meaning}
                     </p>
+                    {result.analysis.faceShape.characteristics && Array.isArray(result.analysis.faceShape.characteristics) && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {result.analysis.faceShape.characteristics.map((char: string, idx: number) => (
+                          <span key={idx} className="text-xs bg-blue-500/20 px-2 py-1 rounded">{char}</span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
 
+                {/* 이마 */}
                 {result.analysis.forehead && (
                   <div>
-                    <h4 className="text-foreground font-medium mb-2">이마 (재물운 & 지혜)</h4>
+                    <h4 className="text-foreground font-medium mb-2">이마 (천정)</h4>
                     <p className="text-sm mb-1">{result.analysis.forehead.analysis}</p>
-                    <p className="text-sm text-blue-400">{result.analysis.forehead.fortune}</p>
+                    <p className="text-sm text-muted-foreground">{result.analysis.forehead.meaning}</p>
+                    <p className="text-sm text-blue-400 mt-1">{result.analysis.forehead.fortune}</p>
                   </div>
                 )}
 
+                {/* 눈썹 */}
+                {result.analysis.eyebrows && (
+                  <div>
+                    <h4 className="text-foreground font-medium mb-2">눈썹</h4>
+                    <p className="text-sm mb-1">{result.analysis.eyebrows.shape}</p>
+                    <p className="text-sm text-muted-foreground">{result.analysis.eyebrows.meaning}</p>
+                    <p className="text-sm text-blue-400 mt-1">{result.analysis.eyebrows.advice}</p>
+                  </div>
+                )}
+
+                {/* 눈 */}
                 {result.analysis.eyes && (
                   <div>
-                    <h4 className="text-foreground font-medium mb-2">눈 (감정 & 인간관계)</h4>
-                    <p className="text-sm mb-1">{result.analysis.eyes.analysis}</p>
-                    <p className="text-sm text-blue-400">{result.analysis.eyes.fortune}</p>
+                    <h4 className="text-foreground font-medium mb-2">눈</h4>
+                    <p className="text-sm mb-1">{result.analysis.eyes.shape}</p>
+                    <p className="text-sm text-muted-foreground">{result.analysis.eyes.meaning}</p>
+                    <p className="text-sm text-blue-400 mt-1">{result.analysis.eyes.fortune}</p>
+                    {result.analysis.eyes.innerNature && (
+                      <p className="text-sm text-purple-400 mt-1">내면: {result.analysis.eyes.innerNature}</p>
+                    )}
                   </div>
                 )}
 
+                {/* 코 */}
                 {result.analysis.nose && (
                   <div>
-                    <h4 className="text-foreground font-medium mb-2">코 (재물운 & 의지력)</h4>
-                    <p className="text-sm mb-1">{result.analysis.nose.analysis}</p>
-                    <p className="text-sm text-blue-400">{result.analysis.nose.fortune}</p>
+                    <h4 className="text-foreground font-medium mb-2">코 (준두)</h4>
+                    <p className="text-sm mb-1">{result.analysis.nose.shape}</p>
+                    <p className="text-sm text-muted-foreground">{result.analysis.nose.meaning}</p>
+                    <p className="text-sm text-yellow-400 mt-1">재물운: {result.analysis.nose.wealthFortune}</p>
                   </div>
                 )}
 
+                {/* 입 */}
                 {result.analysis.mouth && (
                   <div>
-                    <h4 className="text-foreground font-medium mb-2">입 (언변 & 복록)</h4>
-                    <p className="text-sm mb-1">{result.analysis.mouth.analysis}</p>
-                    <p className="text-sm text-blue-400">{result.analysis.mouth.fortune}</p>
+                    <h4 className="text-foreground font-medium mb-2">입</h4>
+                    <p className="text-sm mb-1">{result.analysis.mouth.shape}</p>
+                    <p className="text-sm text-muted-foreground">{result.analysis.mouth.meaning}</p>
+                    <p className="text-sm text-blue-400 mt-1">{result.analysis.mouth.fortune}</p>
                   </div>
                 )}
 
+                {/* 귀 */}
                 {result.analysis.ears && (
                   <div>
-                    <h4 className="text-foreground font-medium mb-2">귀 (건강 & 재물운)</h4>
-                    <p className="text-sm mb-1">{result.analysis.ears.analysis}</p>
-                    <p className="text-sm text-blue-400">{result.analysis.ears.fortune}</p>
+                    <h4 className="text-foreground font-medium mb-2">귀</h4>
+                    <p className="text-sm mb-1">{result.analysis.ears.shape}</p>
+                    <p className="text-sm text-muted-foreground">{result.analysis.ears.meaning}</p>
+                    <p className="text-sm text-blue-400 mt-1">{result.analysis.ears.fortune}</p>
                   </div>
                 )}
 
-                {result.analysis.overallFortune && (
-                  <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-500/30">
-                    <h4 className="text-foreground font-medium mb-2">종합 운세</h4>
-                    <p className="text-sm">{result.analysis.overallFortune}</p>
+                {/* 턱 */}
+                {result.analysis.jawChin && (
+                  <div>
+                    <h4 className="text-foreground font-medium mb-2">턱과 법령선</h4>
+                    <p className="text-sm mb-1">{result.analysis.jawChin.shape}</p>
+                    <p className="text-sm text-muted-foreground">{result.analysis.jawChin.meaning}</p>
+                    <p className="text-sm text-blue-400 mt-1">{result.analysis.jawChin.fortune}</p>
                   </div>
                 )}
 
-                {(result.analysis.strengths || result.analysis.challenges) && (
+                {/* 나이별 운세 */}
+                {result.analysis.fortuneByAge && (
+                  <div className="bg-indigo-900/20 rounded-lg p-4 border border-indigo-500/30">
+                    <h4 className="text-foreground font-medium mb-2">나이별 운세</h4>
+                    <div className="space-y-2 text-sm">
+                      <p><span className="text-indigo-400">초년운:</span> {result.analysis.fortuneByAge.youth}</p>
+                      <p><span className="text-indigo-400">중년운:</span> {result.analysis.fortuneByAge.middle}</p>
+                      <p><span className="text-indigo-400">말년운:</span> {result.analysis.fortuneByAge.later}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* 성격 */}
+                {result.analysis.personality && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {result.analysis.strengths && (
+                    {result.analysis.personality.strengths && Array.isArray(result.analysis.personality.strengths) && (
                       <div className="bg-green-900/20 rounded-lg p-4 border border-green-500/30">
                         <h4 className="text-foreground font-medium mb-2">강점</h4>
                         <ul className="text-sm space-y-1">
-                          {result.analysis.strengths.map((item: string, idx: number) => (
+                          {result.analysis.personality.strengths.map((item: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2">
                               <span className="text-green-400">✓</span>
                               <span>{item}</span>
@@ -357,11 +418,11 @@ export default function FaceReadingPage() {
                         </ul>
                       </div>
                     )}
-                    {result.analysis.challenges && (
+                    {result.analysis.personality.weaknesses && Array.isArray(result.analysis.personality.weaknesses) && (
                       <div className="bg-yellow-900/20 rounded-lg p-4 border border-yellow-500/30">
                         <h4 className="text-foreground font-medium mb-2">주의할 점</h4>
                         <ul className="text-sm space-y-1">
-                          {result.analysis.challenges.map((item: string, idx: number) => (
+                          {result.analysis.personality.weaknesses.map((item: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2">
                               <span className="text-yellow-400">!</span>
                               <span>{item}</span>
@@ -373,45 +434,97 @@ export default function FaceReadingPage() {
                   </div>
                 )}
 
-                {result.analysis.advice && Array.isArray(result.analysis.advice) && (
-                  <div className="bg-purple-900/20 rounded-lg p-4 border border-purple-500/30">
-                    <h4 className="text-foreground font-medium mb-2">조언</h4>
-                    <ul className="text-sm space-y-1">
-                      {result.analysis.advice.map((item: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <span className="text-purple-400">→</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
+                {/* 재물운 */}
+                {result.analysis.wealth && (
+                  <div className="bg-yellow-900/20 rounded-lg p-4 border border-yellow-500/30">
+                    <h4 className="text-foreground font-medium mb-2">재물운</h4>
+                    <p className="text-sm mb-1">{result.analysis.wealth.overall}</p>
+                    <p className="text-sm text-muted-foreground">스타일: {result.analysis.wealth.earningStyle}</p>
+                    <p className="text-sm text-yellow-400 mt-1">{result.analysis.wealth.advice}</p>
                   </div>
                 )}
 
-                {(result.analysis.luckyColors || result.analysis.luckyNumbers) && (
-                  <div className="grid grid-cols-2 gap-4">
-                    {result.analysis.luckyColors && (
-                      <div className="bg-blue-900/20 rounded-lg p-3 border border-blue-500/30">
-                        <h4 className="text-foreground font-medium mb-2 text-sm">행운의 색상</h4>
-                        <div className="flex gap-2 flex-wrap">
-                          {result.analysis.luckyColors.map((color: string, idx: number) => (
-                            <span key={idx} className="text-xs bg-blue-500/20 px-2 py-1 rounded">
-                              {color}
-                            </span>
+                {/* 연애운 */}
+                {result.analysis.love && (
+                  <div className="bg-pink-900/20 rounded-lg p-4 border border-pink-500/30">
+                    <h4 className="text-foreground font-medium mb-2">연애운</h4>
+                    <p className="text-sm mb-1">{result.analysis.love.style}</p>
+                    <p className="text-sm text-muted-foreground">이상형: {result.analysis.love.idealPartner}</p>
+                    <p className="text-sm text-pink-400 mt-1">{result.analysis.love.advice}</p>
+                  </div>
+                )}
+
+                {/* 직업운 */}
+                {result.analysis.career && (
+                  <div className="bg-cyan-900/20 rounded-lg p-4 border border-cyan-500/30">
+                    <h4 className="text-foreground font-medium mb-2">직업운</h4>
+                    {result.analysis.career.suitableFields && Array.isArray(result.analysis.career.suitableFields) && (
+                      <div className="flex flex-wrap gap-1 mb-2">
+                        {result.analysis.career.suitableFields.map((field: string, idx: number) => (
+                          <span key={idx} className="text-xs bg-cyan-500/20 px-2 py-1 rounded">{field}</span>
+                        ))}
+                      </div>
+                    )}
+                    <p className="text-sm text-muted-foreground">{result.analysis.career.workStyle}</p>
+                    <p className="text-sm text-cyan-400 mt-1">{result.analysis.career.advice}</p>
+                  </div>
+                )}
+
+                {/* 조언 */}
+                {result.analysis.advice && (
+                  <div className="bg-purple-900/20 rounded-lg p-4 border border-purple-500/30">
+                    <h4 className="text-foreground font-medium mb-2">조언</h4>
+                    {result.analysis.advice.dos && Array.isArray(result.analysis.advice.dos) && (
+                      <div className="mb-2">
+                        <p className="text-sm text-green-400 mb-1">이렇게 하세요:</p>
+                        <ul className="text-sm space-y-1">
+                          {result.analysis.advice.dos.map((item: string, idx: number) => (
+                            <li key={idx} className="flex items-start gap-2">
+                              <span className="text-green-400">✓</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {result.analysis.advice.donts && Array.isArray(result.analysis.advice.donts) && (
+                      <div className="mb-2">
+                        <p className="text-sm text-red-400 mb-1">피하세요:</p>
+                        <ul className="text-sm space-y-1">
+                          {result.analysis.advice.donts.map((item: string, idx: number) => (
+                            <li key={idx} className="flex items-start gap-2">
+                              <span className="text-red-400">✗</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {result.analysis.advice.luckyItems && Array.isArray(result.analysis.advice.luckyItems) && (
+                      <div>
+                        <p className="text-sm text-purple-400 mb-1">행운 아이템:</p>
+                        <div className="flex flex-wrap gap-1">
+                          {result.analysis.advice.luckyItems.map((item: string, idx: number) => (
+                            <span key={idx} className="text-xs bg-purple-500/20 px-2 py-1 rounded">{item}</span>
                           ))}
                         </div>
                       </div>
                     )}
-                    {result.analysis.luckyNumbers && (
-                      <div className="bg-blue-900/20 rounded-lg p-3 border border-blue-500/30">
-                        <h4 className="text-foreground font-medium mb-2 text-sm">행운의 숫자</h4>
-                        <div className="flex gap-2 flex-wrap">
-                          {result.analysis.luckyNumbers.map((num: number, idx: number) => (
-                            <span key={idx} className="text-xs bg-blue-500/20 px-2 py-1 rounded">
-                              {num}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
+                  </div>
+                )}
+
+                {/* 유명인 매칭 & 재미있는 사실 */}
+                {(result.analysis.celebrityMatch || result.analysis.funFact) && (
+                  <div className="bg-gray-700/50 rounded-lg p-4">
+                    {result.analysis.celebrityMatch && (
+                      <p className="text-sm mb-2">
+                        <span className="text-blue-400">비슷한 관상의 유명인:</span> {result.analysis.celebrityMatch}
+                      </p>
+                    )}
+                    {result.analysis.funFact && (
+                      <p className="text-sm">
+                        <span className="text-purple-400">재미있는 사실:</span> {result.analysis.funFact}
+                      </p>
                     )}
                   </div>
                 )}
