@@ -10,6 +10,32 @@ import { db } from '../db/index.js';
 const router = Router();
 
 /**
+ * POST /api/setup/fix-schema
+ * Fixes schema issues with existing tables
+ */
+router.post('/fix-schema', async (req, res) => {
+  try {
+    console.log('Fixing transactions.reference_id column type...');
+    await db.execute(sql`
+      ALTER TABLE transactions
+      ALTER COLUMN reference_id TYPE VARCHAR(200)
+    `);
+
+    res.json({
+      success: true,
+      message: 'Schema fixed successfully',
+    });
+  } catch (error: any) {
+    console.error('❌ Error fixing schema:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fix schema',
+      message: error.message,
+    });
+  }
+});
+
+/**
  * POST /api/setup/create-tables
  * Creates payment-related tables
  * THIS IS A ONE-TIME OPERATION - DELETE THIS ENDPOINT AFTER USE
