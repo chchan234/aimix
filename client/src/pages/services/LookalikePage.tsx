@@ -348,7 +348,7 @@ export default function LookalikePage() {
                   <p className="text-muted-foreground mb-3">{match.reason}</p>
                   <div className="flex flex-wrap gap-2">
                     {match.characteristics.map((char, i) => (
-                      <span key={i} className="px-2 py-1 bg-gray-700 rounded text-sm text-muted-foreground">
+                      <span key={i} className="px-2 py-1 bg-pink-500/20 text-pink-400 rounded text-sm">
                         {char}
                       </span>
                     ))}
