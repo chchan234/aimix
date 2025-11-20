@@ -4,10 +4,10 @@
  */
 
 import { Router } from 'express';
-import { db } from '../db';
-import { payments, transactions, users, insertPaymentSchema } from '../db/schema';
-import { tossPayments } from '../services/toss-payments';
-import { authenticateToken } from '../middleware/auth';
+import { db } from '../db/index.js';
+import { payments, transactions, users, insertPaymentSchema } from '../db/schema.js';
+import { tossPayments } from '../services/toss-payments.js';
+import { authenticateToken } from '../middleware/auth.js';
 import { z } from 'zod';
 import { eq, desc } from 'drizzle-orm';
 
