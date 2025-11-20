@@ -10,6 +10,33 @@ import { db } from '../db/index.js';
 const router = Router();
 
 /**
+ * GET /api/setup/check-schema
+ * Check table structure
+ */
+router.get('/check-schema', async (req, res) => {
+  try {
+    const columns = await db.execute(sql`
+      SELECT column_name, data_type, character_maximum_length, is_nullable
+      FROM information_schema.columns
+      WHERE table_name = 'payments'
+      ORDER BY ordinal_position
+    `);
+
+    res.json({
+      success: true,
+      columns: columns.rows,
+    });
+  } catch (error: any) {
+    console.error('❌ Error checking schema:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to check schema',
+      message: error.message,
+    });
+  }
+});
+
+/**
  * POST /api/setup/fix-schema
  * Fixes schema issues with existing tables
  */
