@@ -306,14 +306,46 @@ export default function PalmistryPage() {
               </div>
             )}
 
-            {result.analysis.advice && result.analysis.advice.length > 0 && (
+            {result.analysis.advice && (
               <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <h4 className="text-green-400 font-medium mb-2">조언</h4>
-                <ul className="space-y-1">
-                  {result.analysis.advice.map((item: string, idx: number) => (
-                    <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
-                  ))}
-                </ul>
+                <div className="space-y-3">
+                  {result.analysis.advice.doThis && Array.isArray(result.analysis.advice.doThis) && (
+                    <div>
+                      <p className="text-sm text-green-400 mb-1">이렇게 하세요:</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.doThis.map((item: string, idx: number) => (
+                          <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.avoidThis && Array.isArray(result.analysis.advice.avoidThis) && (
+                    <div>
+                      <p className="text-sm text-red-400 mb-1">피하세요:</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.avoidThis.map((item: string, idx: number) => (
+                          <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.luckyTips && Array.isArray(result.analysis.advice.luckyTips) && (
+                    <div>
+                      <p className="text-sm text-purple-400 mb-1">행운 팁:</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.luckyTips.map((item: string, idx: number) => (
+                          <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.finalMessage && (
+                    <p className="text-muted-foreground text-sm mt-2 italic">
+                      {result.analysis.advice.finalMessage}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
           </div>
