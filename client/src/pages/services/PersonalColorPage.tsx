@@ -479,38 +479,44 @@ export default function PersonalColorPage() {
             </h3>
 
             <div className="space-y-4">
-              <div>
-                <p className="text-muted-foreground text-sm mb-2">립스틱</p>
-                <div className="flex flex-wrap gap-2">
-                  {result.makeupRecommendations.lipstick.map((color, index) => (
-                    <span key={index} className="px-3 py-1 bg-pink-500/20 text-pink-300 rounded-full text-sm">
-                      {color}
-                    </span>
-                  ))}
+              {result.makeupRecommendations?.lipstick && Array.isArray(result.makeupRecommendations.lipstick) && (
+                <div>
+                  <p className="text-muted-foreground text-sm mb-2">립스틱</p>
+                  <div className="flex flex-wrap gap-2">
+                    {result.makeupRecommendations.lipstick.map((color, index) => (
+                      <span key={index} className="px-3 py-1 bg-pink-500/20 text-pink-600 dark:text-pink-300 rounded-full text-sm">
+                        {color}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div>
-                <p className="text-muted-foreground text-sm mb-2">아이섀도우</p>
-                <div className="flex flex-wrap gap-2">
-                  {result.makeupRecommendations.eyeshadow.map((color, index) => (
-                    <span key={index} className="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-full text-sm">
-                      {color}
-                    </span>
-                  ))}
+              {result.makeupRecommendations?.eyeshadow && Array.isArray(result.makeupRecommendations.eyeshadow) && (
+                <div>
+                  <p className="text-muted-foreground text-sm mb-2">아이섀도우</p>
+                  <div className="flex flex-wrap gap-2">
+                    {result.makeupRecommendations.eyeshadow.map((color, index) => (
+                      <span key={index} className="px-3 py-1 bg-amber-500/20 text-amber-600 dark:text-amber-300 rounded-full text-sm">
+                        {color}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div>
-                <p className="text-muted-foreground text-sm mb-2">블러셔</p>
-                <div className="flex flex-wrap gap-2">
-                  {result.makeupRecommendations.blush.map((color, index) => (
-                    <span key={index} className="px-3 py-1 bg-rose-500/20 text-rose-300 rounded-full text-sm">
-                      {color}
-                    </span>
-                  ))}
+              {result.makeupRecommendations?.blush && Array.isArray(result.makeupRecommendations.blush) && (
+                <div>
+                  <p className="text-muted-foreground text-sm mb-2">블러셔</p>
+                  <div className="flex flex-wrap gap-2">
+                    {result.makeupRecommendations.blush.map((color, index) => (
+                      <span key={index} className="px-3 py-1 bg-rose-500/20 text-rose-600 dark:text-rose-300 rounded-full text-sm">
+                        {color}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
@@ -527,9 +533,9 @@ export default function PersonalColorPage() {
                   <p className="text-muted-foreground text-sm mb-2">추천 의류 색상</p>
                   <div className="flex flex-wrap gap-2">
                     {result.clothingRecommendations.colors.map((color, index) => (
-                      <div key={index} className="flex items-center gap-2 px-3 py-2 bg-gray-700 rounded-lg">
+                      <div key={index} className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
                         <div
-                          className="w-4 h-4 rounded-full border border-gray-500"
+                          className="w-4 h-4 rounded-full border border-gray-300 dark:border-gray-500"
                           style={{ backgroundColor: getColorHex(color) }}
                         />
                         <span className="text-foreground text-sm">{color}</span>
@@ -544,8 +550,8 @@ export default function PersonalColorPage() {
                   <p className="text-muted-foreground text-sm mb-2">추천 메탈</p>
                   <span className={`px-4 py-2 rounded-lg inline-block ${
                     result.clothingRecommendations.metals.includes('골드')
-                      ? 'bg-yellow-500/20 text-yellow-300'
-                      : 'bg-gray-500/20 text-muted-foreground'
+                      ? 'bg-yellow-500/20 text-yellow-600 dark:text-yellow-300'
+                      : 'bg-gray-500/20 text-gray-600 dark:text-gray-300'
                   }`}>
                     {result.clothingRecommendations.metals}
                   </span>
