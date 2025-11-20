@@ -178,7 +178,7 @@ export const transactions = pgTable('transactions', {
   creditsAfter: integer('credits_after').notNull(),
 
   // Reference info
-  referenceId: uuid('reference_id'),
+  referenceId: varchar('reference_id', { length: 200 }),
   referenceType: varchar('reference_type', { length: 50 }),
   description: text('description'),
   metadata: jsonb('metadata'),
