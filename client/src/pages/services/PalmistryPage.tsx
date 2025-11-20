@@ -297,12 +297,38 @@ export default function PalmistryPage() {
             {result.analysis.majorLines && (
               <div className="space-y-3">
                 <h4 className="text-green-600 dark:text-green-400 font-medium">주요 손금 분석</h4>
-                {Object.entries(result.analysis.majorLines).map(([key, value]: [string, any]) => (
-                  <div key={key} className="bg-gray-50 dark:bg-gray-700 p-3 rounded">
-                    <p className="text-foreground font-medium text-sm mb-1">{value.description}</p>
-                    <p className="text-muted-foreground text-xs">{value.fortune}</p>
-                  </div>
-                ))}
+                {Object.entries(result.analysis.majorLines).map(([key, value]: [string, any]) => {
+                  const lineNames: { [key: string]: string } = {
+                    lifeLine: '생명선',
+                    fateLine: '운명선',
+                    heartLine: '감정선',
+                    headLine: '지능선',
+                    moneyLine: '재물선',
+                    marriageLine: '결혼선',
+                    sunLine: '태양선'
+                  };
+                  const lineName = lineNames[key] || key;
+
+                  // Get the main fortune field for this line type
+                  const fortuneField = value.healthFortune || value.careerFortune ||
+                    value.loveFortune || value.thinkingStyle || value.wealthFortune ||
+                    value.marriageTiming || value.fameFortune || '';
+
+                  return (
+                    <div key={key} className="bg-gray-50 dark:bg-gray-700 p-3 rounded">
+                      <p className="text-green-600 dark:text-green-400 font-medium text-sm mb-2">{lineName}</p>
+                      {value.appearance && (
+                        <p className="text-foreground text-sm mb-1">{value.appearance}</p>
+                      )}
+                      {value.meaning && (
+                        <p className="text-muted-foreground text-xs mb-1">{value.meaning}</p>
+                      )}
+                      {fortuneField && (
+                        <p className="text-muted-foreground text-xs">{fortuneField}</p>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
 
