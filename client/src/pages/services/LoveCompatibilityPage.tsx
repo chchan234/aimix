@@ -242,8 +242,15 @@ export default function LoveCompatibilityPage() {
             {result.analysis.elementAnalysis && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <h4 className="text-pink-600 dark:text-pink-400 font-medium mb-2">사주 오행 궁합</h4>
-                <p className="text-foreground text-sm mb-2">{result.analysis.elementAnalysis.relationship}</p>
-                <p className="text-muted-foreground text-sm">{result.analysis.elementAnalysis.harmony}</p>
+                {result.analysis.elementAnalysis.interaction && (
+                  <p className="text-foreground text-sm mb-2">{result.analysis.elementAnalysis.interaction}</p>
+                )}
+                {result.analysis.elementAnalysis.yinYangBalance && (
+                  <p className="text-muted-foreground text-sm mb-1">{result.analysis.elementAnalysis.yinYangBalance}</p>
+                )}
+                {result.analysis.elementAnalysis.complementary && (
+                  <p className="text-muted-foreground text-sm">{result.analysis.elementAnalysis.complementary}</p>
+                )}
               </div>
             )}
 
@@ -322,13 +329,51 @@ export default function LoveCompatibilityPage() {
             {result.analysis.advice && (
               <div>
                 <h4 className="text-pink-600 dark:text-pink-400 font-medium mb-2">조언</h4>
-                {result.analysis.advice.tips && (
-                  <ul className="space-y-1">
-                    {result.analysis.advice.tips.map((tip: string, idx: number) => (
-                      <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
-                    ))}
-                  </ul>
-                )}
+                <div className="space-y-3">
+                  {result.analysis.advice.forPerson1 && (
+                    <div>
+                      <p className="text-sm text-pink-600 dark:text-pink-400 mb-1">나에게:</p>
+                      <p className="text-foreground text-sm">{result.analysis.advice.forPerson1}</p>
+                    </div>
+                  )}
+                  {result.analysis.advice.forPerson2 && (
+                    <div>
+                      <p className="text-sm text-pink-600 dark:text-pink-400 mb-1">상대방에게:</p>
+                      <p className="text-foreground text-sm">{result.analysis.advice.forPerson2}</p>
+                    </div>
+                  )}
+                  {result.analysis.advice.together && Array.isArray(result.analysis.advice.together) && (
+                    <div>
+                      <p className="text-sm text-green-600 dark:text-green-400 mb-1">함께 하면 좋은 것:</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.together.map((item: string, idx: number) => (
+                          <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.avoid && Array.isArray(result.analysis.advice.avoid) && (
+                    <div>
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-1">피해야 할 것:</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.avoid.map((item: string, idx: number) => (
+                          <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.conflictResolution && (
+                    <div>
+                      <p className="text-sm text-blue-600 dark:text-blue-400 mb-1">화해법:</p>
+                      <p className="text-muted-foreground text-sm">{result.analysis.advice.conflictResolution}</p>
+                    </div>
+                  )}
+                  {result.analysis.advice.finalMessage && (
+                    <p className="text-muted-foreground text-sm mt-2 italic">
+                      {result.analysis.advice.finalMessage}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
           </div>
