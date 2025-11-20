@@ -142,8 +142,8 @@ export default function AdminPage() {
   const [newAnnouncement, setNewAnnouncement] = useState({
     title: '',
     content: '',
-    type: 'info',
-    isPinned: false
+    type: 'important',
+    isPinned: true
   });
   const [editingAnnouncement, setEditingAnnouncement] = useState<Announcement | null>(null);
 
@@ -976,33 +976,28 @@ export default function AdminPage() {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
 
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-4 items-center">
                   <select
                     value={editingAnnouncement ? editingAnnouncement.type : newAnnouncement.type}
-                    onChange={(e) => editingAnnouncement
-                      ? setEditingAnnouncement({ ...editingAnnouncement, type: e.target.value })
-                      : setNewAnnouncement({ ...newAnnouncement, type: e.target.value })
-                    }
+                    onChange={(e) => {
+                      const type = e.target.value;
+                      const isPinned = type === 'important';
+                      if (editingAnnouncement) {
+                        setEditingAnnouncement({ ...editingAnnouncement, type, isPinned });
+                      } else {
+                        setNewAnnouncement({ ...newAnnouncement, type, isPinned });
+                      }
+                    }}
                     className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="info">정보</option>
-                    <option value="warning">경고</option>
-                    <option value="update">업데이트</option>
-                    <option value="event">이벤트</option>
+                    <option value="important">🔔 중요 (상단 배너)</option>
+                    <option value="general">📢 일반 (홈페이지)</option>
                   </select>
-
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={editingAnnouncement ? editingAnnouncement.isPinned : newAnnouncement.isPinned}
-                      onChange={(e) => editingAnnouncement
-                        ? setEditingAnnouncement({ ...editingAnnouncement, isPinned: e.target.checked })
-                        : setNewAnnouncement({ ...newAnnouncement, isPinned: e.target.checked })
-                      }
-                      className="w-4 h-4"
-                    />
-                    <span>상단 고정</span>
-                  </label>
+                  <span className="text-sm text-gray-500">
+                    {(editingAnnouncement?.type || newAnnouncement.type) === 'important'
+                      ? '모든 페이지 상단에 배너로 표시됩니다'
+                      : '홈페이지 공지사항 섹션에 표시됩니다'}
+                  </span>
                 </div>
 
                 <div className="flex gap-2">
@@ -1048,12 +1043,10 @@ export default function AdminPage() {
                             <span className="material-symbols-outlined text-yellow-500 text-sm">push_pin</span>
                           )}
                           <span className={`px-2 py-0.5 rounded text-xs ${
-                            announcement.type === 'warning' ? 'bg-yellow-100 text-yellow-700' :
-                            announcement.type === 'update' ? 'bg-blue-100 text-blue-700' :
-                            announcement.type === 'event' ? 'bg-purple-100 text-purple-700' :
-                            'bg-gray-100 text-gray-700'
+                            announcement.type === 'important' ? 'bg-red-100 text-red-700' :
+                            'bg-blue-100 text-blue-700'
                           }`}>
-                            {announcement.type}
+                            {announcement.type === 'important' ? '🔔 중요' : '📢 일반'}
                           </span>
                           <span className="font-medium">{announcement.title}</span>
                         </div>

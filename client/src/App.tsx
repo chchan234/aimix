@@ -17,6 +17,7 @@ import KakaoCallback from './pages/KakaoCallback';
 import AdminPage from './pages/AdminPage';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
+import AnnouncementBanner from './components/AnnouncementBanner';
 
 // Service Pages - Fortune
 import SajuPage from './pages/services/SajuPage';
@@ -66,6 +67,9 @@ function App() {
 
       {/* Spacer for fixed header */}
       <div className="h-16"></div>
+
+      {/* Important Announcements Banner */}
+      <AnnouncementBanner />
 
       <div className="flex flex-1 w-full">
         {/* Left Sidebar */}

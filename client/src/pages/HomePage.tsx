@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
+import AnnouncementSection from '../components/AnnouncementSection';
 
 export default function HomePage() {
   const [, setLocation] = useLocation();
@@ -336,6 +337,9 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* Announcements Section */}
+      <AnnouncementSection />
 
       {/* Popular This Week */}
       <div>

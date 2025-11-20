@@ -197,6 +197,37 @@ app.use('/api/admin', authenticateToken, adminRoutes);
 // Health service routes
 app.use('/api/health', healthRoutes);
 
+// Public announcements endpoint (no auth required)
+app.get('/api/announcements', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('announcements')
+      .select('id, title, content, type, is_pinned, created_at')
+      .eq('is_active', true)
+      .or(`start_date.is.null,start_date.lte.${new Date().toISOString()}`)
+      .or(`end_date.is.null,end_date.gte.${new Date().toISOString()}`)
+      .order('is_pinned', { ascending: false })
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    // Map to camelCase for frontend
+    const announcements = data.map(a => ({
+      id: a.id,
+      title: a.title,
+      content: a.content,
+      type: a.type,
+      isPinned: a.is_pinned,
+      createdAt: a.created_at
+    }));
+
+    res.json({ announcements });
+  } catch (error) {
+    console.error('Fetch announcements error:', error);
+    res.status(500).json({ error: 'Failed to fetch announcements' });
+  }
+});
+
 // Test endpoint to get user count (requires authentication)
 app.get('/api/users/count', authenticateToken, async (req, res) => {
   try {
