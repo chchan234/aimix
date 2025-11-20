@@ -14,11 +14,6 @@ export const users = pgTable('users', {
   providerId: varchar('provider_id', { length: 255 }),
   profileImageUrl: text('profile_image_url'),
 
-  // Email Verification
-  emailVerified: boolean('email_verified').notNull().default(false),
-  verificationToken: varchar('verification_token', { length: 255 }),
-  verificationTokenExpires: timestamp('verification_token_expires'),
-
   // Credits
   credits: integer('credits').notNull().default(0),
   lifetimeCredits: integer('lifetime_credits').notNull().default(0),
