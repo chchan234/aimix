@@ -27,6 +27,7 @@ import imageRoutes from './routes/image.js';
 import personalityRoutes from './routes/personality.js';
 import adminRoutes from './routes/admin.js';
 import healthRoutes from './routes/health.js';
+import paymentsRoutes from './routes/payments.js';
 
 // Security: Validate critical environment variables
 function validateEnvironment() {
@@ -195,6 +196,9 @@ app.use('/api/personality', personalityRoutes);
 
 // Results routes
 app.use('/api/results', resultsRoutes);
+
+// Payment routes
+app.use('/api/payments', paymentsRoutes);
 
 // Admin routes (requires authentication)
 app.use('/api/admin', authenticateToken, adminRoutes);

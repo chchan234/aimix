@@ -15,6 +15,9 @@ import BuyCreditsPage from './pages/BuyCreditsPage';
 import HelpPage from './pages/HelpPage';
 import KakaoCallback from './pages/KakaoCallback';
 import AdminPage from './pages/AdminPage';
+import CreditPurchasePage from './pages/CreditPurchasePage';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
+import PaymentFailPage from './pages/PaymentFailPage';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import AnnouncementBanner from './components/AnnouncementBanner';
@@ -87,6 +90,9 @@ function App() {
             <Route path="/settings" component={SettingsPage} />
             <Route path="/my-results" component={MyResultsPage} />
             <Route path="/buy-credits" component={BuyCreditsPage} />
+            <Route path="/credit-purchase" component={CreditPurchasePage} />
+            <Route path="/payment/success" component={PaymentSuccessPage} />
+            <Route path="/payment/fail" component={PaymentFailPage} />
             <Route path="/help" component={HelpPage} />
             <Route path="/admin" component={AdminPage} />
 

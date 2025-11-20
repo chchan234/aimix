@@ -192,6 +192,62 @@ export const insertTransactionSchema = createInsertSchema(transactions);
 export const selectTransactionSchema = createSelectSchema(transactions);
 
 // ================================
+// Payments Table (Toss Payments)
+// ================================
+export const payments = pgTable('payments', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  transactionId: uuid('transaction_id').references(() => transactions.id),
+
+  // Toss Payments Info
+  paymentKey: varchar('payment_key', { length: 200 }).notNull().unique(),
+  orderId: varchar('order_id', { length: 100 }).notNull().unique(),
+  orderName: varchar('order_name', { length: 200 }).notNull(),
+
+  // Payment Details
+  method: varchar('method', { length: 50 }).notNull(), // 'card', 'virtualAccount', 'transfer', 'mobilePhone', 'giftCertificate', 'easyPay'
+  totalAmount: integer('total_amount').notNull(),
+  balanceAmount: integer('balance_amount').notNull(),
+  status: varchar('status', { length: 50 }).notNull(), // 'READY', 'IN_PROGRESS', 'WAITING_FOR_DEPOSIT', 'DONE', 'CANCELED', 'PARTIAL_CANCELED', 'ABORTED', 'EXPIRED'
+
+  // Card Info (nullable)
+  cardNumber: varchar('card_number', { length: 50 }),
+  cardType: varchar('card_type', { length: 20 }),
+  cardIssuer: varchar('card_issuer', { length: 50 }),
+  cardAcquirer: varchar('card_acquirer', { length: 50 }),
+
+  // EasyPay Info (nullable)
+  easyPayProvider: varchar('easy_pay_provider', { length: 50 }),
+  easyPayAmount: integer('easy_pay_amount'),
+
+  // Timestamps
+  requestedAt: timestamp('requested_at'),
+  approvedAt: timestamp('approved_at'),
+  canceledAt: timestamp('canceled_at'),
+
+  // Receipt
+  receiptUrl: text('receipt_url'),
+
+  // Credits Info
+  creditsGranted: integer('credits_granted').notNull(),
+
+  // Additional Info
+  metadata: jsonb('metadata'), // Raw response from Toss Payments
+  failureCode: varchar('failure_code', { length: 50 }),
+  failureMessage: text('failure_message'),
+
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+}, (table) => ({
+  userIdx: index('idx_payments_user').on(table.userId),
+  statusIdx: index('idx_payments_status').on(table.status),
+  createdIdx: index('idx_payments_created').on(table.createdAt),
+}));
+
+export const insertPaymentSchema = createInsertSchema(payments);
+export const selectPaymentSchema = createSelectSchema(payments);
+
+// ================================
 // Admin Activity Logs Table
 // ================================
 export const adminLogs = pgTable('admin_logs', {
@@ -288,6 +344,9 @@ export type InsertServiceResult = typeof serviceResults.$inferInsert;
 
 export type Transaction = typeof transactions.$inferSelect;
 export type InsertTransaction = typeof transactions.$inferInsert;
+
+export type Payment = typeof payments.$inferSelect;
+export type InsertPayment = typeof payments.$inferInsert;
 
 export type AdminLog = typeof adminLogs.$inferSelect;
 export type InsertAdminLog = typeof adminLogs.$inferInsert;
