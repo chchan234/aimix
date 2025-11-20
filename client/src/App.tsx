@@ -21,7 +21,7 @@ import AnnouncementBanner from './components/AnnouncementBanner';
 
 // Service Pages - Fortune
 import SajuPage from './pages/services/SajuPage';
-import DeepSaju2025Page from './pages/services/DeepSaju2025Page';
+import DeepSaju2026Page from './pages/services/DeepSaju2026Page';
 import FaceReadingPage from './pages/services/FaceReadingPage';
 import PalmistryPage from './pages/services/PalmistryPage';
 import HoroscopePage from './pages/services/HoroscopePage';
@@ -98,7 +98,7 @@ function App() {
 
             {/* Service Detail Pages - Fortune */}
             <Route path="/services/saju" component={SajuPage} />
-            <Route path="/services/deep-saju-2025" component={DeepSaju2025Page} />
+            <Route path="/services/deep-saju-2026" component={DeepSaju2026Page} />
             <Route path="/services/face-reading" component={FaceReadingPage} />
             <Route path="/services/palmistry" component={PalmistryPage} />
             <Route path="/services/horoscope" component={HoroscopePage} />

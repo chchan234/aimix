@@ -1842,10 +1842,10 @@ export async function analyzeSaju(birthDate: string, birthTime: string, gender: 
 }
 
 /**
- * Deep Saju Analysis for 2025 - 심층 신년운세 (10,000+ characters)
+ * Deep Saju Analysis for 2026 - 심층 신년운세 (10,000+ characters)
  * Generates a comprehensive yearly fortune report
  */
-export async function analyzeDeepSaju2025(birthDate: string, birthTime: string, gender: 'male' | 'female') {
+export async function analyzeDeepSaju2026(birthDate: string, birthTime: string, gender: 'male' | 'female') {
   try {
     const genderKo = gender === 'male' ? '남성' : '여성';
 

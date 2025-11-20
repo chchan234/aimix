@@ -63,14 +63,14 @@ export async function analyzeSaju(
 }
 
 /**
- * Deep Saju 2025 Analysis (심층 신년운세)
+ * Deep Saju 2026 Analysis (심층 신년운세)
  */
-export async function analyzeDeepSaju2025(
+export async function analyzeDeepSaju2026(
   birthDate: string,
   birthTime: string,
   gender: 'male' | 'female'
 ) {
-  return apiRequest('/api/ai/deep-saju-2025', { birthDate, birthTime, gender });
+  return apiRequest('/api/ai/deep-saju-2026', { birthDate, birthTime, gender });
 }
 
 /**

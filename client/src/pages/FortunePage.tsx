@@ -20,7 +20,7 @@ export default function FortunePage() {
         description: t('services.fortune.deepSaju2025.description'),
         icon: 'auto_awesome',
         color: 'indigo',
-        path: '/services/deep-saju-2025',
+        path: '/services/deep-saju-2026',
       },
       {
         title: t('services.fortune.faceReading.title'),

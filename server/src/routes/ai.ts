@@ -184,17 +184,17 @@ router.post('/saju', validateBody(sajuSchema), requireCredits('saju'), async (re
 });
 
 /**
- * POST /api/ai/deep-saju-2025
- * Deep Saju Analysis for 2025 (심층 신년운세) using OpenAI GPT
+ * POST /api/ai/deep-saju-2026
+ * Deep Saju Analysis for 2026 (심층 신년운세) using OpenAI GPT
  *
  * Body: { birthDate: string, birthTime: string, gender: 'male' | 'female' }
  * Cost: 50 credits
  */
-router.post('/deep-saju-2025', validateBody(sajuSchema), requireCredits('deep-fortune-2025'), async (req, res) => {
+router.post('/deep-saju-2026', validateBody(sajuSchema), requireCredits('deep-fortune-2025'), async (req, res) => {
   try {
     const { birthDate, birthTime, gender } = req.body;
 
-    const result = await openai.analyzeDeepSaju2025(birthDate, birthTime, gender);
+    const result = await openai.analyzeDeepSaju2026(birthDate, birthTime, gender);
 
     if (result.success) {
       res.json(result);
@@ -204,7 +204,7 @@ router.post('/deep-saju-2025', validateBody(sajuSchema), requireCredits('deep-fo
       });
     }
   } catch (error) {
-    console.error('Deep Saju 2025 analysis error:', error);
+    console.error('Deep Saju 2026 analysis error:', error);
     res.status(500).json({
       error: error instanceof Error ? error.message : 'Unknown error'
     });

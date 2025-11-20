@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
-import { analyzeDeepSaju2025 } from '../../services/ai';
+import { analyzeDeepSaju2026 } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
 
 interface MonthlyFortune {
@@ -69,7 +69,7 @@ interface DeepSajuResult {
   yearlyAdvice: string;
 }
 
-export default function DeepSaju2025Page() {
+export default function DeepSaju2026Page() {
   const [, setLocation] = useLocation();
   const [step, setStep] = useState<'intro' | 'input' | 'result'>('intro');
   const [birthDate, setBirthDate] = useState('');
@@ -124,7 +124,7 @@ export default function DeepSaju2025Page() {
 
     setLoading(true);
     try {
-      const response = await analyzeDeepSaju2025(birthDate, birthTime, gender) as any;
+      const response = await analyzeDeepSaju2026(birthDate, birthTime, gender) as any;
 
       if (response.success && response.analysis) {
         setResult(response.analysis);
