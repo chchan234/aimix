@@ -343,44 +343,60 @@ export default function NameCompatibilityPage() {
               <div>
                 <h4 className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">조언</h4>
                 <div className="space-y-3">
-                  {result.analysis.advice.maximize && Array.isArray(result.analysis.advice.maximize) && (
+                  {result.analysis.advice.maximize && (
                     <div>
                       <p className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">강점 살리기</p>
-                      <ul className="space-y-1">
-                        {result.analysis.advice.maximize.map((tip: string, idx: number) => (
-                          <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
-                        ))}
-                      </ul>
+                      {Array.isArray(result.analysis.advice.maximize) ? (
+                        <ul className="space-y-1">
+                          {result.analysis.advice.maximize.map((tip: string, idx: number) => (
+                            <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-muted-foreground text-sm">{result.analysis.advice.maximize}</p>
+                      )}
                     </div>
                   )}
-                  {result.analysis.advice.caution && Array.isArray(result.analysis.advice.caution) && (
+                  {result.analysis.advice.caution && (
                     <div>
                       <p className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">주의할 점</p>
-                      <ul className="space-y-1">
-                        {result.analysis.advice.caution.map((tip: string, idx: number) => (
-                          <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
-                        ))}
-                      </ul>
+                      {Array.isArray(result.analysis.advice.caution) ? (
+                        <ul className="space-y-1">
+                          {result.analysis.advice.caution.map((tip: string, idx: number) => (
+                            <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-muted-foreground text-sm">{result.analysis.advice.caution}</p>
+                      )}
                     </div>
                   )}
-                  {result.analysis.advice.actionTips && Array.isArray(result.analysis.advice.actionTips) && (
+                  {result.analysis.advice.actionTips && (
                     <div>
                       <p className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">실천 팁</p>
-                      <ul className="space-y-1">
-                        {result.analysis.advice.actionTips.map((tip: string, idx: number) => (
-                          <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
-                        ))}
-                      </ul>
+                      {Array.isArray(result.analysis.advice.actionTips) ? (
+                        <ul className="space-y-1">
+                          {result.analysis.advice.actionTips.map((tip: string, idx: number) => (
+                            <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-muted-foreground text-sm">{result.analysis.advice.actionTips}</p>
+                      )}
                     </div>
                   )}
-                  {result.analysis.advice.luckyTogether && Array.isArray(result.analysis.advice.luckyTogether) && (
+                  {result.analysis.advice.luckyTogether && (
                     <div>
                       <p className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">함께 하면 좋은 활동</p>
-                      <ul className="space-y-1">
-                        {result.analysis.advice.luckyTogether.map((tip: string, idx: number) => (
-                          <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
-                        ))}
-                      </ul>
+                      {Array.isArray(result.analysis.advice.luckyTogether) ? (
+                        <ul className="space-y-1">
+                          {result.analysis.advice.luckyTogether.map((tip: string, idx: number) => (
+                            <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-muted-foreground text-sm">{result.analysis.advice.luckyTogether}</p>
+                      )}
                     </div>
                   )}
                   {result.analysis.advice.finalMessage && (
