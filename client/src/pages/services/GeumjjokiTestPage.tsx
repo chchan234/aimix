@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
+import ResultCard from '../../components/ResultCard';
 import { getGeumjjokiQuestions, analyzeGeumjjoki } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
 
@@ -418,6 +419,26 @@ export default function GeumjjokiTestPage() {
               <p><strong className="text-orange-400">그들이 느끼는 점:</strong> {result.analysis.forOthers?.howTheyFeel}</p>
               <p><strong className="text-orange-400">조언:</strong> {result.analysis.forOthers?.advice}</p>
             </div>
+          </div>
+
+          {/* Download Card */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
+              <span className="material-symbols-outlined align-middle mr-2">download</span>
+              결과 저장하기
+            </h3>
+            <ResultCard
+              serviceType="geumjjoki"
+              serviceName="금쪽이 테스트"
+              mainResult={`${result.geumjjokiScore}점`}
+              subResult={`${result.grade.emoji} ${result.grade.name}`}
+              highlights={[
+                { label: '등급', value: result.grade.name },
+                { label: '특징', value: result.grade.description.slice(0, 20) + '...' },
+              ]}
+              colorTheme="orange"
+              creditsRequired={1}
+            />
           </div>
 
           {/* Try Again */}

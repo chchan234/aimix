@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
+import ResultCard from '../../components/ResultCard';
 import { getMBTIQuestions, analyzeMBTI } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
 
@@ -450,6 +451,28 @@ export default function MBTIAnalysisPage() {
                 </ul>
               </div>
             </div>
+          </div>
+
+          {/* Download Card */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
+              <span className="material-symbols-outlined align-middle mr-2">download</span>
+              결과 저장하기
+            </h3>
+            <ResultCard
+              serviceType="mbti"
+              serviceName="MBTI 심층분석"
+              mainResult={result.analysis.finalMBTI.type}
+              subResult={`확신도: ${result.analysis.finalMBTI.confidence}`}
+              highlights={[
+                { label: '주요 특성', value: result.analysis.personality.traits[0] || '' },
+                { label: '대표 강점', value: result.analysis.personality.strengths[0] || '' },
+                { label: '궁합 유형', value: result.analysis.relationships.compatibleTypes.slice(0, 2).join(', ') },
+                { label: '적합 직업', value: result.analysis.career.suitableJobs[0] || '' },
+              ]}
+              colorTheme="purple"
+              creditsRequired={1}
+            />
           </div>
 
           {/* Try Again */}

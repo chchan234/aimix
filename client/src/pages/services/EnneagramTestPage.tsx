@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
+import ResultCard from '../../components/ResultCard';
 import { getEnneagramQuestions, analyzeEnneagram } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
 
@@ -542,6 +543,27 @@ export default function EnneagramTestPage() {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Download Card */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
+              <span className="material-symbols-outlined align-middle mr-2">download</span>
+              결과 저장하기
+            </h3>
+            <ResultCard
+              serviceType="enneagram"
+              serviceName="에니어그램 테스트"
+              mainResult={`${result.mainType}번 유형`}
+              subResult={result.analysis.mainType.name}
+              highlights={[
+                { label: '별명', value: result.analysis.mainType.nickname },
+                { label: '날개', value: result.wingType ? `${result.wingType}번` : '없음' },
+                { label: '핵심 동기', value: result.analysis.mainType.coreMotivation || '' },
+              ]}
+              colorTheme="green"
+              creditsRequired={1}
+            />
           </div>
 
           {/* Try Again */}

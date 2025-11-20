@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
+import ResultCard from '../../components/ResultCard';
 import { getBigFiveQuestions, analyzeBigFive } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
 
@@ -387,6 +388,26 @@ export default function BigFiveTestPage() {
                 </ul>
               </div>
             </div>
+          </div>
+
+          {/* Download Card */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
+              <span className="material-symbols-outlined align-middle mr-2">download</span>
+              결과 저장하기
+            </h3>
+            <ResultCard
+              serviceType="bigfive"
+              serviceName="Big Five 성격검사"
+              mainResult="성격 분석 완료"
+              subResult={result.analysis.summary.dominantTraits.slice(0, 2).join(', ')}
+              highlights={Object.entries(result.traitScores).slice(0, 4).map(([trait, score]: [string, any]) => ({
+                label: trait === 'openness' ? '개방성' : trait === 'conscientiousness' ? '성실성' : trait === 'extraversion' ? '외향성' : trait === 'agreeableness' ? '친화성' : '신경성',
+                value: `${score}/25`,
+              }))}
+              colorTheme="green"
+              creditsRequired={1}
+            />
           </div>
 
           {/* Try Again */}
