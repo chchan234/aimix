@@ -153,7 +153,7 @@ export default function DeepSaju2025Page() {
 
   return (
     <ServiceDetailLayout
-      title="2025 심층 신년운세"
+      title="2026 심층 신년운세"
       description="10,000자 이상의 상세한 사주 분석"
       icon="auto_awesome"
       color="purple"
@@ -165,11 +165,11 @@ export default function DeepSaju2025Page() {
             <div className="flex items-center gap-3 mb-4">
               <span className="material-symbols-outlined text-3xl text-purple-400">auto_awesome</span>
               <h3 className="text-xl font-semibold text-foreground">
-                2025 심층 신년운세
+                2026 심층 신년운세
               </h3>
             </div>
             <p className="text-muted-foreground mb-6">
-              사주명리학 전문가 수준의 심층 분석으로 2025년 한 해를
+              사주명리학 전문가 수준의 심층 분석으로 2026년 한 해를
               완벽하게 준비하세요. 월별 운세부터 재물, 연애, 건강까지
               모든 영역을 상세히 분석합니다.
             </p>
@@ -208,7 +208,7 @@ export default function DeepSaju2025Page() {
             <div className="bg-purple-900/20 border border-purple-500 rounded-lg p-4 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-foreground font-semibold">2025 심층 신년운세</p>
+                  <p className="text-foreground font-semibold">2026 심층 신년운세</p>
                   <p className="text-muted-foreground text-sm">프리미엄 사주 분석</p>
                 </div>
                 <div className="text-right">
@@ -361,7 +361,7 @@ export default function DeepSaju2025Page() {
               <div className="bg-purple-500/10 rounded-xl p-4 border border-purple-500/20">
                 <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
                   <span className="material-symbols-outlined text-purple-400">stars</span>
-                  2025년 총운
+                  2026년 총운
                 </h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">{result.summary.overallFortune}</p>
                 <div className="grid grid-cols-2 gap-3 text-sm">
@@ -413,7 +413,7 @@ export default function DeepSaju2025Page() {
               <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20">
                 <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
                   <span className="material-symbols-outlined text-amber-400">lightbulb</span>
-                  2025년 종합 조언
+                  2026년 종합 조언
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">{result.yearlyAdvice}</p>
               </div>
@@ -470,22 +470,26 @@ export default function DeepSaju2025Page() {
                 </h3>
                 <p className="text-muted-foreground mb-3">{result.careerFortune.overall}</p>
                 <div className="space-y-2 text-sm">
-                  <div>
-                    <p className="text-green-400 mb-1">기회</p>
-                    <ul className="list-disc list-inside text-muted-foreground">
-                      {result.careerFortune.opportunities.map((opp, i) => (
-                        <li key={i}>{opp}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="text-red-400 mb-1">도전</p>
-                    <ul className="list-disc list-inside text-muted-foreground">
-                      {result.careerFortune.challenges.map((ch, i) => (
-                        <li key={i}>{ch}</li>
-                      ))}
-                    </ul>
-                  </div>
+                  {result.careerFortune.opportunities && result.careerFortune.opportunities.length > 0 && (
+                    <div>
+                      <p className="text-green-400 mb-1">기회</p>
+                      <ul className="list-disc list-inside text-muted-foreground">
+                        {result.careerFortune.opportunities.map((opp, i) => (
+                          <li key={i}>{opp}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.careerFortune.challenges && result.careerFortune.challenges.length > 0 && (
+                    <div>
+                      <p className="text-red-400 mb-1">도전</p>
+                      <ul className="list-disc list-inside text-muted-foreground">
+                        {result.careerFortune.challenges.map((ch, i) => (
+                          <li key={i}>{ch}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   <p className="text-purple-300 mt-2">{result.careerFortune.advice}</p>
                 </div>
               </div>
@@ -523,22 +527,26 @@ export default function DeepSaju2025Page() {
                 </h3>
                 <p className="text-muted-foreground mb-3">{result.healthFortune.overall}</p>
                 <div className="space-y-2 text-sm">
-                  <div>
-                    <p className="text-red-400 mb-1">취약 부위</p>
-                    <ul className="list-disc list-inside text-muted-foreground">
-                      {result.healthFortune.vulnerableAreas.map((area, i) => (
-                        <li key={i}>{area}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="text-green-400 mb-1">예방 수칙</p>
-                    <ul className="list-disc list-inside text-muted-foreground">
-                      {result.healthFortune.preventiveMeasures.map((m, i) => (
-                        <li key={i}>{m}</li>
-                      ))}
-                    </ul>
-                  </div>
+                  {result.healthFortune.vulnerableAreas && result.healthFortune.vulnerableAreas.length > 0 && (
+                    <div>
+                      <p className="text-red-400 mb-1">취약 부위</p>
+                      <ul className="list-disc list-inside text-muted-foreground">
+                        {result.healthFortune.vulnerableAreas.map((area, i) => (
+                          <li key={i}>{area}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.healthFortune.preventiveMeasures && result.healthFortune.preventiveMeasures.length > 0 && (
+                    <div>
+                      <p className="text-green-400 mb-1">예방 수칙</p>
+                      <ul className="list-disc list-inside text-muted-foreground">
+                        {result.healthFortune.preventiveMeasures.map((m, i) => (
+                          <li key={i}>{m}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   <p className="text-purple-300 mt-2">{result.healthFortune.advice}</p>
                 </div>
               </div>
@@ -564,14 +572,16 @@ export default function DeepSaju2025Page() {
                 <div className="space-y-2 text-sm">
                   <p><span className="text-violet-400">명상:</span> <span className="text-muted-foreground">{result.spiritualGuidance.meditation}</span></p>
                   <p><span className="text-violet-400">의식:</span> <span className="text-muted-foreground">{result.spiritualGuidance.rituals}</span></p>
-                  <div>
-                    <p className="text-violet-400 mb-1">길일</p>
-                    <div className="flex flex-wrap gap-2">
-                      {result.spiritualGuidance.auspiciousDates.map((date, i) => (
-                        <span key={i} className="bg-violet-500/20 px-2 py-1 rounded text-violet-300 text-xs">{date}</span>
-                      ))}
+                  {result.spiritualGuidance.auspiciousDates && result.spiritualGuidance.auspiciousDates.length > 0 && (
+                    <div>
+                      <p className="text-violet-400 mb-1">길일</p>
+                      <div className="flex flex-wrap gap-2">
+                        {result.spiritualGuidance.auspiciousDates.map((date, i) => (
+                          <span key={i} className="bg-violet-500/20 px-2 py-1 rounded text-violet-300 text-xs">{date}</span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -579,7 +589,7 @@ export default function DeepSaju2025Page() {
 
           <button
             onClick={handleReset}
-            className="w-full py-3 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition"
+            className="w-full py-3 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition"
           >
             다시 분석하기
           </button>

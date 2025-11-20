@@ -1890,10 +1890,10 @@ export async function analyzeDeepSaju2025(birthDate: string, birthTime: string, 
 
 {
   "summary": {
-    "overallFortune": "2025년 전체 운세 개요 (최소 500자)",
+    "overallFortune": "2026년 전체 운세 개요 (최소 500자)",
     "yearlyTheme": "올해의 테마와 키워드",
     "luckyColor": "행운의 색상",
-    "luckyNumber": "행운의 숫자",
+    "luckyNumber": 7,
     "luckyDirection": "길한 방향"
   },
   "fourPillars": {
@@ -1904,72 +1904,62 @@ export async function analyzeDeepSaju2025(birthDate: string, birthTime: string, 
     "interpretation": "사주팔자 종합 해석 (최소 1,000자)"
   },
   "monthlyFortune": {
-    "january": {
-      "overall": "1월 전체 운세",
-      "career": "직업/사업운",
-      "love": "연애/결혼운",
-      "wealth": "재물운",
-      "health": "건강운",
-      "advice": "조언",
-      "luckyDays": [1, 15, 22],
-      "cautionDays": [7, 13]
+    "1월": {
+      "overall": "1월 전체 운세 (3문장 이상)",
+      "career": "직업/사업운 (3문장 이상)",
+      "love": "연애/결혼운 (3문장 이상)",
+      "wealth": "재물운 (3문장 이상)",
+      "health": "건강운 (3문장 이상)",
+      "advice": "조언 (3문장 이상)"
     },
-    "february": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
-    "march": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
-    "april": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
-    "may": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
-    "june": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
-    "july": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
-    "august": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
-    "september": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
-    "october": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
-    "november": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] },
-    "december": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "...", "luckyDays": [], "cautionDays": [] }
+    "2월": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "..." },
+    "3월": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "..." },
+    "4월": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "..." },
+    "5월": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "..." },
+    "6월": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "..." },
+    "7월": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "..." },
+    "8월": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "..." },
+    "9월": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "..." },
+    "10월": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "..." },
+    "11월": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "..." },
+    "12월": { "overall": "...", "career": "...", "love": "...", "wealth": "...", "health": "...", "advice": "..." }
   },
   "careerFortune": {
-    "overall": "2025년 직업운 전체 분석 (최소 1,500자)",
-    "bestMonths": ["3월", "7월", "10월"],
-    "cautionMonths": ["5월", "9월"],
+    "overall": "2026년 직업운 전체 분석 (최소 1,500자)",
     "opportunities": ["기회1", "기회2", "기회3"],
     "challenges": ["도전1", "도전2"],
     "advice": "직업 관련 조언 (최소 500자)"
   },
   "wealthFortune": {
-    "overall": "2025년 재물운 전체 분석 (최소 1,500자)",
-    "investmentAdvice": "투자 관련 조언",
-    "savingsAdvice": "저축 관련 조언",
-    "spendingCaution": "지출 주의사항",
-    "bestMonths": ["4월", "8월", "11월"],
-    "cautionMonths": ["2월", "6월"],
-    "luckyNumbers": [3, 7, 12]
+    "overall": "2026년 재물운 전체 분석 (최소 1,500자)",
+    "income": "수입 관련 분석 및 조언 (3문장 이상)",
+    "investment": "투자 관련 분석 및 조언 (3문장 이상)",
+    "advice": "재물운 종합 조언 (3문장 이상)"
   },
   "loveFortune": {
-    "overall": "2025년 연애운/결혼운 전체 분석 (최소 1,500자)",
-    "single": "미혼자를 위한 조언",
-    "relationship": "연애 중인 사람을 위한 조언",
-    "married": "기혼자를 위한 조언",
-    "bestMonths": ["2월", "5월", "9월"],
-    "cautionMonths": ["7월", "12월"]
+    "overall": "2026년 연애운/결혼운 전체 분석 (최소 1,500자)",
+    "single": "미혼자를 위한 조언 (3문장 이상)",
+    "coupled": "연애중/기혼자를 위한 조언 (3문장 이상)",
+    "advice": "연애운 종합 조언 (3문장 이상)"
   },
   "healthFortune": {
-    "overall": "2025년 건강운 전체 분석 (최소 1,000자)",
-    "weakPoints": ["주의할 신체 부위1", "주의할 신체 부위2"],
-    "preventionAdvice": "예방을 위한 조언",
-    "exerciseRecommendation": "추천 운동",
-    "dietAdvice": "식이 조언"
+    "overall": "2026년 건강운 전체 분석 (최소 1,000자)",
+    "vulnerableAreas": ["주의할 신체 부위1", "주의할 신체 부위2"],
+    "preventiveMeasures": ["예방 수칙1", "예방 수칙2", "예방 수칙3"],
+    "advice": "건강 종합 조언 (3문장 이상)"
   },
   "relationshipFortune": {
     "family": "가족 관계 운세 (최소 500자)",
     "friends": "친구/사회 관계 운세 (최소 500자)",
-    "colleagues": "직장 내 인간관계 (최소 500자)"
+    "colleagues": "직장 내 인간관계 (최소 500자)",
+    "advice": "대인관계 종합 조언 (3문장 이상)"
   },
   "spiritualGuidance": {
-    "meditation": "명상 및 마음 수양 조언",
-    "luckyCharms": ["부적/액세서리 추천"],
-    "avoidance": ["피해야 할 것들"],
-    "rituals": "길한 의식이나 습관"
+    "meditation": "명상 및 마음 수양 조언 (3문장 이상)",
+    "rituals": "길한 의식이나 습관 (3문장 이상)",
+    "auspiciousDates": ["3월 15일", "6월 22일", "9월 8일"]
   },
-  "yearlyAdvice": "2025년을 위한 종합 조언 (최소 1,000자)"
+  "yearlyAdvice": "2026년을 위한 종합 조언 (최소 1,000자)"
 }
 
 각 월별 운세는 반드시 6개 항목(overall, career, love, wealth, health, advice)을 모두 상세하게 작성하세요.

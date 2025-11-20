@@ -305,43 +305,125 @@ export default function SajuPage() {
                   {result.analysis.personality && (
                     <div>
                       <h4 className="text-foreground font-medium mb-2">성격과 재능</h4>
-                      <p className="text-sm">{result.analysis.personality}</p>
+                      <div className="text-sm space-y-2">
+                        {result.analysis.personality.core && (
+                          <p><strong className="text-purple-400">핵심 성격:</strong> {result.analysis.personality.core}</p>
+                        )}
+                        {result.analysis.personality.strengths && Array.isArray(result.analysis.personality.strengths) && (
+                          <div>
+                            <strong className="text-green-400">강점:</strong>
+                            <ul className="list-disc list-inside ml-2">
+                              {result.analysis.personality.strengths.map((s: string, i: number) => (
+                                <li key={i}>{s}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {result.analysis.personality.weaknesses && Array.isArray(result.analysis.personality.weaknesses) && (
+                          <div>
+                            <strong className="text-yellow-400">약점:</strong>
+                            <ul className="list-disc list-inside ml-2">
+                              {result.analysis.personality.weaknesses.map((w: string, i: number) => (
+                                <li key={i}>{w}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {result.analysis.personality.hiddenTraits && (
+                          <p><strong className="text-blue-400">숨겨진 성격:</strong> {result.analysis.personality.hiddenTraits}</p>
+                        )}
+                      </div>
                     </div>
                   )}
                   {result.analysis.wealth && (
                     <div>
                       <h4 className="text-foreground font-medium mb-2">재물운</h4>
-                      <p className="text-sm">{result.analysis.wealth}</p>
+                      <div className="text-sm space-y-1">
+                        {result.analysis.wealth.potential && <p><strong className="text-purple-400">잠재력:</strong> {result.analysis.wealth.potential}</p>}
+                        {result.analysis.wealth.earningStyle && <p><strong className="text-purple-400">수입 스타일:</strong> {result.analysis.wealth.earningStyle}</p>}
+                        {result.analysis.wealth.savingStyle && <p><strong className="text-purple-400">저축 스타일:</strong> {result.analysis.wealth.savingStyle}</p>}
+                        {result.analysis.wealth.advice && <p><strong className="text-green-400">조언:</strong> {result.analysis.wealth.advice}</p>}
+                      </div>
                     </div>
                   )}
                   {result.analysis.health && (
                     <div>
                       <h4 className="text-foreground font-medium mb-2">건강운</h4>
-                      <p className="text-sm">{result.analysis.health}</p>
+                      <div className="text-sm space-y-1">
+                        {result.analysis.health.weakOrgans && Array.isArray(result.analysis.health.weakOrgans) && (
+                          <p><strong className="text-yellow-400">주의할 부위:</strong> {result.analysis.health.weakOrgans.join(', ')}</p>
+                        )}
+                        {result.analysis.health.advice && <p><strong className="text-green-400">조언:</strong> {result.analysis.health.advice}</p>}
+                      </div>
                     </div>
                   )}
                   {result.analysis.love && (
                     <div>
                       <h4 className="text-foreground font-medium mb-2">연애운</h4>
-                      <p className="text-sm">{result.analysis.love}</p>
+                      <div className="text-sm space-y-1">
+                        {result.analysis.love.style && <p><strong className="text-purple-400">연애 스타일:</strong> {result.analysis.love.style}</p>}
+                        {result.analysis.love.idealPartner && <p><strong className="text-purple-400">이상적인 배우자:</strong> {result.analysis.love.idealPartner}</p>}
+                        {result.analysis.love.marriageTiming && <p><strong className="text-purple-400">결혼 시기:</strong> {result.analysis.love.marriageTiming}</p>}
+                        {result.analysis.love.advice && <p><strong className="text-green-400">조언:</strong> {result.analysis.love.advice}</p>}
+                      </div>
                     </div>
                   )}
                   {result.analysis.career && (
                     <div>
-                      <h4 className="text-foreground font-medium mb-2">사업운</h4>
-                      <p className="text-sm">{result.analysis.career}</p>
+                      <h4 className="text-foreground font-medium mb-2">직업운</h4>
+                      <div className="text-sm space-y-1">
+                        {result.analysis.career.suitableFields && Array.isArray(result.analysis.career.suitableFields) && (
+                          <p><strong className="text-purple-400">적합한 분야:</strong> {result.analysis.career.suitableFields.join(', ')}</p>
+                        )}
+                        {result.analysis.career.workStyle && <p><strong className="text-purple-400">업무 스타일:</strong> {result.analysis.career.workStyle}</p>}
+                        {result.analysis.career.successTiming && <p><strong className="text-purple-400">성공 시기:</strong> {result.analysis.career.successTiming}</p>}
+                        {result.analysis.career.advice && <p><strong className="text-green-400">조언:</strong> {result.analysis.career.advice}</p>}
+                      </div>
                     </div>
                   )}
-                  {result.analysis.yearlyFortune && (
+                  {result.analysis.fortune && (
                     <div>
-                      <h4 className="text-foreground font-medium mb-2">올해 운세</h4>
-                      <p className="text-sm">{result.analysis.yearlyFortune}</p>
+                      <h4 className="text-foreground font-medium mb-2">운세</h4>
+                      <div className="text-sm space-y-1">
+                        {result.analysis.fortune.overall && <p><strong className="text-purple-400">전체 운:</strong> {result.analysis.fortune.overall}</p>}
+                        {result.analysis.fortune.currentLuck && <p><strong className="text-purple-400">현재 운:</strong> {result.analysis.fortune.currentLuck}</p>}
+                        {result.analysis.fortune.luckyYears && Array.isArray(result.analysis.fortune.luckyYears) && (
+                          <p><strong className="text-green-400">좋은 해:</strong> {result.analysis.fortune.luckyYears.join(', ')}</p>
+                        )}
+                        {result.analysis.fortune.cautionYears && Array.isArray(result.analysis.fortune.cautionYears) && (
+                          <p><strong className="text-yellow-400">조심할 해:</strong> {result.analysis.fortune.cautionYears.join(', ')}</p>
+                        )}
+                      </div>
                     </div>
                   )}
                   {result.analysis.advice && (
                     <div>
                       <h4 className="text-foreground font-medium mb-2">조언</h4>
-                      <p className="text-sm">{result.analysis.advice}</p>
+                      <div className="text-sm space-y-2">
+                        {result.analysis.advice.dos && Array.isArray(result.analysis.advice.dos) && (
+                          <div>
+                            <strong className="text-green-400">이렇게 하세요:</strong>
+                            <ul className="list-disc list-inside ml-2">
+                              {result.analysis.advice.dos.map((item: string, i: number) => (
+                                <li key={i}>{item}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {result.analysis.advice.donts && Array.isArray(result.analysis.advice.donts) && (
+                          <div>
+                            <strong className="text-yellow-400">피하세요:</strong>
+                            <ul className="list-disc list-inside ml-2">
+                              {result.analysis.advice.donts.map((item: string, i: number) => (
+                                <li key={i}>{item}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {result.analysis.advice.yearlyFocus && (
+                          <p><strong className="text-purple-400">올해 집중할 것:</strong> {result.analysis.advice.yearlyFocus}</p>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>

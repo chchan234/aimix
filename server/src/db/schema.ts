@@ -109,22 +109,20 @@ export const selectPromptExperimentSchema = createSelectSchema(promptExperiments
 // ================================
 export const services = pgTable('services', {
   id: uuid('id').primaryKey().defaultRandom(),
-  category: varchar('category', { length: 50 }).notNull(), // 'fortune', 'image', 'entertainment', 'utility'
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   serviceType: varchar('service_type', { length: 100 }).notNull(),
 
-  nameKo: varchar('name_ko', { length: 100 }).notNull(),
-  nameEn: varchar('name_en', { length: 100 }).notNull(),
-  descriptionKo: text('description_ko'),
-  descriptionEn: text('description_en'),
+  inputData: jsonb('input_data').notNull(),
+  inputImageUrl: text('input_image_url'),
+  status: varchar('status', { length: 20 }).notNull().default('pending'), // 'pending', 'processing', 'completed', 'failed'
+  resultId: uuid('result_id'),
 
   creditCost: integer('credit_cost').notNull(),
-  isActive: boolean('is_active').notNull().default(true),
+  processingTime: integer('processing_time'), // in milliseconds
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
-}, (table) => ({
-  uniqueCategoryService: uniqueIndex('unique_category_service').on(table.category, table.serviceType),
-}));
+  completedAt: timestamp('completed_at'),
+});
 
 export const insertServiceSchema = createInsertSchema(services);
 export const selectServiceSchema = createSelectSchema(services);

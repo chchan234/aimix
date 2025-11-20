@@ -25,9 +25,10 @@ import {
   nameCompatibilitySchema,
   marriageCompatibilitySchema,
 } from '../validation/ai-schemas.js';
-import { db } from '../db/index.js';
-import { serviceResults, services } from '../db/schema.js';
-import { eq } from 'drizzle-orm';
+// Note: Database result saving is temporarily disabled due to schema mismatch
+// import { db } from '../db/index.js';
+// import { serviceResults, services } from '../db/schema.js';
+// import { eq } from 'drizzle-orm';
 
 const router = express.Router();
 
@@ -131,7 +132,6 @@ router.post('/chat', validateBody(chatSchema), requireCredits('chat'), async (re
 router.post('/face-reading', validateBody(faceReadingSchema), requireCredits('face-reading'), async (req, res) => {
   try {
     const { imageUrl, base64Image, birthDate } = req.body;
-    const userId = req.user!.userId;
 
     let result;
     if (base64Image) {
@@ -141,35 +141,6 @@ router.post('/face-reading', validateBody(faceReadingSchema), requireCredits('fa
     }
 
     if (result.success) {
-      // Try to save result to database (optional)
-      try {
-        const service = await db
-          .select()
-          .from(services)
-          .where(eq(services.serviceType, 'face-reading'))
-          .limit(1);
-
-        if (service.length > 0) {
-          // Save result to database
-          const expiresAt = new Date();
-          expiresAt.setDate(expiresAt.getDate() + 14); // 14 days expiry
-
-          await db.insert(serviceResults).values({
-            userId,
-            serviceId: service[0].id,
-            inputData: { birthDate },
-            resultData: result.analysis,
-            aiModel: result.model,
-            expiresAt,
-          });
-        } else {
-          console.warn('Service "face-reading" not found in database, skipping result save');
-        }
-      } catch (dbError) {
-        console.error('Failed to save result to database:', dbError);
-        // Continue anyway - don't fail the request
-      }
-
       res.json(result);
     } else {
       res.status(500).json({
@@ -194,40 +165,10 @@ router.post('/face-reading', validateBody(faceReadingSchema), requireCredits('fa
 router.post('/saju', validateBody(sajuSchema), requireCredits('saju'), async (req, res) => {
   try {
     const { birthDate, birthTime, gender } = req.body;
-    const userId = req.user!.userId;
 
     const result = await openai.analyzeSaju(birthDate, birthTime, gender);
 
     if (result.success) {
-      // Try to save result to database (optional)
-      try {
-        const service = await db
-          .select()
-          .from(services)
-          .where(eq(services.serviceType, 'saju'))
-          .limit(1);
-
-        if (service.length > 0) {
-          // Save result to database
-          const expiresAt = new Date();
-          expiresAt.setDate(expiresAt.getDate() + 14); // 14 days expiry
-
-          await db.insert(serviceResults).values({
-            userId,
-            serviceId: service[0].id,
-            inputData: { birthDate, birthTime, gender },
-            resultData: result.analysis,
-            aiModel: result.model,
-            expiresAt,
-          });
-        } else {
-          console.warn('Service "saju" not found in database, skipping result save');
-        }
-      } catch (dbError) {
-        console.error('Failed to save result to database:', dbError);
-        // Continue anyway - don't fail the request
-      }
-
       res.json(result);
     } else {
       res.status(500).json({
@@ -252,40 +193,10 @@ router.post('/saju', validateBody(sajuSchema), requireCredits('saju'), async (re
 router.post('/deep-saju-2025', validateBody(sajuSchema), requireCredits('deep-fortune-2025'), async (req, res) => {
   try {
     const { birthDate, birthTime, gender } = req.body;
-    const userId = req.user!.userId;
 
     const result = await openai.analyzeDeepSaju2025(birthDate, birthTime, gender);
 
     if (result.success) {
-      // Try to save result to database (optional)
-      try {
-        const service = await db
-          .select()
-          .from(services)
-          .where(eq(services.serviceType, 'deep-fortune-2025'))
-          .limit(1);
-
-        if (service.length > 0) {
-          // Save result to database
-          const expiresAt = new Date();
-          expiresAt.setDate(expiresAt.getDate() + 30); // 30 days expiry for deep analysis
-
-          await db.insert(serviceResults).values({
-            userId,
-            serviceId: service[0].id,
-            inputData: { birthDate, birthTime, gender },
-            resultData: result.analysis,
-            aiModel: result.model,
-            expiresAt,
-          });
-        } else {
-          console.warn('Service "deep-fortune-2025" not found in database, skipping result save');
-        }
-      } catch (dbError) {
-        console.error('Failed to save result to database:', dbError);
-        // Continue anyway - don't fail the request
-      }
-
       res.json(result);
     } else {
       res.status(500).json({
@@ -310,37 +221,11 @@ router.post('/deep-saju-2025', validateBody(sajuSchema), requireCredits('deep-fo
 router.post('/palmistry', validateBody(palmistrySchema), requireCredits('palmistry'), async (req, res) => {
   try {
     const { imageUrl, base64Image, hand = 'right' } = req.body;
-    const userId = req.user!.userId;
 
     const imageData = base64Image || imageUrl;
     const result = await openai.analyzePalmistry(imageData, hand);
 
     if (result.success) {
-      // Save result to database
-      try {
-        const service = await db
-          .select()
-          .from(services)
-          .where(eq(services.serviceType, 'palmistry'))
-          .limit(1);
-
-        if (service.length > 0) {
-          const expiresAt = new Date();
-          expiresAt.setDate(expiresAt.getDate() + 14); // 14 days expiry
-
-          await db.insert(serviceResults).values({
-            userId,
-            serviceId: service[0].id,
-            inputData: { hand },
-            resultData: result.analysis,
-            aiModel: result.model,
-            expiresAt,
-          });
-        }
-      } catch (dbError) {
-        console.error('Failed to save palmistry result:', dbError);
-      }
-
       res.json(result);
     } else {
       res.status(500).json({
@@ -365,36 +250,10 @@ router.post('/palmistry', validateBody(palmistrySchema), requireCredits('palmist
 router.post('/horoscope', validateBody(horoscopeSchema), requireCredits('horoscope'), async (req, res) => {
   try {
     const { birthDate, zodiacSign } = req.body;
-    const userId = req.user!.userId;
 
     const result = await openai.analyzeHoroscope(birthDate, zodiacSign);
 
     if (result.success) {
-      // Save result to database
-      try {
-        const service = await db
-          .select()
-          .from(services)
-          .where(eq(services.serviceType, 'horoscope'))
-          .limit(1);
-
-        if (service.length > 0) {
-          const expiresAt = new Date();
-          expiresAt.setDate(expiresAt.getDate() + 14);
-
-          await db.insert(serviceResults).values({
-            userId,
-            serviceId: service[0].id,
-            inputData: { birthDate, zodiacSign },
-            resultData: result.analysis,
-            aiModel: result.model,
-            expiresAt,
-          });
-        }
-      } catch (dbError) {
-        console.error('Failed to save horoscope result:', dbError);
-      }
-
       res.json(result);
     } else {
       res.status(500).json({
@@ -419,36 +278,10 @@ router.post('/horoscope', validateBody(horoscopeSchema), requireCredits('horosco
 router.post('/zodiac', validateBody(zodiacSchema), requireCredits('zodiac'), async (req, res) => {
   try {
     const { birthDate } = req.body;
-    const userId = req.user!.userId;
 
     const result = await openai.analyzeZodiac(birthDate);
 
     if (result.success) {
-      // Save result to database
-      try {
-        const service = await db
-          .select()
-          .from(services)
-          .where(eq(services.serviceType, 'zodiac'))
-          .limit(1);
-
-        if (service.length > 0) {
-          const expiresAt = new Date();
-          expiresAt.setDate(expiresAt.getDate() + 14);
-
-          await db.insert(serviceResults).values({
-            userId,
-            serviceId: service[0].id,
-            inputData: { birthDate },
-            resultData: result.analysis,
-            aiModel: result.model,
-            expiresAt,
-          });
-        }
-      } catch (dbError) {
-        console.error('Failed to save zodiac result:', dbError);
-      }
-
       res.json(result);
     } else {
       res.status(500).json({
@@ -473,36 +306,10 @@ router.post('/zodiac', validateBody(zodiacSchema), requireCredits('zodiac'), asy
 router.post('/love-compatibility', validateBody(loveCompatibilitySchema), requireCredits('love-compatibility'), async (req, res) => {
   try {
     const { person1BirthDate, person2BirthDate } = req.body;
-    const userId = req.user!.userId;
 
     const result = await openai.analyzeLoveCompatibility(person1BirthDate, person2BirthDate);
 
     if (result.success) {
-      // Save result to database
-      try {
-        const service = await db
-          .select()
-          .from(services)
-          .where(eq(services.serviceType, 'love-compatibility'))
-          .limit(1);
-
-        if (service.length > 0) {
-          const expiresAt = new Date();
-          expiresAt.setDate(expiresAt.getDate() + 14);
-
-          await db.insert(serviceResults).values({
-            userId,
-            serviceId: service[0].id,
-            inputData: { person1BirthDate, person2BirthDate },
-            resultData: result.analysis,
-            aiModel: result.model,
-            expiresAt,
-          });
-        }
-      } catch (dbError) {
-        console.error('Failed to save love compatibility result:', dbError);
-      }
-
       res.json(result);
     } else {
       res.status(500).json({
@@ -527,36 +334,10 @@ router.post('/love-compatibility', validateBody(loveCompatibilitySchema), requir
 router.post('/name-compatibility', validateBody(nameCompatibilitySchema), requireCredits('name-compatibility'), async (req, res) => {
   try {
     const { name1, name2 } = req.body;
-    const userId = req.user!.userId;
 
     const result = await openai.analyzeNameCompatibility(name1, name2);
 
     if (result.success) {
-      // Save result to database
-      try {
-        const service = await db
-          .select()
-          .from(services)
-          .where(eq(services.serviceType, 'name-compatibility'))
-          .limit(1);
-
-        if (service.length > 0) {
-          const expiresAt = new Date();
-          expiresAt.setDate(expiresAt.getDate() + 14);
-
-          await db.insert(serviceResults).values({
-            userId,
-            serviceId: service[0].id,
-            inputData: { name1, name2 },
-            resultData: result.analysis,
-            aiModel: result.model,
-            expiresAt,
-          });
-        }
-      } catch (dbError) {
-        console.error('Failed to save name compatibility result:', dbError);
-      }
-
       res.json(result);
     } else {
       res.status(500).json({
@@ -581,36 +362,10 @@ router.post('/name-compatibility', validateBody(nameCompatibilitySchema), requir
 router.post('/marriage-compatibility', validateBody(marriageCompatibilitySchema), requireCredits('marriage-compatibility'), async (req, res) => {
   try {
     const { person1Name, person1BirthDate, person2Name, person2BirthDate } = req.body;
-    const userId = req.user!.userId;
 
     const result = await openai.analyzeMarriageCompatibility(person1Name, person1BirthDate, person2Name, person2BirthDate);
 
     if (result.success) {
-      // Save result to database
-      try {
-        const service = await db
-          .select()
-          .from(services)
-          .where(eq(services.serviceType, 'marriage-compatibility'))
-          .limit(1);
-
-        if (service.length > 0) {
-          const expiresAt = new Date();
-          expiresAt.setDate(expiresAt.getDate() + 14);
-
-          await db.insert(serviceResults).values({
-            userId,
-            serviceId: service[0].id,
-            inputData: { person1Name, person1BirthDate, person2Name, person2BirthDate },
-            resultData: result.analysis,
-            aiModel: result.model,
-            expiresAt,
-          });
-        }
-      } catch (dbError) {
-        console.error('Failed to save marriage compatibility result:', dbError);
-      }
-
       res.json(result);
     } else {
       res.status(500).json({
