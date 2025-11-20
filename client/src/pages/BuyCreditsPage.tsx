@@ -28,6 +28,7 @@ export default function BuyCreditsPage() {
   const [, setLocation] = useLocation();
 
   const [selectedPackage, setSelectedPackage] = useState<string>('');
+  const [paymentMethod, setPaymentMethod] = useState<'CARD' | 'PAYPAL'>('CARD');
   const [currentCredits, setCurrentCredits] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -149,22 +150,44 @@ export default function BuyCreditsPage() {
       const payment = tossPayments.payment({ customerKey: ANONYMOUS });
 
       // 4. 결제창 띄우기
-      await payment.requestPayment({
-        method: 'CARD',
-        amount: {
-          currency: 'KRW',
-          value: amount,
-        },
-        orderId,
-        orderName,
-        successUrl: `${window.location.origin}/payment/success`,
-        failUrl: `${window.location.origin}/payment/fail`,
-        customerEmail: '',
-        customerName: '고객',
-        card: {
-          flowMode: 'DEFAULT',
-        },
-      });
+      if (paymentMethod === 'CARD') {
+        // 카드 결제
+        await payment.requestPayment({
+          method: 'CARD',
+          amount: {
+            currency: 'KRW',
+            value: amount,
+          },
+          orderId,
+          orderName,
+          successUrl: `${window.location.origin}/payment/success`,
+          failUrl: `${window.location.origin}/payment/fail`,
+          customerEmail: '',
+          customerName: '고객',
+          card: {
+            flowMode: 'DEFAULT',
+          },
+        });
+      } else {
+        // PayPal 결제
+        await payment.requestPayment({
+          method: 'FOREIGN_EASY_PAY',
+          amount: {
+            currency: 'USD',
+            value: Math.round(amount / 1300), // KRW to USD 환율 적용 (대략 1300원/달러)
+          },
+          orderId,
+          orderName,
+          successUrl: `${window.location.origin}/payment/success`,
+          failUrl: `${window.location.origin}/payment/fail`,
+          customerEmail: '',
+          customerName: '고객',
+          foreignEasyPay: {
+            provider: 'PAYPAL',
+            country: 'KR',
+          },
+        });
+      }
     } catch (error: any) {
       console.error('Payment error:', error);
       if (error.code !== 'USER_CANCEL') {
@@ -266,6 +289,64 @@ export default function BuyCreditsPage() {
             </div>
           </div>
 
+          {/* 결제 방법 선택 */}
+          <div className="glass-panel rounded-2xl p-6">
+            <h2 className="text-foreground text-xl font-serif font-bold mb-4">결제 방법</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={() => setPaymentMethod('CARD')}
+                className={`p-5 rounded-2xl border-2 cursor-pointer transition ${
+                  paymentMethod === 'CARD'
+                    ? 'border-pink-400 bg-pink-50/80 dark:bg-pink-900/20 shadow-lg shadow-pink-200/50 dark:shadow-pink-900/30'
+                    : 'border-pink-100/50 dark:border-purple-500/30 bg-white/60 dark:bg-[#1a1625] hover:border-pink-300 hover:bg-white/80 dark:hover:bg-[#2a2436]'
+                }`}
+              >
+                <div className="flex flex-col items-center gap-3">
+                  <span className="material-symbols-outlined text-4xl text-pink-500">credit_card</span>
+                  <p className="text-foreground font-bold">신용카드</p>
+                  <p className="text-muted-foreground text-sm">KRW 결제</p>
+                  {paymentMethod === 'CARD' && (
+                    <div className="w-6 h-6 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full flex items-center justify-center shadow-md">
+                      <span className="material-symbols-outlined text-white text-sm">check</span>
+                    </div>
+                  )}
+                </div>
+              </button>
+
+              <button
+                onClick={() => setPaymentMethod('PAYPAL')}
+                className={`p-5 rounded-2xl border-2 cursor-pointer transition ${
+                  paymentMethod === 'PAYPAL'
+                    ? 'border-pink-400 bg-pink-50/80 dark:bg-pink-900/20 shadow-lg shadow-pink-200/50 dark:shadow-pink-900/30'
+                    : 'border-pink-100/50 dark:border-purple-500/30 bg-white/60 dark:bg-[#1a1625] hover:border-pink-300 hover:bg-white/80 dark:hover:bg-[#2a2436]'
+                }`}
+              >
+                <div className="flex flex-col items-center gap-3">
+                  <span className="material-symbols-outlined text-4xl text-blue-500">payments</span>
+                  <p className="text-foreground font-bold">PayPal</p>
+                  <p className="text-muted-foreground text-sm">USD 결제</p>
+                  {paymentMethod === 'PAYPAL' && (
+                    <div className="w-6 h-6 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full flex items-center justify-center shadow-md">
+                      <span className="material-symbols-outlined text-white text-sm">check</span>
+                    </div>
+                  )}
+                </div>
+              </button>
+            </div>
+
+            {/* 환율 안내 */}
+            {paymentMethod === 'PAYPAL' && selectedPackage && (
+              <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-500/30">
+                <p className="text-sm text-muted-foreground">
+                  <span className="material-symbols-outlined text-sm text-blue-500 inline-block mr-1 align-middle">info</span>
+                  PayPal 결제 시 대략적인 환율(1,300원/달러)이 적용됩니다.
+                  <br />
+                  예상 금액: ${Math.round(packages.find((p) => p.id === selectedPackage)!.price / 1300)}
+                </p>
+              </div>
+            )}
+          </div>
+
           {/* 구매 버튼 */}
           <button
             onClick={handlePurchase}
@@ -278,7 +359,9 @@ export default function BuyCreditsPage() {
                 처리 중...
               </span>
             ) : selectedPackage && packages.find((p) => p.id === selectedPackage) ? (
-              `₩${packages.find((p) => p.id === selectedPackage)!.price.toLocaleString()} ${t('buyCredits.purchase.button')}`
+              paymentMethod === 'PAYPAL'
+                ? `$${Math.round(packages.find((p) => p.id === selectedPackage)!.price / 1300)} ${t('buyCredits.purchase.button')}`
+                : `₩${packages.find((p) => p.id === selectedPackage)!.price.toLocaleString()} ${t('buyCredits.purchase.button')}`
             ) : (
               t('buyCredits.purchase.selectPackage')
             )}
