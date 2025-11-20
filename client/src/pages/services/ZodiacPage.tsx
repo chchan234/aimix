@@ -225,15 +225,19 @@ export default function ZodiacPage() {
             {result.analysis.zodiac && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <h4 className="text-orange-600 dark:text-orange-400 font-medium mb-2">
-                  {result.analysis.zodiac.animal}띠
+                  {result.analysis.zodiac.animal.endsWith('띠')
+                    ? result.analysis.zodiac.animal
+                    : `${result.analysis.zodiac.animal}띠`}
                 </h4>
-                <p className="text-muted-foreground text-sm mb-2">
-                  오행: {result.analysis.zodiac.element}
-                </p>
-                {result.analysis.zodiac.traits && (
+                {result.analysis.zodiac.birthYearElement && (
+                  <p className="text-muted-foreground text-sm mb-2">
+                    오행: {result.analysis.zodiac.birthYearElement}
+                  </p>
+                )}
+                {result.analysis.zodiac.coreTraits && (
                   <div className="mt-2">
                     <p className="text-foreground text-sm">
-                      {result.analysis.zodiac.traits.join(', ')}
+                      {result.analysis.zodiac.coreTraits.join(', ')}
                     </p>
                   </div>
                 )}
@@ -322,13 +326,39 @@ export default function ZodiacPage() {
             {result.analysis.advice && (
               <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <h4 className="text-orange-600 dark:text-orange-400 font-medium mb-2">조언</h4>
-                {result.analysis.advice.luckyTips && (
-                  <ul className="space-y-1">
-                    {result.analysis.advice.luckyTips.map((tip: string, idx: number) => (
-                      <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
-                    ))}
-                  </ul>
-                )}
+                <div className="space-y-3">
+                  {result.analysis.advice.mostImportant && (
+                    <div>
+                      <p className="text-sm text-orange-600 dark:text-orange-400 mb-1">가장 중요한 것:</p>
+                      <p className="text-foreground text-sm">{result.analysis.advice.mostImportant}</p>
+                    </div>
+                  )}
+                  {result.analysis.advice.mustDo && Array.isArray(result.analysis.advice.mustDo) && (
+                    <div>
+                      <p className="text-sm text-green-600 dark:text-green-400 mb-1">꼭 해야 할 것:</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.mustDo.map((item: string, idx: number) => (
+                          <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.mustAvoid && Array.isArray(result.analysis.advice.mustAvoid) && (
+                    <div>
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-1">피해야 할 것:</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.mustAvoid.map((item: string, idx: number) => (
+                          <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.finalMessage && (
+                    <p className="text-muted-foreground text-sm mt-2 italic">
+                      {result.analysis.advice.finalMessage}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
           </div>
