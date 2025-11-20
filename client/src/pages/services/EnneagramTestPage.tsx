@@ -368,15 +368,54 @@ export default function EnneagramTestPage() {
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold text-green-400 mb-2">건강한 상태</h4>
-                <p className="text-muted-foreground">{result.analysis.healthLevels.healthy}</p>
+                {typeof result.analysis.healthLevels.healthy === 'string' ? (
+                  <p className="text-muted-foreground">{result.analysis.healthLevels.healthy}</p>
+                ) : (
+                  <div className="text-muted-foreground">
+                    <p>{result.analysis.healthLevels.healthy?.description}</p>
+                    {result.analysis.healthLevels.healthy?.behaviors && Array.isArray(result.analysis.healthLevels.healthy.behaviors) && (
+                      <ul className="list-disc list-inside mt-2 space-y-1">
+                        {result.analysis.healthLevels.healthy.behaviors.map((b: string, i: number) => (
+                          <li key={i}>{b}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
               </div>
               <div>
                 <h4 className="font-semibold text-yellow-400 mb-2">보통 상태</h4>
-                <p className="text-muted-foreground">{result.analysis.healthLevels.average}</p>
+                {typeof result.analysis.healthLevels.average === 'string' ? (
+                  <p className="text-muted-foreground">{result.analysis.healthLevels.average}</p>
+                ) : (
+                  <div className="text-muted-foreground">
+                    <p>{result.analysis.healthLevels.average?.description}</p>
+                    {result.analysis.healthLevels.average?.behaviors && Array.isArray(result.analysis.healthLevels.average.behaviors) && (
+                      <ul className="list-disc list-inside mt-2 space-y-1">
+                        {result.analysis.healthLevels.average.behaviors.map((b: string, i: number) => (
+                          <li key={i}>{b}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
               </div>
               <div>
                 <h4 className="font-semibold text-red-400 mb-2">불건강한 상태</h4>
-                <p className="text-muted-foreground">{result.analysis.healthLevels.unhealthy}</p>
+                {typeof result.analysis.healthLevels.unhealthy === 'string' ? (
+                  <p className="text-muted-foreground">{result.analysis.healthLevels.unhealthy}</p>
+                ) : (
+                  <div className="text-muted-foreground">
+                    <p>{result.analysis.healthLevels.unhealthy?.description}</p>
+                    {result.analysis.healthLevels.unhealthy?.behaviors && Array.isArray(result.analysis.healthLevels.unhealthy.behaviors) && (
+                      <ul className="list-disc list-inside mt-2 space-y-1">
+                        {result.analysis.healthLevels.unhealthy.behaviors.map((b: string, i: number) => (
+                          <li key={i}>{b}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
               </div>
               <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-500 rounded-lg p-4 mt-4">
                 <h4 className="font-semibold text-blue-400 mb-2">현재 상태 평가</h4>
