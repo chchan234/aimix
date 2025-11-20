@@ -21,6 +21,13 @@ router.post('/fix-schema', async (req, res) => {
       ALTER COLUMN reference_id TYPE VARCHAR(200)
     `);
 
+    console.log('Adding missing columns to payments table...');
+    await db.execute(sql`
+      ALTER TABLE payments
+      ADD COLUMN IF NOT EXISTS failure_code VARCHAR(50),
+      ADD COLUMN IF NOT EXISTS failure_message TEXT
+    `);
+
     res.json({
       success: true,
       message: 'Schema fixed successfully',
