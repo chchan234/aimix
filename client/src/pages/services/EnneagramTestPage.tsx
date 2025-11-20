@@ -428,18 +428,22 @@ export default function EnneagramTestPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">성장 방향</h3>
             <div className="space-y-4">
-              <div className="bg-green-50 dark:bg-green-900/30 border border-green-500 rounded-lg p-4">
-                <h4 className="font-semibold text-green-400 mb-2">
-                  통합 방향 (성장 시 → {result.analysis.growth.integrationDirection.toType}번)
-                </h4>
-                <p className="text-muted-foreground">{result.analysis.growth.integrationDirection.description}</p>
-              </div>
-              <div className="bg-orange-50 dark:bg-orange-900/30 border border-orange-500 rounded-lg p-4">
-                <h4 className="font-semibold text-orange-400 mb-2">
-                  분열 방향 (스트레스 시 → {result.analysis.growth.disintegrationDirection.toType}번)
-                </h4>
-                <p className="text-muted-foreground">{result.analysis.growth.disintegrationDirection.description}</p>
-              </div>
+              {result.analysis.growth?.integrationDirection && (
+                <div className="bg-green-50 dark:bg-green-900/30 border border-green-500 rounded-lg p-4">
+                  <h4 className="font-semibold text-green-400 mb-2">
+                    통합 방향 (성장 시 → {result.analysis.growth.integrationDirection.toType}번)
+                  </h4>
+                  <p className="text-muted-foreground">{result.analysis.growth.integrationDirection.description}</p>
+                </div>
+              )}
+              {result.analysis.growth?.disintegrationDirection && (
+                <div className="bg-orange-50 dark:bg-orange-900/30 border border-orange-500 rounded-lg p-4">
+                  <h4 className="font-semibold text-orange-400 mb-2">
+                    분열 방향 (스트레스 시 → {result.analysis.growth.disintegrationDirection.toType}번)
+                  </h4>
+                  <p className="text-muted-foreground">{result.analysis.growth.disintegrationDirection.description}</p>
+                </div>
+              )}
               {result.analysis.growth?.practices && Array.isArray(result.analysis.growth.practices) && (
                 <div>
                   <h4 className="font-semibold text-purple-400 mb-2">성장 실천 방법</h4>
@@ -457,8 +461,12 @@ export default function EnneagramTestPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">대인관계</h3>
             <div className="space-y-3 text-muted-foreground">
-              <p><strong className="text-green-400">관계 스타일:</strong> {result.analysis.relationships.style}</p>
-              <p><strong className="text-green-400">갈등 대응:</strong> {result.analysis.relationships.conflictStyle}</p>
+              {result.analysis.relationships?.style && (
+                <p><strong className="text-green-400">관계 스타일:</strong> {result.analysis.relationships.style}</p>
+              )}
+              {result.analysis.relationships?.conflictStyle && (
+                <p><strong className="text-green-400">갈등 대응:</strong> {result.analysis.relationships.conflictStyle}</p>
+              )}
               {result.analysis.relationships?.compatibleTypes && Array.isArray(result.analysis.relationships.compatibleTypes) && (
                 <div>
                   <h4 className="font-semibold text-green-400 mb-2">궁합 좋은 유형</h4>
@@ -490,8 +498,12 @@ export default function EnneagramTestPage() {
                   </div>
                 </div>
               )}
-              <p className="text-muted-foreground"><strong className="text-green-400">선호 환경:</strong> {result.analysis.career.workEnvironment}</p>
-              <p className="text-muted-foreground"><strong className="text-green-400">리더십:</strong> {result.analysis.career.leadershipStyle}</p>
+              {result.analysis.career?.workEnvironment && (
+                <p className="text-muted-foreground"><strong className="text-green-400">선호 환경:</strong> {result.analysis.career.workEnvironment}</p>
+              )}
+              {result.analysis.career?.leadershipStyle && (
+                <p className="text-muted-foreground"><strong className="text-green-400">리더십:</strong> {result.analysis.career.leadershipStyle}</p>
+              )}
             </div>
           </div>
 
@@ -499,30 +511,36 @@ export default function EnneagramTestPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">자기개발</h3>
             <div className="space-y-4 text-muted-foreground">
-              <div>
-                <h4 className="font-semibold text-blue-400 mb-2">핵심 개발 과제</h4>
-                <ul className="list-disc list-inside space-y-1">
-                  {result.analysis.development.keyTasks.map((task: string, i: number) => (
-                    <li key={i}>{task}</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-yellow-400 mb-2">극복할 패턴</h4>
-                <ul className="list-disc list-inside space-y-1">
-                  {result.analysis.development.patternsToBreak.map((pattern: string, i: number) => (
-                    <li key={i}>{pattern}</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-green-400 mb-2">균형 조언</h4>
-                <ul className="list-disc list-inside space-y-1">
-                  {result.analysis.development.balanceTips.map((tip: string, i: number) => (
-                    <li key={i}>{tip}</li>
-                  ))}
-                </ul>
-              </div>
+              {result.analysis.development?.keyTasks && Array.isArray(result.analysis.development.keyTasks) && (
+                <div>
+                  <h4 className="font-semibold text-blue-400 mb-2">핵심 개발 과제</h4>
+                  <ul className="list-disc list-inside space-y-1">
+                    {result.analysis.development.keyTasks.map((task: string, i: number) => (
+                      <li key={i}>{task}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {result.analysis.development?.patternsToBreak && Array.isArray(result.analysis.development.patternsToBreak) && (
+                <div>
+                  <h4 className="font-semibold text-yellow-400 mb-2">극복할 패턴</h4>
+                  <ul className="list-disc list-inside space-y-1">
+                    {result.analysis.development.patternsToBreak.map((pattern: string, i: number) => (
+                      <li key={i}>{pattern}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {result.analysis.development?.balanceTips && Array.isArray(result.analysis.development.balanceTips) && (
+                <div>
+                  <h4 className="font-semibold text-green-400 mb-2">균형 조언</h4>
+                  <ul className="list-disc list-inside space-y-1">
+                    {result.analysis.development.balanceTips.map((tip: string, i: number) => (
+                      <li key={i}>{tip}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 
