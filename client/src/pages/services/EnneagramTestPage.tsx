@@ -328,14 +328,16 @@ export default function EnneagramTestPage() {
                 <h4 className="font-semibold text-red-400 mb-2">근본적 두려움</h4>
                 <p className="text-muted-foreground">{result.analysis.mainType.coreFear}</p>
               </div>
-              <div>
-                <h4 className="font-semibold text-purple-400 mb-2">기본 성격 특성</h4>
-                <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                  {result.analysis.mainType.traits.map((trait: string, i: number) => (
-                    <li key={i}>{trait}</li>
-                  ))}
-                </ul>
-              </div>
+              {result.analysis.mainType?.traits && Array.isArray(result.analysis.mainType.traits) && (
+                <div>
+                  <h4 className="font-semibold text-purple-400 mb-2">기본 성격 특성</h4>
+                  <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                    {result.analysis.mainType.traits.map((trait: string, i: number) => (
+                      <li key={i}>{trait}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 
@@ -346,14 +348,16 @@ export default function EnneagramTestPage() {
               <div className="space-y-3 text-muted-foreground">
                 <p><strong className="text-green-400">영향:</strong> {result.analysis.wing.influence}</p>
                 <p><strong className="text-green-400">조합:</strong> {result.analysis.wing.combination}</p>
-                <div>
-                  <h4 className="font-semibold text-green-400 mb-2">독특한 특징</h4>
-                  <ul className="list-disc list-inside space-y-1">
-                    {result.analysis.wing.uniqueTraits.map((trait: string, i: number) => (
-                      <li key={i}>{trait}</li>
-                    ))}
-                  </ul>
-                </div>
+                {result.analysis.wing?.uniqueTraits && Array.isArray(result.analysis.wing.uniqueTraits) && (
+                  <div>
+                    <h4 className="font-semibold text-green-400 mb-2">독특한 특징</h4>
+                    <ul className="list-disc list-inside space-y-1">
+                      {result.analysis.wing.uniqueTraits.map((trait: string, i: number) => (
+                        <li key={i}>{trait}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -397,14 +401,16 @@ export default function EnneagramTestPage() {
                 </h4>
                 <p className="text-muted-foreground">{result.analysis.growth.disintegrationDirection.description}</p>
               </div>
-              <div>
-                <h4 className="font-semibold text-purple-400 mb-2">성장 실천 방법</h4>
-                <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                  {result.analysis.growth.practices.map((practice: string, i: number) => (
-                    <li key={i}>{practice}</li>
-                  ))}
-                </ul>
-              </div>
+              {result.analysis.growth?.practices && Array.isArray(result.analysis.growth.practices) && (
+                <div>
+                  <h4 className="font-semibold text-purple-400 mb-2">성장 실천 방법</h4>
+                  <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                    {result.analysis.growth.practices.map((practice: string, i: number) => (
+                      <li key={i}>{practice}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 
@@ -414,16 +420,18 @@ export default function EnneagramTestPage() {
             <div className="space-y-3 text-muted-foreground">
               <p><strong className="text-green-400">관계 스타일:</strong> {result.analysis.relationships.style}</p>
               <p><strong className="text-green-400">갈등 대응:</strong> {result.analysis.relationships.conflictStyle}</p>
-              <div>
-                <h4 className="font-semibold text-green-400 mb-2">궁합 좋은 유형</h4>
-                <div className="flex flex-wrap gap-2">
-                  {result.analysis.relationships.compatibleTypes.map((type: number, i: number) => (
-                    <span key={i} className="px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-300 rounded-full text-sm">
-                      {type}번 - {ENNEAGRAM_TYPE_NAMES[type]}
-                    </span>
-                  ))}
+              {result.analysis.relationships?.compatibleTypes && Array.isArray(result.analysis.relationships.compatibleTypes) && (
+                <div>
+                  <h4 className="font-semibold text-green-400 mb-2">궁합 좋은 유형</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {result.analysis.relationships.compatibleTypes.map((type: number, i: number) => (
+                      <span key={i} className="px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-300 rounded-full text-sm">
+                        {type}번 - {ENNEAGRAM_TYPE_NAMES[type]}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
@@ -431,16 +439,18 @@ export default function EnneagramTestPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">직업 및 커리어</h3>
             <div className="space-y-3">
-              <div>
-                <h4 className="font-semibold text-green-400 mb-2">적합한 직업</h4>
-                <div className="flex flex-wrap gap-2">
-                  {result.analysis.career.suitableJobs.map((job: string, i: number) => (
-                    <span key={i} className="px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-300 rounded-full text-sm">
-                      {job}
-                    </span>
-                  ))}
+              {result.analysis.career?.suitableJobs && Array.isArray(result.analysis.career.suitableJobs) && (
+                <div>
+                  <h4 className="font-semibold text-green-400 mb-2">적합한 직업</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {result.analysis.career.suitableJobs.map((job: string, i: number) => (
+                      <span key={i} className="px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-300 rounded-full text-sm">
+                        {job}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
               <p className="text-muted-foreground"><strong className="text-green-400">선호 환경:</strong> {result.analysis.career.workEnvironment}</p>
               <p className="text-muted-foreground"><strong className="text-green-400">리더십:</strong> {result.analysis.career.leadershipStyle}</p>
             </div>
