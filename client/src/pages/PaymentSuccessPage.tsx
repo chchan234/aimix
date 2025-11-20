@@ -50,6 +50,11 @@ export default function PaymentSuccessPage() {
 
       const data = await response.json();
       setPaymentInfo(data);
+
+      // 3초 후 메인 페이지로 자동 리다이렉트
+      setTimeout(() => {
+        setLocation('/');
+      }, 3000);
     } catch (error: any) {
       console.error('Payment confirmation error:', error);
       setError(error.message || '결제 처리 중 오류가 발생했습니다.');
@@ -103,6 +108,7 @@ export default function PaymentSuccessPage() {
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">결제 완료!</h1>
           <p className="text-gray-600">크레딧이 성공적으로 충전되었습니다.</p>
+          <p className="text-sm text-gray-500 mt-2">잠시 후 메인 페이지로 이동합니다...</p>
         </div>
 
         {/* 결제 정보 */}
