@@ -378,9 +378,9 @@ export default function SkinAnalysisPage() {
                 주요 고민
               </h3>
               <div className="flex flex-wrap gap-2">
-                {result.concerns.map((concern, index) => (
-                  <span key={index} className="px-3 py-2 bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-lg text-sm">
-                    {concern}
+                {result.concerns.map((concern: any, index: number) => (
+                  <span key={index} className="px-3 py-2 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-lg text-sm">
+                    {typeof concern === 'string' ? concern : concern.issue || concern.name || JSON.stringify(concern)}
                   </span>
                 ))}
               </div>

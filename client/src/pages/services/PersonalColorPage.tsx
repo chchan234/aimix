@@ -484,7 +484,7 @@ export default function PersonalColorPage() {
                   <p className="text-muted-foreground text-sm mb-2">립스틱</p>
                   <div className="flex flex-wrap gap-2">
                     {result.makeupRecommendations.lipstick.map((color, index) => (
-                      <span key={index} className="px-3 py-1 bg-pink-500/20 text-pink-600 dark:text-pink-300 rounded-full text-sm">
+                      <span key={index} className="px-3 py-1 bg-pink-100 dark:bg-pink-500/20 text-pink-600 dark:text-pink-300 rounded-full text-sm">
                         {color}
                       </span>
                     ))}
@@ -497,7 +497,7 @@ export default function PersonalColorPage() {
                   <p className="text-muted-foreground text-sm mb-2">아이섀도우</p>
                   <div className="flex flex-wrap gap-2">
                     {result.makeupRecommendations.eyeshadow.map((color, index) => (
-                      <span key={index} className="px-3 py-1 bg-amber-500/20 text-amber-600 dark:text-amber-300 rounded-full text-sm">
+                      <span key={index} className="px-3 py-1 bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-300 rounded-full text-sm">
                         {color}
                       </span>
                     ))}
@@ -510,7 +510,7 @@ export default function PersonalColorPage() {
                   <p className="text-muted-foreground text-sm mb-2">블러셔</p>
                   <div className="flex flex-wrap gap-2">
                     {result.makeupRecommendations.blush.map((color, index) => (
-                      <span key={index} className="px-3 py-1 bg-rose-500/20 text-rose-600 dark:text-rose-300 rounded-full text-sm">
+                      <span key={index} className="px-3 py-1 bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-300 rounded-full text-sm">
                         {color}
                       </span>
                     ))}
@@ -550,8 +550,8 @@ export default function PersonalColorPage() {
                   <p className="text-muted-foreground text-sm mb-2">추천 메탈</p>
                   <span className={`px-4 py-2 rounded-lg inline-block ${
                     result.clothingRecommendations.metals.includes('골드')
-                      ? 'bg-yellow-500/20 text-yellow-600 dark:text-yellow-300'
-                      : 'bg-gray-500/20 text-gray-600 dark:text-gray-300'
+                      ? 'bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-300'
+                      : 'bg-gray-100 dark:bg-gray-500/20 text-gray-700 dark:text-gray-300'
                   }`}>
                     {result.clothingRecommendations.metals}
                   </span>

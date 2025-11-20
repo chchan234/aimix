@@ -410,10 +410,16 @@ export default function BodyAnalysisPage() {
                 <div>
                   <p className="text-teal-400 text-sm font-medium mb-2">개선점</p>
                   <ul className="space-y-2">
-                    {result.postureAnalysis.improvements.map((tip, index) => (
+                    {result.postureAnalysis.improvements.map((tip: any, index: number) => (
                       <li key={index} className="flex items-start gap-2 text-muted-foreground">
                         <span className="material-symbols-outlined text-teal-400 text-sm mt-1">tips_and_updates</span>
-                        {tip}
+                        {typeof tip === 'string' ? tip : (
+                          <div>
+                            {tip.issue && <span className="font-medium">{tip.issue}</span>}
+                            {tip.solution && <span className="block text-sm">{tip.solution}</span>}
+                            {tip.exercise && <span className="block text-xs text-teal-400">{tip.exercise}</span>}
+                          </div>
+                        )}
                       </li>
                     ))}
                   </ul>
