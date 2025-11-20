@@ -1,33 +1,45 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'wouter';
 import { getCredits } from '../services/ai';
+import { isLoggedIn } from '../services/auth';
+import { loadTossPayments } from '@tosspayments/tosspayments-sdk';
 
 interface CreditPackage {
   id: string;
   credits: number;
   price: number;
-  bonus: number;
+  name: string;
   popular?: boolean;
 }
 
 interface PurchaseHistory {
-  id: number;
-  credits: number;
-  price: number;
-  date: string;
+  id: string;
+  orderId: string;
+  orderName: string;
+  totalAmount: number;
+  creditsGranted: number;
+  approvedAt: string;
   method: string;
 }
 
 export default function BuyCreditsPage() {
   const { t } = useTranslation();
+  const [, setLocation] = useLocation();
 
   const [selectedPackage, setSelectedPackage] = useState<string>('');
-  const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [currentCredits, setCurrentCredits] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [purchaseHistory, setPurchaseHistory] = useState<PurchaseHistory[]>([]);
 
   // 크레딧 정보 가져오기
   useEffect(() => {
+    if (!isLoggedIn()) {
+      setLocation('/login');
+      return;
+    }
+
     const fetchCredits = async () => {
       try {
         const response = await getCredits();
@@ -41,40 +53,103 @@ export default function BuyCreditsPage() {
       }
     };
 
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    if (isLoggedIn) {
-      fetchCredits();
-    } else {
-      setLoading(false);
-    }
-  }, []);
+    const fetchPurchaseHistory = async () => {
+      try {
+        const response = await fetch('/api/payments/history?limit=5', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setPurchaseHistory(data.payments);
+        }
+      } catch (error) {
+        console.error('Failed to fetch purchase history:', error);
+      }
+    };
 
-  // 크레딧 패키지
+    fetchCredits();
+    fetchPurchaseHistory();
+  }, [setLocation]);
+
+  // Auth state monitoring
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!isLoggedIn()) {
+        setLocation('/login');
+      }
+    };
+
+    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, [setLocation]);
+
+  // 크레딧 패키지 (토스페이먼츠 연동)
   const packages: CreditPackage[] = [
-    { id: 'small', credits: 1000, price: 9900, bonus: 0 },
-    { id: 'medium', credits: 5000, price: 39000, bonus: 500, popular: true },
-    { id: 'large', credits: 10000, price: 69000, bonus: 2000 },
-    { id: 'premium', credits: 30000, price: 179000, bonus: 10000 },
+    { id: 'basic', credits: 100, price: 9900, name: '베이직 패키지' },
+    { id: 'standard', credits: 300, price: 24900, name: '스탠다드 패키지' },
+    { id: 'premium', credits: 1000, price: 69900, name: '프리미엄 패키지', popular: true },
+    { id: 'enterprise', credits: 5000, price: 299000, name: '엔터프라이즈 패키지' },
   ];
 
-  // 구매 내역 (TODO: API에서 가져오기)
-  const [purchaseHistory] = useState<PurchaseHistory[]>([]);
-
-  const handlePurchase = () => {
+  const handlePurchase = async () => {
     if (!selectedPackage) {
       alert(t('buyCredits.alerts.selectPackage'));
       return;
     }
-    if (!paymentMethod) {
-      alert('결제 방법을 선택해주세요.');
-      return;
-    }
 
-    const pkg = packages.find((p) => p.id === selectedPackage);
-    if (pkg) {
-      alert(
-        `${(pkg.credits + pkg.bonus).toLocaleString()} 크레딧을 ₩${pkg.price.toLocaleString()}에 구매합니다.\n결제 방법: ${paymentMethod}`
-      );
+    if (isProcessing) return;
+    setIsProcessing(true);
+
+    try {
+      const pkg = packages.find((p) => p.id === selectedPackage);
+      if (!pkg) return;
+
+      // 1. 결제 준비 - orderId 받기
+      const prepareResponse = await fetch('/api/payments/prepare', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({ packageType: selectedPackage }),
+      });
+
+      if (!prepareResponse.ok) {
+        throw new Error('Failed to prepare payment');
+      }
+
+      const { orderId, amount, orderName, clientKey } = await prepareResponse.json();
+
+      // 2. 토스페이먼츠 SDK 로드
+      const tossPayments = await loadTossPayments(clientKey);
+
+      // 3. 결제창 띄우기
+      await tossPayments.requestPayment({
+        method: 'CARD',
+        amount: {
+          currency: 'KRW',
+          value: amount,
+        },
+        orderId,
+        orderName,
+        successUrl: `${window.location.origin}/payment/success`,
+        failUrl: `${window.location.origin}/payment/fail`,
+        customerName: '고객',
+      });
+    } catch (error: any) {
+      console.error('Payment error:', error);
+      if (error.code !== 'USER_CANCEL') {
+        alert('결제 처리 중 오류가 발생했습니다.');
+      }
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -137,24 +212,22 @@ export default function BuyCreditsPage() {
                     </div>
                   )}
 
+                  {/* 패키지 이름 */}
+                  <div className="mb-3">
+                    <p className="text-foreground text-lg font-bold">{pkg.name}</p>
+                  </div>
+
                   {/* 크레딧 */}
                   <div className="flex items-baseline gap-2 mb-2">
                     <p className="text-foreground text-3xl font-bold">{pkg.credits.toLocaleString()}</p>
-                    <p className="text-muted-foreground text-sm">{t('buyCredits.packages.credits')}</p>
+                    <p className="text-muted-foreground text-sm">크레딧</p>
                   </div>
-
-                  {/* 보너스 */}
-                  {pkg.bonus > 0 && (
-                    <p className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent text-sm font-semibold mb-3">
-                      + {pkg.bonus.toLocaleString()} {t('buyCredits.packages.bonus')}
-                    </p>
-                  )}
 
                   {/* 가격 */}
                   <div className="pt-3 border-t border-pink-100/50">
                     <p className="text-foreground text-2xl font-bold">₩{pkg.price.toLocaleString()}</p>
                     <p className="text-muted-foreground text-xs mt-1">
-                      {t('buyCredits.packages.perCredit')} ₩{(pkg.price / (pkg.credits + pkg.bonus)).toFixed(1)}
+                      크레딧당 ₩{Math.round(pkg.price / pkg.credits)}
                     </p>
                   </div>
 
@@ -171,35 +244,22 @@ export default function BuyCreditsPage() {
             </div>
           </div>
 
-          {/* 결제 방법 */}
-          <div className="glass-panel rounded-2xl p-6">
-            <h2 className="text-foreground text-xl font-serif font-bold mb-4">{t('buyCredits.selectPayment')}</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {['카드결제', '카카오페이', '토스페이'].map((method) => (
-                <button
-                  key={method}
-                  onClick={() => setPaymentMethod(method)}
-                  className={`p-4 rounded-xl border-2 transition ${
-                    paymentMethod === method
-                      ? 'border-pink-400 bg-pink-50/80 dark:bg-pink-900/20 shadow-md'
-                      : 'border-pink-100/50 dark:border-purple-500/30 bg-white/60 dark:bg-[#1a1625] hover:border-pink-300 hover:bg-white/80 dark:hover:bg-[#2a2436]'
-                  }`}
-                >
-                  <p className="text-foreground font-medium">{method}</p>
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* 구매 버튼 */}
           <button
             onClick={handlePurchase}
-            disabled={!selectedPackage || !paymentMethod}
+            disabled={!selectedPackage || isProcessing}
             className="w-full bg-gradient-to-r from-pink-400 via-purple-400 to-pink-500 text-white py-4 rounded-2xl font-bold text-lg hover:from-pink-500 hover:via-purple-500 hover:to-pink-600 transition shadow-xl shadow-pink-300/50 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {selectedPackage && packages.find((p) => p.id === selectedPackage)
-              ? `₩${packages.find((p) => p.id === selectedPackage)!.price.toLocaleString()} ${t('buyCredits.purchase.button')}`
-              : t('buyCredits.purchase.selectPackage')}
+            {isProcessing ? (
+              <span className="flex items-center justify-center">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                처리 중...
+              </span>
+            ) : selectedPackage && packages.find((p) => p.id === selectedPackage) ? (
+              `₩${packages.find((p) => p.id === selectedPackage)!.price.toLocaleString()} ${t('buyCredits.purchase.button')}`
+            ) : (
+              t('buyCredits.purchase.selectPackage')
+            )}
           </button>
         </div>
 
@@ -214,15 +274,18 @@ export default function BuyCreditsPage() {
                   <div key={history.id} className="bg-gray-50 dark:bg-[#2a2436] rounded-xl p-4 border border-gray-200 dark:border-white/10">
                     <div className="flex items-center justify-between mb-2">
                       <p className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent font-bold text-lg">
-                        +{history.credits.toLocaleString()}
+                        +{history.creditsGranted.toLocaleString()}
                       </p>
                       <span className="text-xs text-muted-foreground bg-pink-100/60 dark:bg-pink-900/30 px-2 py-1 rounded">
-                        {history.method}
+                        {history.method === 'CARD' ? '카드' : history.method}
                       </span>
                     </div>
+                    <div className="flex items-center justify-between text-sm mb-1">
+                      <p className="text-muted-foreground text-xs">{history.orderName}</p>
+                    </div>
                     <div className="flex items-center justify-between text-sm">
-                      <p className="text-muted-foreground">{history.date}</p>
-                      <p className="text-foreground font-semibold">₩{history.price.toLocaleString()}</p>
+                      <p className="text-muted-foreground">{new Date(history.approvedAt).toLocaleDateString()}</p>
+                      <p className="text-foreground font-semibold">₩{history.totalAmount.toLocaleString()}</p>
                     </div>
                   </div>
                 ))
