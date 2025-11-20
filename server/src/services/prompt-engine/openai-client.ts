@@ -131,6 +131,48 @@ export class OpenAIClient {
   }
 
   /**
+   * Generate image using DALL-E 3
+   */
+  async generateImage(
+    prompt: string,
+    options: {
+      size?: '1024x1024' | '1024x1792' | '1792x1024';
+      quality?: 'standard' | 'hd';
+      style?: 'vivid' | 'natural';
+    } = {}
+  ) {
+    const startTime = Date.now();
+
+    try {
+      const response = await this.client.images.generate({
+        model: 'dall-e-3',
+        prompt,
+        n: 1,
+        size: options.size || '1024x1024',
+        quality: options.quality || 'standard',
+        style: options.style || 'vivid',
+      });
+
+      const responseTime = Date.now() - startTime;
+      const imageUrl = response.data[0]?.url;
+
+      if (!imageUrl) {
+        throw new Error('No image URL returned from DALL-E');
+      }
+
+      console.log(`✅ DALL-E image generation completed in ${responseTime}ms`);
+
+      return {
+        imageUrl,
+        responseTime,
+      };
+    } catch (error) {
+      console.error('❌ DALL-E image generation error:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Parse JSON response with error handling
    */
   parseJSON<T = any>(content: string): T {

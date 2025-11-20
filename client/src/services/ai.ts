@@ -35,10 +35,16 @@ async function apiRequest<T>(endpoint: string, data: any): Promise<T> {
     let errorMessage = 'API request failed';
     try {
       const error = await response.json();
+      // Handle structured error objects (e.g., credit errors)
+      if (error.error && typeof error.error === 'object' && error.error.message) {
+        errorMessage = error.error.message;
+      }
       // Include details if available (for validation errors)
-      if (error.details) {
+      else if (error.details) {
         errorMessage = `${error.error}: ${error.details}`;
-      } else {
+      }
+      // Simple error message
+      else {
         errorMessage = error.error || error.message || errorMessage;
       }
     } catch (e) {
@@ -535,6 +541,12 @@ REQUIREMENTS:
 
 export async function generateResultImage(data: ResultImageData) {
   try {
+    // Check authentication first
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('로그인이 필요합니다. 다시 로그인해주세요.');
+    }
+
     // Build the universal prompt
     const prompt = buildUniversalPrompt(data);
 
