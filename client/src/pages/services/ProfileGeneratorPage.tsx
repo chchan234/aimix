@@ -119,22 +119,22 @@ export default function ProfileGeneratorPage() {
 
             <div className="grid grid-cols-2 gap-3 mt-4">
               <div className="p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
-                <span className="material-symbols-outlined text-cyan-400 text-2xl block mb-2">savings</span>
+                <span className="material-symbols-outlined text-cyan-600 dark:text-cyan-400 text-2xl block mb-2">savings</span>
                 <p className="text-sm font-medium text-foreground">비용 절감</p>
                 <p className="text-xs text-muted-foreground">스튜디오 촬영 비용 절감</p>
               </div>
               <div className="p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
-                <span className="material-symbols-outlined text-cyan-400 text-2xl block mb-2">light_mode</span>
+                <span className="material-symbols-outlined text-cyan-600 dark:text-cyan-400 text-2xl block mb-2">light_mode</span>
                 <p className="text-sm font-medium text-foreground">전문 조명</p>
                 <p className="text-xs text-muted-foreground">전문적인 조명과 배경</p>
               </div>
               <div className="p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
-                <span className="material-symbols-outlined text-cyan-400 text-2xl block mb-2">style</span>
+                <span className="material-symbols-outlined text-cyan-600 dark:text-cyan-400 text-2xl block mb-2">style</span>
                 <p className="text-sm font-medium text-foreground">다양한 스타일</p>
                 <p className="text-xs text-muted-foreground">3가지 스타일 선택</p>
               </div>
               <div className="p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
-                <span className="material-symbols-outlined text-cyan-400 text-2xl block mb-2">timer</span>
+                <span className="material-symbols-outlined text-cyan-600 dark:text-cyan-400 text-2xl block mb-2">timer</span>
                 <p className="text-sm font-medium text-foreground">빠른 생성</p>
                 <p className="text-xs text-muted-foreground">즉시 결과 확인</p>
               </div>
@@ -148,7 +148,7 @@ export default function ProfileGeneratorPage() {
                 <p className="text-muted-foreground text-sm">셀카 → 스튜디오 품질</p>
               </div>
               <div className="text-right">
-                <p className="text-cyan-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                <p className="text-cyan-600 dark:text-cyan-400 font-bold text-xl">{serviceCost} 크레딧</p>
               </div>
             </div>
           </div>
@@ -226,7 +226,7 @@ export default function ProfileGeneratorPage() {
                       : 'border-gray-300 dark:border-gray-600 hover:border-gray-500'
                   }`}
                 >
-                  <p className={`font-semibold ${style === option.value ? 'text-cyan-400' : 'text-foreground'}`}>
+                  <p className={`font-semibold ${style === option.value ? 'text-cyan-600 dark:text-cyan-400' : 'text-foreground'}`}>
                     {option.label}
                   </p>
                   <p className="text-sm text-muted-foreground">{option.desc}</p>
@@ -267,7 +267,7 @@ export default function ProfileGeneratorPage() {
             </a>
             <button
               onClick={handleReset}
-              className="flex-1 py-3 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition font-semibold"
+              className="flex-1 py-3 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition font-semibold"
             >
               다시 시도하기
             </button>

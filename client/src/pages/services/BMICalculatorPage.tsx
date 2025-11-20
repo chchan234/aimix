@@ -115,19 +115,19 @@ export default function BMICalculatorPage() {
   };
 
   const getBMIColor = (bmi: number) => {
-    if (bmi < 18.5) return 'text-blue-400';
-    if (bmi < 23) return 'text-green-400';
-    if (bmi < 25) return 'text-yellow-400';
-    if (bmi < 30) return 'text-orange-400';
-    return 'text-red-400';
+    if (bmi < 18.5) return 'text-blue-600 dark:text-blue-600 dark:text-blue-400';
+    if (bmi < 23) return 'text-green-600 dark:text-green-600 dark:text-green-400';
+    if (bmi < 25) return 'text-yellow-600 dark:text-yellow-400';
+    if (bmi < 30) return 'text-orange-600 dark:text-orange-600 dark:text-orange-400';
+    return 'text-red-600 dark:text-red-600 dark:text-red-400';
   };
 
   const getBMICategoryColor = (category: string) => {
-    if (category.includes('저체중')) return 'bg-blue-500/20 text-blue-400';
-    if (category.includes('정상')) return 'bg-green-500/20 text-green-400';
-    if (category.includes('과체중')) return 'bg-yellow-500/20 text-yellow-400';
-    if (category.includes('비만')) return 'bg-orange-500/20 text-orange-400';
-    if (category.includes('고도')) return 'bg-red-500/20 text-red-400';
+    if (category.includes('저체중')) return 'bg-blue-500/20 text-blue-600 dark:text-blue-600 dark:text-blue-400';
+    if (category.includes('정상')) return 'bg-green-500/20 text-green-600 dark:text-green-600 dark:text-green-400';
+    if (category.includes('과체중')) return 'bg-yellow-500/20 text-yellow-600 dark:text-yellow-400';
+    if (category.includes('비만')) return 'bg-orange-500/20 text-orange-600 dark:text-orange-600 dark:text-orange-400';
+    if (category.includes('고도')) return 'bg-red-500/20 text-red-600 dark:text-red-600 dark:text-red-400';
     return 'bg-gray-500/20 text-muted-foreground';
   };
 
@@ -143,7 +143,7 @@ export default function BMICalculatorPage() {
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
-              <span className="material-symbols-outlined text-3xl text-green-400">monitor_weight</span>
+              <span className="material-symbols-outlined text-3xl text-green-600 dark:text-green-400">monitor_weight</span>
               <h3 className="text-xl font-semibold text-foreground">
                 AI BMI 계산기
               </h3>
@@ -156,28 +156,28 @@ export default function BMICalculatorPage() {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-green-400">calculate</span>
+                  <span className="material-symbols-outlined text-green-600 dark:text-green-400">calculate</span>
                   <span className="text-foreground font-medium">BMI 계산</span>
                 </div>
                 <p className="text-muted-foreground text-sm">정확한 체질량 지수 계산</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-green-400">health_and_safety</span>
+                  <span className="material-symbols-outlined text-green-600 dark:text-green-400">health_and_safety</span>
                   <span className="text-foreground font-medium">건강 분석</span>
                 </div>
                 <p className="text-muted-foreground text-sm">건강 위험도 평가</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-green-400">restaurant</span>
+                  <span className="material-symbols-outlined text-green-600 dark:text-green-400">restaurant</span>
                   <span className="text-foreground font-medium">식단 조언</span>
                 </div>
                 <p className="text-muted-foreground text-sm">맞춤 식단 가이드</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-green-400">directions_run</span>
+                  <span className="material-symbols-outlined text-green-600 dark:text-green-400">directions_run</span>
                   <span className="text-foreground font-medium">운동 추천</span>
                 </div>
                 <p className="text-muted-foreground text-sm">효과적인 운동 방법</p>
@@ -191,7 +191,7 @@ export default function BMICalculatorPage() {
                   <p className="text-muted-foreground text-sm">BMI 계산 + 건강 조언</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-green-400 font-bold text-xl">15 크레딧</p>
+                  <p className="text-green-600 dark:text-green-400 font-bold text-xl">15 크레딧</p>
                 </div>
               </div>
             </div>
@@ -253,7 +253,7 @@ export default function BMICalculatorPage() {
                     onClick={() => setGender('male')}
                     className={`p-3 rounded-lg border transition-all ${
                       gender === 'male'
-                        ? 'bg-green-500/20 text-green-400 border-green-500'
+                        ? 'bg-green-500/20 text-green-600 dark:text-green-400 border-green-500'
                         : 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-muted-foreground hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -264,7 +264,7 @@ export default function BMICalculatorPage() {
                     onClick={() => setGender('female')}
                     className={`p-3 rounded-lg border transition-all ${
                       gender === 'female'
-                        ? 'bg-green-500/20 text-green-400 border-green-500'
+                        ? 'bg-green-500/20 text-green-600 dark:text-green-400 border-green-500'
                         : 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-muted-foreground hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -300,7 +300,7 @@ export default function BMICalculatorPage() {
 
       {/* Error */}
       {error && (
-        <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 text-red-400">
+        <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 text-red-600 dark:text-red-400">
           {error}
         </div>
       )}
@@ -364,11 +364,11 @@ export default function BMICalculatorPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-4 bg-green-500/20 rounded-lg">
                   <p className="text-muted-foreground text-sm">최소</p>
-                  <p className="text-green-400 text-2xl font-bold">{result.idealWeight.min}kg</p>
+                  <p className="text-green-600 dark:text-green-400 text-2xl font-bold">{result.idealWeight.min}kg</p>
                 </div>
                 <div className="text-center p-4 bg-green-500/20 rounded-lg">
                   <p className="text-muted-foreground text-sm">최대</p>
-                  <p className="text-green-400 text-2xl font-bold">{result.idealWeight.max}kg</p>
+                  <p className="text-green-600 dark:text-green-400 text-2xl font-bold">{result.idealWeight.max}kg</p>
                 </div>
               </div>
               {result.idealWeight.description && (
@@ -389,7 +389,7 @@ export default function BMICalculatorPage() {
               <ul className="space-y-2">
                 {result.healthRisks.map((risk, index) => (
                   <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                    <span className="material-symbols-outlined text-orange-400 text-sm mt-1">error</span>
+                    <span className="material-symbols-outlined text-orange-600 dark:text-orange-400 text-sm mt-1">error</span>
                     {risk}
                   </li>
                 ))}
@@ -407,7 +407,7 @@ export default function BMICalculatorPage() {
               <ul className="space-y-2">
                 {result.recommendations.diet.map((tip, index) => (
                   <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                    <span className="material-symbols-outlined text-green-400 text-sm mt-1">check_circle</span>
+                    <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-sm mt-1">check_circle</span>
                     {tip}
                   </li>
                 ))}
@@ -424,7 +424,7 @@ export default function BMICalculatorPage() {
               </h3>
               <div className="flex flex-wrap gap-2">
                 {result.recommendations.exercise.map((exercise, index) => (
-                  <span key={index} className="px-3 py-2 bg-green-500/20 text-green-400 rounded-lg text-sm">
+                  <span key={index} className="px-3 py-2 bg-green-500/20 text-green-600 dark:text-green-400 rounded-lg text-sm">
                     {exercise}
                   </span>
                 ))}
@@ -442,7 +442,7 @@ export default function BMICalculatorPage() {
               <ul className="space-y-2">
                 {result.recommendations.lifestyle.map((tip, index) => (
                   <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                    <span className="material-symbols-outlined text-green-400 text-sm mt-1">eco</span>
+                    <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-sm mt-1">eco</span>
                     {tip}
                   </li>
                 ))}
@@ -460,15 +460,15 @@ export default function BMICalculatorPage() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center p-3 bg-blue-500/20 rounded-lg">
                   <p className="text-muted-foreground text-xs">감량</p>
-                  <p className="text-blue-400 text-lg font-bold">{result.dailyCalories.lose}kcal</p>
+                  <p className="text-blue-600 dark:text-blue-400 text-lg font-bold">{result.dailyCalories.lose}kcal</p>
                 </div>
                 <div className="text-center p-3 bg-green-500/20 rounded-lg">
                   <p className="text-muted-foreground text-xs">유지</p>
-                  <p className="text-green-400 text-lg font-bold">{result.dailyCalories.maintain}kcal</p>
+                  <p className="text-green-600 dark:text-green-400 text-lg font-bold">{result.dailyCalories.maintain}kcal</p>
                 </div>
                 <div className="text-center p-3 bg-orange-500/20 rounded-lg">
                   <p className="text-muted-foreground text-xs">증량</p>
-                  <p className="text-orange-400 text-lg font-bold">{result.dailyCalories.gain}kcal</p>
+                  <p className="text-orange-600 dark:text-orange-400 text-lg font-bold">{result.dailyCalories.gain}kcal</p>
                 </div>
               </div>
             </div>

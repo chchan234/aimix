@@ -98,7 +98,7 @@ export default function MarriageCompatibilityPage() {
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
-              <span className="material-symbols-outlined text-3xl text-red-400">family_restroom</span>
+              <span className="material-symbols-outlined text-3xl text-red-600 dark:text-red-400">family_restroom</span>
               <h3 className="text-xl font-semibold text-foreground">
                 결혼 궁합
               </h3>
@@ -111,28 +111,28 @@ export default function MarriageCompatibilityPage() {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-red-400">balance</span>
+                  <span className="material-symbols-outlined text-red-600 dark:text-red-400">balance</span>
                   <span className="text-foreground font-medium">사주 궁합</span>
                 </div>
                 <p className="text-muted-foreground text-sm">오행/음양 조화</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-red-400">edit</span>
+                  <span className="material-symbols-outlined text-red-600 dark:text-red-400">edit</span>
                   <span className="text-foreground font-medium">이름 궁합</span>
                 </div>
                 <p className="text-muted-foreground text-sm">획수 조화 분석</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-red-400">event</span>
+                  <span className="material-symbols-outlined text-red-600 dark:text-red-400">event</span>
                   <span className="text-foreground font-medium">결혼 적기</span>
                 </div>
                 <p className="text-muted-foreground text-sm">최적 결혼 시기</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-red-400">lightbulb</span>
+                  <span className="material-symbols-outlined text-red-600 dark:text-red-400">lightbulb</span>
                   <span className="text-foreground font-medium">조언</span>
                 </div>
                 <p className="text-muted-foreground text-sm">행복한 결혼 조언</p>
@@ -146,7 +146,7 @@ export default function MarriageCompatibilityPage() {
                   <p className="text-muted-foreground text-sm">종합 궁합 분석</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-red-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                  <p className="text-red-600 dark:text-red-400 font-bold text-xl">{serviceCost} 크레딧</p>
                 </div>
               </div>
             </div>
@@ -269,12 +269,12 @@ export default function MarriageCompatibilityPage() {
         <div className="space-y-4 animate-fadeIn">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-              <span className="material-symbols-outlined text-red-400">family_restroom</span>
+              <span className="material-symbols-outlined text-red-600 dark:text-red-400">family_restroom</span>
               결혼 궁합
             </h3>
 
             <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700 text-center">
-              <div className="text-4xl font-bold text-red-400 mb-2">
+              <div className="text-4xl font-bold text-red-600 dark:text-red-400 mb-2">
                 {result.analysis.overallScore}점
               </div>
               <div className="text-foreground text-lg mb-2">{result.analysis.grade}</div>
@@ -283,7 +283,7 @@ export default function MarriageCompatibilityPage() {
 
             {result.analysis.sajuCompatibility && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h4 className="text-red-400 font-medium mb-2">
+                <h4 className="text-red-600 dark:text-red-400 font-medium mb-2">
                   사주 궁합 ({result.analysis.sajuCompatibility.score}/{result.analysis.sajuCompatibility.maxScore}점)
                 </h4>
                 <div className="space-y-2">
@@ -301,7 +301,7 @@ export default function MarriageCompatibilityPage() {
 
             {result.analysis.nameCompatibility && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h4 className="text-red-400 font-medium mb-2">
+                <h4 className="text-red-600 dark:text-red-400 font-medium mb-2">
                   이름 궁합 ({result.analysis.nameCompatibility.score}/{result.analysis.nameCompatibility.maxScore}점)
                 </h4>
                 <div className="space-y-2">
@@ -315,7 +315,7 @@ export default function MarriageCompatibilityPage() {
 
             {result.analysis.detailedAnalysis && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h4 className="text-red-400 font-medium mb-2">세부 결혼 궁합</h4>
+                <h4 className="text-red-600 dark:text-red-400 font-medium mb-2">세부 결혼 궁합</h4>
                 <div className="grid gap-2">
                   {Object.entries(result.analysis.detailedAnalysis).map(([key, value]: [string, any]) => (
                     <div key={key} className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
@@ -332,7 +332,7 @@ export default function MarriageCompatibilityPage() {
 
             {result.analysis.bestMarriageTiming && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h4 className="text-red-400 font-medium mb-2">결혼 적기</h4>
+                <h4 className="text-red-600 dark:text-red-400 font-medium mb-2">결혼 적기</h4>
                 <p className="text-foreground text-sm mb-2">{result.analysis.bestMarriageTiming.reason}</p>
                 {result.analysis.bestMarriageTiming.recommendedPeriods && (
                   <div className="text-muted-foreground text-xs">
@@ -344,7 +344,7 @@ export default function MarriageCompatibilityPage() {
 
             {result.analysis.advice && (
               <div>
-                <h4 className="text-red-400 font-medium mb-2">조언</h4>
+                <h4 className="text-red-600 dark:text-red-400 font-medium mb-2">조언</h4>
                 <div className="space-y-2">
                   {result.analysis.advice.strengths && (
                     <div>
@@ -373,7 +373,7 @@ export default function MarriageCompatibilityPage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-4 py-3 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition"
+            className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition"
           >
             다시 분석하기
           </button>

@@ -163,7 +163,7 @@ export default function DeepSaju2026Page() {
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
-              <span className="material-symbols-outlined text-3xl text-purple-400">auto_awesome</span>
+              <span className="material-symbols-outlined text-3xl text-purple-600 dark:text-purple-400">auto_awesome</span>
               <h3 className="text-xl font-semibold text-foreground">
                 2026 심층 신년운세
               </h3>
@@ -177,28 +177,28 @@ export default function DeepSaju2026Page() {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-purple-400">description</span>
+                  <span className="material-symbols-outlined text-purple-600 dark:text-purple-400">description</span>
                   <span className="text-foreground font-medium">심층 분석</span>
                 </div>
                 <p className="text-muted-foreground text-sm">10,000자 이상 상세 분석</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-purple-400">calendar_month</span>
+                  <span className="material-symbols-outlined text-purple-600 dark:text-purple-400">calendar_month</span>
                   <span className="text-foreground font-medium">월별 운세</span>
                 </div>
                 <p className="text-muted-foreground text-sm">12개월 상세 운세</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-purple-400">insights</span>
+                  <span className="material-symbols-outlined text-purple-600 dark:text-purple-400">insights</span>
                   <span className="text-foreground font-medium">영역별 분석</span>
                 </div>
                 <p className="text-muted-foreground text-sm">재물/연애/건강/관계</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-purple-400">stars</span>
+                  <span className="material-symbols-outlined text-purple-600 dark:text-purple-400">stars</span>
                   <span className="text-foreground font-medium">행운 정보</span>
                 </div>
                 <p className="text-muted-foreground text-sm">색상/숫자/방위 제공</p>
@@ -212,7 +212,7 @@ export default function DeepSaju2026Page() {
                   <p className="text-muted-foreground text-sm">프리미엄 사주 분석</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-purple-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                  <p className="text-purple-600 dark:text-purple-400 font-bold text-xl">{serviceCost} 크레딧</p>
                 </div>
               </div>
             </div>
@@ -275,7 +275,7 @@ export default function DeepSaju2026Page() {
                     onClick={() => setGender('male')}
                     className={`p-4 rounded-lg border text-center transition ${
                       gender === 'male'
-                        ? 'border-purple-500 bg-purple-500/10 text-purple-400'
+                        ? 'border-purple-500 bg-purple-500/10 text-purple-600 dark:text-purple-400'
                         : 'border-gray-300 dark:border-gray-600 hover:border-gray-500 text-foreground'
                     }`}
                   >
@@ -285,7 +285,7 @@ export default function DeepSaju2026Page() {
                     onClick={() => setGender('female')}
                     className={`p-4 rounded-lg border text-center transition ${
                       gender === 'female'
-                        ? 'border-purple-500 bg-purple-500/10 text-purple-400'
+                        ? 'border-purple-500 bg-purple-500/10 text-purple-600 dark:text-purple-400'
                         : 'border-gray-300 dark:border-gray-600 hover:border-gray-500 text-foreground'
                     }`}
                   >
@@ -360,7 +360,7 @@ export default function DeepSaju2026Page() {
             <div className="space-y-4">
               <div className="bg-purple-500/10 rounded-xl p-4 border border-purple-500/20">
                 <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-purple-400">stars</span>
+                  <span className="material-symbols-outlined text-purple-600 dark:text-purple-400">stars</span>
                   2026년 총운
                 </h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">{result.summary.overallFortune}</p>
@@ -386,7 +386,7 @@ export default function DeepSaju2026Page() {
 
               <div className="bg-indigo-500/10 rounded-xl p-4 border border-indigo-500/20">
                 <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-indigo-400">view_column</span>
+                  <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400">view_column</span>
                   사주팔자
                 </h3>
                 <div className="grid grid-cols-4 gap-2 mb-4">
@@ -412,7 +412,7 @@ export default function DeepSaju2026Page() {
 
               <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20">
                 <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-amber-400">lightbulb</span>
+                  <span className="material-symbols-outlined text-amber-600 dark:text-amber-400">lightbulb</span>
                   2026년 종합 조언
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">{result.yearlyAdvice}</p>
@@ -434,23 +434,23 @@ export default function DeepSaju2026Page() {
                     <p className="text-muted-foreground text-sm mb-3">{monthData.overall}</p>
                     <div className="space-y-2 text-sm">
                       <div className="flex gap-2">
-                        <span className="text-blue-400 min-w-[50px]">직업:</span>
+                        <span className="text-blue-600 dark:text-blue-400 min-w-[50px]">직업:</span>
                         <span className="text-muted-foreground">{monthData.career}</span>
                       </div>
                       <div className="flex gap-2">
-                        <span className="text-pink-400 min-w-[50px]">연애:</span>
+                        <span className="text-pink-600 dark:text-pink-400 min-w-[50px]">연애:</span>
                         <span className="text-muted-foreground">{monthData.love}</span>
                       </div>
                       <div className="flex gap-2">
-                        <span className="text-yellow-400 min-w-[50px]">재물:</span>
+                        <span className="text-yellow-600 dark:text-yellow-400 min-w-[50px]">재물:</span>
                         <span className="text-muted-foreground">{monthData.wealth}</span>
                       </div>
                       <div className="flex gap-2">
-                        <span className="text-green-400 min-w-[50px]">건강:</span>
+                        <span className="text-green-600 dark:text-green-400 min-w-[50px]">건강:</span>
                         <span className="text-muted-foreground">{monthData.health}</span>
                       </div>
                       <div className="mt-2 pt-2 border-t border-gray-300 dark:border-gray-600">
-                        <span className="text-purple-400">조언: </span>
+                        <span className="text-purple-600 dark:text-purple-400">조언: </span>
                         <span className="text-muted-foreground">{monthData.advice}</span>
                       </div>
                     </div>
@@ -465,14 +465,14 @@ export default function DeepSaju2026Page() {
             <div className="space-y-4">
               <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
                 <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-blue-400">work</span>
+                  <span className="material-symbols-outlined text-blue-600 dark:text-blue-400">work</span>
                   직업운
                 </h3>
                 <p className="text-muted-foreground mb-3">{result.careerFortune.overall}</p>
                 <div className="space-y-2 text-sm">
                   {result.careerFortune.opportunities && result.careerFortune.opportunities.length > 0 && (
                     <div>
-                      <p className="text-green-400 mb-1">기회</p>
+                      <p className="text-green-600 dark:text-green-400 mb-1">기회</p>
                       <ul className="list-disc list-inside text-muted-foreground">
                         {result.careerFortune.opportunities.map((opp, i) => (
                           <li key={i}>{opp}</li>
@@ -482,7 +482,7 @@ export default function DeepSaju2026Page() {
                   )}
                   {result.careerFortune.challenges && result.careerFortune.challenges.length > 0 && (
                     <div>
-                      <p className="text-red-400 mb-1">도전</p>
+                      <p className="text-red-600 dark:text-red-400 mb-1">도전</p>
                       <ul className="list-disc list-inside text-muted-foreground">
                         {result.careerFortune.challenges.map((ch, i) => (
                           <li key={i}>{ch}</li>
@@ -496,40 +496,40 @@ export default function DeepSaju2026Page() {
 
               <div className="bg-yellow-500/10 rounded-xl p-4 border border-yellow-500/20">
                 <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-yellow-400">paid</span>
+                  <span className="material-symbols-outlined text-yellow-600 dark:text-yellow-400">paid</span>
                   재물운
                 </h3>
                 <p className="text-muted-foreground mb-3">{result.wealthFortune.overall}</p>
                 <div className="space-y-2 text-sm">
-                  <p><span className="text-yellow-400">수입:</span> <span className="text-muted-foreground">{result.wealthFortune.income}</span></p>
-                  <p><span className="text-yellow-400">투자:</span> <span className="text-muted-foreground">{result.wealthFortune.investment}</span></p>
+                  <p><span className="text-yellow-600 dark:text-yellow-400">수입:</span> <span className="text-muted-foreground">{result.wealthFortune.income}</span></p>
+                  <p><span className="text-yellow-600 dark:text-yellow-400">투자:</span> <span className="text-muted-foreground">{result.wealthFortune.investment}</span></p>
                   <p className="text-purple-300 mt-2">{result.wealthFortune.advice}</p>
                 </div>
               </div>
 
               <div className="bg-pink-500/10 rounded-xl p-4 border border-pink-500/20">
                 <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-pink-400">favorite</span>
+                  <span className="material-symbols-outlined text-pink-600 dark:text-pink-400">favorite</span>
                   연애운
                 </h3>
                 <p className="text-muted-foreground mb-3">{result.loveFortune.overall}</p>
                 <div className="space-y-2 text-sm">
-                  <p><span className="text-pink-400">미혼:</span> <span className="text-muted-foreground">{result.loveFortune.single}</span></p>
-                  <p><span className="text-pink-400">기혼/연인:</span> <span className="text-muted-foreground">{result.loveFortune.coupled}</span></p>
+                  <p><span className="text-pink-600 dark:text-pink-400">미혼:</span> <span className="text-muted-foreground">{result.loveFortune.single}</span></p>
+                  <p><span className="text-pink-600 dark:text-pink-400">기혼/연인:</span> <span className="text-muted-foreground">{result.loveFortune.coupled}</span></p>
                   <p className="text-purple-300 mt-2">{result.loveFortune.advice}</p>
                 </div>
               </div>
 
               <div className="bg-green-500/10 rounded-xl p-4 border border-green-500/20">
                 <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-green-400">health_and_safety</span>
+                  <span className="material-symbols-outlined text-green-600 dark:text-green-400">health_and_safety</span>
                   건강운
                 </h3>
                 <p className="text-muted-foreground mb-3">{result.healthFortune.overall}</p>
                 <div className="space-y-2 text-sm">
                   {result.healthFortune.vulnerableAreas && result.healthFortune.vulnerableAreas.length > 0 && (
                     <div>
-                      <p className="text-red-400 mb-1">취약 부위</p>
+                      <p className="text-red-600 dark:text-red-400 mb-1">취약 부위</p>
                       <ul className="list-disc list-inside text-muted-foreground">
                         {result.healthFortune.vulnerableAreas.map((area, i) => (
                           <li key={i}>{area}</li>
@@ -539,7 +539,7 @@ export default function DeepSaju2026Page() {
                   )}
                   {result.healthFortune.preventiveMeasures && result.healthFortune.preventiveMeasures.length > 0 && (
                     <div>
-                      <p className="text-green-400 mb-1">예방 수칙</p>
+                      <p className="text-green-600 dark:text-green-400 mb-1">예방 수칙</p>
                       <ul className="list-disc list-inside text-muted-foreground">
                         {result.healthFortune.preventiveMeasures.map((m, i) => (
                           <li key={i}>{m}</li>
@@ -553,28 +553,28 @@ export default function DeepSaju2026Page() {
 
               <div className="bg-cyan-500/10 rounded-xl p-4 border border-cyan-500/20">
                 <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-cyan-400">groups</span>
+                  <span className="material-symbols-outlined text-cyan-600 dark:text-cyan-400">groups</span>
                   대인관계운
                 </h3>
                 <div className="space-y-2 text-sm">
-                  <p><span className="text-cyan-400">가족:</span> <span className="text-muted-foreground">{result.relationshipFortune.family}</span></p>
-                  <p><span className="text-cyan-400">친구:</span> <span className="text-muted-foreground">{result.relationshipFortune.friends}</span></p>
-                  <p><span className="text-cyan-400">직장:</span> <span className="text-muted-foreground">{result.relationshipFortune.colleagues}</span></p>
+                  <p><span className="text-cyan-600 dark:text-cyan-400">가족:</span> <span className="text-muted-foreground">{result.relationshipFortune.family}</span></p>
+                  <p><span className="text-cyan-600 dark:text-cyan-400">친구:</span> <span className="text-muted-foreground">{result.relationshipFortune.friends}</span></p>
+                  <p><span className="text-cyan-600 dark:text-cyan-400">직장:</span> <span className="text-muted-foreground">{result.relationshipFortune.colleagues}</span></p>
                   <p className="text-purple-300 mt-2">{result.relationshipFortune.advice}</p>
                 </div>
               </div>
 
               <div className="bg-violet-500/10 rounded-xl p-4 border border-violet-500/20">
                 <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-violet-400">self_improvement</span>
+                  <span className="material-symbols-outlined text-violet-600 dark:text-violet-400">self_improvement</span>
                   영적 지침
                 </h3>
                 <div className="space-y-2 text-sm">
-                  <p><span className="text-violet-400">명상:</span> <span className="text-muted-foreground">{result.spiritualGuidance.meditation}</span></p>
-                  <p><span className="text-violet-400">의식:</span> <span className="text-muted-foreground">{result.spiritualGuidance.rituals}</span></p>
+                  <p><span className="text-violet-600 dark:text-violet-400">명상:</span> <span className="text-muted-foreground">{result.spiritualGuidance.meditation}</span></p>
+                  <p><span className="text-violet-600 dark:text-violet-400">의식:</span> <span className="text-muted-foreground">{result.spiritualGuidance.rituals}</span></p>
                   {result.spiritualGuidance.auspiciousDates && result.spiritualGuidance.auspiciousDates.length > 0 && (
                     <div>
-                      <p className="text-violet-400 mb-1">길일</p>
+                      <p className="text-violet-600 dark:text-violet-400 mb-1">길일</p>
                       <div className="flex flex-wrap gap-2">
                         {result.spiritualGuidance.auspiciousDates.map((date, i) => (
                           <span key={i} className="bg-violet-500/20 px-2 py-1 rounded text-violet-300 text-xs">{date}</span>

@@ -141,29 +141,29 @@ export default function BigFiveTestPage() {
               <div className="grid grid-cols-2 gap-4 mt-4">
                 <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-green-400">lightbulb</span>
-                    <span className="font-semibold text-green-400">개방성</span>
+                    <span className="material-symbols-outlined text-green-600 dark:text-green-400">lightbulb</span>
+                    <span className="font-semibold text-green-600 dark:text-green-400">개방성</span>
                   </div>
                   <p className="text-sm opacity-80">새로운 경험과 아이디어 수용</p>
                 </div>
                 <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-green-400">task_alt</span>
-                    <span className="font-semibold text-green-400">성실성</span>
+                    <span className="material-symbols-outlined text-green-600 dark:text-green-400">task_alt</span>
+                    <span className="font-semibold text-green-600 dark:text-green-400">성실성</span>
                   </div>
                   <p className="text-sm opacity-80">목표 지향성과 자기 통제력</p>
                 </div>
                 <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-green-400">groups</span>
-                    <span className="font-semibold text-green-400">외향성</span>
+                    <span className="material-symbols-outlined text-green-600 dark:text-green-400">groups</span>
+                    <span className="font-semibold text-green-600 dark:text-green-400">외향성</span>
                   </div>
                   <p className="text-sm opacity-80">사회적 상호작용 에너지</p>
                 </div>
                 <div className="p-4 rounded-lg bg-green-500/20 border border-green-500">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="material-symbols-outlined text-green-400">handshake</span>
-                    <span className="font-semibold text-green-400">친화성</span>
+                    <span className="material-symbols-outlined text-green-600 dark:text-green-400">handshake</span>
+                    <span className="font-semibold text-green-600 dark:text-green-400">친화성</span>
                   </div>
                   <p className="text-sm opacity-80">타인에 대한 배려와 협조</p>
                 </div>
@@ -177,7 +177,7 @@ export default function BigFiveTestPage() {
                   <p className="text-muted-foreground text-sm">25개의 질문 + AI 분석</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-green-400 font-bold text-xl">30 크레딧</p>
+                  <p className="text-green-600 dark:text-green-400 font-bold text-xl">30 크레딧</p>
                 </div>
               </div>
             </div>
@@ -257,7 +257,7 @@ export default function BigFiveTestPage() {
 
       {/* Error */}
       {error && (
-        <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 text-red-400">
+        <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 text-red-600 dark:text-red-400">
           {error}
         </div>
       )}
@@ -311,7 +311,7 @@ export default function BigFiveTestPage() {
               <p className="text-muted-foreground mb-4">{data.description}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-semibold text-green-400 mb-2">강점</h4>
+                  <h4 className="font-semibold text-green-600 dark:text-green-400 mb-2">강점</h4>
                   <ul className="list-disc list-inside text-muted-foreground space-y-1">
                     {data.strengths.map((s: string, i: number) => (
                       <li key={i}>{s}</li>
@@ -319,7 +319,7 @@ export default function BigFiveTestPage() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-yellow-400 mb-2">어려움</h4>
+                  <h4 className="font-semibold text-yellow-600 dark:text-yellow-400 mb-2">어려움</h4>
                   <ul className="list-disc list-inside text-muted-foreground space-y-1">
                     {data.challenges.map((c: string, i: number) => (
                       <li key={i}>{c}</li>
@@ -335,7 +335,7 @@ export default function BigFiveTestPage() {
             <h3 className="text-xl font-semibold text-foreground mb-4">커리어</h3>
             <div className="space-y-3">
               <div>
-                <h4 className="font-semibold text-green-400 mb-2">적합한 분야</h4>
+                <h4 className="font-semibold text-green-600 dark:text-green-400 mb-2">적합한 분야</h4>
                 <div className="flex flex-wrap gap-2">
                   {result.analysis.career.suitableFields.map((field: string, i: number) => (
                     <span key={i} className="px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-300 rounded-full text-sm">
@@ -344,8 +344,8 @@ export default function BigFiveTestPage() {
                   ))}
                 </div>
               </div>
-              <p className="text-muted-foreground"><strong className="text-green-400">업무 스타일:</strong> {result.analysis.career.workStyle}</p>
-              <p className="text-muted-foreground"><strong className="text-green-400">팀 역할:</strong> {result.analysis.career.teamRole}</p>
+              <p className="text-muted-foreground"><strong className="text-green-600 dark:text-green-400">업무 스타일:</strong> {result.analysis.career.workStyle}</p>
+              <p className="text-muted-foreground"><strong className="text-green-600 dark:text-green-400">팀 역할:</strong> {result.analysis.career.teamRole}</p>
             </div>
           </div>
 
@@ -353,9 +353,9 @@ export default function BigFiveTestPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">대인관계</h3>
             <div className="space-y-3 text-muted-foreground">
-              <p><strong className="text-green-400">스타일:</strong> {result.analysis.relationships.interpersonalStyle}</p>
+              <p><strong className="text-green-600 dark:text-green-400">스타일:</strong> {result.analysis.relationships.interpersonalStyle}</p>
               <div>
-                <h4 className="font-semibold text-green-400 mb-2">의사소통 팁</h4>
+                <h4 className="font-semibold text-green-600 dark:text-green-400 mb-2">의사소통 팁</h4>
                 <ul className="list-disc list-inside space-y-1">
                   {result.analysis.relationships.communicationTips.map((tip: string, i: number) => (
                     <li key={i}>{tip}</li>
@@ -371,7 +371,7 @@ export default function BigFiveTestPage() {
             <h3 className="text-xl font-semibold text-foreground mb-4">성장 조언</h3>
             <div className="space-y-4">
               <div>
-                <h4 className="font-semibold text-green-400 mb-2">추천사항</h4>
+                <h4 className="font-semibold text-green-600 dark:text-green-400 mb-2">추천사항</h4>
                 <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   {result.analysis.growth.recommendations.map((rec: string, i: number) => (
                     <li key={i}>{rec}</li>
@@ -379,7 +379,7 @@ export default function BigFiveTestPage() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-yellow-400 mb-2">균형 조언</h4>
+                <h4 className="font-semibold text-yellow-600 dark:text-yellow-400 mb-2">균형 조언</h4>
                 <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   {result.analysis.growth.balanceTips.map((tip: string, i: number) => (
                     <li key={i}>{tip}</li>

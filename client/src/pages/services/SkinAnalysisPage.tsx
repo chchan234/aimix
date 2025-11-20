@@ -151,7 +151,7 @@ export default function SkinAnalysisPage() {
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
-              <span className="material-symbols-outlined text-3xl text-pink-400">face_retouching_natural</span>
+              <span className="material-symbols-outlined text-3xl text-pink-600 dark:text-pink-400">face_retouching_natural</span>
               <h3 className="text-xl font-semibold text-foreground">
                 AI 피부 분석
               </h3>
@@ -164,28 +164,28 @@ export default function SkinAnalysisPage() {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-pink-400">water_drop</span>
+                  <span className="material-symbols-outlined text-pink-600 dark:text-pink-400">water_drop</span>
                   <span className="text-foreground font-medium">수분 분석</span>
                 </div>
                 <p className="text-muted-foreground text-sm">피부 수분도 측정</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-pink-400">spa</span>
+                  <span className="material-symbols-outlined text-pink-600 dark:text-pink-400">spa</span>
                   <span className="text-foreground font-medium">피부 타입</span>
                 </div>
                 <p className="text-muted-foreground text-sm">건성/지성/복합성 판별</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-pink-400">science</span>
+                  <span className="material-symbols-outlined text-pink-600 dark:text-pink-400">science</span>
                   <span className="text-foreground font-medium">성분 추천</span>
                 </div>
                 <p className="text-muted-foreground text-sm">피부에 맞는 성분</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-pink-400">schedule</span>
+                  <span className="material-symbols-outlined text-pink-600 dark:text-pink-400">schedule</span>
                   <span className="text-foreground font-medium">루틴 제안</span>
                 </div>
                 <p className="text-muted-foreground text-sm">아침/저녁 스킨케어</p>
@@ -199,7 +199,7 @@ export default function SkinAnalysisPage() {
                   <p className="text-muted-foreground text-sm">피부 상태 + 스킨케어 추천</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-pink-400 font-bold text-xl">30 크레딧</p>
+                  <p className="text-pink-600 dark:text-pink-400 font-bold text-xl">30 크레딧</p>
                 </div>
               </div>
             </div>
@@ -283,7 +283,7 @@ export default function SkinAnalysisPage() {
 
       {/* Error */}
       {error && (
-        <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 text-red-400">
+        <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 text-red-600 dark:text-red-400">
           {error}
         </div>
       )}
@@ -379,7 +379,7 @@ export default function SkinAnalysisPage() {
               </h3>
               <div className="flex flex-wrap gap-2">
                 {result.concerns.map((concern, index) => (
-                  <span key={index} className="px-3 py-2 bg-orange-500/20 text-orange-400 rounded-lg text-sm">
+                  <span key={index} className="px-3 py-2 bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-lg text-sm">
                     {concern}
                   </span>
                 ))}
@@ -396,10 +396,10 @@ export default function SkinAnalysisPage() {
               </h3>
               {result.ingredients.recommended && result.ingredients.recommended.length > 0 && (
                 <div className="mb-4">
-                  <p className="text-pink-400 text-sm font-medium mb-2">추천 성분</p>
+                  <p className="text-pink-600 dark:text-pink-400 text-sm font-medium mb-2">추천 성분</p>
                   <div className="flex flex-wrap gap-2">
                     {result.ingredients.recommended.map((ingredient, index) => (
-                      <span key={index} className="px-3 py-2 bg-pink-500/20 text-pink-400 rounded-lg text-sm">
+                      <span key={index} className="px-3 py-2 bg-pink-500/20 text-pink-600 dark:text-pink-400 rounded-lg text-sm">
                         {ingredient}
                       </span>
                     ))}
@@ -408,10 +408,10 @@ export default function SkinAnalysisPage() {
               )}
               {result.ingredients.avoid && result.ingredients.avoid.length > 0 && (
                 <div>
-                  <p className="text-orange-400 text-sm font-medium mb-2">피해야 할 성분</p>
+                  <p className="text-orange-600 dark:text-orange-400 text-sm font-medium mb-2">피해야 할 성분</p>
                   <div className="flex flex-wrap gap-2">
                     {result.ingredients.avoid.map((ingredient, index) => (
-                      <span key={index} className="px-3 py-2 bg-orange-500/20 text-orange-400 rounded-lg text-sm">
+                      <span key={index} className="px-3 py-2 bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-lg text-sm">
                         {ingredient}
                       </span>
                     ))}
@@ -431,7 +431,7 @@ export default function SkinAnalysisPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {result.skincare.morning && result.skincare.morning.length > 0 && (
                   <div>
-                    <p className="text-yellow-400 font-semibold mb-2">
+                    <p className="text-yellow-600 dark:text-yellow-400 font-semibold mb-2">
                       <span className="material-symbols-outlined align-middle mr-1 text-sm">wb_sunny</span>
                       모닝 루틴
                     </p>
@@ -444,7 +444,7 @@ export default function SkinAnalysisPage() {
                 )}
                 {result.skincare.evening && result.skincare.evening.length > 0 && (
                   <div>
-                    <p className="text-indigo-400 font-semibold mb-2">
+                    <p className="text-indigo-600 dark:text-indigo-400 font-semibold mb-2">
                       <span className="material-symbols-outlined align-middle mr-1 text-sm">nights_stay</span>
                       나이트 루틴
                     </p>
@@ -458,14 +458,14 @@ export default function SkinAnalysisPage() {
               </div>
               {result.skincare.weekly && result.skincare.weekly.length > 0 && (
                 <div className="mt-4">
-                  <p className="text-purple-400 font-semibold mb-2">
+                  <p className="text-purple-600 dark:text-purple-400 font-semibold mb-2">
                     <span className="material-symbols-outlined align-middle mr-1 text-sm">calendar_month</span>
                     주간 케어
                   </p>
                   <ul className="space-y-1 text-sm text-muted-foreground">
                     {result.skincare.weekly.map((step, index) => (
                       <li key={index} className="flex items-start gap-2">
-                        <span className="material-symbols-outlined text-purple-400 text-sm mt-0.5">check</span>
+                        <span className="material-symbols-outlined text-purple-600 dark:text-purple-400 text-sm mt-0.5">check</span>
                         {step}
                       </li>
                     ))}
@@ -485,7 +485,7 @@ export default function SkinAnalysisPage() {
               <ul className="space-y-2">
                 {result.lifestyle.map((tip, index) => (
                   <li key={index} className="flex items-start gap-2 text-muted-foreground">
-                    <span className="material-symbols-outlined text-green-400 text-sm mt-1">eco</span>
+                    <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-sm mt-1">eco</span>
                     {tip}
                   </li>
                 ))}

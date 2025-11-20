@@ -114,22 +114,22 @@ export default function GenderSwapPage() {
 
             <div className="grid grid-cols-2 gap-3 mt-4">
               <div className="p-4 rounded-lg bg-indigo-500/10 border border-indigo-500/30">
-                <span className="material-symbols-outlined text-indigo-400 text-2xl block mb-2">swap_horiz</span>
+                <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-2xl block mb-2">swap_horiz</span>
                 <p className="text-sm font-medium text-foreground">성별 전환</p>
                 <p className="text-xs text-muted-foreground">자연스러운 변환</p>
               </div>
               <div className="p-4 rounded-lg bg-indigo-500/10 border border-indigo-500/30">
-                <span className="material-symbols-outlined text-indigo-400 text-2xl block mb-2">face</span>
+                <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-2xl block mb-2">face</span>
                 <p className="text-sm font-medium text-foreground">특징 유지</p>
                 <p className="text-xs text-muted-foreground">기존 특징 반영</p>
               </div>
               <div className="p-4 rounded-lg bg-indigo-500/10 border border-indigo-500/30">
-                <span className="material-symbols-outlined text-indigo-400 text-2xl block mb-2">auto_awesome</span>
+                <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-2xl block mb-2">auto_awesome</span>
                 <p className="text-sm font-medium text-foreground">AI 기반</p>
                 <p className="text-xs text-muted-foreground">최신 AI 기술 적용</p>
               </div>
               <div className="p-4 rounded-lg bg-indigo-500/10 border border-indigo-500/30">
-                <span className="material-symbols-outlined text-indigo-400 text-2xl block mb-2">psychology</span>
+                <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-2xl block mb-2">psychology</span>
                 <p className="text-sm font-medium text-foreground">재미있는 체험</p>
                 <p className="text-xs text-muted-foreground">다른 모습 탐색</p>
               </div>
@@ -143,7 +143,7 @@ export default function GenderSwapPage() {
                 <p className="text-muted-foreground text-sm">반대 성별로 변환</p>
               </div>
               <div className="text-right">
-                <p className="text-indigo-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                <p className="text-indigo-600 dark:text-indigo-400 font-bold text-xl">{serviceCost} 크레딧</p>
               </div>
             </div>
           </div>
@@ -231,7 +231,7 @@ export default function GenderSwapPage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 시도하기
           </button>

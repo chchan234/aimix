@@ -94,7 +94,7 @@ export default function SajuPage() {
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
-              <span className="material-symbols-outlined text-3xl text-purple-400">calendar_today</span>
+              <span className="material-symbols-outlined text-3xl text-purple-600 dark:text-purple-400">calendar_today</span>
               <h3 className="text-xl font-semibold text-foreground">
                 AI 사주팔자 분석
               </h3>
@@ -108,28 +108,28 @@ export default function SajuPage() {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-purple-400">auto_awesome</span>
+                  <span className="material-symbols-outlined text-purple-600 dark:text-purple-400">auto_awesome</span>
                   <span className="text-foreground font-medium">사주팔자 해석</span>
                 </div>
                 <p className="text-muted-foreground text-sm">년월일시 네 기둥 분석</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-purple-400">balance</span>
+                  <span className="material-symbols-outlined text-purple-600 dark:text-purple-400">balance</span>
                   <span className="text-foreground font-medium">오행 분석</span>
                 </div>
                 <p className="text-muted-foreground text-sm">목화토금수 균형 확인</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-purple-400">psychology</span>
+                  <span className="material-symbols-outlined text-purple-600 dark:text-purple-400">psychology</span>
                   <span className="text-foreground font-medium">성격 & 재능</span>
                 </div>
                 <p className="text-muted-foreground text-sm">타고난 기질과 적성</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-purple-400">trending_up</span>
+                  <span className="material-symbols-outlined text-purple-600 dark:text-purple-400">trending_up</span>
                   <span className="text-foreground font-medium">운세 예측</span>
                 </div>
                 <p className="text-muted-foreground text-sm">재물, 건강, 연애운</p>
@@ -143,7 +143,7 @@ export default function SajuPage() {
                   <p className="text-muted-foreground text-sm">AI 명리학 분석</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-purple-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                  <p className="text-purple-600 dark:text-purple-400 font-bold text-xl">{serviceCost} 크레딧</p>
                 </div>
               </div>
             </div>
@@ -215,7 +215,7 @@ export default function SajuPage() {
                     onClick={() => setGender('male')}
                     className={`p-3 rounded-lg border text-center transition ${
                       gender === 'male'
-                        ? 'border-purple-500 bg-purple-500/10 text-purple-400'
+                        ? 'border-purple-500 bg-purple-500/10 text-purple-600 dark:text-purple-400'
                         : 'border-gray-300 dark:border-gray-600 hover:border-gray-500 text-foreground'
                     }`}
                   >
@@ -225,7 +225,7 @@ export default function SajuPage() {
                     onClick={() => setGender('female')}
                     className={`p-3 rounded-lg border text-center transition ${
                       gender === 'female'
-                        ? 'border-purple-500 bg-purple-500/10 text-purple-400'
+                        ? 'border-purple-500 bg-purple-500/10 text-purple-600 dark:text-purple-400'
                         : 'border-gray-300 dark:border-gray-600 hover:border-gray-500 text-foreground'
                     }`}
                   >
@@ -263,7 +263,7 @@ export default function SajuPage() {
         <div className="space-y-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <h3 className="text-foreground font-semibold mb-4 flex items-center gap-2">
-              <span className="material-symbols-outlined text-purple-400">auto_awesome</span>
+              <span className="material-symbols-outlined text-purple-600 dark:text-purple-400">auto_awesome</span>
               분석 결과
             </h3>
             <div className="text-muted-foreground space-y-4">
@@ -280,15 +280,15 @@ export default function SajuPage() {
                       <h4 className="text-foreground font-medium mb-2">오행 분석</h4>
                       <div className="grid grid-cols-5 gap-2 text-sm">
                         <div className="bg-green-900/20 p-2 rounded text-center">
-                          <div className="text-green-400">목(木)</div>
+                          <div className="text-green-600 dark:text-green-400">목(木)</div>
                           <div className="text-foreground mt-1">{result.analysis.elements.wood || 0}</div>
                         </div>
                         <div className="bg-red-900/20 p-2 rounded text-center">
-                          <div className="text-red-400">화(火)</div>
+                          <div className="text-red-600 dark:text-red-400">화(火)</div>
                           <div className="text-foreground mt-1">{result.analysis.elements.fire || 0}</div>
                         </div>
                         <div className="bg-yellow-900/20 p-2 rounded text-center">
-                          <div className="text-yellow-400">토(土)</div>
+                          <div className="text-yellow-600 dark:text-yellow-400">토(土)</div>
                           <div className="text-foreground mt-1">{result.analysis.elements.earth || 0}</div>
                         </div>
                         <div className="bg-gray-400/20 p-2 rounded text-center">
@@ -296,7 +296,7 @@ export default function SajuPage() {
                           <div className="text-foreground mt-1">{result.analysis.elements.metal || 0}</div>
                         </div>
                         <div className="bg-blue-900/20 p-2 rounded text-center">
-                          <div className="text-blue-400">수(水)</div>
+                          <div className="text-blue-600 dark:text-blue-400">수(水)</div>
                           <div className="text-foreground mt-1">{result.analysis.elements.water || 0}</div>
                         </div>
                       </div>
@@ -307,11 +307,11 @@ export default function SajuPage() {
                       <h4 className="text-foreground font-medium mb-2">성격과 재능</h4>
                       <div className="text-sm space-y-2">
                         {result.analysis.personality.core && (
-                          <p><strong className="text-purple-400">핵심 성격:</strong> {result.analysis.personality.core}</p>
+                          <p><strong className="text-purple-600 dark:text-purple-400">핵심 성격:</strong> {result.analysis.personality.core}</p>
                         )}
                         {result.analysis.personality.strengths && Array.isArray(result.analysis.personality.strengths) && (
                           <div>
-                            <strong className="text-green-400">강점:</strong>
+                            <strong className="text-green-600 dark:text-green-400">강점:</strong>
                             <ul className="list-disc list-inside ml-2">
                               {result.analysis.personality.strengths.map((s: string, i: number) => (
                                 <li key={i}>{s}</li>
@@ -321,7 +321,7 @@ export default function SajuPage() {
                         )}
                         {result.analysis.personality.weaknesses && Array.isArray(result.analysis.personality.weaknesses) && (
                           <div>
-                            <strong className="text-yellow-400">약점:</strong>
+                            <strong className="text-yellow-600 dark:text-yellow-400">약점:</strong>
                             <ul className="list-disc list-inside ml-2">
                               {result.analysis.personality.weaknesses.map((w: string, i: number) => (
                                 <li key={i}>{w}</li>
@@ -330,7 +330,7 @@ export default function SajuPage() {
                           </div>
                         )}
                         {result.analysis.personality.hiddenTraits && (
-                          <p><strong className="text-blue-400">숨겨진 성격:</strong> {result.analysis.personality.hiddenTraits}</p>
+                          <p><strong className="text-blue-600 dark:text-blue-400">숨겨진 성격:</strong> {result.analysis.personality.hiddenTraits}</p>
                         )}
                       </div>
                     </div>
@@ -339,10 +339,10 @@ export default function SajuPage() {
                     <div>
                       <h4 className="text-foreground font-medium mb-2">재물운</h4>
                       <div className="text-sm space-y-1">
-                        {result.analysis.wealth.potential && <p><strong className="text-purple-400">잠재력:</strong> {result.analysis.wealth.potential}</p>}
-                        {result.analysis.wealth.earningStyle && <p><strong className="text-purple-400">수입 스타일:</strong> {result.analysis.wealth.earningStyle}</p>}
-                        {result.analysis.wealth.savingStyle && <p><strong className="text-purple-400">저축 스타일:</strong> {result.analysis.wealth.savingStyle}</p>}
-                        {result.analysis.wealth.advice && <p><strong className="text-green-400">조언:</strong> {result.analysis.wealth.advice}</p>}
+                        {result.analysis.wealth.potential && <p><strong className="text-purple-600 dark:text-purple-400">잠재력:</strong> {result.analysis.wealth.potential}</p>}
+                        {result.analysis.wealth.earningStyle && <p><strong className="text-purple-600 dark:text-purple-400">수입 스타일:</strong> {result.analysis.wealth.earningStyle}</p>}
+                        {result.analysis.wealth.savingStyle && <p><strong className="text-purple-600 dark:text-purple-400">저축 스타일:</strong> {result.analysis.wealth.savingStyle}</p>}
+                        {result.analysis.wealth.advice && <p><strong className="text-green-600 dark:text-green-400">조언:</strong> {result.analysis.wealth.advice}</p>}
                       </div>
                     </div>
                   )}
@@ -351,9 +351,9 @@ export default function SajuPage() {
                       <h4 className="text-foreground font-medium mb-2">건강운</h4>
                       <div className="text-sm space-y-1">
                         {result.analysis.health.weakOrgans && Array.isArray(result.analysis.health.weakOrgans) && (
-                          <p><strong className="text-yellow-400">주의할 부위:</strong> {result.analysis.health.weakOrgans.join(', ')}</p>
+                          <p><strong className="text-yellow-600 dark:text-yellow-400">주의할 부위:</strong> {result.analysis.health.weakOrgans.join(', ')}</p>
                         )}
-                        {result.analysis.health.advice && <p><strong className="text-green-400">조언:</strong> {result.analysis.health.advice}</p>}
+                        {result.analysis.health.advice && <p><strong className="text-green-600 dark:text-green-400">조언:</strong> {result.analysis.health.advice}</p>}
                       </div>
                     </div>
                   )}
@@ -361,10 +361,10 @@ export default function SajuPage() {
                     <div>
                       <h4 className="text-foreground font-medium mb-2">연애운</h4>
                       <div className="text-sm space-y-1">
-                        {result.analysis.love.style && <p><strong className="text-purple-400">연애 스타일:</strong> {result.analysis.love.style}</p>}
-                        {result.analysis.love.idealPartner && <p><strong className="text-purple-400">이상적인 배우자:</strong> {result.analysis.love.idealPartner}</p>}
-                        {result.analysis.love.marriageTiming && <p><strong className="text-purple-400">결혼 시기:</strong> {result.analysis.love.marriageTiming}</p>}
-                        {result.analysis.love.advice && <p><strong className="text-green-400">조언:</strong> {result.analysis.love.advice}</p>}
+                        {result.analysis.love.style && <p><strong className="text-purple-600 dark:text-purple-400">연애 스타일:</strong> {result.analysis.love.style}</p>}
+                        {result.analysis.love.idealPartner && <p><strong className="text-purple-600 dark:text-purple-400">이상적인 배우자:</strong> {result.analysis.love.idealPartner}</p>}
+                        {result.analysis.love.marriageTiming && <p><strong className="text-purple-600 dark:text-purple-400">결혼 시기:</strong> {result.analysis.love.marriageTiming}</p>}
+                        {result.analysis.love.advice && <p><strong className="text-green-600 dark:text-green-400">조언:</strong> {result.analysis.love.advice}</p>}
                       </div>
                     </div>
                   )}
@@ -373,11 +373,11 @@ export default function SajuPage() {
                       <h4 className="text-foreground font-medium mb-2">직업운</h4>
                       <div className="text-sm space-y-1">
                         {result.analysis.career.suitableFields && Array.isArray(result.analysis.career.suitableFields) && (
-                          <p><strong className="text-purple-400">적합한 분야:</strong> {result.analysis.career.suitableFields.join(', ')}</p>
+                          <p><strong className="text-purple-600 dark:text-purple-400">적합한 분야:</strong> {result.analysis.career.suitableFields.join(', ')}</p>
                         )}
-                        {result.analysis.career.workStyle && <p><strong className="text-purple-400">업무 스타일:</strong> {result.analysis.career.workStyle}</p>}
-                        {result.analysis.career.successTiming && <p><strong className="text-purple-400">성공 시기:</strong> {result.analysis.career.successTiming}</p>}
-                        {result.analysis.career.advice && <p><strong className="text-green-400">조언:</strong> {result.analysis.career.advice}</p>}
+                        {result.analysis.career.workStyle && <p><strong className="text-purple-600 dark:text-purple-400">업무 스타일:</strong> {result.analysis.career.workStyle}</p>}
+                        {result.analysis.career.successTiming && <p><strong className="text-purple-600 dark:text-purple-400">성공 시기:</strong> {result.analysis.career.successTiming}</p>}
+                        {result.analysis.career.advice && <p><strong className="text-green-600 dark:text-green-400">조언:</strong> {result.analysis.career.advice}</p>}
                       </div>
                     </div>
                   )}
@@ -385,13 +385,13 @@ export default function SajuPage() {
                     <div>
                       <h4 className="text-foreground font-medium mb-2">운세</h4>
                       <div className="text-sm space-y-1">
-                        {result.analysis.fortune.overall && <p><strong className="text-purple-400">전체 운:</strong> {result.analysis.fortune.overall}</p>}
-                        {result.analysis.fortune.currentLuck && <p><strong className="text-purple-400">현재 운:</strong> {result.analysis.fortune.currentLuck}</p>}
+                        {result.analysis.fortune.overall && <p><strong className="text-purple-600 dark:text-purple-400">전체 운:</strong> {result.analysis.fortune.overall}</p>}
+                        {result.analysis.fortune.currentLuck && <p><strong className="text-purple-600 dark:text-purple-400">현재 운:</strong> {result.analysis.fortune.currentLuck}</p>}
                         {result.analysis.fortune.luckyYears && Array.isArray(result.analysis.fortune.luckyYears) && (
-                          <p><strong className="text-green-400">좋은 해:</strong> {result.analysis.fortune.luckyYears.join(', ')}</p>
+                          <p><strong className="text-green-600 dark:text-green-400">좋은 해:</strong> {result.analysis.fortune.luckyYears.join(', ')}</p>
                         )}
                         {result.analysis.fortune.cautionYears && Array.isArray(result.analysis.fortune.cautionYears) && (
-                          <p><strong className="text-yellow-400">조심할 해:</strong> {result.analysis.fortune.cautionYears.join(', ')}</p>
+                          <p><strong className="text-yellow-600 dark:text-yellow-400">조심할 해:</strong> {result.analysis.fortune.cautionYears.join(', ')}</p>
                         )}
                       </div>
                     </div>
@@ -402,7 +402,7 @@ export default function SajuPage() {
                       <div className="text-sm space-y-2">
                         {result.analysis.advice.dos && Array.isArray(result.analysis.advice.dos) && (
                           <div>
-                            <strong className="text-green-400">이렇게 하세요:</strong>
+                            <strong className="text-green-600 dark:text-green-400">이렇게 하세요:</strong>
                             <ul className="list-disc list-inside ml-2">
                               {result.analysis.advice.dos.map((item: string, i: number) => (
                                 <li key={i}>{item}</li>
@@ -412,7 +412,7 @@ export default function SajuPage() {
                         )}
                         {result.analysis.advice.donts && Array.isArray(result.analysis.advice.donts) && (
                           <div>
-                            <strong className="text-yellow-400">피하세요:</strong>
+                            <strong className="text-yellow-600 dark:text-yellow-400">피하세요:</strong>
                             <ul className="list-disc list-inside ml-2">
                               {result.analysis.advice.donts.map((item: string, i: number) => (
                                 <li key={i}>{item}</li>
@@ -421,7 +421,7 @@ export default function SajuPage() {
                           </div>
                         )}
                         {result.analysis.advice.yearlyFocus && (
-                          <p><strong className="text-purple-400">올해 집중할 것:</strong> {result.analysis.advice.yearlyFocus}</p>
+                          <p><strong className="text-purple-600 dark:text-purple-400">올해 집중할 것:</strong> {result.analysis.advice.yearlyFocus}</p>
                         )}
                       </div>
                     </div>
@@ -437,7 +437,7 @@ export default function SajuPage() {
 
           <button
             onClick={handleReset}
-            className="w-full py-3 px-6 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition"
+            className="w-full py-3 px-6 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition"
           >
             다시 분석하기
           </button>

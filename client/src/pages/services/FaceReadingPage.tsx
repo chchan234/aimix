@@ -515,15 +515,15 @@ export default function FaceReadingPage() {
 
                 {/* 유명인 매칭 & 재미있는 사실 */}
                 {(result.analysis.celebrityMatch || result.analysis.funFact) && (
-                  <div className="bg-gray-700/50 rounded-lg p-4">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-500/30">
                     {result.analysis.celebrityMatch && (
                       <p className="text-sm mb-2">
-                        <span className="text-blue-400">비슷한 관상의 유명인:</span> {result.analysis.celebrityMatch}
+                        <span className="text-blue-600 dark:text-blue-400">비슷한 관상의 유명인:</span> {result.analysis.celebrityMatch}
                       </p>
                     )}
                     {result.analysis.funFact && (
                       <p className="text-sm">
-                        <span className="text-purple-400">재미있는 사실:</span> {result.analysis.funFact}
+                        <span className="text-purple-600 dark:text-purple-400">재미있는 사실:</span> {result.analysis.funFact}
                       </p>
                     )}
                   </div>
@@ -536,7 +536,7 @@ export default function FaceReadingPage() {
 
           <button
             onClick={handleReset}
-            className="w-full py-3 px-6 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition"
+            className="w-full py-3 px-6 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition"
           >
             다시 분석하기
           </button>

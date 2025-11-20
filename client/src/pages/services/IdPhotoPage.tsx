@@ -115,22 +115,22 @@ export default function IdPhotoPage() {
 
             <div className="grid grid-cols-2 gap-3 mt-4">
               <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/30">
-                <span className="material-symbols-outlined text-blue-400 text-2xl block mb-2">crop_portrait</span>
+                <span className="material-symbols-outlined text-blue-600 dark:text-blue-400 text-2xl block mb-2">crop_portrait</span>
                 <p className="text-sm font-medium text-foreground">규격 맞춤</p>
                 <p className="text-xs text-muted-foreground">증명사진 규격에 맞게 조정</p>
               </div>
               <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/30">
-                <span className="material-symbols-outlined text-blue-400 text-2xl block mb-2">format_color_fill</span>
+                <span className="material-symbols-outlined text-blue-600 dark:text-blue-400 text-2xl block mb-2">format_color_fill</span>
                 <p className="text-sm font-medium text-foreground">배경색 선택</p>
                 <p className="text-xs text-muted-foreground">흰색, 파란색, 회색</p>
               </div>
               <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/30">
-                <span className="material-symbols-outlined text-blue-400 text-2xl block mb-2">auto_fix_high</span>
+                <span className="material-symbols-outlined text-blue-600 dark:text-blue-400 text-2xl block mb-2">auto_fix_high</span>
                 <p className="text-sm font-medium text-foreground">자동 보정</p>
                 <p className="text-xs text-muted-foreground">밝기, 대비 자동 조정</p>
               </div>
               <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/30">
-                <span className="material-symbols-outlined text-blue-400 text-2xl block mb-2">savings</span>
+                <span className="material-symbols-outlined text-blue-600 dark:text-blue-400 text-2xl block mb-2">savings</span>
                 <p className="text-sm font-medium text-foreground">비용 절감</p>
                 <p className="text-xs text-muted-foreground">사진관 방문 불필요</p>
               </div>
@@ -144,7 +144,7 @@ export default function IdPhotoPage() {
                 <p className="text-muted-foreground text-sm">전문 증명사진 품질</p>
               </div>
               <div className="text-right">
-                <p className="text-blue-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                <p className="text-blue-600 dark:text-blue-400 font-bold text-xl">{serviceCost} 크레딧</p>
               </div>
             </div>
           </div>
@@ -227,7 +227,7 @@ export default function IdPhotoPage() {
                   }`}
                 >
                   <div className={`w-6 h-6 rounded-full ${option.color} mx-auto mb-2 border border-gray-300`}></div>
-                  <span className={`text-sm ${backgroundColor === option.value ? 'text-blue-400' : 'text-foreground'}`}>
+                  <span className={`text-sm ${backgroundColor === option.value ? 'text-blue-600 dark:text-blue-400' : 'text-foreground'}`}>
                     {option.label}
                   </span>
                 </button>
@@ -259,7 +259,7 @@ export default function IdPhotoPage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 시도하기
           </button>

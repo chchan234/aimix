@@ -115,22 +115,22 @@ export default function CaricaturePage() {
 
             <div className="grid grid-cols-2 gap-3 mt-4">
               <div className="p-4 rounded-lg bg-purple-500/10 border border-purple-500/30">
-                <span className="material-symbols-outlined text-purple-400 text-2xl block mb-2">brush</span>
+                <span className="material-symbols-outlined text-purple-600 dark:text-purple-400 text-2xl block mb-2">brush</span>
                 <p className="text-sm font-medium text-foreground">예술적 변환</p>
                 <p className="text-xs text-muted-foreground">독특한 캐리커쳐 스타일</p>
               </div>
               <div className="p-4 rounded-lg bg-purple-500/10 border border-purple-500/30">
-                <span className="material-symbols-outlined text-purple-400 text-2xl block mb-2">tune</span>
+                <span className="material-symbols-outlined text-purple-600 dark:text-purple-400 text-2xl block mb-2">tune</span>
                 <p className="text-sm font-medium text-foreground">과장 조절</p>
                 <p className="text-xs text-muted-foreground">3단계 과장 정도 선택</p>
               </div>
               <div className="p-4 rounded-lg bg-purple-500/10 border border-purple-500/30">
-                <span className="material-symbols-outlined text-purple-400 text-2xl block mb-2">sentiment_very_satisfied</span>
+                <span className="material-symbols-outlined text-purple-600 dark:text-purple-400 text-2xl block mb-2">sentiment_very_satisfied</span>
                 <p className="text-sm font-medium text-foreground">재미있는 결과</p>
                 <p className="text-xs text-muted-foreground">개성있는 캐릭터 변환</p>
               </div>
               <div className="p-4 rounded-lg bg-purple-500/10 border border-purple-500/30">
-                <span className="material-symbols-outlined text-purple-400 text-2xl block mb-2">card_giftcard</span>
+                <span className="material-symbols-outlined text-purple-600 dark:text-purple-400 text-2xl block mb-2">card_giftcard</span>
                 <p className="text-sm font-medium text-foreground">선물용</p>
                 <p className="text-xs text-muted-foreground">특별한 선물 제작</p>
               </div>
@@ -144,7 +144,7 @@ export default function CaricaturePage() {
                 <p className="text-muted-foreground text-sm">사진 → 캐리커쳐 변환</p>
               </div>
               <div className="text-right">
-                <p className="text-purple-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                <p className="text-purple-600 dark:text-purple-400 font-bold text-xl">{serviceCost} 크레딧</p>
               </div>
             </div>
           </div>
@@ -222,7 +222,7 @@ export default function CaricaturePage() {
                   onClick={() => setExaggerationLevel(option.value as any)}
                   className={`p-3 rounded-lg border text-center transition ${
                     exaggerationLevel === option.value
-                      ? 'border-purple-500 bg-purple-500/10 text-purple-400'
+                      ? 'border-purple-500 bg-purple-500/10 text-purple-600 dark:text-purple-400'
                       : 'border-gray-300 dark:border-gray-600 text-foreground hover:border-gray-500'
                   }`}
                 >
@@ -256,7 +256,7 @@ export default function CaricaturePage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 시도하기
           </button>

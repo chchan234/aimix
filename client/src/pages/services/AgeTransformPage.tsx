@@ -115,22 +115,22 @@ export default function AgeTransformPage() {
 
             <div className="grid grid-cols-2 gap-3 mt-4">
               <div className="p-4 rounded-lg bg-orange-500/10 border border-orange-500/30">
-                <span className="material-symbols-outlined text-orange-400 text-2xl block mb-2">child_care</span>
+                <span className="material-symbols-outlined text-orange-600 dark:text-orange-400 text-2xl block mb-2">child_care</span>
                 <p className="text-sm font-medium text-foreground">어린 시절</p>
                 <p className="text-xs text-muted-foreground">아기, 어린이로 변환</p>
               </div>
               <div className="p-4 rounded-lg bg-orange-500/10 border border-orange-500/30">
-                <span className="material-symbols-outlined text-orange-400 text-2xl block mb-2">elderly</span>
+                <span className="material-symbols-outlined text-orange-600 dark:text-orange-400 text-2xl block mb-2">elderly</span>
                 <p className="text-sm font-medium text-foreground">노년</p>
                 <p className="text-xs text-muted-foreground">미래 모습 예측</p>
               </div>
               <div className="p-4 rounded-lg bg-orange-500/10 border border-orange-500/30">
-                <span className="material-symbols-outlined text-orange-400 text-2xl block mb-2">tune</span>
+                <span className="material-symbols-outlined text-orange-600 dark:text-orange-400 text-2xl block mb-2">tune</span>
                 <p className="text-sm font-medium text-foreground">세밀한 조절</p>
                 <p className="text-xs text-muted-foreground">1~100세 선택</p>
               </div>
               <div className="p-4 rounded-lg bg-orange-500/10 border border-orange-500/30">
-                <span className="material-symbols-outlined text-orange-400 text-2xl block mb-2">face</span>
+                <span className="material-symbols-outlined text-orange-600 dark:text-orange-400 text-2xl block mb-2">face</span>
                 <p className="text-sm font-medium text-foreground">자연스러운 결과</p>
                 <p className="text-xs text-muted-foreground">AI 기반 자연스러운 변환</p>
               </div>
@@ -144,7 +144,7 @@ export default function AgeTransformPage() {
                 <p className="text-muted-foreground text-sm">원하는 나이로 변환</p>
               </div>
               <div className="text-right">
-                <p className="text-orange-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                <p className="text-orange-600 dark:text-orange-400 font-bold text-xl">{serviceCost} 크레딧</p>
               </div>
             </div>
           </div>
@@ -211,7 +211,7 @@ export default function AgeTransformPage() {
           {/* Age Slider */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <h3 className="text-lg font-semibold text-foreground mb-4">
-              목표 나이: <span className="text-orange-400">{targetAge}세</span>
+              목표 나이: <span className="text-orange-600 dark:text-orange-400">{targetAge}세</span>
             </h3>
             <input
               type="range"
@@ -254,7 +254,7 @@ export default function AgeTransformPage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 시도하기
           </button>

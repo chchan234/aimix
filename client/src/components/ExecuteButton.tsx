@@ -25,7 +25,7 @@ export default function ExecuteButton({
         disabled={isDisabled}
         className={`w-full py-4 px-6 rounded-lg font-semibold text-lg transition-all ${
           isDisabled
-            ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+            ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
             : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700'
         }`}
       >
@@ -41,14 +41,14 @@ export default function ExecuteButton({
 
       <div className="flex items-center justify-between text-sm">
         <span className="text-[#ab9eb7]">현재 크레딧</span>
-        <span className={`font-semibold ${insufficientCredits ? 'text-red-400' : 'text-white'}`}>
+        <span className={`font-semibold ${insufficientCredits ? 'text-red-600 dark:text-red-400' : 'text-foreground'}`}>
           {currentCredits} 크레딧
         </span>
       </div>
 
       {insufficientCredits && (
         <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4">
-          <p className="text-red-400 text-sm">
+          <p className="text-red-600 dark:text-red-400 text-sm">
             크레딧이 부족합니다. 충전 후 이용해주세요.
           </p>
         </div>

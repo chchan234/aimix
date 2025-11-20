@@ -128,22 +128,22 @@ export default function TattooPage() {
 
             <div className="grid grid-cols-2 gap-3 mt-4">
               <div className="p-4 rounded-lg bg-teal-500/10 border border-teal-500/30">
-                <span className="material-symbols-outlined text-teal-400 text-2xl block mb-2">design_services</span>
+                <span className="material-symbols-outlined text-teal-600 dark:text-teal-400 text-2xl block mb-2">design_services</span>
                 <p className="text-sm font-medium text-foreground">다양한 디자인</p>
                 <p className="text-xs text-muted-foreground">용, 꽃, 문양 등</p>
               </div>
               <div className="p-4 rounded-lg bg-teal-500/10 border border-teal-500/30">
-                <span className="material-symbols-outlined text-teal-400 text-2xl block mb-2">location_on</span>
+                <span className="material-symbols-outlined text-teal-600 dark:text-teal-400 text-2xl block mb-2">location_on</span>
                 <p className="text-sm font-medium text-foreground">위치 선택</p>
                 <p className="text-xs text-muted-foreground">팔, 등, 어깨 등</p>
               </div>
               <div className="p-4 rounded-lg bg-teal-500/10 border border-teal-500/30">
-                <span className="material-symbols-outlined text-teal-400 text-2xl block mb-2">preview</span>
+                <span className="material-symbols-outlined text-teal-600 dark:text-teal-400 text-2xl block mb-2">preview</span>
                 <p className="text-sm font-medium text-foreground">미리보기</p>
                 <p className="text-xs text-muted-foreground">시술 전 확인</p>
               </div>
               <div className="p-4 rounded-lg bg-teal-500/10 border border-teal-500/30">
-                <span className="material-symbols-outlined text-teal-400 text-2xl block mb-2">verified</span>
+                <span className="material-symbols-outlined text-teal-600 dark:text-teal-400 text-2xl block mb-2">verified</span>
                 <p className="text-sm font-medium text-foreground">안전한 테스트</p>
                 <p className="text-xs text-muted-foreground">부담 없이 테스트</p>
               </div>
@@ -157,7 +157,7 @@ export default function TattooPage() {
                 <p className="text-muted-foreground text-sm">원하는 타투 미리보기</p>
               </div>
               <div className="text-right">
-                <p className="text-teal-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                <p className="text-teal-600 dark:text-teal-400 font-bold text-xl">{serviceCost} 크레딧</p>
               </div>
             </div>
           </div>
@@ -269,7 +269,7 @@ export default function TattooPage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 시도하기
           </button>

@@ -121,22 +121,22 @@ export default function HairstylePage() {
 
             <div className="grid grid-cols-2 gap-3 mt-4">
               <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30">
-                <span className="material-symbols-outlined text-red-400 text-2xl block mb-2">content_cut</span>
+                <span className="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl block mb-2">content_cut</span>
                 <p className="text-sm font-medium text-foreground">다양한 스타일</p>
                 <p className="text-xs text-muted-foreground">파마, 단발, 웨이브 등</p>
               </div>
               <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30">
-                <span className="material-symbols-outlined text-red-400 text-2xl block mb-2">preview</span>
+                <span className="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl block mb-2">preview</span>
                 <p className="text-sm font-medium text-foreground">미리보기</p>
                 <p className="text-xs text-muted-foreground">변경 전 미리 확인</p>
               </div>
               <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30">
-                <span className="material-symbols-outlined text-red-400 text-2xl block mb-2">colorize</span>
+                <span className="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl block mb-2">colorize</span>
                 <p className="text-sm font-medium text-foreground">염색 시뮬</p>
                 <p className="text-xs text-muted-foreground">머리 색상 변경</p>
               </div>
               <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30">
-                <span className="material-symbols-outlined text-red-400 text-2xl block mb-2">auto_awesome</span>
+                <span className="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl block mb-2">auto_awesome</span>
                 <p className="text-sm font-medium text-foreground">자연스러운 결과</p>
                 <p className="text-xs text-muted-foreground">AI 기반 자연스러운 변환</p>
               </div>
@@ -150,7 +150,7 @@ export default function HairstylePage() {
                 <p className="text-muted-foreground text-sm">원하는 스타일로 변환</p>
               </div>
               <div className="text-right">
-                <p className="text-red-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                <p className="text-red-600 dark:text-red-400 font-bold text-xl">{serviceCost} 크레딧</p>
               </div>
             </div>
           </div>
@@ -253,7 +253,7 @@ export default function HairstylePage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 시도하기
           </button>

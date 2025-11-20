@@ -116,22 +116,22 @@ export default function BackgroundRemovalPage() {
 
             <div className="grid grid-cols-2 gap-3 mt-4">
               <div className="p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/30">
-                <span className="material-symbols-outlined text-yellow-400 text-2xl block mb-2">content_cut</span>
+                <span className="material-symbols-outlined text-yellow-600 dark:text-yellow-400 text-2xl block mb-2">content_cut</span>
                 <p className="text-sm font-medium text-foreground">배경 제거</p>
                 <p className="text-xs text-muted-foreground">투명 배경 생성</p>
               </div>
               <div className="p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/30">
-                <span className="material-symbols-outlined text-yellow-400 text-2xl block mb-2">wallpaper</span>
+                <span className="material-symbols-outlined text-yellow-600 dark:text-yellow-400 text-2xl block mb-2">wallpaper</span>
                 <p className="text-sm font-medium text-foreground">배경 교체</p>
                 <p className="text-xs text-muted-foreground">원하는 배경으로 변경</p>
               </div>
               <div className="p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/30">
-                <span className="material-symbols-outlined text-yellow-400 text-2xl block mb-2">shopping_bag</span>
+                <span className="material-symbols-outlined text-yellow-600 dark:text-yellow-400 text-2xl block mb-2">shopping_bag</span>
                 <p className="text-sm font-medium text-foreground">상품 사진</p>
                 <p className="text-xs text-muted-foreground">깔끔한 상품 이미지</p>
               </div>
               <div className="p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/30">
-                <span className="material-symbols-outlined text-yellow-400 text-2xl block mb-2">auto_awesome</span>
+                <span className="material-symbols-outlined text-yellow-600 dark:text-yellow-400 text-2xl block mb-2">auto_awesome</span>
                 <p className="text-sm font-medium text-foreground">AI 정밀</p>
                 <p className="text-xs text-muted-foreground">정밀한 배경 분리</p>
               </div>
@@ -145,7 +145,7 @@ export default function BackgroundRemovalPage() {
                 <p className="text-muted-foreground text-sm">배경 제거 또는 교체</p>
               </div>
               <div className="text-right">
-                <p className="text-yellow-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                <p className="text-yellow-600 dark:text-yellow-400 font-bold text-xl">{serviceCost} 크레딧</p>
               </div>
             </div>
           </div>
@@ -247,7 +247,7 @@ export default function BackgroundRemovalPage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 시도하기
           </button>

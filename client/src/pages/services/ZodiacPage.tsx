@@ -90,7 +90,7 @@ export default function ZodiacPage() {
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
-              <span className="material-symbols-outlined text-3xl text-orange-400">pets</span>
+              <span className="material-symbols-outlined text-3xl text-orange-600 dark:text-orange-400">pets</span>
               <h3 className="text-xl font-semibold text-foreground">
                 띠 운세
               </h3>
@@ -103,28 +103,28 @@ export default function ZodiacPage() {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-orange-400">calendar_today</span>
+                  <span className="material-symbols-outlined text-orange-600 dark:text-orange-400">calendar_today</span>
                   <span className="text-foreground font-medium">올해 운세</span>
                 </div>
                 <p className="text-muted-foreground text-sm">연간 총운 분석</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-orange-400">paid</span>
+                  <span className="material-symbols-outlined text-orange-600 dark:text-orange-400">paid</span>
                   <span className="text-foreground font-medium">재물운</span>
                 </div>
                 <p className="text-muted-foreground text-sm">금전 운세 분석</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-orange-400">favorite</span>
+                  <span className="material-symbols-outlined text-orange-600 dark:text-orange-400">favorite</span>
                   <span className="text-foreground font-medium">애정운</span>
                 </div>
                 <p className="text-muted-foreground text-sm">연애/결혼 운세</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-orange-400">work</span>
+                  <span className="material-symbols-outlined text-orange-600 dark:text-orange-400">work</span>
                   <span className="text-foreground font-medium">직장운</span>
                 </div>
                 <p className="text-muted-foreground text-sm">직업/사업 운세</p>
@@ -138,7 +138,7 @@ export default function ZodiacPage() {
                   <p className="text-muted-foreground text-sm">12지신 기반 분석</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-orange-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                  <p className="text-orange-600 dark:text-orange-400 font-bold text-xl">{serviceCost} 크레딧</p>
                 </div>
               </div>
             </div>
@@ -218,13 +218,13 @@ export default function ZodiacPage() {
         <div className="space-y-4 animate-fadeIn">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-              <span className="material-symbols-outlined text-orange-400">pets</span>
+              <span className="material-symbols-outlined text-orange-600 dark:text-orange-400">pets</span>
               띠 운세
             </h3>
 
             {result.analysis.zodiac && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h4 className="text-orange-400 font-medium mb-2">
+                <h4 className="text-orange-600 dark:text-orange-400 font-medium mb-2">
                   {result.analysis.zodiac.animal}띠
                 </h4>
                 <p className="text-muted-foreground text-sm mb-2">
@@ -243,7 +243,7 @@ export default function ZodiacPage() {
             {result.analysis.yearlyFortune && (
               <div className="space-y-3 mb-4">
                 <div>
-                  <h4 className="text-orange-400 font-medium mb-2">올해 운세</h4>
+                  <h4 className="text-orange-600 dark:text-orange-400 font-medium mb-2">올해 운세</h4>
                   <p className="text-foreground text-sm">{result.analysis.yearlyFortune.overall}</p>
                 </div>
 
@@ -262,7 +262,7 @@ export default function ZodiacPage() {
 
             {result.analysis.detailedFortune && (
               <div className="space-y-2">
-                <h4 className="text-orange-400 font-medium mb-2">세부 운세</h4>
+                <h4 className="text-orange-600 dark:text-orange-400 font-medium mb-2">세부 운세</h4>
                 <div className="grid gap-2">
                   <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
                     <span className="text-muted-foreground text-xs">재물운:</span>
@@ -286,7 +286,7 @@ export default function ZodiacPage() {
 
             {result.analysis.advice && (
               <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <h4 className="text-orange-400 font-medium mb-2">조언</h4>
+                <h4 className="text-orange-600 dark:text-orange-400 font-medium mb-2">조언</h4>
                 {result.analysis.advice.luckyTips && (
                   <ul className="space-y-1">
                     {result.analysis.advice.luckyTips.map((tip: string, idx: number) => (
@@ -300,7 +300,7 @@ export default function ZodiacPage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-4 py-3 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition"
+            className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition"
           >
             다시 분석하기
           </button>

@@ -106,7 +106,7 @@ export default function HoroscopePage() {
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
-              <span className="material-symbols-outlined text-3xl text-yellow-400">star</span>
+              <span className="material-symbols-outlined text-3xl text-yellow-600 dark:text-yellow-400">star</span>
               <h3 className="text-xl font-semibold text-foreground">
                 별자리 운세
               </h3>
@@ -119,28 +119,28 @@ export default function HoroscopePage() {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-yellow-400">today</span>
+                  <span className="material-symbols-outlined text-yellow-600 dark:text-yellow-400">today</span>
                   <span className="text-foreground font-medium">오늘 운세</span>
                 </div>
                 <p className="text-muted-foreground text-sm">당일 운세 분석</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-yellow-400">date_range</span>
+                  <span className="material-symbols-outlined text-yellow-600 dark:text-yellow-400">date_range</span>
                   <span className="text-foreground font-medium">주간 운세</span>
                 </div>
                 <p className="text-muted-foreground text-sm">이번 주 운세 전망</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-yellow-400">calendar_month</span>
+                  <span className="material-symbols-outlined text-yellow-600 dark:text-yellow-400">calendar_month</span>
                   <span className="text-foreground font-medium">월간 운세</span>
                 </div>
                 <p className="text-muted-foreground text-sm">이번 달 운세 예측</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-yellow-400">auto_awesome</span>
+                  <span className="material-symbols-outlined text-yellow-600 dark:text-yellow-400">auto_awesome</span>
                   <span className="text-foreground font-medium">행운 요소</span>
                 </div>
                 <p className="text-muted-foreground text-sm">행운의 숫자/색상</p>
@@ -154,7 +154,7 @@ export default function HoroscopePage() {
                   <p className="text-muted-foreground text-sm">서양 점성술 분석</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-yellow-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                  <p className="text-yellow-600 dark:text-yellow-400 font-bold text-xl">{serviceCost} 크레딧</p>
                 </div>
               </div>
             </div>
@@ -252,13 +252,13 @@ export default function HoroscopePage() {
         <div className="space-y-4 animate-fadeIn">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-              <span className="material-symbols-outlined text-yellow-400">star</span>
+              <span className="material-symbols-outlined text-yellow-600 dark:text-yellow-400">star</span>
               별자리 운세
             </h3>
 
             {result.analysis.zodiacSign && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h4 className="text-yellow-400 font-medium mb-2">
+                <h4 className="text-yellow-600 dark:text-yellow-400 font-medium mb-2">
                   {result.analysis.zodiacSign.name}
                 </h4>
                 <p className="text-muted-foreground text-sm">{result.analysis.zodiacSign.period}</p>
@@ -268,24 +268,24 @@ export default function HoroscopePage() {
 
             <div className="space-y-3">
               <div>
-                <h4 className="text-yellow-400 font-medium mb-2">오늘의 운세</h4>
+                <h4 className="text-yellow-600 dark:text-yellow-400 font-medium mb-2">오늘의 운세</h4>
                 <p className="text-foreground text-sm">{result.analysis.dailyFortune}</p>
               </div>
 
               <div>
-                <h4 className="text-yellow-400 font-medium mb-2">이번 주 운세</h4>
+                <h4 className="text-yellow-600 dark:text-yellow-400 font-medium mb-2">이번 주 운세</h4>
                 <p className="text-foreground text-sm">{result.analysis.weeklyFortune}</p>
               </div>
 
               <div>
-                <h4 className="text-yellow-400 font-medium mb-2">이번 달 운세</h4>
+                <h4 className="text-yellow-600 dark:text-yellow-400 font-medium mb-2">이번 달 운세</h4>
                 <p className="text-foreground text-sm">{result.analysis.monthlyFortune}</p>
               </div>
             </div>
 
             {result.analysis.luckyElements && (
               <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <h4 className="text-yellow-400 font-medium mb-2">행운의 요소</h4>
+                <h4 className="text-yellow-600 dark:text-yellow-400 font-medium mb-2">행운의 요소</h4>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
                     <span className="text-muted-foreground">숫자:</span>
@@ -306,7 +306,7 @@ export default function HoroscopePage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-4 py-3 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition"
+            className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition"
           >
             다시 분석하기
           </button>

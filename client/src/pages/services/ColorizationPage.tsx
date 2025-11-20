@@ -114,22 +114,22 @@ export default function ColorizationPage() {
 
             <div className="grid grid-cols-2 gap-3 mt-4">
               <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30">
-                <span className="material-symbols-outlined text-green-400 text-2xl block mb-2">photo_library</span>
+                <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-2xl block mb-2">photo_library</span>
                 <p className="text-sm font-medium text-foreground">추억 복원</p>
                 <p className="text-xs text-muted-foreground">오래된 사진 복원</p>
               </div>
               <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30">
-                <span className="material-symbols-outlined text-green-400 text-2xl block mb-2">auto_awesome</span>
+                <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-2xl block mb-2">auto_awesome</span>
                 <p className="text-sm font-medium text-foreground">자연스러운 색감</p>
                 <p className="text-xs text-muted-foreground">AI 기반 자동 컬러링</p>
               </div>
               <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30">
-                <span className="material-symbols-outlined text-green-400 text-2xl block mb-2">history</span>
+                <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-2xl block mb-2">history</span>
                 <p className="text-sm font-medium text-foreground">역사 복원</p>
                 <p className="text-xs text-muted-foreground">역사적 사진 컬러화</p>
               </div>
               <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30">
-                <span className="material-symbols-outlined text-green-400 text-2xl block mb-2">high_quality</span>
+                <span className="material-symbols-outlined text-green-600 dark:text-green-400 text-2xl block mb-2">high_quality</span>
                 <p className="text-sm font-medium text-foreground">고품질</p>
                 <p className="text-xs text-muted-foreground">선명한 결과물</p>
               </div>
@@ -143,7 +143,7 @@ export default function ColorizationPage() {
                 <p className="text-muted-foreground text-sm">흑백 → 컬러 변환</p>
               </div>
               <div className="text-right">
-                <p className="text-green-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                <p className="text-green-600 dark:text-green-400 font-bold text-xl">{serviceCost} 크레딧</p>
               </div>
             </div>
           </div>
@@ -230,7 +230,7 @@ export default function ColorizationPage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-600 hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
           >
             다시 시도하기
           </button>

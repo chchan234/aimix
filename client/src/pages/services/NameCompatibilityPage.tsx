@@ -91,7 +91,7 @@ export default function NameCompatibilityPage() {
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
-              <span className="material-symbols-outlined text-3xl text-indigo-400">edit</span>
+              <span className="material-symbols-outlined text-3xl text-indigo-600 dark:text-indigo-400">edit</span>
               <h3 className="text-xl font-semibold text-foreground">
                 이름 궁합
               </h3>
@@ -104,28 +104,28 @@ export default function NameCompatibilityPage() {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-indigo-400">calculate</span>
+                  <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400">calculate</span>
                   <span className="text-foreground font-medium">획수 분석</span>
                 </div>
                 <p className="text-muted-foreground text-sm">총 획수 조화 분석</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-indigo-400">balance</span>
+                  <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400">balance</span>
                   <span className="text-foreground font-medium">오행 분석</span>
                 </div>
                 <p className="text-muted-foreground text-sm">음양오행 배치</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-indigo-400">bolt</span>
+                  <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400">bolt</span>
                   <span className="text-foreground font-medium">이름 기운</span>
                 </div>
                 <p className="text-muted-foreground text-sm">각 이름의 에너지</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-indigo-400">handshake</span>
+                  <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400">handshake</span>
                   <span className="text-foreground font-medium">시너지</span>
                 </div>
                 <p className="text-muted-foreground text-sm">기운의 조화</p>
@@ -139,7 +139,7 @@ export default function NameCompatibilityPage() {
                   <p className="text-muted-foreground text-sm">AI 작명학 분석</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-indigo-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                  <p className="text-indigo-600 dark:text-indigo-400 font-bold text-xl">{serviceCost} 크레딧</p>
                 </div>
               </div>
             </div>
@@ -230,12 +230,12 @@ export default function NameCompatibilityPage() {
         <div className="space-y-4 animate-fadeIn">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-              <span className="material-symbols-outlined text-indigo-400">edit</span>
+              <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400">edit</span>
               이름 궁합
             </h3>
 
             <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700 text-center">
-              <div className="text-4xl font-bold text-indigo-400 mb-2">
+              <div className="text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
                 {result.analysis.compatibilityScore}점
               </div>
               <div className="text-foreground text-lg">{result.analysis.grade}</div>
@@ -244,7 +244,7 @@ export default function NameCompatibilityPage() {
 
             {result.analysis.strokeAnalysis && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h4 className="text-indigo-400 font-medium mb-2">획수 분석</h4>
+                <h4 className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">획수 분석</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded">
                     <h5 className="text-foreground text-sm font-medium mb-1">
@@ -268,14 +268,14 @@ export default function NameCompatibilityPage() {
 
             {result.analysis.elementAnalysis && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h4 className="text-indigo-400 font-medium mb-2">음양오행 분석</h4>
+                <h4 className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">음양오행 분석</h4>
                 <p className="text-foreground text-sm">{result.analysis.elementAnalysis.combined}</p>
               </div>
             )}
 
             {result.analysis.nameCharacteristics && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h4 className="text-indigo-400 font-medium mb-2">이름의 기운</h4>
+                <h4 className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">이름의 기운</h4>
                 <div className="space-y-2">
                   <div>
                     <h5 className="text-muted-foreground text-xs mb-1">첫 번째 이름</h5>
@@ -295,7 +295,7 @@ export default function NameCompatibilityPage() {
 
             {result.analysis.detailedCompatibility && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h4 className="text-indigo-400 font-medium mb-2">세부 분석</h4>
+                <h4 className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">세부 분석</h4>
                 <div className="grid gap-2">
                   <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
                     <span className="text-muted-foreground text-xs">연애 궁합:</span>
@@ -311,7 +311,7 @@ export default function NameCompatibilityPage() {
 
             {result.analysis.advice && (
               <div>
-                <h4 className="text-indigo-400 font-medium mb-2">조언</h4>
+                <h4 className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">조언</h4>
                 {result.analysis.advice.tips && (
                   <ul className="space-y-1">
                     {result.analysis.advice.tips.map((tip: string, idx: number) => (
@@ -325,7 +325,7 @@ export default function NameCompatibilityPage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-4 py-3 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition"
+            className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition"
           >
             다시 분석하기
           </button>

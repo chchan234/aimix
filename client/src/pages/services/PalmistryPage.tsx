@@ -109,7 +109,7 @@ export default function PalmistryPage() {
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
-              <span className="material-symbols-outlined text-3xl text-green-400">back_hand</span>
+              <span className="material-symbols-outlined text-3xl text-green-600 dark:text-green-400">back_hand</span>
               <h3 className="text-xl font-semibold text-foreground">
                 AI 수상 분석
               </h3>
@@ -122,28 +122,28 @@ export default function PalmistryPage() {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-green-400">health_and_safety</span>
+                  <span className="material-symbols-outlined text-green-600 dark:text-green-400">health_and_safety</span>
                   <span className="text-foreground font-medium">생명선</span>
                 </div>
                 <p className="text-muted-foreground text-sm">건강과 생명력 분석</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-green-400">psychology</span>
+                  <span className="material-symbols-outlined text-green-600 dark:text-green-400">psychology</span>
                   <span className="text-foreground font-medium">지능선</span>
                 </div>
                 <p className="text-muted-foreground text-sm">지적 능력과 사고방식</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-green-400">favorite</span>
+                  <span className="material-symbols-outlined text-green-600 dark:text-green-400">favorite</span>
                   <span className="text-foreground font-medium">감정선</span>
                 </div>
                 <p className="text-muted-foreground text-sm">감정과 인간관계</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-green-400">trending_up</span>
+                  <span className="material-symbols-outlined text-green-600 dark:text-green-400">trending_up</span>
                   <span className="text-foreground font-medium">운명선</span>
                 </div>
                 <p className="text-muted-foreground text-sm">인생 방향과 성공</p>
@@ -157,7 +157,7 @@ export default function PalmistryPage() {
                   <p className="text-muted-foreground text-sm">AI 손금 분석</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-green-400 font-bold text-xl">{serviceCost} 크레딧</p>
+                  <p className="text-green-600 dark:text-green-400 font-bold text-xl">{serviceCost} 크레딧</p>
                 </div>
               </div>
             </div>
@@ -202,7 +202,7 @@ export default function PalmistryPage() {
                     onClick={() => setHand('right')}
                     className={`p-3 rounded-lg border text-center transition ${
                       hand === 'right'
-                        ? 'border-green-500 bg-green-500/10 text-green-400'
+                        ? 'border-green-500 bg-green-500/10 text-green-600 dark:text-green-400'
                         : 'border-gray-300 dark:border-gray-600 hover:border-gray-500 text-foreground'
                     }`}
                   >
@@ -212,7 +212,7 @@ export default function PalmistryPage() {
                     onClick={() => setHand('left')}
                     className={`p-3 rounded-lg border text-center transition ${
                       hand === 'left'
-                        ? 'border-green-500 bg-green-500/10 text-green-400'
+                        ? 'border-green-500 bg-green-500/10 text-green-600 dark:text-green-400'
                         : 'border-gray-300 dark:border-gray-600 hover:border-gray-500 text-foreground'
                     }`}
                   >
@@ -282,13 +282,13 @@ export default function PalmistryPage() {
         <div className="space-y-4 animate-fadeIn">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">
-              <span className="material-symbols-outlined text-green-400">back_hand</span>
+              <span className="material-symbols-outlined text-green-600 dark:text-green-400">back_hand</span>
               수상 분석 결과
             </h3>
 
             {result.analysis.handShape && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h4 className="text-green-400 font-medium mb-2">손 모양</h4>
+                <h4 className="text-green-600 dark:text-green-400 font-medium mb-2">손 모양</h4>
                 <p className="text-foreground text-sm mb-1">{result.analysis.handShape.type}</p>
                 <p className="text-muted-foreground text-sm">{result.analysis.handShape.description}</p>
               </div>
@@ -296,7 +296,7 @@ export default function PalmistryPage() {
 
             {result.analysis.majorLines && (
               <div className="space-y-3">
-                <h4 className="text-green-400 font-medium">주요 손금 분석</h4>
+                <h4 className="text-green-600 dark:text-green-400 font-medium">주요 손금 분석</h4>
                 {Object.entries(result.analysis.majorLines).map(([key, value]: [string, any]) => (
                   <div key={key} className="bg-gray-50 dark:bg-gray-700 p-3 rounded">
                     <p className="text-foreground font-medium text-sm mb-1">{value.description}</p>
@@ -308,11 +308,11 @@ export default function PalmistryPage() {
 
             {result.analysis.advice && (
               <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <h4 className="text-green-400 font-medium mb-2">조언</h4>
+                <h4 className="text-green-600 dark:text-green-400 font-medium mb-2">조언</h4>
                 <div className="space-y-3">
                   {result.analysis.advice.doThis && Array.isArray(result.analysis.advice.doThis) && (
                     <div>
-                      <p className="text-sm text-green-400 mb-1">이렇게 하세요:</p>
+                      <p className="text-sm text-green-600 dark:text-green-400 mb-1">이렇게 하세요:</p>
                       <ul className="space-y-1">
                         {result.analysis.advice.doThis.map((item: string, idx: number) => (
                           <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
@@ -322,7 +322,7 @@ export default function PalmistryPage() {
                   )}
                   {result.analysis.advice.avoidThis && Array.isArray(result.analysis.advice.avoidThis) && (
                     <div>
-                      <p className="text-sm text-red-400 mb-1">피하세요:</p>
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-1">피하세요:</p>
                       <ul className="space-y-1">
                         {result.analysis.advice.avoidThis.map((item: string, idx: number) => (
                           <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
@@ -332,7 +332,7 @@ export default function PalmistryPage() {
                   )}
                   {result.analysis.advice.luckyTips && Array.isArray(result.analysis.advice.luckyTips) && (
                     <div>
-                      <p className="text-sm text-purple-400 mb-1">행운 팁:</p>
+                      <p className="text-sm text-purple-600 dark:text-purple-400 mb-1">행운 팁:</p>
                       <ul className="space-y-1">
                         {result.analysis.advice.luckyTips.map((item: string, idx: number) => (
                           <li key={idx} className="text-muted-foreground text-sm">• {item}</li>
@@ -352,7 +352,7 @@ export default function PalmistryPage() {
 
           <button
             onClick={handleReset}
-            className="w-full px-4 py-3 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition"
+            className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition"
           >
             다시 분석하기
           </button>
