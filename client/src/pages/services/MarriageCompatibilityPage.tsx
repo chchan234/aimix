@@ -277,24 +277,55 @@ export default function MarriageCompatibilityPage() {
               <div className="text-4xl font-bold text-red-600 dark:text-red-400 mb-2">
                 {result.analysis.overallScore}점
               </div>
-              <div className="text-foreground text-lg mb-2">{result.analysis.grade}</div>
-              <p className="text-muted-foreground text-sm">{result.analysis.suitability}</p>
+              <div className="text-foreground text-lg mb-1">{result.analysis.grade}</div>
+              {result.analysis.coupleNickname && (
+                <div className="text-red-600 dark:text-red-400 text-sm mb-1">"{result.analysis.coupleNickname}"</div>
+              )}
+              <p className="text-muted-foreground text-sm">{result.analysis.oneLiner}</p>
             </div>
 
             {result.analysis.sajuCompatibility && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <h4 className="text-red-600 dark:text-red-400 font-medium mb-2">
-                  사주 궁합 ({result.analysis.sajuCompatibility.score}/{result.analysis.sajuCompatibility.maxScore}점)
+                  사주 궁합 ({result.analysis.sajuCompatibility.totalScore}/{result.analysis.sajuCompatibility.maxScore}점)
                 </h4>
                 <div className="space-y-2">
-                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                    <span className="text-muted-foreground text-xs">오행 상생상극:</span>
-                    <p className="text-foreground text-sm">{result.analysis.sajuCompatibility.elementHarmony.analysis}</p>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                    <span className="text-muted-foreground text-xs">음양 조화:</span>
-                    <p className="text-foreground text-sm">{result.analysis.sajuCompatibility.yinYangBalance.analysis}</p>
-                  </div>
+                  {result.analysis.sajuCompatibility.elementHarmony && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">오행 상생상극</span>
+                        <span className="text-red-600 dark:text-red-400 text-xs font-medium">
+                          {result.analysis.sajuCompatibility.elementHarmony.score}/{result.analysis.sajuCompatibility.elementHarmony.maxScore}점
+                        </span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.sajuCompatibility.elementHarmony.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.sajuCompatibility.yinYangBalance && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">음양 조화</span>
+                        <span className="text-red-600 dark:text-red-400 text-xs font-medium">
+                          {result.analysis.sajuCompatibility.yinYangBalance.score}/{result.analysis.sajuCompatibility.yinYangBalance.maxScore}점
+                        </span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.sajuCompatibility.yinYangBalance.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.sajuCompatibility.zodiacMatch && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">십이지 궁합</span>
+                        <span className="text-red-600 dark:text-red-400 text-xs font-medium">
+                          {result.analysis.sajuCompatibility.zodiacMatch.score}/{result.analysis.sajuCompatibility.zodiacMatch.maxScore}점
+                        </span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.sajuCompatibility.zodiacMatch.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.sajuCompatibility.synergy && (
+                    <p className="text-muted-foreground text-sm mt-2">{result.analysis.sajuCompatibility.synergy}</p>
+                  )}
                 </div>
               </div>
             )}
@@ -302,30 +333,96 @@ export default function MarriageCompatibilityPage() {
             {result.analysis.nameCompatibility && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <h4 className="text-red-600 dark:text-red-400 font-medium mb-2">
-                  이름 궁합 ({result.analysis.nameCompatibility.score}/{result.analysis.nameCompatibility.maxScore}점)
+                  이름 궁합 ({result.analysis.nameCompatibility.totalScore}/{result.analysis.nameCompatibility.maxScore}점)
                 </h4>
                 <div className="space-y-2">
-                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                    <span className="text-muted-foreground text-xs">획수 조화:</span>
-                    <p className="text-foreground text-sm">{result.analysis.nameCompatibility.strokeHarmony.analysis}</p>
-                  </div>
+                  {result.analysis.nameCompatibility.strokeHarmony && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">획수 조화</span>
+                        <span className="text-red-600 dark:text-red-400 text-xs font-medium">
+                          {result.analysis.nameCompatibility.strokeHarmony.score}/{result.analysis.nameCompatibility.strokeHarmony.maxScore}점
+                        </span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.nameCompatibility.strokeHarmony.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.nameCompatibility.elementBalance && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">음양오행 배치</span>
+                        <span className="text-red-600 dark:text-red-400 text-xs font-medium">
+                          {result.analysis.nameCompatibility.elementBalance.score}/{result.analysis.nameCompatibility.elementBalance.maxScore}점
+                        </span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.nameCompatibility.elementBalance.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.nameCompatibility.homeEnergy && (
+                    <p className="text-muted-foreground text-sm mt-2">{result.analysis.nameCompatibility.homeEnergy}</p>
+                  )}
                 </div>
               </div>
             )}
 
-            {result.analysis.detailedAnalysis && (
+            {result.analysis.detailedCompatibility && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <h4 className="text-red-600 dark:text-red-400 font-medium mb-2">세부 결혼 궁합</h4>
                 <div className="grid gap-2">
-                  {Object.entries(result.analysis.detailedAnalysis).map(([key, value]: [string, any]) => (
-                    <div key={key} className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                  {result.analysis.detailedCompatibility.personality && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-muted-foreground text-xs capitalize">{key}:</span>
-                        <span className="text-foreground text-xs font-medium">{value.score}점</span>
+                        <span className="text-muted-foreground text-xs">성격/생활</span>
+                        <span className="text-red-600 dark:text-red-400 text-xs font-medium">{result.analysis.detailedCompatibility.personality.score}점</span>
                       </div>
-                      <p className="text-foreground text-sm">{value.analysis}</p>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.personality.analysis}</p>
                     </div>
-                  ))}
+                  )}
+                  {result.analysis.detailedCompatibility.finance && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">금전/재물</span>
+                        <span className="text-red-600 dark:text-red-400 text-xs font-medium">{result.analysis.detailedCompatibility.finance.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.finance.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.detailedCompatibility.children && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">자녀/육아</span>
+                        <span className="text-red-600 dark:text-red-400 text-xs font-medium">{result.analysis.detailedCompatibility.children.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.children.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.detailedCompatibility.inLaws && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">시댁/처가</span>
+                        <span className="text-red-600 dark:text-red-400 text-xs font-medium">{result.analysis.detailedCompatibility.inLaws.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.inLaws.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.detailedCompatibility.health && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">건강/장수</span>
+                        <span className="text-red-600 dark:text-red-400 text-xs font-medium">{result.analysis.detailedCompatibility.health.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.health.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.detailedCompatibility.social && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">사회/대인</span>
+                        <span className="text-red-600 dark:text-red-400 text-xs font-medium">{result.analysis.detailedCompatibility.social.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.social.analysis}</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -333,22 +430,42 @@ export default function MarriageCompatibilityPage() {
             {result.analysis.bestMarriageTiming && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <h4 className="text-red-600 dark:text-red-400 font-medium mb-2">결혼 적기</h4>
-                <p className="text-foreground text-sm mb-2">{result.analysis.bestMarriageTiming.reason}</p>
-                {result.analysis.bestMarriageTiming.recommendedPeriods && (
-                  <div className="text-muted-foreground text-xs">
-                    추천: {result.analysis.bestMarriageTiming.recommendedPeriods.join(', ')}
-                  </div>
-                )}
+                <div className="space-y-2">
+                  {result.analysis.bestMarriageTiming.bestYears && Array.isArray(result.analysis.bestMarriageTiming.bestYears) && (
+                    <div>
+                      <span className="text-muted-foreground text-xs">좋은 연도: </span>
+                      <span className="text-foreground text-sm">{result.analysis.bestMarriageTiming.bestYears.join(', ')}</span>
+                    </div>
+                  )}
+                  {result.analysis.bestMarriageTiming.bestMonths && Array.isArray(result.analysis.bestMarriageTiming.bestMonths) && (
+                    <div>
+                      <span className="text-muted-foreground text-xs">좋은 월: </span>
+                      <span className="text-foreground text-sm">{result.analysis.bestMarriageTiming.bestMonths.join(', ')}</span>
+                    </div>
+                  )}
+                  {result.analysis.bestMarriageTiming.avoidPeriods && Array.isArray(result.analysis.bestMarriageTiming.avoidPeriods) && (
+                    <div>
+                      <span className="text-muted-foreground text-xs">피할 시기: </span>
+                      <span className="text-foreground text-sm">{result.analysis.bestMarriageTiming.avoidPeriods.join(', ')}</span>
+                    </div>
+                  )}
+                  {result.analysis.bestMarriageTiming.weddingDateTips && (
+                    <p className="text-foreground text-sm">{result.analysis.bestMarriageTiming.weddingDateTips}</p>
+                  )}
+                  {result.analysis.bestMarriageTiming.reason && (
+                    <p className="text-muted-foreground text-sm">{result.analysis.bestMarriageTiming.reason}</p>
+                  )}
+                </div>
               </div>
             )}
 
             {result.analysis.advice && (
               <div>
                 <h4 className="text-red-600 dark:text-red-400 font-medium mb-2">조언</h4>
-                <div className="space-y-2">
-                  {result.analysis.advice.strengths && (
+                <div className="space-y-3">
+                  {result.analysis.advice.strengths && Array.isArray(result.analysis.advice.strengths) && (
                     <div>
-                      <h5 className="text-muted-foreground text-xs mb-1">강점</h5>
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-1">결혼 후 강점</p>
                       <ul className="space-y-1">
                         {result.analysis.advice.strengths.map((item: string, idx: number) => (
                           <li key={idx} className="text-foreground text-sm">• {item}</li>
@@ -356,14 +473,58 @@ export default function MarriageCompatibilityPage() {
                       </ul>
                     </div>
                   )}
-                  {result.analysis.advice.tips && (
+                  {result.analysis.advice.challenges && Array.isArray(result.analysis.advice.challenges) && (
                     <div>
-                      <h5 className="text-muted-foreground text-xs mb-1">행복한 결혼을 위한 조언</h5>
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-1">극복할 과제</p>
                       <ul className="space-y-1">
-                        {result.analysis.advice.tips.map((tip: string, idx: number) => (
+                        {result.analysis.advice.challenges.map((item: string, idx: number) => (
+                          <li key={idx} className="text-foreground text-sm">• {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.forPerson1 && (
+                    <div>
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-1">나에게</p>
+                      <p className="text-foreground text-sm">{result.analysis.advice.forPerson1}</p>
+                    </div>
+                  )}
+                  {result.analysis.advice.forPerson2 && (
+                    <div>
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-1">상대방에게</p>
+                      <p className="text-foreground text-sm">{result.analysis.advice.forPerson2}</p>
+                    </div>
+                  )}
+                  {result.analysis.advice.firstYearTips && Array.isArray(result.analysis.advice.firstYearTips) && (
+                    <div>
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-1">신혼 첫 해 팁</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.firstYearTips.map((tip: string, idx: number) => (
                           <li key={idx} className="text-foreground text-sm">• {tip}</li>
                         ))}
                       </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.conflictResolution && (
+                    <div>
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-1">갈등 해결법</p>
+                      <p className="text-foreground text-sm">{result.analysis.advice.conflictResolution}</p>
+                    </div>
+                  )}
+                  {result.analysis.advice.happinessSecrets && Array.isArray(result.analysis.advice.happinessSecrets) && (
+                    <div>
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-1">행복한 결혼의 비밀</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.happinessSecrets.map((secret: string, idx: number) => (
+                          <li key={idx} className="text-foreground text-sm">• {secret}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.finalMessage && (
+                    <div>
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-1">전문가 조언</p>
+                      <p className="text-foreground text-sm">{result.analysis.advice.finalMessage}</p>
                     </div>
                   )}
                 </div>
