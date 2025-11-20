@@ -400,7 +400,7 @@ export default function SkinAnalysisPage() {
                   <div className="flex flex-wrap gap-2">
                     {result.ingredients.recommended.map((ingredient, index) => (
                       <span key={index} className="px-3 py-2 bg-pink-500/20 text-pink-600 dark:text-pink-400 rounded-lg text-sm">
-                        {ingredient}
+                        {typeof ingredient === 'string' ? ingredient : (ingredient as any).ingredient || (ingredient as any).reason}
                       </span>
                     ))}
                   </div>
@@ -412,7 +412,7 @@ export default function SkinAnalysisPage() {
                   <div className="flex flex-wrap gap-2">
                     {result.ingredients.avoid.map((ingredient, index) => (
                       <span key={index} className="px-3 py-2 bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-lg text-sm">
-                        {ingredient}
+                        {typeof ingredient === 'string' ? ingredient : (ingredient as any).ingredient || (ingredient as any).reason}
                       </span>
                     ))}
                   </div>

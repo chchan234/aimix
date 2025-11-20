@@ -522,35 +522,41 @@ export default function PersonalColorPage() {
             </h3>
 
             <div className="space-y-4">
-              <div>
-                <p className="text-muted-foreground text-sm mb-2">추천 의류 색상</p>
-                <div className="flex flex-wrap gap-2">
-                  {result.clothingRecommendations.colors.map((color, index) => (
-                    <div key={index} className="flex items-center gap-2 px-3 py-2 bg-gray-700 rounded-lg">
-                      <div
-                        className="w-4 h-4 rounded-full border border-gray-500"
-                        style={{ backgroundColor: getColorHex(color) }}
-                      />
-                      <span className="text-foreground text-sm">{color}</span>
-                    </div>
-                  ))}
+              {result.clothingRecommendations?.colors && Array.isArray(result.clothingRecommendations.colors) && (
+                <div>
+                  <p className="text-muted-foreground text-sm mb-2">추천 의류 색상</p>
+                  <div className="flex flex-wrap gap-2">
+                    {result.clothingRecommendations.colors.map((color, index) => (
+                      <div key={index} className="flex items-center gap-2 px-3 py-2 bg-gray-700 rounded-lg">
+                        <div
+                          className="w-4 h-4 rounded-full border border-gray-500"
+                          style={{ backgroundColor: getColorHex(color) }}
+                        />
+                        <span className="text-foreground text-sm">{color}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div>
-                <p className="text-muted-foreground text-sm mb-2">추천 메탈</p>
-                <span className={`px-4 py-2 rounded-lg inline-block ${
-                  result.clothingRecommendations.metals.includes('골드')
-                    ? 'bg-yellow-500/20 text-yellow-300'
-                    : 'bg-gray-500/20 text-muted-foreground'
-                }`}>
-                  {result.clothingRecommendations.metals}
-                </span>
-              </div>
+              {result.clothingRecommendations?.metals && (
+                <div>
+                  <p className="text-muted-foreground text-sm mb-2">추천 메탈</p>
+                  <span className={`px-4 py-2 rounded-lg inline-block ${
+                    result.clothingRecommendations.metals.includes('골드')
+                      ? 'bg-yellow-500/20 text-yellow-300'
+                      : 'bg-gray-500/20 text-muted-foreground'
+                  }`}>
+                    {result.clothingRecommendations.metals}
+                  </span>
+                </div>
+              )}
 
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <p className="text-muted-foreground">{result.clothingRecommendations.description}</p>
-              </div>
+              {result.clothingRecommendations?.description && (
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <p className="text-muted-foreground">{result.clothingRecommendations.description}</p>
+                </div>
+              )}
             </div>
           </div>
 

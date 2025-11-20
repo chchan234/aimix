@@ -285,25 +285,41 @@ export default function BodyAnalysisPage() {
                 {result.proportions.shoulder && (
                   <div>
                     <p className="text-muted-foreground text-sm">어깨</p>
-                    <p className="text-foreground font-medium">{result.proportions.shoulder}</p>
+                    <p className="text-foreground font-medium">
+                      {typeof result.proportions.shoulder === 'string'
+                        ? result.proportions.shoulder
+                        : (result.proportions.shoulder as any).description || (result.proportions.shoulder as any).ratio}
+                    </p>
                   </div>
                 )}
                 {result.proportions.waist && (
                   <div>
                     <p className="text-muted-foreground text-sm">허리</p>
-                    <p className="text-foreground font-medium">{result.proportions.waist}</p>
+                    <p className="text-foreground font-medium">
+                      {typeof result.proportions.waist === 'string'
+                        ? result.proportions.waist
+                        : (result.proportions.waist as any).description || (result.proportions.waist as any).ratio}
+                    </p>
                   </div>
                 )}
                 {result.proportions.hip && (
                   <div>
                     <p className="text-muted-foreground text-sm">힙</p>
-                    <p className="text-foreground font-medium">{result.proportions.hip}</p>
+                    <p className="text-foreground font-medium">
+                      {typeof result.proportions.hip === 'string'
+                        ? result.proportions.hip
+                        : (result.proportions.hip as any).description || (result.proportions.hip as any).ratio}
+                    </p>
                   </div>
                 )}
                 {result.proportions.legs && (
                   <div>
                     <p className="text-muted-foreground text-sm">다리</p>
-                    <p className="text-foreground font-medium">{result.proportions.legs}</p>
+                    <p className="text-foreground font-medium">
+                      {typeof result.proportions.legs === 'string'
+                        ? result.proportions.legs
+                        : (result.proportions.legs as any).description || (result.proportions.legs as any).ratio}
+                    </p>
                   </div>
                 )}
               </div>
