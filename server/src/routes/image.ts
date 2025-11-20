@@ -471,4 +471,64 @@ router.post('/personal-color', validateBody(personalColorSchema), requireCredits
   }
 });
 
+// 16. Generate Result Card - 결과물 카드 이미지 생성
+router.post('/generate-result-card', async (req, res) => {
+  try {
+    const { prompt, creditsRequired = 1 } = req.body;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        error: 'User not authenticated'
+      });
+    }
+
+    if (!prompt) {
+      return res.status(400).json({
+        success: false,
+        error: 'Prompt is required'
+      });
+    }
+
+    // Deduct credits first
+    const db = req.app.get('db');
+    const userResult = await db.query('SELECT credits FROM users WHERE id = $1', [userId]);
+
+    if (!userResult.rows[0] || userResult.rows[0].credits < creditsRequired) {
+      return res.status(400).json({
+        success: false,
+        error: '크레딧이 부족합니다.'
+      });
+    }
+
+    await db.query('UPDATE users SET credits = credits - $1 WHERE id = $2', [creditsRequired, userId]);
+
+    // Generate image using Gemini
+    const result = await gemini.generateResultCard(prompt);
+
+    if (result.success) {
+      res.json({
+        success: true,
+        imageUrl: result.imageData,
+        model: result.model,
+      });
+    } else {
+      // Refund credits on failure
+      await db.query('UPDATE users SET credits = credits + $1 WHERE id = $2', [creditsRequired, userId]);
+
+      res.status(500).json({
+        success: false,
+        error: result.error || 'Failed to generate result card'
+      });
+    }
+  } catch (error) {
+    console.error('Result card generation error:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
 export default router;
