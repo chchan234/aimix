@@ -15,16 +15,24 @@ const router = Router();
  */
 router.get('/check-schema', async (req, res) => {
   try {
-    const columns = await db.execute(sql`
+    const result = await db.execute(sql`
       SELECT column_name, data_type, character_maximum_length, is_nullable
       FROM information_schema.columns
       WHERE table_name = 'payments'
       ORDER BY ordinal_position
     `);
 
+    console.log('Query result:', result);
+
     res.json({
       success: true,
-      columns: columns.rows,
+      columns: Array.isArray(result) ? result : result.rows || [],
+      hasFailureCode: Array.isArray(result)
+        ? result.some((col: any) => col.column_name === 'failure_code')
+        : false,
+      hasFailureMessage: Array.isArray(result)
+        ? result.some((col: any) => col.column_name === 'failure_message')
+        : false,
     });
   } catch (error: any) {
     console.error('❌ Error checking schema:', error);
