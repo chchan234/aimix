@@ -342,13 +342,54 @@ export default function NameCompatibilityPage() {
             {result.analysis.advice && (
               <div>
                 <h4 className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">조언</h4>
-                {result.analysis.advice.tips && (
-                  <ul className="space-y-1">
-                    {result.analysis.advice.tips.map((tip: string, idx: number) => (
-                      <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
-                    ))}
-                  </ul>
-                )}
+                <div className="space-y-3">
+                  {result.analysis.advice.maximize && Array.isArray(result.analysis.advice.maximize) && (
+                    <div>
+                      <p className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">강점 살리기</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.maximize.map((tip: string, idx: number) => (
+                          <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.caution && Array.isArray(result.analysis.advice.caution) && (
+                    <div>
+                      <p className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">주의할 점</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.caution.map((tip: string, idx: number) => (
+                          <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.actionTips && Array.isArray(result.analysis.advice.actionTips) && (
+                    <div>
+                      <p className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">실천 팁</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.actionTips.map((tip: string, idx: number) => (
+                          <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.luckyTogether && Array.isArray(result.analysis.advice.luckyTogether) && (
+                    <div>
+                      <p className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">함께 하면 좋은 활동</p>
+                      <ul className="space-y-1">
+                        {result.analysis.advice.luckyTogether.map((tip: string, idx: number) => (
+                          <li key={idx} className="text-muted-foreground text-sm">• {tip}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.analysis.advice.finalMessage && (
+                    <div>
+                      <p className="text-sm text-indigo-600 dark:text-indigo-400 mb-1">전문가 조언</p>
+                      <p className="text-foreground text-sm">{result.analysis.advice.finalMessage}</p>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
