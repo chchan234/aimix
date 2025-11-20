@@ -9,31 +9,35 @@ interface SkinAnalysisResult {
   skinAge: number | string;
   conditions: {
     hydration: {
-      level: number | string;
+      level?: number | string;
+      score?: number | string;
       description: string;
     };
     oiliness: {
-      level: number | string;
+      level?: number | string;
+      score?: number | string;
       description: string;
     };
     sensitivity: {
-      level: number | string;
+      level?: number | string;
+      score?: number | string;
       description: string;
     };
     elasticity: {
-      level: number | string;
+      level?: number | string;
+      score?: number | string;
       description: string;
     };
   };
-  concerns: string[];
+  concerns: string[] | any[];
   skincare?: {
-    morning: string[];
-    evening: string[];
+    morning: string[] | { steps: string[] };
+    evening: string[] | { steps: string[] };
     weekly?: string[];
   };
   ingredients?: {
-    recommended: string[];
-    avoid: string[];
+    recommended: string[] | any[];
+    avoid: string[] | any[];
   };
   lifestyle?: string[];
   overallComment?: string;
@@ -314,10 +318,10 @@ export default function SkinAnalysisPage() {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-muted-foreground text-sm">수분도</span>
-                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.hydration.level)}%</span>
+                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.hydration.score || result.conditions.hydration.level || 0)}%</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className={`${getScoreColor(result.conditions.hydration.level)} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.hydration.level)}%` }}></div>
+                      <div className={`${getScoreColor(result.conditions.hydration.score || result.conditions.hydration.level || 0)} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.hydration.score || result.conditions.hydration.level || 0)}%` }}></div>
                     </div>
                     {result.conditions.hydration.description && (
                       <p className="text-muted-foreground text-xs mt-1">{result.conditions.hydration.description}</p>
@@ -328,10 +332,10 @@ export default function SkinAnalysisPage() {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-muted-foreground text-sm">유분도</span>
-                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.oiliness.level)}%</span>
+                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.oiliness.score || result.conditions.oiliness.level || 0)}%</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className={`${getScoreColor(100 - normalizeScore(result.conditions.oiliness.level))} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.oiliness.level)}%` }}></div>
+                      <div className={`${getScoreColor(100 - normalizeScore(result.conditions.oiliness.score || result.conditions.oiliness.level || 0))} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.oiliness.score || result.conditions.oiliness.level || 0)}%` }}></div>
                     </div>
                     {result.conditions.oiliness.description && (
                       <p className="text-muted-foreground text-xs mt-1">{result.conditions.oiliness.description}</p>
@@ -342,10 +346,10 @@ export default function SkinAnalysisPage() {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-muted-foreground text-sm">민감도</span>
-                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.sensitivity.level)}%</span>
+                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.sensitivity.score || result.conditions.sensitivity.level || 0)}%</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className={`${getScoreColor(100 - normalizeScore(result.conditions.sensitivity.level))} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.sensitivity.level)}%` }}></div>
+                      <div className={`${getScoreColor(100 - normalizeScore(result.conditions.sensitivity.score || result.conditions.sensitivity.level || 0))} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.sensitivity.score || result.conditions.sensitivity.level || 0)}%` }}></div>
                     </div>
                     {result.conditions.sensitivity.description && (
                       <p className="text-muted-foreground text-xs mt-1">{result.conditions.sensitivity.description}</p>
@@ -356,10 +360,10 @@ export default function SkinAnalysisPage() {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-muted-foreground text-sm">탄력도</span>
-                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.elasticity.level)}%</span>
+                      <span className="text-foreground text-sm">{normalizeScore(result.conditions.elasticity.score || result.conditions.elasticity.level || 0)}%</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className={`${getScoreColor(result.conditions.elasticity.level)} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.elasticity.level)}%` }}></div>
+                      <div className={`${getScoreColor(result.conditions.elasticity.score || result.conditions.elasticity.level || 0)} h-2 rounded-full`} style={{ width: `${normalizeScore(result.conditions.elasticity.score || result.conditions.elasticity.level || 0)}%` }}></div>
                     </div>
                     {result.conditions.elasticity.description && (
                       <p className="text-muted-foreground text-xs mt-1">{result.conditions.elasticity.description}</p>
@@ -429,31 +433,45 @@ export default function SkinAnalysisPage() {
                 스킨케어 루틴
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {result.skincare.morning && result.skincare.morning.length > 0 && (
-                  <div>
-                    <p className="text-yellow-600 dark:text-yellow-400 font-semibold mb-2">
-                      <span className="material-symbols-outlined align-middle mr-1 text-sm">wb_sunny</span>
-                      모닝 루틴
-                    </p>
-                    <ol className="space-y-1 text-sm text-muted-foreground">
-                      {result.skincare.morning.map((step, index) => (
-                        <li key={index}>{index + 1}. {step}</li>
-                      ))}
-                    </ol>
-                  </div>
+                {result.skincare.morning && (
+                  (() => {
+                    const morningSteps = Array.isArray(result.skincare.morning)
+                      ? result.skincare.morning
+                      : (result.skincare.morning as { steps: string[] }).steps;
+                    return morningSteps && morningSteps.length > 0 ? (
+                      <div>
+                        <p className="text-yellow-600 dark:text-yellow-400 font-semibold mb-2">
+                          <span className="material-symbols-outlined align-middle mr-1 text-sm">wb_sunny</span>
+                          모닝 루틴
+                        </p>
+                        <ol className="space-y-1 text-sm text-muted-foreground">
+                          {morningSteps.map((step: string, index: number) => (
+                            <li key={index}>{step}</li>
+                          ))}
+                        </ol>
+                      </div>
+                    ) : null;
+                  })()
                 )}
-                {result.skincare.evening && result.skincare.evening.length > 0 && (
-                  <div>
-                    <p className="text-indigo-600 dark:text-indigo-400 font-semibold mb-2">
-                      <span className="material-symbols-outlined align-middle mr-1 text-sm">nights_stay</span>
-                      나이트 루틴
-                    </p>
-                    <ol className="space-y-1 text-sm text-muted-foreground">
-                      {result.skincare.evening.map((step, index) => (
-                        <li key={index}>{index + 1}. {step}</li>
-                      ))}
-                    </ol>
-                  </div>
+                {result.skincare.evening && (
+                  (() => {
+                    const eveningSteps = Array.isArray(result.skincare.evening)
+                      ? result.skincare.evening
+                      : (result.skincare.evening as { steps: string[] }).steps;
+                    return eveningSteps && eveningSteps.length > 0 ? (
+                      <div>
+                        <p className="text-indigo-600 dark:text-indigo-400 font-semibold mb-2">
+                          <span className="material-symbols-outlined align-middle mr-1 text-sm">nights_stay</span>
+                          나이트 루틴
+                        </p>
+                        <ol className="space-y-1 text-sm text-muted-foreground">
+                          {eveningSteps.map((step: string, index: number) => (
+                            <li key={index}>{step}</li>
+                          ))}
+                        </ol>
+                      </div>
+                    ) : null;
+                  })()
                 )}
               </div>
               {result.skincare.weekly && result.skincare.weekly.length > 0 && (
