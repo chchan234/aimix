@@ -47,7 +47,7 @@ export default function CreditPurchasePage() {
     try {
       const response = await fetch('/api/payments/packages', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
         },
       });
 
@@ -76,7 +76,7 @@ export default function CreditPurchasePage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
         },
         body: JSON.stringify({ packageType: pkg.id }),
       });

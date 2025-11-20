@@ -57,7 +57,7 @@ export default function BuyCreditsPage() {
       try {
         const response = await fetch('/api/payments/history?limit=5', {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
           },
         });
         if (response.ok) {
@@ -118,7 +118,7 @@ export default function BuyCreditsPage() {
       const pkg = packages.find((p) => p.id === selectedPackage);
       if (!pkg) return;
 
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       if (!token) {
         alert('로그인이 필요합니다.');
         setLocation('/login');
