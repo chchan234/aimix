@@ -615,7 +615,7 @@ export default function AdminPage() {
         {/* Users Tab */}
         {activeTab === 'users' && (
           <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex flex-wrap gap-4 mb-4">
+            <div className="flex flex-wrap gap-4 mb-4 items-center">
               <input
                 type="text"
                 placeholder="이메일, 사용자명, providerId로 검색"
@@ -630,12 +630,20 @@ export default function AdminPage() {
                 className="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
-                onClick={() => handleExport('users')}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2"
+                onClick={() => {
+                  loadUsers(userSearch, 1);
+                  setUserPage(1);
+                }}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
               >
-                <span className="material-symbols-outlined text-xl">download</span>
-                CSV 내보내기
+                <span className="material-symbols-outlined text-xl">search</span>
+                검색
               </button>
+              {userPagination && (
+                <div className="text-sm text-gray-600 ml-auto">
+                  총 <span className="font-semibold text-blue-600">{userPagination.total}</span>명
+                </div>
+              )}
             </div>
 
             <div className="overflow-x-auto">
@@ -738,14 +746,22 @@ export default function AdminPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold mb-4">사용자 선택</h3>
-              <input
-                type="text"
-                placeholder="이메일로 검색"
-                value={userSearch}
-                onChange={(e) => setUserSearch(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && loadUsers(userSearch, 1)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="flex gap-2 mb-4">
+                <input
+                  type="text"
+                  placeholder="이메일로 검색"
+                  value={userSearch}
+                  onChange={(e) => setUserSearch(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && loadUsers(userSearch, 1)}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  onClick={() => loadUsers(userSearch, 1)}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
+                  <span className="material-symbols-outlined text-xl">search</span>
+                </button>
+              </div>
 
               <div className="max-h-80 overflow-y-auto">
                 {users.map((user) => (
