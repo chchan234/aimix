@@ -266,8 +266,8 @@ export default function PetSoulmatePage() {
       {step === 'result' && result && (
         <div className="space-y-6">
           {/* Fun Comment */}
-          <div className="bg-gradient-to-r from-orange-900 to-amber-900 rounded-lg p-6">
-            <p className="text-xl text-foreground font-semibold text-center">
+          <div className="bg-gradient-to-r from-orange-500 to-amber-500 rounded-lg p-6">
+            <p className="text-xl text-white font-semibold text-center">
               "{result.funComment}"
             </p>
           </div>

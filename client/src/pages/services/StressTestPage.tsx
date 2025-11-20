@@ -298,9 +298,9 @@ export default function StressTestPage() {
             </div>
             <p className="text-white/80 text-center">{result.analysis.overallAssessment.description}</p>
             {result.analysis.overallAssessment.riskFactors.length > 0 && (
-              <div className="mt-4 bg-red-100 dark:bg-red-900/20 border border-red-500 rounded-lg p-4">
-                <h4 className="font-semibold text-red-400 mb-2">주요 위험 요인</h4>
-                <ul className="list-disc list-inside text-muted-foreground space-y-1">
+              <div className="mt-4 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg p-4">
+                <h4 className="font-semibold text-white mb-2">주요 위험 요인</h4>
+                <ul className="list-disc list-inside text-white/90 space-y-1">
                   {result.analysis.overallAssessment.riskFactors.map((factor: string, i: number) => (
                     <li key={i}>{factor}</li>
                   ))}

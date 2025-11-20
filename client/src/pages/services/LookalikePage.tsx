@@ -322,8 +322,8 @@ export default function LookalikePage() {
       {step === 'result' && result && (
         <div className="space-y-6">
           {/* Fun Comment */}
-          <div className="bg-gradient-to-r from-pink-900 to-purple-900 rounded-lg p-6">
-            <p className="text-xl text-foreground font-semibold text-center">
+          <div className="bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg p-6">
+            <p className="text-xl text-white font-semibold text-center">
               "{result.funComment}"
             </p>
           </div>

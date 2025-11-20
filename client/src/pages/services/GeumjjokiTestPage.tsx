@@ -124,11 +124,11 @@ export default function GeumjjokiTestPage() {
   };
 
   const getGradeColor = (score: number) => {
-    if (score >= 81) return 'from-red-900 to-red-700';
-    if (score >= 61) return 'from-orange-900 to-orange-700';
-    if (score >= 41) return 'from-yellow-900 to-yellow-700';
-    if (score >= 21) return 'from-green-900 to-green-700';
-    return 'from-blue-900 to-blue-700';
+    if (score >= 81) return 'from-red-500 to-red-600';
+    if (score >= 61) return 'from-orange-500 to-orange-600';
+    if (score >= 41) return 'from-yellow-500 to-yellow-600';
+    if (score >= 21) return 'from-green-500 to-green-600';
+    return 'from-blue-500 to-blue-600';
   };
 
   const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
@@ -296,16 +296,16 @@ export default function GeumjjokiTestPage() {
         <div className="space-y-6">
           {/* Grade */}
           <div className={`bg-gradient-to-r ${getGradeColor(result.geumjjokiScore)} rounded-lg p-6`}>
-            <h3 className="text-xl font-semibold text-foreground mb-2">당신의 금쪽이 지수</h3>
+            <h3 className="text-xl font-semibold text-white mb-2">당신의 금쪽이 지수</h3>
             <div className="flex items-baseline gap-3 mb-2">
-              <span className="text-5xl font-bold text-foreground">{result.geumjjokiScore}</span>
-              <span className="text-2xl text-gray-200">/ 100</span>
+              <span className="text-5xl font-bold text-white">{result.geumjjokiScore}</span>
+              <span className="text-2xl text-white/70">/ 100</span>
             </div>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-3xl">{result.grade.emoji}</span>
-              <span className="text-2xl font-bold text-foreground">{result.grade.name}</span>
+              <span className="text-2xl font-bold text-white">{result.grade.name}</span>
             </div>
-            <p className="text-gray-200">{result.grade.description}</p>
+            <p className="text-white/90">{result.grade.description}</p>
           </div>
 
           {/* Summary */}
