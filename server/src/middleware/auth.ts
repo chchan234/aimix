@@ -62,6 +62,14 @@ export async function authenticateToken(
       return;
     }
 
+    // Check if token is empty or invalid format
+    if (token.trim() === '' || token.split('.').length !== 3) {
+      res.status(401).json({
+        error: 'Invalid token format'
+      });
+      return;
+    }
+
     // Verify JWT token
     const decoded = jwt.verify(token, JWT_SECRET) as {
       userId: string;

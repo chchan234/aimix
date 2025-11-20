@@ -104,6 +104,13 @@ export default function BuyCreditsPage() {
       return;
     }
 
+    // Check if user is logged in
+    if (!isLoggedIn()) {
+      alert('로그인이 필요합니다.');
+      setLocation('/login');
+      return;
+    }
+
     if (isProcessing) return;
     setIsProcessing(true);
 
@@ -111,18 +118,26 @@ export default function BuyCreditsPage() {
       const pkg = packages.find((p) => p.id === selectedPackage);
       if (!pkg) return;
 
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('로그인이 필요합니다.');
+        setLocation('/login');
+        return;
+      }
+
       // 1. 결제 준비 - orderId 받기
       const prepareResponse = await fetch('/api/payments/prepare', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ packageType: selectedPackage }),
       });
 
       if (!prepareResponse.ok) {
-        throw new Error('Failed to prepare payment');
+        const errorData = await prepareResponse.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to prepare payment');
       }
 
       const { orderId, amount, orderName, clientKey } = await prepareResponse.json();
