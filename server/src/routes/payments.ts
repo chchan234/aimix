@@ -40,7 +40,7 @@ const confirmPaymentSchema = z.object({
 router.post('/prepare', authenticateToken, async (req, res) => {
   try {
     const { packageType } = preparePaymentSchema.parse(req.body);
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
 
     const creditPackage = CREDIT_PACKAGES[packageType];
     if (!creditPackage) {
@@ -70,7 +70,7 @@ router.post('/prepare', authenticateToken, async (req, res) => {
 router.post('/confirm', authenticateToken, async (req, res) => {
   try {
     const { paymentKey, orderId, amount } = confirmPaymentSchema.parse(req.body);
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
 
     // 1. 토스페이먼츠 결제 승인 API 호출
     const paymentResult = await tossPayments.confirmPayment({
@@ -201,7 +201,7 @@ router.post('/confirm', authenticateToken, async (req, res) => {
  */
 router.get('/history', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
     const limit = parseInt(req.query.limit as string) || 20;
     const offset = parseInt(req.query.offset as string) || 0;
 
