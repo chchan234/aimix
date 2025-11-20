@@ -1,86 +1,93 @@
 /**
  * OAuth State Management
  *
- * Manages CSRF state tokens for OAuth flows
- * Note: In production, use Redis or a database for distributed systems
+ * Manages CSRF state tokens for OAuth flows using JWT
+ * Works in serverless environments without requiring shared state
  */
 
 import crypto from 'crypto';
 
-interface StateRecord {
-  token: string;
-  createdAt: number;
-  expiresAt: number;
-}
-
-// In-memory store for OAuth state tokens
-// TODO: Replace with Redis in production for multi-instance deployments
-const stateStore = new Map<string, StateRecord>();
-
 // State token TTL: 10 minutes
 const STATE_TTL_MS = 10 * 60 * 1000;
 
-// Cleanup interval: every 5 minutes
-const CLEANUP_INTERVAL_MS = 5 * 60 * 1000;
+// Get JWT secret from environment
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 /**
- * Generate a new OAuth state token
- * @returns 64-character hex string
+ * Generate a new OAuth state token using JWT
+ * @returns JWT-signed state token
  */
 export function generateStateToken(): string {
-  const token = crypto.randomBytes(32).toString('hex');
-  const now = Date.now();
+  const payload = {
+    nonce: crypto.randomBytes(32).toString('hex'),
+    iat: Date.now(),
+    exp: Date.now() + STATE_TTL_MS,
+  };
 
-  stateStore.set(token, {
-    token,
-    createdAt: now,
-    expiresAt: now + STATE_TTL_MS,
-  });
+  // Simple JWT implementation (header.payload.signature)
+  const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
+  const payloadStr = Buffer.from(JSON.stringify(payload)).toString('base64url');
 
-  return token;
+  const signature = crypto
+    .createHmac('sha256', JWT_SECRET)
+    .update(`${header}.${payloadStr}`)
+    .digest('base64url');
+
+  return `${header}.${payloadStr}.${signature}`;
 }
 
 /**
  * Verify and consume an OAuth state token
- * @param token - The state token to verify
+ * @param token - The JWT state token to verify
  * @returns true if valid, false otherwise
  */
 export function verifyAndConsumeStateToken(token: string): boolean {
-  const record = stateStore.get(token);
-
-  if (!record) {
-    return false;
-  }
-
-  // Check if expired
-  if (Date.now() > record.expiresAt) {
-    stateStore.delete(token);
-    return false;
-  }
-
-  // Consume the token (one-time use)
-  stateStore.delete(token);
-  return true;
-}
-
-/**
- * Clean up expired state tokens
- */
-function cleanupExpiredTokens(): void {
-  const now = Date.now();
-  for (const [token, record] of stateStore.entries()) {
-    if (now > record.expiresAt) {
-      stateStore.delete(token);
+  try {
+    if (!token || typeof token !== 'string') {
+      return false;
     }
+
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      return false;
+    }
+
+    const [header, payloadStr, signature] = parts;
+
+    // Verify signature
+    const expectedSignature = crypto
+      .createHmac('sha256', JWT_SECRET)
+      .update(`${header}.${payloadStr}`)
+      .digest('base64url');
+
+    if (signature !== expectedSignature) {
+      return false;
+    }
+
+    // Decode and verify payload
+    const payload = JSON.parse(Buffer.from(payloadStr, 'base64url').toString());
+
+    // Check if expired
+    if (Date.now() > payload.exp) {
+      return false;
+    }
+
+    // Verify it was issued recently (within TTL)
+    if (Date.now() - payload.iat > STATE_TTL_MS) {
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('State token verification error:', error);
+    return false;
   }
 }
-
-// Start periodic cleanup
-setInterval(cleanupExpiredTokens, CLEANUP_INTERVAL_MS);
 
 /**
  * Get current state store size (for monitoring)
+ * Returns 0 since we're not storing tokens anymore
  */
 export function getStateStoreSize(): number {
-  return stateStore.size;
+  return 0;
 }

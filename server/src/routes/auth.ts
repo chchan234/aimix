@@ -429,7 +429,7 @@ router.post('/kakao/callback', rateLimitByIP(10, 60 * 1000), async (req, res) =>
     }
 
     // Verify OAuth state parameter to prevent CSRF attacks
-    if (!state || typeof state !== 'string' || state.length !== 64) {
+    if (!state || typeof state !== 'string' || state.split('.').length !== 3) {
       return res.status(403).json({
         error: 'Invalid or missing OAuth state parameter',
         message: 'Possible CSRF attack detected'
