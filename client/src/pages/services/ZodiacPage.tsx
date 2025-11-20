@@ -240,21 +240,30 @@ export default function ZodiacPage() {
               </div>
             )}
 
-            {result.analysis.yearlyFortune && (
+            {result.analysis.year2025 && (
               <div className="space-y-3 mb-4">
                 <div>
-                  <h4 className="text-orange-600 dark:text-orange-400 font-medium mb-2">올해 운세</h4>
-                  <p className="text-foreground text-sm">{result.analysis.yearlyFortune.overall}</p>
+                  <h4 className="text-orange-600 dark:text-orange-400 font-medium mb-2">2025년 운세</h4>
+                  <p className="text-foreground text-sm mb-2">{result.analysis.year2025.overallFortune}</p>
+                  {result.analysis.year2025.yearKeyword && (
+                    <p className="text-orange-600 dark:text-orange-400 text-xs">🔑 키워드: {result.analysis.year2025.yearKeyword}</p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <h5 className="text-muted-foreground text-xs mb-1">상반기</h5>
-                    <p className="text-foreground text-sm">{result.analysis.yearlyFortune.firstHalf}</p>
+                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                    <h5 className="text-orange-600 dark:text-orange-400 text-xs mb-1">상반기</h5>
+                    <p className="text-foreground text-sm">{result.analysis.year2025.firstHalf?.summary}</p>
+                    {result.analysis.year2025.firstHalf?.bestMonth && (
+                      <p className="text-muted-foreground text-xs mt-1">✨ 최고의 달: {result.analysis.year2025.firstHalf.bestMonth}</p>
+                    )}
                   </div>
-                  <div>
-                    <h5 className="text-muted-foreground text-xs mb-1">하반기</h5>
-                    <p className="text-foreground text-sm">{result.analysis.yearlyFortune.secondHalf}</p>
+                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                    <h5 className="text-orange-600 dark:text-orange-400 text-xs mb-1">하반기</h5>
+                    <p className="text-foreground text-sm">{result.analysis.year2025.secondHalf?.summary}</p>
+                    {result.analysis.year2025.secondHalf?.bestMonth && (
+                      <p className="text-muted-foreground text-xs mt-1">✨ 최고의 달: {result.analysis.year2025.secondHalf.bestMonth}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -264,22 +273,48 @@ export default function ZodiacPage() {
               <div className="space-y-2">
                 <h4 className="text-orange-600 dark:text-orange-400 font-medium mb-2">세부 운세</h4>
                 <div className="grid gap-2">
-                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                    <span className="text-muted-foreground text-xs">재물운:</span>
-                    <p className="text-foreground text-sm">{result.analysis.detailedFortune.wealth}</p>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                    <span className="text-muted-foreground text-xs">애정운:</span>
-                    <p className="text-foreground text-sm">{result.analysis.detailedFortune.love}</p>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                    <span className="text-muted-foreground text-xs">직장운:</span>
-                    <p className="text-foreground text-sm">{result.analysis.detailedFortune.career}</p>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                    <span className="text-muted-foreground text-xs">건강운:</span>
-                    <p className="text-foreground text-sm">{result.analysis.detailedFortune.health}</p>
-                  </div>
+                  {result.analysis.detailedFortune.wealth && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded">
+                      <span className="text-orange-600 dark:text-orange-400 text-sm font-medium">💰 재물운</span>
+                      <p className="text-foreground text-sm mt-1">{result.analysis.detailedFortune.wealth.summary}</p>
+                      {result.analysis.detailedFortune.wealth.moneyMonths && (
+                        <p className="text-muted-foreground text-xs mt-1">
+                          좋은 달: {result.analysis.detailedFortune.wealth.moneyMonths.join(', ')}월
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {result.analysis.detailedFortune.love && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded">
+                      <span className="text-orange-600 dark:text-orange-400 text-sm font-medium">💕 애정운</span>
+                      <p className="text-foreground text-sm mt-1">{result.analysis.detailedFortune.love.summary}</p>
+                      {result.analysis.detailedFortune.love.destinyMonths && (
+                        <p className="text-muted-foreground text-xs mt-1">
+                          인연의 달: {result.analysis.detailedFortune.love.destinyMonths.join(', ')}월
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {result.analysis.detailedFortune.career && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded">
+                      <span className="text-orange-600 dark:text-orange-400 text-sm font-medium">💼 직장운</span>
+                      <p className="text-foreground text-sm mt-1">{result.analysis.detailedFortune.career.summary}</p>
+                      {result.analysis.detailedFortune.career.changeMonths && (
+                        <p className="text-muted-foreground text-xs mt-1">
+                          변화의 달: {result.analysis.detailedFortune.career.changeMonths.join(', ')}월
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {result.analysis.detailedFortune.health && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded">
+                      <span className="text-orange-600 dark:text-orange-400 text-sm font-medium">🏥 건강운</span>
+                      <p className="text-foreground text-sm mt-1">{result.analysis.detailedFortune.health.summary}</p>
+                      {result.analysis.detailedFortune.health.advice && (
+                        <p className="text-muted-foreground text-xs mt-1">{result.analysis.detailedFortune.health.advice}</p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
