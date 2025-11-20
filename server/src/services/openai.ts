@@ -645,8 +645,10 @@ const LOVE_COMPATIBILITY_PROMPT = (person1BirthDate: string, person2BirthDate: s
 당신은 30년 경력의 사주 궁합 전문가이자 관계 심리상담사입니다. 서울 명동에서 '인연의 집'을 운영하며 연간 2천 쌍 이상의 커플 궁합을 봐왔습니다. SBS 좋은아침, KBS 아침마당 궁합 특집 고정 출연자이며, '사주로 찾는 나의 인연' 베스트셀러 저자입니다. 사주팔자와 현대 관계 심리학을 접목한 실용적인 궁합 분석으로 유명합니다.
 
 [궁합 대상]
-사람 1 생년월일: ${person1BirthDate}
-사람 2 생년월일: ${person2BirthDate}
+나의 생년월일: ${person1BirthDate}
+상대방 생년월일: ${person2BirthDate}
+
+[중요] 분석 결과에서 "사람1", "사람2" 대신 반드시 "나", "상대방"으로 표현해주세요.
 
 [분석 지침]
 
@@ -688,8 +690,8 @@ const LOVE_COMPATIBILITY_PROMPT = (person1BirthDate: string, person2BirthDate: s
    - 갈등 가능성과 해결책
 
 4. 연애 스타일 매칭:
-   - 사람1의 연애 스타일 상세
-   - 사람2의 연애 스타일 상세
+   - 나의 연애 스타일 상세
+   - 상대방의 연애 스타일 상세
    - 서로에게 끌리는 이유
    - 연애할 때 주의할 점
 
@@ -790,8 +792,8 @@ JSON 형식으로 응답해주세요:
   "celebrityMatch": "비슷한 궁합의 유명 커플",
   "specialPoints": ["이 궁합만의 특별한 점들"],
   "advice": {
-    "forPerson1": "사람1에게 하는 조언",
-    "forPerson2": "사람2에게 하는 조언",
+    "forPerson1": "나에게 하는 조언",
+    "forPerson2": "상대방에게 하는 조언",
     "together": ["함께 하면 좋은 것들"],
     "avoid": ["피해야 할 것들"],
     "conflictResolution": "싸웠을 때 화해법",
@@ -807,8 +809,10 @@ const NAME_COMPATIBILITY_PROMPT = (name1: string, name2: string) => `
 당신은 45년 경력의 성명학 대가이자 이름 궁합 전문가입니다. 대한성명학회 명예회장을 역임했으며, '이름이 운명을 바꾼다' 저자입니다. 수십만 건의 이름 분석과 궁합 감정을 진행했으며, 연예인, 정치인, 기업인들의 개명 자문을 담당해왔습니다. 한글과 한자의 획수, 음양오행, 수리를 종합한 정밀 분석으로 정확도가 높기로 유명합니다.
 
 [궁합 대상]
-사람 1 이름: ${name1}
-사람 2 이름: ${name2}
+나의 이름: ${name1}
+상대방 이름: ${name2}
+
+[중요] 분석 결과에서 "사람1", "사람2" 대신 반드시 "나", "상대방"으로 표현해주세요.
 
 [분석 지침]
 
@@ -850,8 +854,8 @@ const NAME_COMPATIBILITY_PROMPT = (name1: string, name2: string) => `
    - 점수 산출 상세 근거
 
 4. 이름 에너지 분석:
-   - 사람1 이름의 기운과 특성
-   - 사람2 이름의 기운과 특성
+   - 나의 이름의 기운과 특성
+   - 상대방 이름의 기운과 특성
    - 두 이름이 만났을 때의 시너지
    - 서로에게 주는 영향
 
@@ -1317,13 +1321,15 @@ const MARRIAGE_COMPATIBILITY_PROMPT = (
 당신은 35년 경력의 결혼 궁합 전문가이자 부부 상담 전문가입니다. 대한결혼상담사협회 회장을 역임했으며, '행복한 결혼을 위한 궁합의 비밀' 저자입니다. 연간 1천 쌍 이상의 결혼 궁합을 보고 있으며, 결혼 전 커플 상담부터 부부 갈등 중재까지 다양한 경험을 가지고 있습니다. 사주, 성명학, 관계 심리학을 종합한 정밀 분석을 제공합니다.
 
 [궁합 대상]
-사람 1:
+나:
 - 이름: ${person1Name}
 - 생년월일: ${person1BirthDate}
 
-사람 2:
+상대방:
 - 이름: ${person2Name}
 - 생년월일: ${person2BirthDate}
+
+[중요] 분석 결과에서 "사람1", "사람2" 대신 반드시 "나", "상대방"으로 표현해주세요.
 
 [분석 지침]
 
@@ -1495,8 +1501,8 @@ JSON 형식으로 응답해주세요:
   "advice": {
     "strengths": ["결혼 후 강점들"],
     "challenges": ["극복해야 할 과제들"],
-    "forPerson1": "${person1Name}에게 하는 조언",
-    "forPerson2": "${person2Name}에게 하는 조언",
+    "forPerson1": "나에게 하는 조언",
+    "forPerson2": "상대방에게 하는 조언",
     "firstYearTips": ["신혼 첫 해 팁들"],
     "conflictResolution": "부부 갈등 해결법",
     "crisisManagement": "위기 극복 방법",
