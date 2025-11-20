@@ -131,18 +131,14 @@ export default function BuyCreditsPage() {
       const tossPayments = await loadTossPayments(clientKey);
 
       // 3. 결제창 띄우기
-      await tossPayments.requestPayment({
-        method: 'CARD',
-        amount: {
-          currency: 'KRW',
-          value: amount,
-        },
+      await tossPayments.payment({
+        amount,
         orderId,
         orderName,
         successUrl: `${window.location.origin}/payment/success`,
         failUrl: `${window.location.origin}/payment/fail`,
         customerName: '고객',
-      });
+      }).requestPayment('CARD');
     } catch (error: any) {
       console.error('Payment error:', error);
       if (error.code !== 'USER_CANCEL') {
