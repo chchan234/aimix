@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { isLoggedIn } from '../services/auth';
-import { loadTossPayments } from '@tosspayments/tosspayments-sdk';
+import { loadTossPayments, ANONYMOUS } from '@tosspayments/tosspayments-sdk';
 
 interface CreditPackage {
   id: string;
@@ -90,15 +90,26 @@ export default function CreditPurchasePage() {
       // 2. 토스페이먼츠 SDK 로드
       const tossPayments = await loadTossPayments(clientKey);
 
-      // 3. 결제창 띄우기
-      await tossPayments.payment({
-        amount,
+      // 3. 결제창 객체 생성
+      const payment = tossPayments.payment({ customerKey: ANONYMOUS });
+
+      // 4. 결제창 띄우기
+      await payment.requestPayment({
+        method: 'CARD',
+        amount: {
+          currency: 'KRW',
+          value: amount,
+        },
         orderId,
         orderName,
         successUrl: `${window.location.origin}/payment/success`,
         failUrl: `${window.location.origin}/payment/fail`,
+        customerEmail: '',
         customerName: '고객',
-      }).requestPayment('CARD');
+        card: {
+          flowMode: 'DEFAULT',
+        },
+      });
     } catch (error: any) {
       console.error('Payment error:', error);
       if (error.code !== 'USER_CANCEL') {
