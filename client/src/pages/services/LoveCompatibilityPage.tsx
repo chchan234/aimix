@@ -177,7 +177,7 @@ export default function LoveCompatibilityPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-foreground font-medium mb-2">
-                  첫 번째 사람 생년월일
+                  나의 생년월일
                 </label>
                 <input
                   type="date"
@@ -189,7 +189,7 @@ export default function LoveCompatibilityPage() {
 
               <div>
                 <label className="block text-foreground font-medium mb-2">
-                  두 번째 사람 생년월일
+                  상대방 생년월일
                 </label>
                 <input
                   type="date"
@@ -279,14 +279,42 @@ export default function LoveCompatibilityPage() {
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <h4 className="text-pink-600 dark:text-pink-400 font-medium mb-2">세부 궁합</h4>
                 <div className="grid gap-2">
-                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                    <span className="text-muted-foreground text-xs">감정 소통:</span>
-                    <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.communication}</p>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                    <span className="text-muted-foreground text-xs">가치관:</span>
-                    <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.values}</p>
-                  </div>
+                  {result.analysis.detailedCompatibility.communication && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">감정 소통</span>
+                        <span className="text-pink-600 dark:text-pink-400 text-xs font-medium">{result.analysis.detailedCompatibility.communication.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.communication.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.detailedCompatibility.values && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">가치관</span>
+                        <span className="text-pink-600 dark:text-pink-400 text-xs font-medium">{result.analysis.detailedCompatibility.values.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.values.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.detailedCompatibility.lifestyle && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">생활습관</span>
+                        <span className="text-pink-600 dark:text-pink-400 text-xs font-medium">{result.analysis.detailedCompatibility.lifestyle.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.lifestyle.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.detailedCompatibility.physical && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">신체적 궁합</span>
+                        <span className="text-pink-600 dark:text-pink-400 text-xs font-medium">{result.analysis.detailedCompatibility.physical.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.physical.analysis}</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

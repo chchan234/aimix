@@ -177,7 +177,7 @@ export default function NameCompatibilityPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-foreground font-medium mb-2">
-                  첫 번째 사람 이름
+                  나의 이름
                 </label>
                 <input
                   type="text"
@@ -190,7 +190,7 @@ export default function NameCompatibilityPage() {
 
               <div>
                 <label className="block text-foreground font-medium mb-2">
-                  두 번째 사람 이름
+                  상대방 이름
                 </label>
                 <input
                   type="text"
@@ -269,26 +269,37 @@ export default function NameCompatibilityPage() {
             {result.analysis.elementAnalysis && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <h4 className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">음양오행 분석</h4>
-                <p className="text-foreground text-sm">{result.analysis.elementAnalysis.combined}</p>
+                {result.analysis.elementAnalysis.interaction && (
+                  <p className="text-foreground text-sm mb-1">{result.analysis.elementAnalysis.interaction}</p>
+                )}
+                {result.analysis.elementAnalysis.harmony && (
+                  <p className="text-muted-foreground text-xs">{result.analysis.elementAnalysis.harmony}</p>
+                )}
               </div>
             )}
 
-            {result.analysis.nameCharacteristics && (
+            {result.analysis.nameEnergy && (
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <h4 className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">이름의 기운</h4>
                 <div className="space-y-2">
-                  <div>
-                    <h5 className="text-muted-foreground text-xs mb-1">첫 번째 이름</h5>
-                    <p className="text-foreground text-sm">{result.analysis.nameCharacteristics.name1Energy}</p>
-                  </div>
-                  <div>
-                    <h5 className="text-muted-foreground text-xs mb-1">두 번째 이름</h5>
-                    <p className="text-foreground text-sm">{result.analysis.nameCharacteristics.name2Energy}</p>
-                  </div>
-                  <div>
-                    <h5 className="text-muted-foreground text-xs mb-1">시너지</h5>
-                    <p className="text-foreground text-sm">{result.analysis.nameCharacteristics.synergy}</p>
-                  </div>
+                  {result.analysis.nameEnergy.name1 && (
+                    <div>
+                      <h5 className="text-muted-foreground text-xs mb-1">나의 이름</h5>
+                      <p className="text-foreground text-sm">{result.analysis.nameEnergy.name1.energy}</p>
+                    </div>
+                  )}
+                  {result.analysis.nameEnergy.name2 && (
+                    <div>
+                      <h5 className="text-muted-foreground text-xs mb-1">상대방 이름</h5>
+                      <p className="text-foreground text-sm">{result.analysis.nameEnergy.name2.energy}</p>
+                    </div>
+                  )}
+                  {result.analysis.nameEnergy.synergy && (
+                    <div>
+                      <h5 className="text-muted-foreground text-xs mb-1">시너지</h5>
+                      <p className="text-foreground text-sm">{result.analysis.nameEnergy.synergy}</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -297,14 +308,33 @@ export default function NameCompatibilityPage() {
               <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                 <h4 className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">세부 분석</h4>
                 <div className="grid gap-2">
-                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                    <span className="text-muted-foreground text-xs">연애 궁합:</span>
-                    <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.love}</p>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                    <span className="text-muted-foreground text-xs">우정 궁합:</span>
-                    <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.friendship}</p>
-                  </div>
+                  {result.analysis.detailedCompatibility.love && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">연애 궁합</span>
+                        <span className="text-indigo-600 dark:text-indigo-400 text-xs font-medium">{result.analysis.detailedCompatibility.love.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.love.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.detailedCompatibility.business && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">사업 궁합</span>
+                        <span className="text-indigo-600 dark:text-indigo-400 text-xs font-medium">{result.analysis.detailedCompatibility.business.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.business.analysis}</p>
+                    </div>
+                  )}
+                  {result.analysis.detailedCompatibility.friendship && (
+                    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-muted-foreground text-xs">우정 궁합</span>
+                        <span className="text-indigo-600 dark:text-indigo-400 text-xs font-medium">{result.analysis.detailedCompatibility.friendship.score}점</span>
+                      </div>
+                      <p className="text-foreground text-sm">{result.analysis.detailedCompatibility.friendship.analysis}</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

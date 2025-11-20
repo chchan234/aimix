@@ -183,7 +183,7 @@ export default function MarriageCompatibilityPage() {
 
             <div className="space-y-4">
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
-                <h4 className="text-foreground font-medium mb-3">첫 번째 사람</h4>
+                <h4 className="text-foreground font-medium mb-3">나</h4>
                 <div className="space-y-3">
                   <div>
                     <label className="block text-foreground text-sm font-medium mb-2">
@@ -212,7 +212,7 @@ export default function MarriageCompatibilityPage() {
               </div>
 
               <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
-                <h4 className="text-foreground font-medium mb-3">두 번째 사람</h4>
+                <h4 className="text-foreground font-medium mb-3">상대방</h4>
                 <div className="space-y-3">
                   <div>
                     <label className="block text-foreground text-sm font-medium mb-2">
