@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
-import ResultCard from '../../components/ResultCard';
 import { analyzeBodyType } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
 
@@ -439,27 +438,6 @@ export default function BodyAnalysisPage() {
               <p className="text-muted-foreground">{result.overallComment}</p>
             </div>
           )}
-
-          {/* Download Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">download</span>
-              결과 저장하기
-            </h3>
-            <ResultCard
-              serviceType="body-analysis"
-              serviceName="AI 체형 분석"
-              mainResult={result.bodyType}
-              highlights={[
-                { label: '어깨', value: typeof result.proportions?.shoulder === 'string' ? result.proportions.shoulder : (result.proportions?.shoulder as any)?.description || '' },
-                { label: '허리', value: typeof result.proportions?.waist === 'string' ? result.proportions.waist : (result.proportions?.waist as any)?.description || '' },
-                { label: '힙', value: typeof result.proportions?.hip === 'string' ? result.proportions.hip : (result.proportions?.hip as any)?.description || '' },
-              ]}
-              colorTheme="teal"
-              creditsRequired={1}
-            />
-          </div>
-
           {/* Try Again */}
           <button
             onClick={handleReset}

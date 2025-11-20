@@ -1203,27 +1203,7 @@ export async function calculateBMI(height: number, weight: number, age: number, 
   }
 }
 
-// 15. Result Card Generation - 결과물 카드 이미지 생성
-export async function generateResultCard(prompt: string) {
-  try {
-    const response = await getClient().generateImage(prompt);
-
-    return {
-      success: true,
-      imageData: response.imageData,
-      mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
-    };
-  } catch (error) {
-    console.error('Result card generation error:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
-    };
-  }
-}
-
-// 16. Personal Color Analysis - 퍼스널 컬러 진단
+// 15. Personal Color Analysis - 퍼스널 컬러 진단
 export async function analyzePersonalColor(imageBase64: string) {
   try {
     const prompt = `당신은 15년 경력의 퍼스널컬러 전문 컨설턴트입니다. 연예인, 아나운서, 대기업 임원들의 이미지 컨설팅을 담당해왔으며, 수천 명의 컬러 진단 경험이 있습니다.
@@ -1348,7 +1328,6 @@ export default {
   analyzePetSoulmate,
   generateBabyFace,
   findCelebrityDoppelganger,
-  generateResultCard,
   analyzePersonalColor,
   // Health services
   analyzeBodyType,

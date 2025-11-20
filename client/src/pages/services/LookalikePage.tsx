@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
-import ResultCard from '../../components/ResultCard';
 import { findLookalike } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
 
@@ -384,26 +383,6 @@ export default function LookalikePage() {
               <p className="text-muted-foreground text-sm">전체적인 인상</p>
               <p className="text-foreground">{result.faceAnalysis.overallImpression}</p>
             </div>
-          </div>
-
-          {/* Download Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">download</span>
-              결과 저장하기
-            </h3>
-            <ResultCard
-              serviceType="lookalike"
-              serviceName="닮은꼴 찾기"
-              mainResult={result.matches[0]?.name || ''}
-              subResult={`유사도: ${result.matches[0]?.similarity}%`}
-              highlights={result.matches.slice(0, 3).map((match, i) => ({
-                label: `#${i + 1}`,
-                value: `${match.name} (${match.similarity}%)`,
-              }))}
-              colorTheme="pink"
-              creditsRequired={1}
-            />
           </div>
 
           {/* Try Again */}

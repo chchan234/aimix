@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
-import ResultCard from '../../components/ResultCard';
 import { calculateBMI } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
 
@@ -485,28 +484,6 @@ export default function BMICalculatorPage() {
               <p className="text-muted-foreground">{result.overallComment}</p>
             </div>
           )}
-
-          {/* Download Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">download</span>
-              결과 저장하기
-            </h3>
-            <ResultCard
-              serviceType="bmi"
-              serviceName="BMI 계산기"
-              mainResult={`BMI ${result.bmi.toFixed(1)}`}
-              subResult={result.category}
-              highlights={[
-                { label: '적정 체중', value: `${result.idealWeight?.min || 0}~${result.idealWeight?.max || 0}kg` },
-                { label: '대사 연령', value: result.metabolicAge || '분석 중' },
-                { label: '유지 칼로리', value: result.dailyCalories ? `${result.dailyCalories.maintain}kcal` : '-' },
-              ]}
-              colorTheme="green"
-              creditsRequired={1}
-            />
-          </div>
-
           {/* Try Again */}
           <button
             onClick={handleReset}

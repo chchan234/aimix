@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
-import ResultCard from '../../components/ResultCard';
 import { analyzePersonalColor } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
 
@@ -575,28 +574,6 @@ export default function PersonalColorPage() {
             </h3>
             <p className="text-muted-foreground leading-relaxed">{result.explanation}</p>
           </div>
-
-          {/* Download Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">download</span>
-              결과 저장하기
-            </h3>
-            <ResultCard
-              serviceType="personal-color"
-              serviceName="퍼스널 컬러 진단"
-              mainResult={result.personalColor}
-              subResult={`신뢰도: ${result.confidence}%`}
-              highlights={[
-                { label: '언더톤', value: result.skinAnalysis.undertone },
-                { label: '베스트 컬러', value: result.recommendedColors.best.slice(0, 2).join(', ') },
-                { label: '추천 메탈', value: result.clothingRecommendations?.metals || '골드' },
-              ]}
-              colorTheme="purple"
-              creditsRequired={1}
-            />
-          </div>
-
           {/* Try Again */}
           <button
             onClick={handleReset}

@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
-import ResultCard from '../../components/ResultCard';
 import { analyzeSkin } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
 
@@ -522,28 +521,6 @@ export default function SkinAnalysisPage() {
               <p className="text-muted-foreground">{result.overallComment}</p>
             </div>
           )}
-
-          {/* Download Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              <span className="material-symbols-outlined align-middle mr-2">download</span>
-              결과 저장하기
-            </h3>
-            <ResultCard
-              serviceType="skin-analysis"
-              serviceName="AI 피부 분석"
-              mainResult={result.skinType}
-              subResult={`피부 나이: ${result.skinAge}세`}
-              highlights={[
-                { label: '수분도', value: `${normalizeScore(result.conditions.hydration.score || result.conditions.hydration.level || 0)}%` },
-                { label: '탄력도', value: `${normalizeScore(result.conditions.elasticity.score || result.conditions.elasticity.level || 0)}%` },
-                { label: '주요 고민', value: result.concerns && result.concerns.length > 0 ? (typeof result.concerns[0] === 'string' ? result.concerns[0] : result.concerns[0].issue || result.concerns[0].name || '') : '없음' },
-              ]}
-              colorTheme="pink"
-              creditsRequired={1}
-            />
-          </div>
-
           {/* Try Again */}
           <button
             onClick={handleReset}
