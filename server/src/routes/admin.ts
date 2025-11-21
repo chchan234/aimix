@@ -164,7 +164,15 @@ router.get('/users/:userId', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const userTransactions = await db.select()
+    const userTransactions = await db.select({
+      id: transactions.id,
+      type: transactions.type,
+      creditAmount: transactions.amount,
+      creditBalanceAfter: transactions.creditsAfter,
+      paymentMethod: sql<string>`${transactions.metadata}->>'method'`,
+      actualAmount: sql<number>`(${transactions.metadata}->>'actualAmount')::int`,
+      createdAt: transactions.createdAt
+    })
       .from(transactions)
       .where(eq(transactions.userId, userId))
       .orderBy(desc(transactions.createdAt))
