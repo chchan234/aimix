@@ -29,14 +29,30 @@ router.post('/', async (req, res) => {
       });
     }
 
+    // Create service record first
+    const [service] = await db
+      .insert(services)
+      .values({
+        userId,
+        serviceType,
+        inputData: inputData || {},
+        status: 'completed',
+        creditCost: 0,
+        processingTime: processingTime || 0,
+        completedAt: new Date(),
+      })
+      .returning();
+
     // Set expiry date to 12 months from now
     const expiresAt = new Date();
     expiresAt.setMonth(expiresAt.getMonth() + 12);
 
+    // Create result record linked to service
     const [newResult] = await db
       .insert(serviceResults)
       .values({
         userId,
+        serviceId: service.id,
         inputData: inputData || {},
         resultData,
         aiModel: aiModel || 'gemini-2.0-flash-exp',
