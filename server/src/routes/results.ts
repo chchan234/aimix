@@ -15,33 +15,97 @@ const router = express.Router();
 router.use(authenticateToken);
 
 /**
+ * POST /api/results
+ * Save a new result for the authenticated user
+ */
+router.post('/', async (req, res) => {
+  try {
+    const userId = req.user!.userId;
+    const { serviceType, inputData, resultData, aiModel, tokensUsed, processingTime } = req.body;
+
+    if (!serviceType || !resultData) {
+      return res.status(400).json({
+        error: 'serviceType and resultData are required',
+      });
+    }
+
+    // Set expiry date to 12 months from now
+    const expiresAt = new Date();
+    expiresAt.setMonth(expiresAt.getMonth() + 12);
+
+    const [newResult] = await db
+      .insert(serviceResults)
+      .values({
+        userId,
+        inputData: inputData || {},
+        resultData,
+        aiModel: aiModel || 'gemini-2.0-flash-exp',
+        tokensUsed: tokensUsed || 0,
+        processingTime: processingTime || 0,
+        expiresAt,
+      })
+      .returning();
+
+    res.json({
+      success: true,
+      result: newResult,
+      message: 'Result saved successfully',
+    });
+  } catch (error) {
+    console.error('Error saving result:', error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : 'Failed to save result',
+    });
+  }
+});
+
+/**
  * GET /api/results
  * Get all results for the authenticated user
  */
 router.get('/', async (req, res) => {
   try {
     const userId = req.user!.userId;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const serviceType = req.query.serviceType as string;
+    const offset = (page - 1) * limit;
 
-    const results = await db
-      .select({
-        id: serviceResults.id,
-        serviceType: services.serviceType,
-        serviceName: services.nameKo,
-        category: services.category,
-        inputData: serviceResults.inputData,
-        resultData: serviceResults.resultData,
-        resultFiles: serviceResults.resultFiles,
-        creditCost: services.creditCost,
-        createdAt: serviceResults.createdAt,
-      })
+    let query = db
+      .select()
       .from(serviceResults)
-      .leftJoin(services, eq(serviceResults.serviceId, services.id))
       .where(eq(serviceResults.userId, userId))
-      .orderBy(desc(serviceResults.createdAt));
+      .orderBy(desc(serviceResults.createdAt))
+      .limit(limit)
+      .offset(offset);
+
+    // Filter by service type if provided
+    if (serviceType) {
+      query = db
+        .select()
+        .from(serviceResults)
+        .leftJoin(services, eq(serviceResults.serviceId, services.id))
+        .where(
+          and(
+            eq(serviceResults.userId, userId),
+            eq(services.serviceType, serviceType)
+          )
+        )
+        .orderBy(desc(serviceResults.createdAt))
+        .limit(limit)
+        .offset(offset) as any;
+    }
+
+    const results = await query;
 
     res.json({
       success: true,
       results,
+      pagination: {
+        page,
+        limit,
+        hasMore: results.length === limit,
+      },
     });
   } catch (error) {
     console.error('Error fetching results:', error);
@@ -61,19 +125,8 @@ router.get('/:id', async (req, res) => {
     const resultId = req.params.id;
 
     const result = await db
-      .select({
-        id: serviceResults.id,
-        serviceType: services.serviceType,
-        serviceName: services.nameKo,
-        category: services.category,
-        inputData: serviceResults.inputData,
-        resultData: serviceResults.resultData,
-        resultFiles: serviceResults.resultFiles,
-        creditCost: services.creditCost,
-        createdAt: serviceResults.createdAt,
-      })
+      .select()
       .from(serviceResults)
-      .leftJoin(services, eq(serviceResults.serviceId, services.id))
       .where(
         and(
           eq(serviceResults.id, resultId),
