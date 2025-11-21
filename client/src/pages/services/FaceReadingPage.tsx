@@ -283,14 +283,20 @@ export default function FaceReadingPage() {
                 {result.analysis.overallFortune && (
                   <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-500/30">
                     <h4 className="text-foreground font-medium mb-2">종합 운세</h4>
-                    <p className="text-sm mb-2">{result.analysis.overallFortune.summary}</p>
+                    {typeof result.analysis.overallFortune.summary === 'string' && (
+                      <p className="text-sm mb-2">{result.analysis.overallFortune.summary}</p>
+                    )}
                     <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div>
-                        <span className="text-blue-400">운세 점수:</span> {result.analysis.overallFortune.fortuneScore}점
-                      </div>
-                      <div>
-                        <span className="text-blue-400">인생 흐름:</span> {result.analysis.overallFortune.lifePath}
-                      </div>
+                      {result.analysis.overallFortune.fortuneScore && (
+                        <div>
+                          <span className="text-blue-400">운세 점수:</span> {result.analysis.overallFortune.fortuneScore}점
+                        </div>
+                      )}
+                      {result.analysis.overallFortune.lifePath && (
+                        <div>
+                          <span className="text-blue-400">인생 흐름:</span> {result.analysis.overallFortune.lifePath}
+                        </div>
+                      )}
                     </div>
                     {result.analysis.overallFortune.luckyAge && Array.isArray(result.analysis.overallFortune.luckyAge) && (
                       <div className="mt-2 text-xs">
