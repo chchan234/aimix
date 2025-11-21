@@ -1297,7 +1297,9 @@ export default function AdminPage() {
                     <div className="flex items-center gap-4 text-sm">
                       <div>
                         <span className="text-gray-600">크레딧: </span>
-                        <span className="font-medium">{tx.creditAmount > 0 ? '+' : ''}{tx.creditAmount}개</span>
+                        <span className="font-medium">
+                          {(tx.creditAmount ?? 0) > 0 ? '+' : ''}{tx.creditAmount ?? 0}개
+                        </span>
                       </div>
                       {typeof tx.actualAmount === 'number' && tx.actualAmount !== 0 && (
                         <div>
@@ -1307,7 +1309,7 @@ export default function AdminPage() {
                       )}
                       <div className="ml-auto">
                         <span className="text-gray-600">잔액: </span>
-                        <span className="font-medium">{tx.creditBalanceAfter}개</span>
+                        <span className="font-medium">{tx.creditBalanceAfter ?? 0}개</span>
                       </div>
                     </div>
                   </div>
