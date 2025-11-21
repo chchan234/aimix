@@ -1299,7 +1299,7 @@ export default function AdminPage() {
                         <span className="text-gray-600">크레딧: </span>
                         <span className="font-medium">{tx.creditAmount > 0 ? '+' : ''}{tx.creditAmount}개</span>
                       </div>
-                      {tx.actualAmount !== null && tx.actualAmount !== 0 && (
+                      {typeof tx.actualAmount === 'number' && tx.actualAmount !== 0 && (
                         <div>
                           <span className="text-gray-600">금액: </span>
                           <span className="font-medium">{tx.actualAmount.toLocaleString()}원</span>
