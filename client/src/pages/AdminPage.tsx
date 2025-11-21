@@ -1278,18 +1278,37 @@ export default function AdminPage() {
               <h4 className="font-semibold mb-3">최근 거래 내역</h4>
               <div className="space-y-2">
                 {selectedUserDetail.transactions.slice(0, 20).map((tx) => (
-                  <div key={tx.id} className="p-2 bg-gray-50 rounded text-sm flex justify-between">
-                    <div>
-                      <span className={`px-2 py-0.5 rounded text-xs ${
-                        tx.type === 'charge' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
-                      }`}>
-                        {tx.type}
-                      </span>
-                      <span className="ml-2">{tx.creditAmount > 0 ? '+' : ''}{tx.creditAmount}</span>
-                      {tx.paymentMethod && <span className="ml-2 text-gray-500">({tx.paymentMethod})</span>}
+                  <div key={tx.id} className="p-3 bg-gray-50 rounded text-sm">
+                    <div className="flex justify-between items-start mb-1">
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                          tx.type === 'charge' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
+                        }`}>
+                          {tx.type === 'charge' ? '충전' : '차감'}
+                        </span>
+                        {tx.paymentMethod && (
+                          <span className="text-xs text-gray-500">({tx.paymentMethod})</span>
+                        )}
+                      </div>
+                      <div className="text-gray-500 text-xs">
+                        {new Date(tx.createdAt).toLocaleString()}
+                      </div>
                     </div>
-                    <div className="text-gray-500">
-                      {new Date(tx.createdAt).toLocaleString()}
+                    <div className="flex items-center gap-4 text-sm">
+                      <div>
+                        <span className="text-gray-600">크레딧: </span>
+                        <span className="font-medium">{tx.creditAmount > 0 ? '+' : ''}{tx.creditAmount}개</span>
+                      </div>
+                      {tx.actualAmount !== null && tx.actualAmount !== 0 && (
+                        <div>
+                          <span className="text-gray-600">금액: </span>
+                          <span className="font-medium">{tx.actualAmount.toLocaleString()}원</span>
+                        </div>
+                      )}
+                      <div className="ml-auto">
+                        <span className="text-gray-600">잔액: </span>
+                        <span className="font-medium">{tx.creditBalanceAfter}개</span>
+                      </div>
                     </div>
                   </div>
                 ))}
