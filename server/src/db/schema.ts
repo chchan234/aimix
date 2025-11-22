@@ -130,36 +130,25 @@ export const selectServiceSchema = createSelectSchema(services);
 // ================================
 // Service Results Table
 // ================================
+// Matches actual DB schema in schema.sql
 export const serviceResults = pgTable('service_results', {
   id: uuid('id').primaryKey().defaultRandom(),
-  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }),
-  serviceId: uuid('service_id').references(() => services.id),
+  serviceId: uuid('service_id').notNull().references(() => services.id, { onDelete: 'cascade' }),
 
-  // Input
-  inputData: jsonb('input_data'),
-  inputFiles: text('input_files').array(),
+  resultData: jsonb('result_data').notNull(),
+  resultImageUrl: text('result_image_url'),
+  resultText: text('result_text'),
 
-  // Result
-  resultData: jsonb('result_data'),
-  resultFiles: text('result_files').array(),
-
-  // AI Info
-  aiModel: varchar('ai_model', { length: 50 }),
   promptTemplateId: uuid('prompt_template_id').references(() => promptTemplates.id),
+  aiModel: varchar('ai_model', { length: 30 }),
   tokensUsed: integer('tokens_used'),
-  processingTime: integer('processing_time'), // ms
 
-  // Sharing
-  isPublic: boolean('is_public').notNull().default(false),
-  shareToken: varchar('share_token', { length: 100 }).unique(),
-
-  // Expiry (12 months)
-  expiresAt: timestamp('expires_at').notNull(),
+  userRating: integer('user_rating'),
+  userFeedback: text('user_feedback'),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (table) => ({
-  userServiceIdx: index('idx_user_service').on(table.userId, table.serviceId),
-  shareTokenIdx: index('idx_share_token').on(table.shareToken),
+  serviceResultsIdx: index('idx_service_results').on(table.serviceId),
 }));
 
 export const insertServiceResultSchema = createInsertSchema(serviceResults);
