@@ -66,7 +66,18 @@ const SERVICE_LABELS: { [key: string]: string } = {
   'personal-color': '퍼스널 컬러',
   'body-analysis': '체형 분석',
   'skin-analysis': '피부 분석',
-  'bmi': 'BMI 계산'
+  'bmi': 'BMI 계산',
+  'big-five': '빅파이브 성격 테스트',
+  'palmistry': '손금 분석',
+  'stress-test': '스트레스 테스트',
+  'marriage-compatibility': '결혼 궁합',
+  'zodiac': '띠 운세',
+  'mbti': 'MBTI 분석',
+  'enneagram': '에니어그램 테스트',
+  'geumjjoki': '금쪽이 테스트',
+  'horoscope': '별자리 운세',
+  'name-compatibility': '이름 궁합',
+  'love-compatibility': '연애 궁합'
 };
 
 // 서비스 타입 → 서비스 페이지 URL 매핑
@@ -94,7 +105,18 @@ const SERVICE_URLS: { [key: string]: string } = {
   'personal-color': '/services/personal-color',
   'body-analysis': '/services/body-analysis',
   'skin-analysis': '/services/skin-analysis',
-  'bmi': '/services/bmi-calculator'
+  'bmi': '/services/bmi-calculator',
+  'big-five': '/services/big-five-test',
+  'palmistry': '/services/palmistry',
+  'stress-test': '/services/stress-test',
+  'marriage-compatibility': '/services/marriage-compatibility',
+  'zodiac': '/services/zodiac',
+  'mbti': '/services/mbti-analysis',
+  'enneagram': '/services/enneagram-test',
+  'geumjjoki': '/services/geumjjoki-test',
+  'horoscope': '/services/horoscope',
+  'name-compatibility': '/services/name-compatibility',
+  'love-compatibility': '/services/love-compatibility'
 };
 
 export default function MyResultsPage() {

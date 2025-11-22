@@ -496,35 +496,39 @@ export default function PersonalColorPage() {
               추천 컬러
             </h3>
 
-            <div className="mb-4">
-              <p className="text-purple-400 font-semibold mb-2">Best Colors</p>
-              <div className="flex flex-wrap gap-2">
-                {result.recommendedColors.best.map((color, index) => (
-                  <div key={index} className="flex items-center gap-2 px-3 py-2 bg-purple-500/20 rounded-lg">
-                    <div
-                      className="w-4 h-4 rounded-full border border-gray-500"
-                      style={{ backgroundColor: getColorHex(color) }}
-                    />
-                    <span className="text-foreground text-sm">{color}</span>
-                  </div>
-                ))}
+            {result.recommendedColors?.best && Array.isArray(result.recommendedColors.best) && (
+              <div className="mb-4">
+                <p className="text-purple-400 font-semibold mb-2">Best Colors</p>
+                <div className="flex flex-wrap gap-2">
+                  {result.recommendedColors.best.map((color, index) => (
+                    <div key={index} className="flex items-center gap-2 px-3 py-2 bg-purple-500/20 rounded-lg">
+                      <div
+                        className="w-4 h-4 rounded-full border border-gray-500"
+                        style={{ backgroundColor: getColorHex(color) }}
+                      />
+                      <span className="text-foreground text-sm">{color}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            <div>
-              <p className="text-red-400 font-semibold mb-2">Avoid Colors</p>
-              <div className="flex flex-wrap gap-2">
-                {result.recommendedColors.avoid.map((color, index) => (
-                  <div key={index} className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg">
-                    <div
-                      className="w-4 h-4 rounded-full border border-gray-500"
-                      style={{ backgroundColor: getColorHex(color) }}
-                    />
-                    <span className="text-foreground text-sm">{color}</span>
-                  </div>
-                ))}
+            {result.recommendedColors?.avoid && Array.isArray(result.recommendedColors.avoid) && (
+              <div>
+                <p className="text-red-400 font-semibold mb-2">Avoid Colors</p>
+                <div className="flex flex-wrap gap-2">
+                  {result.recommendedColors.avoid.map((color, index) => (
+                    <div key={index} className="flex items-center gap-2 px-3 py-2 bg-red-500/20 rounded-lg">
+                      <div
+                        className="w-4 h-4 rounded-full border border-gray-500"
+                        style={{ backgroundColor: getColorHex(color) }}
+                      />
+                      <span className="text-foreground text-sm">{color}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Makeup Recommendations */}
