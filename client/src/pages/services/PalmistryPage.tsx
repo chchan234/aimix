@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzePalmistry } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
+import { useSavedResult } from '../../hooks/useSavedResult';
 
 export default function PalmistryPage() {
   const { t } = useTranslation();
@@ -14,6 +15,13 @@ export default function PalmistryPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [currentCredits, setCurrentCredits] = useState(0);
+
+  // Load saved result if resultId is in URL
+  useSavedResult<any>((resultData) => {
+    setResult(resultData);
+    setStep("result");
+  });
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const serviceCost = 25;

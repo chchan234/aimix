@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeSaju } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
+import { useSavedResult } from '../../hooks/useSavedResult';
 
 export default function SajuPage() {
   const { t } = useTranslation();
@@ -15,6 +16,13 @@ export default function SajuPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [currentCredits, setCurrentCredits] = useState(0);
+
+
+  // Load saved result if resultId is in URL
+  useSavedResult<any>((resultData) => {
+    setResult(resultData);
+    setStep("result");
+  });
 
   const serviceCost = 25;
 

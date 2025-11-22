@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { getStressQuestions, analyzeStress } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
+import { useSavedResult } from '../../hooks/useSavedResult';
 
 interface Question {
   id: number;
@@ -25,6 +26,13 @@ export default function StressTestPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string>('');
+
+
+  // Load saved result if resultId is in URL
+  useSavedResult<any>((resultData) => {
+    setResult(resultData);
+    setStep("result");
+  });
 
   useEffect(() => {
     loadQuestions();

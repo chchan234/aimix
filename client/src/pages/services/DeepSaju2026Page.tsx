@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeDeepSaju2026 } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
+import { useSavedResult } from '../../hooks/useSavedResult';
 
 interface MonthlyFortune {
   overall: string;
@@ -79,6 +80,13 @@ export default function DeepSaju2026Page() {
   const [result, setResult] = useState<DeepSajuResult | null>(null);
   const [currentCredits, setCurrentCredits] = useState(0);
   const [activeTab, setActiveTab] = useState<'overview' | 'monthly' | 'detailed'>('overview');
+
+
+  // Load saved result if resultId is in URL
+  useSavedResult<any>((resultData) => {
+    setResult(resultData);
+    setStep("result");
+  });
 
   const serviceCost = 50;
 

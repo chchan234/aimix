@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeFaceReading } from '../../services/ai';
 import { getCurrentUser, isLoggedIn, getToken } from '../../services/auth';
+import { useSavedResult } from '../../hooks/useSavedResult';
 
 export default function FaceReadingPage() {
   const { t } = useTranslation();
@@ -16,6 +17,13 @@ export default function FaceReadingPage() {
   const [currentCredits, setCurrentCredits] = useState(0);
   const [saving, setSaving] = useState(false);
   const [aiModel, setAiModel] = useState<string | undefined>();
+
+
+  // Load saved result if resultId is in URL
+  useSavedResult<any>((resultData) => {
+    setResult(resultData);
+    setStep("result");
+  });
 
   const serviceCost = 25;
 

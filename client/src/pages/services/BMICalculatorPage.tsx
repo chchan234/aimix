@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { calculateBMI } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
+import { useSavedResult } from '../../hooks/useSavedResult';
 
 interface BMIResult {
   bmi: number;
@@ -37,6 +38,13 @@ export default function BMICalculatorPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<BMIResult | null>(null);
   const [error, setError] = useState<string>('');
+
+
+  // Load saved result if resultId is in URL
+  useSavedResult<any>((resultData) => {
+    setResult(resultData);
+    setStep("result");
+  });
 
   // Auth state monitoring - redirect if logged out
   useEffect(() => {

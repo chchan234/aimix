@@ -5,6 +5,7 @@ import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import ExecuteButton from '../../components/ExecuteButton';
 import { swapGender } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
+import { useSavedResult } from '../../hooks/useSavedResult';
 
 export default function GenderSwapPage() {
   const { t } = useTranslation();
@@ -14,6 +15,14 @@ export default function GenderSwapPage() {
   const [loading, setLoading] = useState(false);
   const [resultImage, setResultImage] = useState<string | null>(null);
   const [currentCredits, setCurrentCredits] = useState(0);
+
+  // Load saved result if resultId is in URL
+  useSavedResult<{ imageUrl?: string; generatedImage?: string; image?: string }>((resultData) => {
+    const imageUrl = resultData.imageUrl || resultData.generatedImage || resultData.image || "";
+    if (imageUrl) setResultImage(imageUrl);
+    setStep("result");
+  });
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const serviceCost = 35;

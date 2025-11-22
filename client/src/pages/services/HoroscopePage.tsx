@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeHoroscope } from '../../services/ai';
 import { getCurrentUser, isLoggedIn } from '../../services/auth';
+import { useSavedResult } from '../../hooks/useSavedResult';
 
 const ZODIAC_SIGNS = [
   { value: 'aries', label: '양자리 (3/21-4/19)' },
@@ -29,6 +30,13 @@ export default function HoroscopePage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [currentCredits, setCurrentCredits] = useState(0);
+
+
+  // Load saved result if resultId is in URL
+  useSavedResult<any>((resultData) => {
+    setResult(resultData);
+    setStep("result");
+  });
 
   const serviceCost = 15;
 

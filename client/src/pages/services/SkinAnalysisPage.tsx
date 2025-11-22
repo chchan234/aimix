@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeSkin } from '../../services/ai';
 import { isLoggedIn } from '../../services/auth';
+import { useSavedResult } from '../../hooks/useSavedResult';
 
 interface SkinAnalysisResult {
   skinType: string;
@@ -50,6 +51,13 @@ export default function SkinAnalysisPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<SkinAnalysisResult | null>(null);
   const [error, setError] = useState<string>('');
+
+  // Load saved result if resultId is in URL
+  useSavedResult<any>((resultData) => {
+    setResult(resultData);
+    setStep("result");
+  });
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auth state monitoring - redirect if logged out
