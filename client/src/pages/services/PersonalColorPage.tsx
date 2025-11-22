@@ -154,7 +154,7 @@ export default function PersonalColorPage() {
   const params = new URLSearchParams(window.location.search);
   const hasResultId = params.has('resultId');
 
-  const [step, setStep] = useState<'intro' | 'upload' | 'result'>(hasResultId ? 'upload' : 'intro');
+  const [step, setStep] = useState<'intro' | 'upload' | 'result'>(hasResultId ? 'result' : 'intro');
   const [imagePreview, setImagePreview] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PersonalColorResult | null>(null);
