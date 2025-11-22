@@ -14,6 +14,7 @@ export default function BabyFacePage() {
   const [resultImage, setResultImage] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [saving, setSaving] = useState(false);
+  const [aiModel, setAiModel] = useState<string | undefined>();
   const parent1InputRef = useRef<HTMLInputElement>(null);
   const parent2InputRef = useRef<HTMLInputElement>(null);
 
@@ -114,6 +115,7 @@ export default function BabyFacePage() {
       if (response.success && response.imageData) {
         const imageBase64 = `data:${response.mimeType};base64,${response.imageData}`;
         setResultImage(imageBase64);
+        setAiModel(response.model);
         setStep('result');
       } else {
         setError(response.error || '아이 얼굴 예측에 실패했습니다.');
@@ -157,7 +159,7 @@ export default function BabyFacePage() {
           serviceType: 'baby-face',
           inputData: { style },
           resultData: { image: resultImage },
-          aiModel: 'gemini-2.0-flash-exp',
+          aiModel,
           tokensUsed: 0,
           processingTime: 0,
         }),

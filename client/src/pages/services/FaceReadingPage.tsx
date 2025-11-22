@@ -15,6 +15,7 @@ export default function FaceReadingPage() {
   const [result, setResult] = useState<any>(null);
   const [currentCredits, setCurrentCredits] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [aiModel, setAiModel] = useState<string | undefined>();
 
   const serviceCost = 25;
 
@@ -78,6 +79,7 @@ export default function FaceReadingPage() {
 
       const response = await analyzeFaceReading(base64) as any;
       setResult(response);
+      setAiModel(response.model);
       setStep('result');
 
       if (response.credits?.remaining !== undefined) {
@@ -120,7 +122,7 @@ export default function FaceReadingPage() {
           serviceType: 'face-reading',
           inputData: {},
           resultData: result,
-          aiModel: 'gemini-2.0-flash-exp',
+          aiModel,
           tokensUsed: 0,
           processingTime: 0,
         }),

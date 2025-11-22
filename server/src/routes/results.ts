@@ -53,7 +53,7 @@ router.post('/', async (req, res) => {
       .values({
         serviceId: service.id,
         resultData,
-        aiModel: aiModel || 'gemini-2.0-flash-exp',
+        aiModel,
         tokensUsed: tokensUsed || 0,
       })
       .returning();

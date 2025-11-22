@@ -25,7 +25,7 @@ export async function saveResult(params: SaveResultParams): Promise<boolean> {
       serviceType: params.serviceType,
       inputData: params.inputData || {},
       resultData: params.resultData,
-      aiModel: params.aiModel || 'gemini-2.0-flash-exp',
+      aiModel: params.aiModel,
       tokensUsed: params.tokensUsed || 0,
       processingTime: params.processingTime || 0,
     }),

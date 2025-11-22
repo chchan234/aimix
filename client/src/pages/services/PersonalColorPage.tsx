@@ -153,6 +153,7 @@ export default function PersonalColorPage() {
   const [result, setResult] = useState<PersonalColorResult | null>(null);
   const [error, setError] = useState<string>('');
   const [saving, setSaving] = useState(false);
+  const [aiModel, setAiModel] = useState<string | undefined>();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auth state monitoring - redirect if logged out
@@ -211,6 +212,7 @@ export default function PersonalColorPage() {
 
       if (response.success) {
         setResult(response.analysis);
+        setAiModel(response.model);
         setStep('result');
       } else {
         setError(response.error || '분석에 실패했습니다.');
@@ -252,7 +254,7 @@ export default function PersonalColorPage() {
           serviceType: 'personal-color',
           inputData: {},
           resultData: result,
-          aiModel: 'gemini-2.0-flash-exp',
+          aiModel,
           tokensUsed: 0,
           processingTime: 0,
         }),
