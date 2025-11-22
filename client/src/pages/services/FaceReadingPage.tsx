@@ -132,13 +132,15 @@ export default function FaceReadingPage() {
           setLocation('/login');
           return;
         }
-        throw new Error('Failed to save result');
+        const errorData = await response.json();
+        console.error('Server error:', errorData);
+        throw new Error(errorData.error || 'Failed to save result');
       }
 
       alert('결과가 저장되었습니다! "내 결과물"에서 확인할 수 있습니다.');
     } catch (error) {
       console.error('Error saving result:', error);
-      alert('결과 저장에 실패했습니다.');
+      alert(`결과 저장에 실패했습니다: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
     } finally {
       setSaving(false);
     }
