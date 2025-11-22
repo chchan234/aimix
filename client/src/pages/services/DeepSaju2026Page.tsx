@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeDeepSaju2026 } from '../../services/ai';
-import { getCurrentUser, isLoggedIn } from '../../services/auth';
+import { getCurrentUser, isLoggedIn, getToken } from '../../services/auth';
 import { useSavedResult } from '../../hooks/useSavedResult';
 
 interface MonthlyFortune {
@@ -77,6 +77,7 @@ export default function DeepSaju2026Page() {
   const [birthTime, setBirthTime] = useState('');
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [result, setResult] = useState<DeepSajuResult | null>(null);
   const [currentCredits, setCurrentCredits] = useState(0);
   const [activeTab, setActiveTab] = useState<'overview' | 'monthly' | 'detailed'>('overview');
@@ -149,6 +150,55 @@ export default function DeepSaju2026Page() {
       alert(error instanceof Error ? error.message : '분석 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSaveResult = async () => {
+    if (!result) {
+      alert('저장할 결과가 없습니다.');
+      return;
+    }
+
+    try {
+      setSaving(true);
+      const token = getToken();
+      if (!token) {
+        alert('로그인이 필요합니다.');
+        setLocation('/login');
+        return;
+      }
+
+      const response = await fetch('/api/results', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          serviceType: '2025-fortune',
+          inputData: {},
+          resultData: result,
+          aiModel: 'gemini',
+          tokensUsed: 0,
+          processingTime: 0,
+        }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          alert('로그인이 필요합니다.');
+          setLocation('/login');
+          return;
+        }
+        throw new Error('Failed to save result');
+      }
+
+      alert('결과가 저장되었습니다! "내 결과물"에서 확인할 수 있습니다.');
+    } catch (error) {
+      console.error('Error saving result:', error);
+      alert('결과 저장에 실패했습니다.');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -595,12 +645,32 @@ export default function DeepSaju2026Page() {
             </div>
           )}
 
-          <button
-            onClick={handleReset}
-            className="w-full py-3 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition"
-          >
-            다시 분석하기
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={handleSaveResult}
+              disabled={saving}
+              className="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg transition flex items-center justify-center gap-2"
+            >
+              {saving ? (
+                <>
+                  <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                  저장 중...
+                </>
+              ) : (
+                <>
+                  <span className="material-symbols-outlined">save</span>
+                  결과 저장하기
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={handleReset}
+              className="w-full py-3 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground rounded-lg transition"
+            >
+              다시 분석하기
+            </button>
+          </div>
         </div>
       )}
     </ServiceDetailLayout>

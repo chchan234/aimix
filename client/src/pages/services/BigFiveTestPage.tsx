@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { getBigFiveQuestions, analyzeBigFive } from '../../services/ai';
-import { isLoggedIn } from '../../services/auth';
+import { isLoggedIn, getToken } from '../../services/auth';
 import { useSavedResult } from '../../hooks/useSavedResult';
 
 interface Question {
@@ -25,6 +25,7 @@ export default function BigFiveTestPage() {
   const [answers, setAnswers] = useState<number[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string>('');
 
@@ -113,6 +114,55 @@ export default function BigFiveTestPage() {
       setError(err.message || '분석 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSaveResult = async () => {
+    if (!result) {
+      alert('저장할 결과가 없습니다.');
+      return;
+    }
+
+    try {
+      setSaving(true);
+      const token = getToken();
+      if (!token) {
+        alert('로그인이 필요합니다.');
+        setLocation('/login');
+        return;
+      }
+
+      const response = await fetch('/api/results', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          serviceType: 'big-five',
+          inputData: {},
+          resultData: result,
+          aiModel: 'gemini',
+          tokensUsed: 0,
+          processingTime: 0,
+        }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          alert('로그인이 필요합니다.');
+          setLocation('/login');
+          return;
+        }
+        throw new Error('Failed to save result');
+      }
+
+      alert('결과가 저장되었습니다! "내 결과물"에서 확인할 수 있습니다.');
+    } catch (error) {
+      console.error('Error saving result:', error);
+      alert('결과 저장에 실패했습니다.');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -396,13 +446,33 @@ export default function BigFiveTestPage() {
               </div>
             </div>
           </div>
-          {/* Try Again */}
-          <button
-            onClick={handleReset}
-            className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
-          >
-            다시 테스트하기
-          </button>
+          {/* Save and Try Again */}
+          <div className="space-y-3">
+            <button
+              onClick={handleSaveResult}
+              disabled={saving}
+              className="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg transition flex items-center justify-center gap-2"
+            >
+              {saving ? (
+                <>
+                  <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                  저장 중...
+                </>
+              ) : (
+                <>
+                  <span className="material-symbols-outlined">save</span>
+                  결과 저장하기
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={handleReset}
+              className="w-full px-6 py-4 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-foreground font-semibold rounded-lg transition-colors"
+            >
+              다시 테스트하기
+            </button>
+          </div>
         </div>
       )}
     </ServiceDetailLayout>
