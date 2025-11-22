@@ -1664,7 +1664,7 @@ export async function analyzeFaceReading(imageUrl: string, birthDate?: string) {
 
     const response = await client.vision(imageUrl, prompt, {
       temperature: 0.7,
-      maxTokens: 3000,
+      maxTokens: 6000,
       responseFormat: 'json',
     });
 
@@ -1753,37 +1753,15 @@ export async function analyzeSaju(birthDate: string, birthTime: string, gender: 
 
 다음 JSON 형식으로 응답해주세요:
 {
-  "fourPillars": {
-    "year": {
-      "heavenlyStem": "연간 (천간)",
-      "earthlyBranch": "연지 (지지)",
-      "meaning": "연주의 의미"
-    },
-    "month": {
-      "heavenlyStem": "월간",
-      "earthlyBranch": "월지",
-      "meaning": "월주의 의미"
-    },
-    "day": {
-      "heavenlyStem": "일간 (일주)",
-      "earthlyBranch": "일지",
-      "meaning": "일주의 의미 - 본인의 핵심"
-    },
-    "hour": {
-      "heavenlyStem": "시간",
-      "earthlyBranch": "시지",
-      "meaning": "시주의 의미"
-    },
-    "summary": "사주팔자 종합 해석 (최소 3문장)"
+  "saju": "사주팔자 종합 해석 - 연주(년), 월주(월), 일주(일), 시주(시)를 포함한 천간지지 설명과 각 기둥의 의미를 자연스럽게 풀어서 설명 (최소 5문장)",
+  "elements": {
+    "wood": 0-5,
+    "fire": 0-5,
+    "earth": 0-5,
+    "metal": 0-5,
+    "water": 0-5
   },
   "fiveElements": {
-    "distribution": {
-      "wood": "목의 비율과 의미",
-      "fire": "화의 비율과 의미",
-      "earth": "토의 비율과 의미",
-      "metal": "금의 비율과 의미",
-      "water": "수의 비율과 의미"
-    },
     "balance": "오행 균형 분석",
     "dominant": "가장 강한 오행과 그 영향",
     "lacking": "부족한 오행과 보완 방법"
@@ -1846,7 +1824,7 @@ export async function analyzeSaju(birthDate: string, birthTime: string, gender: 
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 3000,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
@@ -1995,7 +1973,7 @@ export async function analyzeDeepSaju2026(birthDate: string, birthTime: string, 
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.8,
-        maxTokens: 8000,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
@@ -2032,7 +2010,7 @@ export async function analyzePalmistry(imageUrl: string, hand: 'left' | 'right' 
 
     const response = await client.vision(imageUrl, prompt, {
       temperature: 0.7,
-      maxTokens: 2500,
+      maxTokens: 6000,
       responseFormat: 'json',
     });
 
@@ -2065,7 +2043,7 @@ export async function analyzeHoroscope(birthDate: string, zodiacSign?: string) {
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 2000,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
@@ -2098,7 +2076,7 @@ export async function analyzeZodiac(birthDate: string) {
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 2500,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
@@ -2132,7 +2110,7 @@ export async function analyzeLoveCompatibility(person1BirthDate: string, person2
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 2000,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
@@ -2166,7 +2144,7 @@ export async function analyzeNameCompatibility(name1: string, name2: string) {
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 2000,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
@@ -2207,7 +2185,7 @@ export async function analyzeMarriageCompatibility(
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 3000,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
@@ -2247,7 +2225,7 @@ export async function analyzeMBTI(userInputMBTI: string | null, answers: number[
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 3000,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
@@ -2362,7 +2340,7 @@ export async function analyzeEnneagram(answers: number[]) {
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 3000,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
@@ -2526,7 +2504,7 @@ export async function analyzeBigFive(answers: number[]): Promise<any> {
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 2500,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
@@ -2650,7 +2628,7 @@ export async function analyzeStress(answers: number[]): Promise<any> {
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 2500,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
@@ -2765,7 +2743,7 @@ export async function analyzeGeumjjoki(answers: number[]): Promise<any> {
       [{ role: 'user', content: prompt }],
       {
         temperature: 0.7,
-        maxTokens: 3000,
+        maxTokens: 6000,
         responseFormat: 'json',
       }
     );
