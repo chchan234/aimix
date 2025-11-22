@@ -230,7 +230,6 @@ export default function Header({ onMenuClick }: HeaderProps) {
                     {/* 사용자 정보 */}
                     <div className="px-4 py-3 border-b border-gray-200 dark:border-border">
                       <p className="text-foreground text-sm font-semibold">{username}</p>
-                      <p className="text-muted-foreground text-xs">test@aiplatform.com</p>
                     </div>
 
                     {/* 크레딧 잔액 카드 */}
