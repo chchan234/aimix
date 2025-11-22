@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzePersonalColor } from '../../services/ai';
 import { isLoggedIn, getToken } from '../../services/auth';
+import { useSavedResult } from '../../hooks/useSavedResult';
 
 interface SkinAnalysis {
   undertone: string;
@@ -155,6 +156,12 @@ export default function PersonalColorPage() {
   const [saving, setSaving] = useState(false);
   const [aiModel, setAiModel] = useState<string | undefined>();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Load saved result if resultId is in URL
+  useSavedResult<PersonalColorResult>((resultData) => {
+    setResult(resultData);
+    setStep('result');
+  });
 
   // Auth state monitoring - redirect if logged out
   useEffect(() => {

@@ -69,6 +69,34 @@ const SERVICE_LABELS: { [key: string]: string } = {
   'bmi': 'BMI 계산'
 };
 
+// 서비스 타입 → 서비스 페이지 URL 매핑
+const SERVICE_URLS: { [key: string]: string } = {
+  'face-reading': '/services/face-reading',
+  'saju': '/services/saju',
+  'tarot': '/services/tarot',
+  'name-analysis': '/services/name-analysis',
+  'dream': '/services/dream',
+  '2025-fortune': '/services/deep-saju-2026',
+  'baby-face': '/services/baby-face',
+  'professional-headshot': '/services/professional-headshot',
+  'profile': '/services/profile-generator',
+  'caricature': '/services/caricature',
+  'id-photo': '/services/id-photo',
+  'age-transform': '/services/age-transform',
+  'gender-swap': '/services/gender-swap',
+  'colorize': '/services/colorization',
+  'background-remove': '/services/background-removal',
+  'hairstyle-change': '/services/hairstyle',
+  'tattoo-simulation': '/services/tattoo',
+  'celebrity-doppelganger': '/services/celebrity-doppelganger',
+  'pet-soulmate': '/services/pet-soulmate',
+  'lookalike': '/services/lookalike',
+  'personal-color': '/services/personal-color',
+  'body-analysis': '/services/body-analysis',
+  'skin-analysis': '/services/skin-analysis',
+  'bmi': '/services/bmi-calculator'
+};
+
 export default function MyResultsPage() {
   const [, setLocation] = useLocation();
   const [results, setResults] = useState<ServiceResult[]>([]);
@@ -304,7 +332,14 @@ export default function MyResultsPage() {
 
                   {/* View button */}
                   <button
-                    onClick={() => setLocation(`/result/${result.id}`)}
+                    onClick={() => {
+                      const serviceUrl = SERVICE_URLS[result.serviceType];
+                      if (serviceUrl) {
+                        setLocation(`${serviceUrl}?resultId=${result.id}`);
+                      } else {
+                        alert('해당 서비스 페이지를 찾을 수 없습니다.');
+                      }
+                    }}
                     className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow"
                   >
                     결과 보기

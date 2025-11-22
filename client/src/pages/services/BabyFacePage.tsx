@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { generateBabyFace } from '../../services/ai';
 import { isLoggedIn, getToken } from '../../services/auth';
+import { useSavedResult } from '../../hooks/useSavedResult';
 
 export default function BabyFacePage() {
   const [, setLocation] = useLocation();
@@ -17,6 +18,13 @@ export default function BabyFacePage() {
   const [aiModel, setAiModel] = useState<string | undefined>();
   const parent1InputRef = useRef<HTMLInputElement>(null);
   const parent2InputRef = useRef<HTMLInputElement>(null);
+
+  // Load saved result if resultId is in URL
+  useSavedResult<{ imageUrl?: string; generatedImage?: string }>((resultData) => {
+    const imageUrl = resultData.imageUrl || resultData.generatedImage || '';
+    setResultImage(imageUrl);
+    setStep('result');
+  });
 
   // Image compression function to reduce payload size
   const compressImage = (base64: string, maxWidth: number = 800, quality: number = 0.7): Promise<string> => {
