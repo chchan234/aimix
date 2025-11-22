@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { isLoggedIn, getToken } from '../services/auth';
-import { Loader2, Trash2, Calendar, X } from 'lucide-react';
+import { Loader2, Trash2, Calendar } from 'lucide-react';
 
 interface ServiceResult {
   id: string;
@@ -77,7 +77,6 @@ export default function MyResultsPage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
-  const [selectedResult, setSelectedResult] = useState<ServiceResult | null>(null);
 
   // Auth state monitoring
   useEffect(() => {
@@ -305,7 +304,7 @@ export default function MyResultsPage() {
 
                   {/* View button */}
                   <button
-                    onClick={() => setSelectedResult(result)}
+                    onClick={() => setLocation(`/result/${result.id}`)}
                     className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow"
                   >
                     결과 보기
@@ -335,50 +334,6 @@ export default function MyResultsPage() {
           </>
         )}
       </div>
-
-      {/* Result Modal */}
-      {selectedResult && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                {getServiceLabel(selectedResult.serviceType)}
-              </h2>
-              <button
-                onClick={() => setSelectedResult(null)}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              >
-                <X className="w-6 h-6 text-gray-500 dark:text-gray-400" />
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div className="p-6">
-              <div className="mb-4 text-sm text-gray-500 dark:text-gray-400">
-                {formatDate(selectedResult.createdAt)}
-              </div>
-
-              {/* Result Data */}
-              <div className="prose dark:prose-invert max-w-none">
-                <pre className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
-                  {JSON.stringify(selectedResult.resultData, null, 2)}
-                </pre>
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-6 py-4 flex justify-end gap-3">
-              <button
-                onClick={() => setSelectedResult(null)}
-                className="px-6 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-              >
-                닫기
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

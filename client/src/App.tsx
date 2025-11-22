@@ -11,6 +11,7 @@ import VerifyEmailPage from './pages/VerifyEmailPage';
 import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
 import MyResultsPage from './pages/MyResultsPage';
+import ResultDetailPage from './pages/ResultDetailPage';
 import BuyCreditsPage from './pages/BuyCreditsPage';
 import HelpPage from './pages/HelpPage';
 import KakaoCallback from './pages/KakaoCallback';
@@ -89,6 +90,7 @@ function App() {
             <Route path="/profile" component={ProfilePage} />
             <Route path="/settings" component={SettingsPage} />
             <Route path="/my-results" component={MyResultsPage} />
+            <Route path="/result/:id" component={ResultDetailPage} />
             <Route path="/buy-credits" component={BuyCreditsPage} />
             <Route path="/credit-purchase" component={CreditPurchasePage} />
             <Route path="/payment/success" component={PaymentSuccessPage} />
