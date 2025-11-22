@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
+import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import ExecuteButton from '../../components/ExecuteButton';
 import { removeBackground } from '../../services/ai';
@@ -10,7 +11,10 @@ import { useSavedResult } from '../../hooks/useSavedResult';
 export default function BackgroundRemovalPage() {
   const { t } = useTranslation();
   const [, setLocation] = useLocation();
-  const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
+  // Check if resultId exists in URL to determine initial step
+  const params = new URLSearchParams(window.location.search);
+  const hasResultId = params.has('resultId');
+  const [step, setStep] = useState<'intro' | 'upload' | 'result'>(hasResultId ? 'result' : 'intro');
   const [image, setImage] = useState<string | null>(null);
   const [newBackground, setNewBackground] = useState('');
   const [loading, setLoading] = useState(false);
@@ -19,7 +23,7 @@ export default function BackgroundRemovalPage() {
   const [currentCredits, setCurrentCredits] = useState(0);
 
   // Load saved result if resultId is in URL
-  useSavedResult<{ imageUrl?: string; generatedImage?: string; image?: string }>((resultData) => {
+  const { loading: loadingSavedResult, error: savedResultError } = useSavedResult<{ imageUrl?: string; generatedImage?: string; image?: string }>((resultData) => {
     const imageUrl = resultData.imageUrl || resultData.generatedImage || resultData.image || "";
     if (imageUrl) setResultImage(imageUrl);
     setStep("result");
@@ -161,8 +165,35 @@ export default function BackgroundRemovalPage() {
       icon="layers_clear"
       color="yellow"
     >
+      {/* Loading saved result */}
+      {loadingSavedResult && (
+        <div className="flex flex-col items-center justify-center py-20">
+          <Loader2 className="w-12 h-12 animate-spin text-purple-500 mb-4" />
+          <p className="text-muted-foreground">저장된 결과를 불러오는 중...</p>
+        </div>
+      )}
+
+      {/* Error loading saved result */}
+      {savedResultError && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="material-symbols-outlined text-red-500">error</span>
+            <h3 className="text-lg font-semibold text-red-900 dark:text-red-200">
+              결과를 불러올 수 없습니다
+            </h3>
+          </div>
+          <p className="text-red-700 dark:text-red-300 mb-4">{savedResultError}</p>
+          <button
+            onClick={() => setLocation('/my-results')}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+          >
+            내 결과물로 돌아가기
+          </button>
+        </div>
+      )}
+
       {/* Intro Step */}
-      {step === 'intro' && (
+      {!loadingSavedResult && !savedResultError && step === 'intro' && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <h3 className="text-xl font-semibold text-foreground mb-4">
@@ -225,7 +256,7 @@ export default function BackgroundRemovalPage() {
       )}
 
       {/* Upload Step */}
-      {step === 'upload' && (
+      {!loadingSavedResult && !savedResultError && step === 'upload' && (
         <div className="space-y-6">
           {/* Image Upload */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
@@ -293,7 +324,7 @@ export default function BackgroundRemovalPage() {
       )}
 
       {/* Result Step */}
-      {step === 'result' && resultImage && (
+      {!loadingSavedResult && !savedResultError && step === 'result' && resultImage && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <h3 className="text-lg font-semibold text-foreground mb-4">배경 제거 결과</h3>

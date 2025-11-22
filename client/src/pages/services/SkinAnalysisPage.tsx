@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
+import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeSkin } from '../../services/ai';
 import { isLoggedIn, getToken } from '../../services/auth';
@@ -46,7 +47,12 @@ interface SkinAnalysisResult {
 
 export default function SkinAnalysisPage() {
   const [, setLocation] = useLocation();
-  const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
+
+  // Check for saved result in URL
+  const params = new URLSearchParams(window.location.search);
+  const resultId = params.get('resultId');
+
+  const [step, setStep] = useState<'intro' | 'upload' | 'result'>(resultId ? 'result' : 'intro');
   const [imagePreview, setImagePreview] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -54,7 +60,7 @@ export default function SkinAnalysisPage() {
   const [error, setError] = useState<string>('');
 
   // Load saved result if resultId is in URL
-  useSavedResult<any>((resultData) => {
+  const { loading: loadingSavedResult, error: savedResultError } = useSavedResult<any>((resultData) => {
     setResult(resultData);
     setStep("result");
   });
@@ -208,8 +214,21 @@ export default function SkinAnalysisPage() {
       icon="face_retouching_natural"
       color="pink"
     >
+      {loadingSavedResult && (
+        <div className="flex justify-center items-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-teal-500" />
+          <span className="ml-3 text-muted-foreground">저장된 결과를 불러오는 중...</span>
+        </div>
+      )}
+
+      {savedResultError && (
+        <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 text-red-400">
+          {savedResultError}
+        </div>
+      )}
+
       {/* Introduction */}
-      {step === 'intro' && (
+      {!loadingSavedResult && !savedResultError && step === 'intro' && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
@@ -277,7 +296,7 @@ export default function SkinAnalysisPage() {
       )}
 
       {/* Upload */}
-      {step === 'upload' && !loading && (
+      {!loadingSavedResult && !savedResultError && step === 'upload' && !loading && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-lg font-semibold text-foreground mb-4">얼굴 사진 업로드</h3>
@@ -351,7 +370,7 @@ export default function SkinAnalysisPage() {
       )}
 
       {/* Results */}
-      {step === 'result' && result && (
+      {!loadingSavedResult && !savedResultError && step === 'result' && result && (
         <div className="space-y-6">
           {/* Skin Type & Age */}
           <div className="bg-gradient-to-r from-pink-900 to-purple-900 rounded-lg p-6 text-center">

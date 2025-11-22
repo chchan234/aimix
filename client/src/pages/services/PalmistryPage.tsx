@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
+import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzePalmistry } from '../../services/ai';
 import { getCurrentUser, isLoggedIn, getToken } from '../../services/auth';
@@ -9,7 +10,12 @@ import { useSavedResult } from '../../hooks/useSavedResult';
 export default function PalmistryPage() {
   const { t } = useTranslation();
   const [, setLocation] = useLocation();
-  const [step, setStep] = useState<'intro' | 'input' | 'result'>('intro');
+
+  // Check for saved result in URL
+  const params = new URLSearchParams(window.location.search);
+  const resultId = params.get('resultId');
+
+  const [step, setStep] = useState<'intro' | 'input' | 'result'>(resultId ? 'result' : 'intro');
   const [hand, setHand] = useState<'left' | 'right'>('right');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -18,7 +24,7 @@ export default function PalmistryPage() {
   const [currentCredits, setCurrentCredits] = useState(0);
 
   // Load saved result if resultId is in URL
-  useSavedResult<any>((resultData) => {
+  const { loading: loadingSavedResult, error: savedResultError } = useSavedResult<any>((resultData) => {
     setResult(resultData);
     setStep("result");
   });
@@ -162,8 +168,21 @@ export default function PalmistryPage() {
       icon="back_hand"
       color="green"
     >
+      {loadingSavedResult && (
+        <div className="flex justify-center items-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-green-500" />
+          <span className="ml-3 text-muted-foreground">저장된 결과를 불러오는 중...</span>
+        </div>
+      )}
+
+      {savedResultError && (
+        <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 text-red-400">
+          {savedResultError}
+        </div>
+      )}
+
       {/* Intro Section */}
-      {step === 'intro' && (
+      {!loadingSavedResult && !savedResultError && step === 'intro' && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3 mb-4">
@@ -237,7 +256,7 @@ export default function PalmistryPage() {
       )}
 
       {/* Input Section */}
-      {step === 'input' && !loading && (
+      {!loadingSavedResult && !savedResultError && step === 'input' && !loading && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <button
@@ -336,7 +355,7 @@ export default function PalmistryPage() {
       )}
 
       {/* Result Section */}
-      {step === 'result' && result?.analysis && (
+      {!loadingSavedResult && !savedResultError && step === 'result' && result?.analysis && (
         <div className="space-y-4 animate-fadeIn">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <h3 className="text-foreground font-semibold mb-3 flex items-center gap-2">

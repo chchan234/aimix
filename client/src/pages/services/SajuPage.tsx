@@ -26,7 +26,13 @@ export default function SajuPage() {
 
   // Load saved result if resultId is in URL
   const { loading: loadingSavedResult, error: savedResultError } = useSavedResult<any>((resultData) => {
-    setResult(resultData);
+    // Normalize data: if resultData is the analysis object itself (has 'saju' property),
+    // wrap it in the expected structure
+    if (resultData && !resultData.analysis && resultData.saju) {
+      setResult({ analysis: resultData });
+    } else {
+      setResult(resultData);
+    }
     setStep('result');
   });
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
+import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { getBigFiveQuestions, analyzeBigFive } from '../../services/ai';
 import { isLoggedIn, getToken } from '../../services/auth';
@@ -20,7 +21,10 @@ const TRAIT_NAMES: { [key: string]: string } = {
 
 export default function BigFiveTestPage() {
   const [, setLocation] = useLocation();
-  const [step, setStep] = useState<'intro' | 'test' | 'result'>('intro');
+  // Check if resultId exists in URL to determine initial step
+  const params = new URLSearchParams(window.location.search);
+  const hasResultId = params.has('resultId');
+  const [step, setStep] = useState<'intro' | 'test' | 'result'>(hasResultId ? 'result' : 'intro');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<number[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -31,7 +35,7 @@ export default function BigFiveTestPage() {
 
 
   // Load saved result if resultId is in URL
-  useSavedResult<any>((resultData) => {
+  const { loading: loadingSavedResult, error: savedResultError } = useSavedResult<any>((resultData) => {
     setResult(resultData);
     setStep("result");
   });
@@ -183,8 +187,35 @@ export default function BigFiveTestPage() {
       icon="workspaces"
       color="green"
     >
+      {/* Loading saved result */}
+      {loadingSavedResult && (
+        <div className="flex flex-col items-center justify-center py-20">
+          <Loader2 className="w-12 h-12 animate-spin text-purple-500 mb-4" />
+          <p className="text-muted-foreground">저장된 결과를 불러오는 중...</p>
+        </div>
+      )}
+
+      {/* Error loading saved result */}
+      {savedResultError && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="material-symbols-outlined text-red-500">error</span>
+            <h3 className="text-lg font-semibold text-red-900 dark:text-red-200">
+              결과를 불러올 수 없습니다
+            </h3>
+          </div>
+          <p className="text-red-700 dark:text-red-300 mb-4">{savedResultError}</p>
+          <button
+            onClick={() => setLocation('/my-results')}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+          >
+            내 결과물로 돌아가기
+          </button>
+        </div>
+      )}
+
       {/* Introduction */}
-      {step === 'intro' && (
+      {!loadingSavedResult && !savedResultError && step === 'intro' && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">
@@ -251,7 +282,7 @@ export default function BigFiveTestPage() {
       )}
 
       {/* Test Questions */}
-      {step === 'test' && !loading && questions.length > 0 && (
+      {!loadingSavedResult && !savedResultError && step === 'test' && !loading && questions.length > 0 && (
         <div className="space-y-6">
           <div className="mb-6">
             <div className="flex justify-between text-sm text-muted-foreground mb-2">
@@ -321,7 +352,7 @@ export default function BigFiveTestPage() {
       )}
 
       {/* Results */}
-      {step === 'result' && result && (
+      {!loadingSavedResult && !savedResultError && step === 'result' && result && (
         <div className="space-y-6">
           {/* Summary */}
           <div className="bg-gradient-to-r from-green-500 to-teal-500 rounded-lg p-6">

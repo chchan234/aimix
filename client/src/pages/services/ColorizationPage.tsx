@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
+import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import ExecuteButton from '../../components/ExecuteButton';
 import { colorizePhoto } from '../../services/ai';
@@ -10,7 +11,12 @@ import { useSavedResult } from '../../hooks/useSavedResult';
 export default function ColorizationPage() {
   const { t } = useTranslation();
   const [, setLocation] = useLocation();
-  const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
+
+  // Check for saved result in URL
+  const params = new URLSearchParams(window.location.search);
+  const resultId = params.get('resultId');
+
+  const [step, setStep] = useState<'intro' | 'upload' | 'result'>(resultId ? 'result' : 'intro');
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -18,7 +24,7 @@ export default function ColorizationPage() {
   const [currentCredits, setCurrentCredits] = useState(0);
 
   // Load saved result if resultId is in URL
-  useSavedResult<{ imageUrl?: string; generatedImage?: string; image?: string }>((resultData) => {
+  const { loading: loadingSavedResult, error: savedResultError } = useSavedResult<{ imageUrl?: string; generatedImage?: string; image?: string }>((resultData) => {
     const imageUrl = resultData.imageUrl || resultData.generatedImage || resultData.image || "";
     if (imageUrl) setResultImage(imageUrl);
     setStep("result");
@@ -159,8 +165,21 @@ export default function ColorizationPage() {
       icon="palette"
       color="green"
     >
+      {loadingSavedResult && (
+        <div className="flex justify-center items-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-green-500" />
+          <span className="ml-3 text-muted-foreground">저장된 결과를 불러오는 중...</span>
+        </div>
+      )}
+
+      {savedResultError && (
+        <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 text-red-400">
+          {savedResultError}
+        </div>
+      )}
+
       {/* Intro Step */}
-      {step === 'intro' && (
+      {!loadingSavedResult && !savedResultError && step === 'intro' && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <h3 className="text-xl font-semibold text-foreground mb-4">
@@ -223,7 +242,7 @@ export default function ColorizationPage() {
       )}
 
       {/* Upload Step */}
-      {step === 'upload' && (
+      {!loadingSavedResult && !savedResultError && step === 'upload' && (
         <div className="space-y-6">
           {/* Image Upload */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
@@ -276,7 +295,7 @@ export default function ColorizationPage() {
       )}
 
       {/* Result Step */}
-      {step === 'result' && resultImage && (
+      {!loadingSavedResult && !savedResultError && step === 'result' && resultImage && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <h3 className="text-lg font-semibold text-foreground mb-4">컬러화 결과</h3>

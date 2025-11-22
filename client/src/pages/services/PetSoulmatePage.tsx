@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
+import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzePetSoulmate } from '../../services/ai';
 import { isLoggedIn, getToken } from '../../services/auth';
@@ -25,7 +26,12 @@ interface PetSoulmateResult {
 
 export default function PetSoulmatePage() {
   const [, setLocation] = useLocation();
-  const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
+
+  // Check for saved result in URL
+  const params = new URLSearchParams(window.location.search);
+  const resultId = params.get('resultId');
+
+  const [step, setStep] = useState<'intro' | 'upload' | 'result'>(resultId ? 'result' : 'intro');
   const [imagePreview, setImagePreview] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -33,7 +39,7 @@ export default function PetSoulmatePage() {
   const [error, setError] = useState<string>('');
 
   // Load saved result if resultId is in URL
-  useSavedResult<any>((resultData) => {
+  const { loading: loadingSavedResult, error: savedResultError } = useSavedResult<any>((resultData) => {
     setResult(resultData);
     setStep("result");
   });
@@ -177,8 +183,21 @@ export default function PetSoulmatePage() {
       icon="pets"
       color="orange"
     >
+      {loadingSavedResult && (
+        <div className="flex justify-center items-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+          <span className="ml-3 text-muted-foreground">저장된 결과를 불러오는 중...</span>
+        </div>
+      )}
+
+      {savedResultError && (
+        <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 text-red-400">
+          {savedResultError}
+        </div>
+      )}
+
       {/* Introduction */}
-      {step === 'intro' && (
+      {!loadingSavedResult && !savedResultError && step === 'intro' && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">
@@ -245,7 +264,7 @@ export default function PetSoulmatePage() {
       )}
 
       {/* Upload */}
-      {step === 'upload' && !loading && (
+      {!loadingSavedResult && !savedResultError && step === 'upload' && !loading && (
         <div className="space-y-6">
           {/* Image Upload */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
@@ -321,7 +340,7 @@ export default function PetSoulmatePage() {
       )}
 
       {/* Results */}
-      {step === 'result' && result && (
+      {!loadingSavedResult && !savedResultError && step === 'result' && result && (
         <div className="space-y-6">
           {/* Fun Comment */}
           <div className="bg-gradient-to-r from-orange-500 to-amber-500 rounded-lg p-6">

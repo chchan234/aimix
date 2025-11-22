@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
+import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { getGeumjjokiQuestions, analyzeGeumjjoki } from '../../services/ai';
 import { isLoggedIn, getToken } from '../../services/auth';
@@ -20,7 +21,12 @@ const CATEGORY_NAMES: { [key: string]: string } = {
 
 export default function GeumjjokiTestPage() {
   const [, setLocation] = useLocation();
-  const [step, setStep] = useState<'intro' | 'test' | 'result'>('intro');
+
+  // Check for saved result in URL
+  const params = new URLSearchParams(window.location.search);
+  const resultId = params.get('resultId');
+
+  const [step, setStep] = useState<'intro' | 'test' | 'result'>(resultId ? 'result' : 'intro');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<number[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -31,7 +37,7 @@ export default function GeumjjokiTestPage() {
 
 
   // Load saved result if resultId is in URL
-  useSavedResult<any>((resultData) => {
+  const { loading: loadingSavedResult, error: savedResultError } = useSavedResult<any>((resultData) => {
     setResult(resultData);
     setStep("result");
   });
@@ -198,8 +204,21 @@ export default function GeumjjokiTestPage() {
       icon="celebration"
       color="orange"
     >
+      {loadingSavedResult && (
+        <div className="flex justify-center items-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-green-500" />
+          <span className="ml-3 text-muted-foreground">저장된 결과를 불러오는 중...</span>
+        </div>
+      )}
+
+      {savedResultError && (
+        <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 text-red-400">
+          {savedResultError}
+        </div>
+      )}
+
       {/* Introduction */}
-      {step === 'intro' && (
+      {!loadingSavedResult && !savedResultError && step === 'intro' && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">
@@ -277,7 +296,7 @@ export default function GeumjjokiTestPage() {
       )}
 
       {/* Test Questions */}
-      {step === 'test' && !loading && questions.length > 0 && (
+      {!loadingSavedResult && !savedResultError && step === 'test' && !loading && questions.length > 0 && (
         <div className="space-y-6">
           <div className="mb-6">
             <div className="flex justify-between text-sm text-muted-foreground mb-2">
@@ -350,7 +369,7 @@ export default function GeumjjokiTestPage() {
       )}
 
       {/* Results */}
-      {step === 'result' && result && (
+      {!loadingSavedResult && !savedResultError && step === 'result' && result && (
         <div className="space-y-6">
           {/* Grade */}
           <div className={`bg-gradient-to-r ${getGradeColor(result.geumjjokiScore)} rounded-lg p-6`}>

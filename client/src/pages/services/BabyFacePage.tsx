@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
+import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { generateBabyFace } from '../../services/ai';
 import { isLoggedIn, getToken } from '../../services/auth';
@@ -7,7 +8,10 @@ import { useSavedResult } from '../../hooks/useSavedResult';
 
 export default function BabyFacePage() {
   const [, setLocation] = useLocation();
-  const [step, setStep] = useState<'intro' | 'upload' | 'result'>('intro');
+  // Check if resultId exists in URL to determine initial step
+  const params = new URLSearchParams(window.location.search);
+  const hasResultId = params.has('resultId');
+  const [step, setStep] = useState<'intro' | 'upload' | 'result'>(hasResultId ? 'result' : 'intro');
   const [parent1Image, setParent1Image] = useState<string>('');
   const [parent2Image, setParent2Image] = useState<string>('');
   const [style, setStyle] = useState<'normal' | 'idol'>('normal');
@@ -20,7 +24,7 @@ export default function BabyFacePage() {
   const parent2InputRef = useRef<HTMLInputElement>(null);
 
   // Load saved result if resultId is in URL
-  useSavedResult<{ imageUrl?: string; generatedImage?: string }>((resultData) => {
+  const { loading: loadingSavedResult, error: savedResultError } = useSavedResult<{ imageUrl?: string; generatedImage?: string }>((resultData) => {
     const imageUrl = resultData.imageUrl || resultData.generatedImage || '';
     setResultImage(imageUrl);
     setStep('result');
@@ -198,8 +202,35 @@ export default function BabyFacePage() {
       icon="child_care"
       color="pink"
     >
+      {/* Loading saved result */}
+      {loadingSavedResult && (
+        <div className="flex flex-col items-center justify-center py-20">
+          <Loader2 className="w-12 h-12 animate-spin text-purple-500 mb-4" />
+          <p className="text-muted-foreground">저장된 결과를 불러오는 중...</p>
+        </div>
+      )}
+
+      {/* Error loading saved result */}
+      {savedResultError && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="material-symbols-outlined text-red-500">error</span>
+            <h3 className="text-lg font-semibold text-red-900 dark:text-red-200">
+              결과를 불러올 수 없습니다
+            </h3>
+          </div>
+          <p className="text-red-700 dark:text-red-300 mb-4">{savedResultError}</p>
+          <button
+            onClick={() => setLocation('/my-results')}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+          >
+            내 결과물로 돌아가기
+          </button>
+        </div>
+      )}
+
       {/* Introduction */}
-      {step === 'intro' && (
+      {!loadingSavedResult && !savedResultError && step === 'intro' && (
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">
@@ -265,7 +296,7 @@ export default function BabyFacePage() {
       )}
 
       {/* Upload */}
-      {step === 'upload' && !loading && (
+      {!loadingSavedResult && !savedResultError && step === 'upload' && !loading && (
         <div className="space-y-6">
           {/* Parent Images Upload */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
@@ -410,7 +441,7 @@ export default function BabyFacePage() {
       )}
 
       {/* Results */}
-      {step === 'result' && resultImage && (
+      {!loadingSavedResult && !savedResultError && step === 'result' && resultImage && (
         <div className="space-y-6">
           {/* Result Image */}
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
