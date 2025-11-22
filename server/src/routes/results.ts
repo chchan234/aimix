@@ -51,14 +51,10 @@ router.post('/', async (req, res) => {
     const [newResult] = await db
       .insert(serviceResults)
       .values({
-        userId,
         serviceId: service.id,
-        inputData: inputData || {},
         resultData,
         aiModel: aiModel || 'gemini-2.0-flash-exp',
         tokensUsed: tokensUsed || 0,
-        processingTime: processingTime || 0,
-        expiresAt,
       })
       .returning();
 
@@ -87,10 +83,20 @@ router.get('/', async (req, res) => {
     const serviceType = req.query.serviceType as string;
     const offset = (page - 1) * limit;
 
+    // Always join with services table to filter by userId
     let query = db
-      .select()
+      .select({
+        id: serviceResults.id,
+        serviceId: serviceResults.serviceId,
+        resultData: serviceResults.resultData,
+        aiModel: serviceResults.aiModel,
+        tokensUsed: serviceResults.tokensUsed,
+        createdAt: serviceResults.createdAt,
+        serviceType: services.serviceType,
+      })
       .from(serviceResults)
-      .where(eq(serviceResults.userId, userId))
+      .innerJoin(services, eq(serviceResults.serviceId, services.id))
+      .where(eq(services.userId, userId))
       .orderBy(desc(serviceResults.createdAt))
       .limit(limit)
       .offset(offset);
@@ -98,18 +104,26 @@ router.get('/', async (req, res) => {
     // Filter by service type if provided
     if (serviceType) {
       query = db
-        .select()
+        .select({
+          id: serviceResults.id,
+          serviceId: serviceResults.serviceId,
+          resultData: serviceResults.resultData,
+          aiModel: serviceResults.aiModel,
+          tokensUsed: serviceResults.tokensUsed,
+          createdAt: serviceResults.createdAt,
+          serviceType: services.serviceType,
+        })
         .from(serviceResults)
-        .leftJoin(services, eq(serviceResults.serviceId, services.id))
+        .innerJoin(services, eq(serviceResults.serviceId, services.id))
         .where(
           and(
-            eq(serviceResults.userId, userId),
+            eq(services.userId, userId),
             eq(services.serviceType, serviceType)
           )
         )
         .orderBy(desc(serviceResults.createdAt))
         .limit(limit)
-        .offset(offset) as any;
+        .offset(offset);
     }
 
     const results = await query;
@@ -141,12 +155,21 @@ router.get('/:id', async (req, res) => {
     const resultId = req.params.id;
 
     const result = await db
-      .select()
+      .select({
+        id: serviceResults.id,
+        serviceId: serviceResults.serviceId,
+        resultData: serviceResults.resultData,
+        aiModel: serviceResults.aiModel,
+        tokensUsed: serviceResults.tokensUsed,
+        createdAt: serviceResults.createdAt,
+        serviceType: services.serviceType,
+      })
       .from(serviceResults)
+      .innerJoin(services, eq(serviceResults.serviceId, services.id))
       .where(
         and(
           eq(serviceResults.id, resultId),
-          eq(serviceResults.userId, userId)
+          eq(services.userId, userId)
         )
       )
       .limit(1);
@@ -178,21 +201,29 @@ router.delete('/:id', async (req, res) => {
     const userId = req.user!.userId;
     const resultId = req.params.id;
 
-    const deleted = await db
-      .delete(serviceResults)
+    // First verify the result belongs to the user
+    const result = await db
+      .select({ id: serviceResults.id })
+      .from(serviceResults)
+      .innerJoin(services, eq(serviceResults.serviceId, services.id))
       .where(
         and(
           eq(serviceResults.id, resultId),
-          eq(serviceResults.userId, userId)
+          eq(services.userId, userId)
         )
       )
-      .returning();
+      .limit(1);
 
-    if (deleted.length === 0) {
+    if (result.length === 0) {
       return res.status(404).json({
         error: 'Result not found',
       });
     }
+
+    // Delete the result
+    await db
+      .delete(serviceResults)
+      .where(eq(serviceResults.id, resultId));
 
     res.json({
       success: true,
