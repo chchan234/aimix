@@ -1,38 +1,83 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { isLoggedIn, getToken } from '../services/auth';
-import { Loader2, Trash2, Calendar, Clock } from 'lucide-react';
+import { Loader2, Trash2, Calendar, X } from 'lucide-react';
 
 interface ServiceResult {
   id: string;
-  userId: string;
   serviceType: string;
-  inputData: any;
   resultData: any;
-  aiModel: string;
-  tokensUsed: number;
-  processingTime: number;
   createdAt: string;
-  expiresAt: string;
 }
 
-const SERVICE_TYPES = [
-  { id: 'all', label: '전체' },
-  { id: 'face-reading', label: '관상 분석' },
-  { id: 'personality', label: '성격 테스트' },
-  { id: 'baby-face', label: '아기 얼굴' },
-  { id: 'personal-color', label: '퍼스널 컬러' },
-  { id: 'pet-soulmate', label: '반려동물 찰떡궁합' },
+// 4개 대분류 카테고리
+const CATEGORIES = [
+  {
+    id: 'all',
+    label: '전체',
+    services: []
+  },
+  {
+    id: 'fortune',
+    label: '운세/점술',
+    services: ['face-reading', 'saju', 'tarot', 'name-analysis', 'dream', '2025-fortune']
+  },
+  {
+    id: 'imageEdit',
+    label: '이미지 편집',
+    services: ['baby-face', 'professional-headshot', 'profile', 'caricature', 'id-photo',
+               'age-transform', 'gender-swap', 'colorize', 'background-remove',
+               'hairstyle-change', 'tattoo-simulation']
+  },
+  {
+    id: 'entertainment',
+    label: '엔터테인먼트',
+    services: ['celebrity-doppelganger', 'pet-soulmate', 'lookalike']
+  },
+  {
+    id: 'health',
+    label: '건강/웰빙',
+    services: ['personal-color', 'body-analysis', 'skin-analysis', 'bmi']
+  }
 ];
+
+// 서비스 타입 한글 라벨
+const SERVICE_LABELS: { [key: string]: string } = {
+  'face-reading': '관상 분석',
+  'saju': '사주팔자',
+  'tarot': '타로',
+  'name-analysis': '이름 분석',
+  'dream': '꿈해몽',
+  '2025-fortune': '2025 신년운세',
+  'baby-face': '아기 얼굴 예측',
+  'professional-headshot': '프로필 사진',
+  'profile': 'AI 프로필',
+  'caricature': '캐리커쳐',
+  'id-photo': '증명사진',
+  'age-transform': '나이 변환',
+  'gender-swap': '성별 전환',
+  'colorize': '흑백사진 컬러화',
+  'background-remove': '배경 제거',
+  'hairstyle-change': '헤어스타일 변경',
+  'tattoo-simulation': '타투 시뮬레이션',
+  'celebrity-doppelganger': '연예인 닮은꼴',
+  'pet-soulmate': '반려동물 찰떡궁합',
+  'lookalike': '닮은꼴 찾기',
+  'personal-color': '퍼스널 컬러',
+  'body-analysis': '체형 분석',
+  'skin-analysis': '피부 분석',
+  'bmi': 'BMI 계산'
+};
 
 export default function MyResultsPage() {
   const [, setLocation] = useLocation();
   const [results, setResults] = useState<ServiceResult[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedType, setSelectedType] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [selectedResult, setSelectedResult] = useState<ServiceResult | null>(null);
 
   // Auth state monitoring
   useEffect(() => {
@@ -59,7 +104,7 @@ export default function MyResultsPage() {
     }
 
     fetchResults();
-  }, [selectedType, page]);
+  }, [selectedCategory, page]);
 
   const fetchResults = async () => {
     try {
@@ -75,8 +120,13 @@ export default function MyResultsPage() {
         limit: '12',
       });
 
-      if (selectedType !== 'all') {
-        params.append('serviceType', selectedType);
+      // 카테고리별 필터링
+      if (selectedCategory !== 'all') {
+        const category = CATEGORIES.find(c => c.id === selectedCategory);
+        if (category && category.services.length > 0) {
+          // 여러 서비스 타입을 필터링해야 하므로, 클라이언트에서 필터링
+          // 또는 API를 수정해야 함. 일단은 전체를 가져와서 클라이언트에서 필터링
+        }
       }
 
       const response = await fetch(`/api/results?${params}`, {
@@ -94,7 +144,19 @@ export default function MyResultsPage() {
       }
 
       const data = await response.json();
-      setResults(data.results || []);
+      let filteredResults = data.results || [];
+
+      // 클라이언트 사이드 카테고리 필터링
+      if (selectedCategory !== 'all') {
+        const category = CATEGORIES.find(c => c.id === selectedCategory);
+        if (category) {
+          filteredResults = filteredResults.filter((r: ServiceResult) =>
+            category.services.includes(r.serviceType)
+          );
+        }
+      }
+
+      setResults(filteredResults);
       setHasMore(data.pagination?.hasMore || false);
     } catch (error) {
       console.error('Error fetching results:', error);
@@ -143,8 +205,7 @@ export default function MyResultsPage() {
   };
 
   const getServiceLabel = (type: string) => {
-    const service = SERVICE_TYPES.find(s => s.id === type);
-    return service?.label || type;
+    return SERVICE_LABELS[type] || type;
   };
 
   const formatDate = (dateString: string) => {
@@ -157,30 +218,30 @@ export default function MyResultsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+    <div className="min-h-screen bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:via-blue-900 dark:to-purple-900">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">내 결과물</h1>
-          <p className="text-gray-300">저장된 AI 분석 결과를 확인하고 관리할 수 있습니다.</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">내 결과물</h1>
+          <p className="text-gray-600 dark:text-gray-300">저장된 AI 분석 결과를 확인하고 관리할 수 있습니다.</p>
         </div>
 
-        {/* Filter tabs */}
+        {/* Category tabs */}
         <div className="flex flex-wrap gap-2 mb-6">
-          {SERVICE_TYPES.map((type) => (
+          {CATEGORIES.map((category) => (
             <button
-              key={type.id}
+              key={category.id}
               onClick={() => {
-                setSelectedType(type.id);
+                setSelectedCategory(category.id);
                 setPage(1);
               }}
               className={`px-4 py-2 rounded-lg transition-all ${
-                selectedType === type.id
+                selectedCategory === category.id
                   ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
-                  : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                  : 'bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/20'
               }`}
             >
-              {type.label}
+              {category.label}
             </button>
           ))}
         </div>
@@ -188,7 +249,7 @@ export default function MyResultsPage() {
         {/* Loading state */}
         {loading && (
           <div className="flex justify-center items-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
+            <Loader2 className="w-8 h-8 animate-spin text-blue-500 dark:text-blue-400" />
           </div>
         )}
 
@@ -196,8 +257,8 @@ export default function MyResultsPage() {
         {!loading && results.length === 0 && (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">📭</div>
-            <h3 className="text-xl font-semibold text-white mb-2">저장된 결과가 없습니다</h3>
-            <p className="text-gray-400 mb-6">AI 분석 결과를 저장하면 여기에 표시됩니다.</p>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">저장된 결과가 없습니다</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">AI 분석 결과를 저장하면 여기에 표시됩니다.</p>
             <button
               onClick={() => setLocation('/')}
               className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow"
@@ -214,7 +275,7 @@ export default function MyResultsPage() {
               {results.map((result) => (
                 <div
                   key={result.id}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:border-blue-400/50 transition-all"
+                  className="bg-white dark:bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-gray-200 dark:border-white/20 hover:border-blue-400 dark:hover:border-blue-400/50 transition-all shadow-sm hover:shadow-md"
                 >
                   {/* Service type badge */}
                   <div className="flex items-center justify-between mb-4">
@@ -224,7 +285,7 @@ export default function MyResultsPage() {
                     <button
                       onClick={() => handleDelete(result.id)}
                       disabled={deleting === result.id}
-                      className="p-2 text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-colors disabled:opacity-50"
+                      className="p-2 text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-400/10 rounded-lg transition-colors disabled:opacity-50"
                     >
                       {deleting === result.id ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -236,27 +297,15 @@ export default function MyResultsPage() {
 
                   {/* Date info */}
                   <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-sm text-gray-300">
+                    <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                       <Calendar className="w-4 h-4 mr-2" />
                       {formatDate(result.createdAt)}
                     </div>
-                    <div className="flex items-center text-sm text-gray-300">
-                      <Clock className="w-4 h-4 mr-2" />
-                      처리시간: {result.processingTime}ms
-                    </div>
-                  </div>
-
-                  {/* AI Model info */}
-                  <div className="text-xs text-gray-400 mb-4">
-                    모델: {result.aiModel}
                   </div>
 
                   {/* View button */}
                   <button
-                    onClick={() => {
-                      // Navigate to appropriate service page with result data
-                      setLocation(`/services/${result.serviceType}`);
-                    }}
+                    onClick={() => setSelectedResult(result)}
                     className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow"
                   >
                     결과 보기
@@ -270,15 +319,15 @@ export default function MyResultsPage() {
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 이전
               </button>
-              <span className="text-white">페이지 {page}</span>
+              <span className="text-gray-900 dark:text-white">페이지 {page}</span>
               <button
                 onClick={() => setPage(p => p + 1)}
                 disabled={!hasMore}
-                className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 다음
               </button>
@@ -286,6 +335,50 @@ export default function MyResultsPage() {
           </>
         )}
       </div>
+
+      {/* Result Modal */}
+      {selectedResult && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                {getServiceLabel(selectedResult.serviceType)}
+              </h2>
+              <button
+                onClick={() => setSelectedResult(null)}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <X className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6">
+              <div className="mb-4 text-sm text-gray-500 dark:text-gray-400">
+                {formatDate(selectedResult.createdAt)}
+              </div>
+
+              {/* Result Data */}
+              <div className="prose dark:prose-invert max-w-none">
+                <pre className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
+                  {JSON.stringify(selectedResult.resultData, null, 2)}
+                </pre>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-6 py-4 flex justify-end gap-3">
+              <button
+                onClick={() => setSelectedResult(null)}
+                className="px-6 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
