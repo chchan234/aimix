@@ -155,7 +155,7 @@ export async function generateProfessionalHeadshot(imageBase64: string, style: s
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Professional headshot generation error:', error);
@@ -181,7 +181,7 @@ export async function generateProfile(description: string, style: string = 'prof
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Profile generation error:', error);
@@ -212,7 +212,7 @@ export async function generateCaricature(imageBase64: string, exaggerationLevel:
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Caricature generation error:', error);
@@ -240,7 +240,7 @@ export async function generateIdPhoto(imageBase64: string, backgroundColor: stri
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('ID photo generation error:', error);
@@ -268,7 +268,7 @@ export async function transformAge(imageBase64: string, targetAge: number) {
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Age transform error:', error);
@@ -295,7 +295,7 @@ export async function swapGender(imageBase64: string) {
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Gender swap error:', error);
@@ -322,7 +322,7 @@ export async function colorizePhoto(imageBase64: string) {
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Colorization error:', error);
@@ -348,7 +348,7 @@ export async function removeBackground(imageBase64: string, newBackground: strin
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Background removal error:', error);
@@ -375,7 +375,7 @@ export async function changeHairstyle(imageBase64: string, hairstyleDescription:
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Hairstyle change error:', error);
@@ -402,7 +402,7 @@ export async function addTattoo(imageBase64: string, tattooDescription: string, 
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Tattoo simulation error:', error);
@@ -473,7 +473,7 @@ ${categoryPrompts[category]}
       success: true,
       analysis,
       category,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Lookalike finder error:', error);
@@ -533,7 +533,7 @@ export async function analyzePetSoulmate(imageBase64: string) {
     return {
       success: true,
       analysis,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Pet soulmate analysis error:', error);
@@ -742,7 +742,7 @@ export async function findCelebrityDoppelganger(imageBase64: string) {
     return {
       success: true,
       analysis,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Celebrity doppelganger analysis error:', error);
@@ -890,7 +890,7 @@ export async function analyzeBodyType(imageBase64: string) {
     return {
       success: true,
       analysis,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Body type analysis error:', error);
@@ -1043,7 +1043,7 @@ export async function analyzeSkin(imageBase64: string) {
     return {
       success: true,
       analysis,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Skin analysis error:', error);
@@ -1297,7 +1297,7 @@ export async function analyzePersonalColor(imageBase64: string) {
     return {
       success: true,
       analysis,
-      model: 'gemini-2.0-flash-exp'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Personal color analysis error:', error);
