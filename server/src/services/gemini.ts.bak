@@ -82,7 +82,7 @@ export async function generateText(prompt: string) {
     return {
       success: true,
       text: response.content,
-      model: 'gpt-4o-mini'
+      model: 'gemini-1.5-flash'
     };
   } catch (error) {
     console.error('Gemini API error:', error);
@@ -155,7 +155,7 @@ export async function generateProfessionalHeadshot(imageBase64: string, style: s
       success: true,
       imageData: response.imageData,
       mimeType: response.mimeType,
-      model: 'gpt-4o-mini'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Professional headshot generation error:', error);
@@ -473,7 +473,7 @@ ${categoryPrompts[category]}
       success: true,
       analysis,
       category,
-      model: 'gpt-4o-mini'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Lookalike finder error:', error);
@@ -533,7 +533,7 @@ export async function analyzePetSoulmate(imageBase64: string) {
     return {
       success: true,
       analysis,
-      model: 'gpt-4o-mini'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Pet soulmate analysis error:', error);
@@ -742,7 +742,7 @@ export async function findCelebrityDoppelganger(imageBase64: string) {
     return {
       success: true,
       analysis,
-      model: 'gpt-4o-mini'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Celebrity doppelganger analysis error:', error);
@@ -890,7 +890,7 @@ export async function analyzeBodyType(imageBase64: string) {
     return {
       success: true,
       analysis,
-      model: 'gpt-4o-mini'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Body type analysis error:', error);
@@ -1043,7 +1043,7 @@ export async function analyzeSkin(imageBase64: string) {
     return {
       success: true,
       analysis,
-      model: 'gpt-4o-mini'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Skin analysis error:', error);
@@ -1192,7 +1192,7 @@ export async function calculateBMI(height: number, weight: number, age: number, 
     return {
       success: true,
       analysis,
-      model: 'gpt-4o-mini'
+      model: 'gemini-1.5-flash'
     };
   } catch (error) {
     console.error('BMI calculation error:', error);
@@ -1297,7 +1297,7 @@ export async function analyzePersonalColor(imageBase64: string) {
     return {
       success: true,
       analysis,
-      model: 'gpt-4o-mini'
+      model: 'gemini-2.5-flash-image'
     };
   } catch (error) {
     console.error('Personal color analysis error:', error);
