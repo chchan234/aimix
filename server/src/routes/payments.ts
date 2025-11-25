@@ -87,6 +87,39 @@ router.post('/confirm', authenticateToken, async (req, res) => {
       });
     }
 
+    // 2.5. 중복 결제 확인 (idempotency check)
+    const [existingPayment] = await db
+      .select()
+      .from(payments)
+      .where(eq(payments.paymentKey, paymentResult.paymentKey));
+
+    if (existingPayment) {
+      // 이미 처리된 결제 - 성공 응답 반환
+      const [existingUser] = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, userId));
+
+      return res.json({
+        success: true,
+        payment: {
+          id: existingPayment.id,
+          orderId: existingPayment.orderId,
+          orderName: existingPayment.orderName,
+          amount: existingPayment.totalAmount,
+          status: existingPayment.status,
+          approvedAt: existingPayment.approvedAt,
+          receiptUrl: existingPayment.receiptUrl,
+        },
+        credits: {
+          granted: existingPayment.creditsGranted,
+          before: existingUser?.credits ? existingUser.credits - (existingPayment.creditsGranted || 0) : 0,
+          after: existingUser?.credits || 0,
+        },
+        message: 'Payment already processed',
+      });
+    }
+
     // 3. 주문 이름에서 크레딧 수 추출
     let credits = parseInt(paymentResult.orderName.match(/\d+/)?.[0] || '0', 10);
     if (credits === 0) {
@@ -188,10 +221,20 @@ router.post('/confirm', authenticateToken, async (req, res) => {
       },
     });
   } catch (error: any) {
-    console.error('Payment confirm error:', error);
+    console.error('Payment confirm error:', {
+      name: error.name,
+      message: error.message,
+      code: error.code,
+      detail: error.detail,
+      hint: error.hint,
+      constraint: error.constraint,
+      stack: error.stack?.split('\n').slice(0, 5).join('\n'),
+    });
     res.status(500).json({
       error: 'Failed to confirm payment',
       message: error.message,
+      code: error.code,
+      detail: error.detail,
     });
   }
 });

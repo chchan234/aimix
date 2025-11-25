@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS transactions (
   credits_before INTEGER NOT NULL,
   credits_after INTEGER NOT NULL,
 
-  reference_id UUID,
+  reference_id VARCHAR(200),
   reference_type VARCHAR(50),
 
   description TEXT,
