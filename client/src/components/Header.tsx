@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import { getCredits } from '../services/ai';
+import { logout as authLogout, getStoredCredits } from '../services/auth';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -36,11 +37,16 @@ export default function Header({ onMenuClick }: HeaderProps) {
     setIsLoggedIn(loggedIn);
     setUsername(savedUsername);
 
-    // 크레딧 가져오기
+    // 크레딧 가져오기 - localStorage에서 먼저 로드 후 서버에서 최신값 동기화
     if (loggedIn) {
+      // 즉시 localStorage 값 표시
+      setCredits(getStoredCredits());
+
+      // 서버에서 최신 크레딧 동기화
       getCredits().then(response => {
         if (response.success) {
           setCredits(response.credits);
+          localStorage.setItem('userCredits', String(response.credits));
         }
       }).catch(err => {
         console.error('Failed to fetch credits:', err);
@@ -70,6 +76,18 @@ export default function Header({ onMenuClick }: HeaderProps) {
     }
   }, [i18n]);
 
+  // 크레딧 업데이트 이벤트 리스닝
+  useEffect(() => {
+    const handleCreditsUpdate = (event: CustomEvent<{ credits: number }>) => {
+      setCredits(event.detail.credits);
+    };
+
+    window.addEventListener('creditsUpdated', handleCreditsUpdate as EventListener);
+    return () => {
+      window.removeEventListener('creditsUpdated', handleCreditsUpdate as EventListener);
+    };
+  }, []);
+
   // 드롭다운 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -89,10 +107,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
     };
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('username');
+  const handleLogout = async () => {
+    try {
+      await authLogout();
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
     setIsLoggedIn(false);
     setProfileDropdownOpen(false);
     // 페이지 새로고침으로 모든 컴포넌트 상태 초기화

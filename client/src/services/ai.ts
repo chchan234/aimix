@@ -3,6 +3,8 @@
  * Handles all AI-related API calls
  */
 
+import { updateStoredCredits } from './auth';
+
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000');
 
 /**
@@ -54,7 +56,14 @@ async function apiRequest<T>(endpoint: string, data: any): Promise<T> {
     throw new Error(errorMessage);
   }
 
-  return response.json();
+  const result = await response.json();
+
+  // Auto-sync credits if response contains credit info
+  if (result.credits && typeof result.credits.remaining === 'number') {
+    updateStoredCredits(result.credits.remaining);
+  }
+
+  return result;
 }
 
 /**

@@ -124,11 +124,13 @@ export async function logout(): Promise<void> {
     });
   }
 
-  // Clear local storage
+  // Clear all auth-related local storage
   localStorage.removeItem('authToken');
   localStorage.removeItem('isLoggedIn');
+  localStorage.removeItem('userId');
   localStorage.removeItem('username');
   localStorage.removeItem('userEmail');
+  localStorage.removeItem('userCredits');
   localStorage.removeItem('userRole');
 }
 
@@ -193,11 +195,29 @@ export function verifyOAuthState(receivedState: string | null): boolean {
 export function saveAuthData(token: string, user: User) {
   localStorage.setItem('authToken', token);
   localStorage.setItem('isLoggedIn', 'true');
+  localStorage.setItem('userId', user.id);
   localStorage.setItem('username', user.username);
   localStorage.setItem('userEmail', user.email);
+  localStorage.setItem('userCredits', String(user.credits || 0));
   if (user.role) {
     localStorage.setItem('userRole', user.role);
   }
+}
+
+/**
+ * Get stored credits from localStorage
+ */
+export function getStoredCredits(): number {
+  return parseInt(localStorage.getItem('userCredits') || '0', 10);
+}
+
+/**
+ * Update stored credits in localStorage
+ */
+export function updateStoredCredits(credits: number) {
+  localStorage.setItem('userCredits', String(credits));
+  // Dispatch custom event for Header to listen
+  window.dispatchEvent(new CustomEvent('creditsUpdated', { detail: { credits } }));
 }
 
 /**
