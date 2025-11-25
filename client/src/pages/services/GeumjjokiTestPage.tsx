@@ -398,7 +398,7 @@ export default function GeumjjokiTestPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">카테고리별 점수</h3>
             <div className="space-y-4">
-              {Object.entries(result.categoryScores).map(([category, score]: [string, any]) => (
+              {result.categoryScores && Object.entries(result.categoryScores).map(([category, score]: [string, any]) => (
                 <div key={category}>
                   <div className="flex justify-between text-sm text-muted-foreground mb-1">
                     <span>{CATEGORY_NAMES[category]}</span>

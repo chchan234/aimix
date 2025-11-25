@@ -374,7 +374,7 @@ export default function EnneagramTestPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">유형별 점수</h3>
             <div className="space-y-3">
-              {Object.entries(result.typeScores)
+              {result.typeScores && Object.entries(result.typeScores)
                 .sort(([, a]: [any, any], [, b]: [any, any]) => b - a)
                 .map(([type, score]: [string, any]) => (
                   <div key={type}>

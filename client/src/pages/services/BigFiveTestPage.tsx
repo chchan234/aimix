@@ -374,7 +374,7 @@ export default function BigFiveTestPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">특성별 점수</h3>
             <div className="space-y-4">
-              {Object.entries(result.traitScores).map(([trait, score]: [string, any]) => (
+              {result.traitScores && Object.entries(result.traitScores).map(([trait, score]: [string, any]) => (
                 <div key={trait}>
                   <div className="flex justify-between text-sm text-muted-foreground mb-1">
                     <span>{TRAIT_NAMES[trait]}</span>
@@ -392,7 +392,7 @@ export default function BigFiveTestPage() {
           </div>
 
           {/* Trait Details */}
-          {Object.entries(result.analysis.traits).map(([trait, data]: [string, any]) => (
+          {result.analysis?.traits && Object.entries(result.analysis.traits).map(([trait, data]: [string, any]) => (
             <div key={trait} className="bg-white dark:bg-gray-800 rounded-lg p-6">
               <h3 className="text-xl font-semibold text-foreground mb-2">
                 {TRAIT_NAMES[trait]} - {data.level}

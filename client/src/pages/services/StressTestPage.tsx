@@ -390,7 +390,7 @@ export default function StressTestPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">영역별 스트레스</h3>
             <div className="space-y-4">
-              {Object.entries(result.categoryScores).map(([category, score]: [string, any]) => (
+              {result.categoryScores && Object.entries(result.categoryScores).map(([category, score]: [string, any]) => (
                 <div key={category}>
                   <div className="flex justify-between text-sm text-muted-foreground mb-1">
                     <span>{CATEGORY_NAMES[category]}</span>
@@ -408,7 +408,7 @@ export default function StressTestPage() {
           </div>
 
           {/* Category Details */}
-          {Object.entries(result.analysis.categories).map(([category, data]: [string, any]) => (
+          {result.analysis?.categories && Object.entries(result.analysis.categories).map(([category, data]: [string, any]) => (
             <div key={category} className="bg-white dark:bg-gray-800 rounded-lg p-6">
               <h3 className="text-xl font-semibold text-foreground mb-2">
                 {CATEGORY_NAMES[category]} - {data.level}

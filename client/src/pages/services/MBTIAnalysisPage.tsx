@@ -425,7 +425,7 @@ export default function MBTIAnalysisPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">축별 점수</h3>
             <div className="space-y-4">
-              {Object.entries(result.axisScores).map(([axis, scores]: [string, any]) => {
+              {result.axisScores && Object.entries(result.axisScores).map(([axis, scores]: [string, any]) => {
                 const [first, second] = axis.split('');
                 return (
                   <div key={axis}>

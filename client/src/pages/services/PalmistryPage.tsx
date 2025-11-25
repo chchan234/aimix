@@ -371,7 +371,7 @@ export default function PalmistryPage() {
               </div>
             )}
 
-            {result.analysis.majorLines && (
+            {result.analysis?.majorLines && (
               <div className="space-y-3">
                 <h4 className="text-green-600 dark:text-green-400 font-medium">주요 손금 분석</h4>
                 {Object.entries(result.analysis.majorLines).map(([key, value]: [string, any]) => {
