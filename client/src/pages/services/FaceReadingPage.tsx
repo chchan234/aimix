@@ -358,19 +358,19 @@ export default function FaceReadingPage() {
             {result.analysis ? (
               <div className="space-y-4 text-muted-foreground">
                 {/* 종합 운세 */}
-                {result.analysis.overallFortune && (
+                {result.analysis.overallFortune && typeof result.analysis.overallFortune === 'object' && (
                   <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-500/30">
                     <h4 className="text-foreground font-medium mb-2">종합 운세</h4>
                     {typeof result.analysis.overallFortune.summary === 'string' && (
                       <p className="text-sm mb-2">{result.analysis.overallFortune.summary}</p>
                     )}
                     <div className="grid grid-cols-2 gap-2 text-xs">
-                      {result.analysis.overallFortune.fortuneScore && (
+                      {(typeof result.analysis.overallFortune.fortuneScore === 'number' || typeof result.analysis.overallFortune.fortuneScore === 'string') && (
                         <div>
                           <span className="text-blue-400">운세 점수:</span> {result.analysis.overallFortune.fortuneScore}점
                         </div>
                       )}
-                      {result.analysis.overallFortune.lifePath && (
+                      {typeof result.analysis.overallFortune.lifePath === 'string' && (
                         <div>
                           <span className="text-blue-400">인생 흐름:</span> {result.analysis.overallFortune.lifePath}
                         </div>
@@ -385,16 +385,20 @@ export default function FaceReadingPage() {
                 )}
 
                 {/* 얼굴형 */}
-                {result.analysis.faceShape && (
+                {result.analysis.faceShape && typeof result.analysis.faceShape === 'object' && (
                   <div>
                     <h4 className="text-foreground font-medium mb-2">얼굴형</h4>
-                    <p className="text-sm">
-                      <span className="text-blue-400">{result.analysis.faceShape.type}</span> - {result.analysis.faceShape.meaning}
-                    </p>
+                    {(typeof result.analysis.faceShape.type === 'string' || typeof result.analysis.faceShape.meaning === 'string') && (
+                      <p className="text-sm">
+                        {typeof result.analysis.faceShape.type === 'string' && <span className="text-blue-400">{result.analysis.faceShape.type}</span>}
+                        {typeof result.analysis.faceShape.type === 'string' && typeof result.analysis.faceShape.meaning === 'string' && ' - '}
+                        {typeof result.analysis.faceShape.meaning === 'string' && result.analysis.faceShape.meaning}
+                      </p>
+                    )}
                     {result.analysis.faceShape.characteristics && Array.isArray(result.analysis.faceShape.characteristics) && (
                       <div className="flex flex-wrap gap-1 mt-2">
                         {result.analysis.faceShape.characteristics.map((char: string, idx: number) => (
-                          <span key={idx} className="text-xs bg-blue-500/20 px-2 py-1 rounded">{char}</span>
+                          typeof char === 'string' && <span key={idx} className="text-xs bg-blue-500/20 px-2 py-1 rounded">{char}</span>
                         ))}
                       </div>
                     )}
@@ -402,86 +406,86 @@ export default function FaceReadingPage() {
                 )}
 
                 {/* 이마 */}
-                {result.analysis.forehead && (
+                {result.analysis.forehead && typeof result.analysis.forehead === 'object' && (
                   <div>
                     <h4 className="text-foreground font-medium mb-2">이마 (천정)</h4>
-                    <p className="text-sm mb-1">{result.analysis.forehead.analysis}</p>
-                    <p className="text-sm text-muted-foreground">{result.analysis.forehead.meaning}</p>
-                    <p className="text-sm text-blue-400 mt-1">{result.analysis.forehead.fortune}</p>
+                    {typeof result.analysis.forehead.analysis === 'string' && <p className="text-sm mb-1">{result.analysis.forehead.analysis}</p>}
+                    {typeof result.analysis.forehead.meaning === 'string' && <p className="text-sm text-muted-foreground">{result.analysis.forehead.meaning}</p>}
+                    {typeof result.analysis.forehead.fortune === 'string' && <p className="text-sm text-blue-400 mt-1">{result.analysis.forehead.fortune}</p>}
                   </div>
                 )}
 
                 {/* 눈썹 */}
-                {result.analysis.eyebrows && (
+                {result.analysis.eyebrows && typeof result.analysis.eyebrows === 'object' && (
                   <div>
                     <h4 className="text-foreground font-medium mb-2">눈썹</h4>
-                    <p className="text-sm mb-1">{result.analysis.eyebrows.shape}</p>
-                    <p className="text-sm text-muted-foreground">{result.analysis.eyebrows.meaning}</p>
-                    <p className="text-sm text-blue-400 mt-1">{result.analysis.eyebrows.advice}</p>
+                    {typeof result.analysis.eyebrows.shape === 'string' && <p className="text-sm mb-1">{result.analysis.eyebrows.shape}</p>}
+                    {typeof result.analysis.eyebrows.meaning === 'string' && <p className="text-sm text-muted-foreground">{result.analysis.eyebrows.meaning}</p>}
+                    {typeof result.analysis.eyebrows.advice === 'string' && <p className="text-sm text-blue-400 mt-1">{result.analysis.eyebrows.advice}</p>}
                   </div>
                 )}
 
                 {/* 눈 */}
-                {result.analysis.eyes && (
+                {result.analysis.eyes && typeof result.analysis.eyes === 'object' && (
                   <div>
                     <h4 className="text-foreground font-medium mb-2">눈</h4>
-                    <p className="text-sm mb-1">{result.analysis.eyes.shape}</p>
-                    <p className="text-sm text-muted-foreground">{result.analysis.eyes.meaning}</p>
-                    <p className="text-sm text-blue-400 mt-1">{result.analysis.eyes.fortune}</p>
-                    {result.analysis.eyes.innerNature && (
+                    {typeof result.analysis.eyes.shape === 'string' && <p className="text-sm mb-1">{result.analysis.eyes.shape}</p>}
+                    {typeof result.analysis.eyes.meaning === 'string' && <p className="text-sm text-muted-foreground">{result.analysis.eyes.meaning}</p>}
+                    {typeof result.analysis.eyes.fortune === 'string' && <p className="text-sm text-blue-400 mt-1">{result.analysis.eyes.fortune}</p>}
+                    {typeof result.analysis.eyes.innerNature === 'string' && (
                       <p className="text-sm text-purple-400 mt-1">내면: {result.analysis.eyes.innerNature}</p>
                     )}
                   </div>
                 )}
 
                 {/* 코 */}
-                {result.analysis.nose && (
+                {result.analysis.nose && typeof result.analysis.nose === 'object' && (
                   <div>
                     <h4 className="text-foreground font-medium mb-2">코 (준두)</h4>
-                    <p className="text-sm mb-1">{result.analysis.nose.shape}</p>
-                    <p className="text-sm text-muted-foreground">{result.analysis.nose.meaning}</p>
-                    <p className="text-sm text-yellow-400 mt-1">재물운: {result.analysis.nose.wealthFortune}</p>
+                    {typeof result.analysis.nose.shape === 'string' && <p className="text-sm mb-1">{result.analysis.nose.shape}</p>}
+                    {typeof result.analysis.nose.meaning === 'string' && <p className="text-sm text-muted-foreground">{result.analysis.nose.meaning}</p>}
+                    {typeof result.analysis.nose.wealthFortune === 'string' && <p className="text-sm text-yellow-400 mt-1">재물운: {result.analysis.nose.wealthFortune}</p>}
                   </div>
                 )}
 
                 {/* 입 */}
-                {result.analysis.mouth && (
+                {result.analysis.mouth && typeof result.analysis.mouth === 'object' && (
                   <div>
                     <h4 className="text-foreground font-medium mb-2">입</h4>
-                    <p className="text-sm mb-1">{result.analysis.mouth.shape}</p>
-                    <p className="text-sm text-muted-foreground">{result.analysis.mouth.meaning}</p>
-                    <p className="text-sm text-blue-400 mt-1">{result.analysis.mouth.fortune}</p>
+                    {typeof result.analysis.mouth.shape === 'string' && <p className="text-sm mb-1">{result.analysis.mouth.shape}</p>}
+                    {typeof result.analysis.mouth.meaning === 'string' && <p className="text-sm text-muted-foreground">{result.analysis.mouth.meaning}</p>}
+                    {typeof result.analysis.mouth.fortune === 'string' && <p className="text-sm text-blue-400 mt-1">{result.analysis.mouth.fortune}</p>}
                   </div>
                 )}
 
                 {/* 귀 */}
-                {result.analysis.ears && (
+                {result.analysis.ears && typeof result.analysis.ears === 'object' && (
                   <div>
                     <h4 className="text-foreground font-medium mb-2">귀</h4>
-                    <p className="text-sm mb-1">{result.analysis.ears.shape}</p>
-                    <p className="text-sm text-muted-foreground">{result.analysis.ears.meaning}</p>
-                    <p className="text-sm text-blue-400 mt-1">{result.analysis.ears.fortune}</p>
+                    {typeof result.analysis.ears.shape === 'string' && <p className="text-sm mb-1">{result.analysis.ears.shape}</p>}
+                    {typeof result.analysis.ears.meaning === 'string' && <p className="text-sm text-muted-foreground">{result.analysis.ears.meaning}</p>}
+                    {typeof result.analysis.ears.fortune === 'string' && <p className="text-sm text-blue-400 mt-1">{result.analysis.ears.fortune}</p>}
                   </div>
                 )}
 
                 {/* 턱 */}
-                {result.analysis.jawChin && (
+                {result.analysis.jawChin && typeof result.analysis.jawChin === 'object' && (
                   <div>
                     <h4 className="text-foreground font-medium mb-2">턱과 법령선</h4>
-                    <p className="text-sm mb-1">{result.analysis.jawChin.shape}</p>
-                    <p className="text-sm text-muted-foreground">{result.analysis.jawChin.meaning}</p>
-                    <p className="text-sm text-blue-400 mt-1">{result.analysis.jawChin.fortune}</p>
+                    {typeof result.analysis.jawChin.shape === 'string' && <p className="text-sm mb-1">{result.analysis.jawChin.shape}</p>}
+                    {typeof result.analysis.jawChin.meaning === 'string' && <p className="text-sm text-muted-foreground">{result.analysis.jawChin.meaning}</p>}
+                    {typeof result.analysis.jawChin.fortune === 'string' && <p className="text-sm text-blue-400 mt-1">{result.analysis.jawChin.fortune}</p>}
                   </div>
                 )}
 
                 {/* 나이별 운세 */}
-                {result.analysis.fortuneByAge && (
+                {result.analysis.fortuneByAge && typeof result.analysis.fortuneByAge === 'object' && (
                   <div className="bg-indigo-900/20 rounded-lg p-4 border border-indigo-500/30">
                     <h4 className="text-foreground font-medium mb-2">나이별 운세</h4>
                     <div className="space-y-2 text-sm">
-                      <p><span className="text-indigo-400">초년운:</span> {result.analysis.fortuneByAge.youth}</p>
-                      <p><span className="text-indigo-400">중년운:</span> {result.analysis.fortuneByAge.middle}</p>
-                      <p><span className="text-indigo-400">말년운:</span> {result.analysis.fortuneByAge.later}</p>
+                      {typeof result.analysis.fortuneByAge.youth === 'string' && <p><span className="text-indigo-400">초년운:</span> {result.analysis.fortuneByAge.youth}</p>}
+                      {typeof result.analysis.fortuneByAge.middle === 'string' && <p><span className="text-indigo-400">중년운:</span> {result.analysis.fortuneByAge.middle}</p>}
+                      {typeof result.analysis.fortuneByAge.later === 'string' && <p><span className="text-indigo-400">말년운:</span> {result.analysis.fortuneByAge.later}</p>}
                     </div>
                   </div>
                 )}
