@@ -1,3 +1,4 @@
+// Schema version: 2025-11-25T03:30:00Z - Fixed serviceResults schema
 import { pgTable, uuid, varchar, text, integer, boolean, timestamp, jsonb, decimal, index, uniqueIndex } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
