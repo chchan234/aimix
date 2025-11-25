@@ -72,26 +72,11 @@ router.post('/confirm', authenticateToken, async (req, res) => {
     const { paymentKey, orderId, amount } = confirmPaymentSchema.parse(req.body);
     const userId = req.user!.userId;
 
-    // 1. 토스페이먼츠 결제 승인 API 호출
-    const paymentResult = await tossPayments.confirmPayment({
-      paymentKey,
-      orderId,
-      amount,
-    });
-
-    // 2. 결제 승인 실패 시
-    if (paymentResult.status !== 'DONE') {
-      return res.status(400).json({
-        error: 'Payment not completed',
-        status: paymentResult.status,
-      });
-    }
-
-    // 2.5. 중복 결제 확인 (idempotency check)
+    // 1. 중복 결제 확인 (idempotency check) - 토스 API 호출 전에 먼저 확인
     const [existingPayment] = await db
       .select()
       .from(payments)
-      .where(eq(payments.paymentKey, paymentResult.paymentKey));
+      .where(eq(payments.paymentKey, paymentKey));
 
     if (existingPayment) {
       // 이미 처리된 결제 - 성공 응답 반환
@@ -120,7 +105,70 @@ router.post('/confirm', authenticateToken, async (req, res) => {
       });
     }
 
-    // 3. 주문 이름에서 크레딧 수 추출
+    // 2. 토스페이먼츠 결제 승인 API 호출
+    let paymentResult;
+    try {
+      paymentResult = await tossPayments.confirmPayment({
+        paymentKey,
+        orderId,
+        amount,
+      });
+    } catch (tossError: any) {
+      // 이미 처리된 결제인 경우, 결제 정보를 조회해서 처리
+      if (tossError.message?.includes('이미 처리된') || tossError.message?.includes('already')) {
+        console.log('Payment already confirmed in Toss, fetching payment info...');
+        try {
+          paymentResult = await tossPayments.getPayment(paymentKey);
+        } catch (fetchError) {
+          console.error('Failed to fetch payment info:', fetchError);
+          throw tossError; // 원래 에러 던지기
+        }
+      } else {
+        throw tossError;
+      }
+    }
+
+    // 3. 결제 승인 실패 시
+    if (paymentResult.status !== 'DONE') {
+      return res.status(400).json({
+        error: 'Payment not completed',
+        status: paymentResult.status,
+      });
+    }
+
+    // 3.5. 토스 API 호출 후 다시 한번 중복 체크 (race condition 방지)
+    const [existingPaymentAfterToss] = await db
+      .select()
+      .from(payments)
+      .where(eq(payments.paymentKey, paymentKey));
+
+    if (existingPaymentAfterToss) {
+      const [existingUser] = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, userId));
+
+      return res.json({
+        success: true,
+        payment: {
+          id: existingPaymentAfterToss.id,
+          orderId: existingPaymentAfterToss.orderId,
+          orderName: existingPaymentAfterToss.orderName,
+          amount: existingPaymentAfterToss.totalAmount,
+          status: existingPaymentAfterToss.status,
+          approvedAt: existingPaymentAfterToss.approvedAt,
+          receiptUrl: existingPaymentAfterToss.receiptUrl,
+        },
+        credits: {
+          granted: existingPaymentAfterToss.creditsGranted,
+          before: existingUser?.credits ? existingUser.credits - (existingPaymentAfterToss.creditsGranted || 0) : 0,
+          after: existingUser?.credits || 0,
+        },
+        message: 'Payment already processed',
+      });
+    }
+
+    // 4. 주문 이름에서 크레딧 수 추출
     let credits = parseInt(paymentResult.orderName.match(/\d+/)?.[0] || '0', 10);
     if (credits === 0) {
       // orderName에서 크레딧 추출 실패 시 패키지 매핑
