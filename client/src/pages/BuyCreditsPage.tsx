@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
 import { getCredits } from '../services/ai';
 import { isLoggedIn } from '../services/auth';
-import { loadTossPayments } from '@tosspayments/payment-sdk';
+import { loadTossPayments, ANONYMOUS } from '@tosspayments/tosspayments-sdk';
 
 interface CreditPackage {
   id: string;
@@ -152,34 +152,46 @@ export default function BuyCreditsPage() {
 
       const { orderId, amount, orderName, clientKey } = await prepareResponse.json();
 
-      // 2. 토스페이먼츠 SDK v1 로드
+      // 2. 토스페이먼츠 SDK v2 로드
       const tossPayments = await loadTossPayments(clientKey);
 
-      // 3. 결제창 띄우기 (v1 SDK 문법)
+      // 3. 결제창 객체 생성 (비회원 결제)
+      const payment = tossPayments.payment({ customerKey: ANONYMOUS });
+
+      // 4. 결제창 띄우기 (v2 SDK 문법)
       if (paymentMethod === 'CARD') {
-        // 카드 결제 (v1 SDK)
-        await tossPayments.requestPayment('카드', {
-          amount,
+        // 일반 결제 (카드/간편결제 등)
+        await payment.requestPayment({
+          method: 'CARD',
+          amount: {
+            currency: 'KRW',
+            value: amount,
+          },
           orderId,
           orderName,
-          customerName: '고객',
           successUrl: `${window.location.origin}/payment/success`,
           failUrl: `${window.location.origin}/payment/fail`,
+          customerName: '고객',
         });
       } else {
-        // PayPal 결제 (v1 SDK - 해외간편결제)
-        const usdAmount = Math.round((amount / 1300) * 100) / 100; // KRW to USD 환율 적용 (소수점 2자리)
+        // PayPal 결제
+        const usdAmount = Math.round((amount / 1300) * 100) / 100;
 
-        await tossPayments.requestPayment('해외간편결제', {
-          amount: usdAmount,
+        await payment.requestPayment({
+          method: 'FOREIGN_EASY_PAY',
+          amount: {
+            currency: 'USD',
+            value: usdAmount,
+          },
           orderId,
           orderName,
-          customerName: '고객',
           successUrl: `${window.location.origin}/payment/success`,
           failUrl: `${window.location.origin}/payment/fail`,
-          provider: 'PAYPAL',
-          currency: 'USD',
-          country: 'US',
+          customerName: '고객',
+          foreignEasyPay: {
+            provider: 'PAYPAL',
+            country: 'US',
+          },
         });
       }
     } catch (error: any) {
