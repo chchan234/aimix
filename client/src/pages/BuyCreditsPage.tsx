@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
 import { getCredits } from '../services/ai';
 import { isLoggedIn } from '../services/auth';
-import { loadTossPayments, ANONYMOUS } from '@tosspayments/tosspayments-sdk';
+import { loadTossPayments } from '@tosspayments/tosspayments-sdk';
 
 interface CreditPackage {
   id: string;
@@ -159,10 +159,10 @@ export default function BuyCreditsPage() {
       const tossPayments = await loadTossPayments(clientKey);
       console.log('TossPayments SDK loaded successfully');
 
-      // 3. 결제창 객체 생성 (비회원 결제로 변경 - ANONYMOUS 사용)
+      // 3. 결제창 객체 생성
       // 참고: tossPayments.payment()는 API 개별 연동 키가 필요합니다
-      // 결제위젯 연동 키를 사용하면 에러가 발생합니다
-      const payment = tossPayments.payment({ customerKey: ANONYMOUS });
+      console.log('Creating payment instance with customerKey:', customerKey);
+      const payment = tossPayments.payment({ customerKey });
 
       // 4. 결제창 띄우기 (v2 SDK 문법)
       console.log('Requesting payment with params:', {
