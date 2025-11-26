@@ -110,6 +110,10 @@
       "deepSaju2025": {
         "title": "2025 심층 신년운세",
         "description": "10,000자 이상 상세 분석"
+      },
+      "deepSaju2026": {
+        "title": "2026 심층 신년운세",
+        "description": "10,000자 이상 상세 분석"
       }
     },
     "personality": {
@@ -218,6 +222,10 @@
       "skinAnalysis": {
         "title": "AI 피부 분석",
         "description": "피부 타입/트러블 진단"
+      },
+      "personalColor": {
+        "title": "퍼스널 컬러 진단",
+        "description": "나에게 어울리는 색 찾기"
       }
     }
   },

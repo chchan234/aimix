@@ -110,6 +110,10 @@
       "deepSaju2025": {
         "title": "2025 Deep Fortune",
         "description": "10,000+ character detailed analysis"
+      },
+      "deepSaju2026": {
+        "title": "2026 Deep Fortune",
+        "description": "10,000+ character detailed analysis"
       }
     },
     "personality": {
@@ -218,6 +222,10 @@
       "skinAnalysis": {
         "title": "AI Skin Analysis",
         "description": "Skin type & trouble diagnosis"
+      },
+      "personalColor": {
+        "title": "Personal Color Analysis",
+        "description": "Find colors that suit you"
       }
     }
   },
