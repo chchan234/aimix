@@ -320,9 +320,8 @@ export default function HomePage() {
   }, [allServices]);
 
   // 이번주 인기 서비스 (API에서 불러옴)
-  const [popularServiceIds, setPopularServiceIds] = useState<string[]>([
-    'saju', 'profile-generator', 'mbti-analysis', 'face-reading', 'lookalike'
-  ]);
+  const [popularServiceIds, setPopularServiceIds] = useState<string[]>([]);
+  const [isLoadingPopular, setIsLoadingPopular] = useState(true);
 
   useEffect(() => {
     const fetchPopularServices = async () => {
@@ -336,6 +335,8 @@ export default function HomePage() {
         }
       } catch (error) {
         console.error('Failed to fetch popular services:', error);
+      } finally {
+        setIsLoadingPopular(false);
       }
     };
     fetchPopularServices();
@@ -396,81 +397,117 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Mobile: Horizontal Scroll */}
-        <div className="md:hidden flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="flex items-stretch p-4 gap-3">
-            {popularServices.map((service, index) => (
-              <div
-                key={index}
-                onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-                className="relative flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
-              >
-                {/* 순위 뱃지 */}
-                <div className="absolute top-2 right-2 flex items-center justify-center w-8 h-8 bg-primary/20 rounded-full">
-                  <span className="text-lg">{getRankBadge(index + 1)}</span>
-                </div>
-
-                <div
-                  className={`flex items-center justify-center w-12 h-12 ${
-                    colorClasses[service.color]
-                  } rounded-lg`}
-                >
-                  <span className="material-symbols-outlined text-2xl">
-                    {service.icon}
-                  </span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <p className="text-foreground text-sm font-semibold leading-tight">
-                    {service.title}
-                  </p>
-                  <p className="text-muted-foreground text-xs font-normal leading-normal">
-                    {service.description}
-                  </p>
-                  <p className="text-primary text-xs font-medium leading-normal mt-1">
-                    {t(`home.categories.${service.category}`)}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Desktop: Grid Layout */}
-        <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 px-4">
-          {popularServices.map((service, index) => (
-            <div
-              key={index}
-              onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-              className="relative flex flex-col gap-2 p-3 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
-            >
-              {/* 순위 뱃지 */}
-              <div className="absolute top-3 right-3 flex items-center justify-center w-10 h-10 bg-primary/20 rounded-full">
-                <span className="text-xl">{getRankBadge(index + 1)}</span>
-              </div>
-
-              <div
-                className={`flex items-center justify-center w-12 h-12 ${
-                  colorClasses[service.color]
-                } rounded-lg`}
-              >
-                <span className="material-symbols-outlined text-2xl">
-                  {service.icon}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <p className="text-foreground text-sm font-semibold leading-tight">
-                  {service.title}
-                </p>
-                <p className="text-muted-foreground text-xs font-normal leading-normal">
-                  {service.description}
-                </p>
-                <p className="text-primary text-xs font-medium leading-normal mt-1">
-                  {t(`home.categories.${service.category}`)}
-                </p>
+        {/* Loading State */}
+        {isLoadingPopular ? (
+          <>
+            {/* Mobile Loading */}
+            <div className="md:hidden flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex items-stretch p-4 gap-3">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 min-w-[160px] max-w-[160px] min-h-[200px] animate-pulse">
+                    <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+                    <div className="flex flex-col gap-2 flex-1">
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mt-auto" />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+            {/* Desktop Loading */}
+            <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 px-4">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 min-h-[200px] animate-pulse">
+                  <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+                  <div className="flex flex-col gap-2 flex-1">
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
+                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mt-auto" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Mobile: Horizontal Scroll */}
+            <div className="md:hidden flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex items-stretch p-4 gap-3">
+                {popularServices.map((service, index) => (
+                  <div
+                    key={index}
+                    onClick={() => setLocation(service.path || getCategoryPath(service.category))}
+                    className="relative flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px] min-h-[200px]"
+                  >
+                    {/* 순위 뱃지 */}
+                    <div className="absolute top-2 right-2 flex items-center justify-center w-8 h-8 bg-primary/20 rounded-full">
+                      <span className="text-lg">{getRankBadge(index + 1)}</span>
+                    </div>
+
+                    <div
+                      className={`flex items-center justify-center w-12 h-12 ${
+                        colorClasses[service.color]
+                      } rounded-lg`}
+                    >
+                      <span className="material-symbols-outlined text-2xl">
+                        {service.icon}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-1 flex-1">
+                      <p className="text-foreground text-sm font-semibold leading-tight">
+                        {service.title}
+                      </p>
+                      <p className="text-muted-foreground text-xs font-normal leading-normal">
+                        {service.description}
+                      </p>
+                      <p className="text-primary text-xs font-medium leading-normal mt-auto">
+                        {t(`home.categories.${service.category}`)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop: Grid Layout */}
+            <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 px-4">
+              {popularServices.map((service, index) => (
+                <div
+                  key={index}
+                  onClick={() => setLocation(service.path || getCategoryPath(service.category))}
+                  className="relative flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-h-[200px]"
+                >
+                  {/* 순위 뱃지 */}
+                  <div className="absolute top-3 right-3 flex items-center justify-center w-10 h-10 bg-primary/20 rounded-full">
+                    <span className="text-xl">{getRankBadge(index + 1)}</span>
+                  </div>
+
+                  <div
+                    className={`flex items-center justify-center w-12 h-12 ${
+                      colorClasses[service.color]
+                    } rounded-lg`}
+                  >
+                    <span className="material-symbols-outlined text-2xl">
+                      {service.icon}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1 flex-1">
+                    <p className="text-foreground text-sm font-semibold leading-tight">
+                      {service.title}
+                    </p>
+                    <p className="text-muted-foreground text-xs font-normal leading-normal">
+                      {service.description}
+                    </p>
+                    <p className="text-primary text-xs font-medium leading-normal mt-auto">
+                      {t(`home.categories.${service.category}`)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Random Services */}
@@ -485,7 +522,7 @@ export default function HomePage() {
               <div
                 key={index}
                 onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-                className="flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px]"
+                className="flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-[160px] max-w-[160px] min-h-[200px]"
               >
                 <div
                   className={`flex items-center justify-center w-12 h-12 ${
@@ -496,14 +533,14 @@ export default function HomePage() {
                     {service.icon}
                   </span>
                 </div>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 flex-1">
                   <p className="text-foreground text-sm font-semibold leading-tight">
                     {service.title}
                   </p>
                   <p className="text-muted-foreground text-xs font-normal leading-normal">
                     {service.description}
                   </p>
-                  <p className="text-primary text-xs font-medium leading-normal mt-1">
+                  <p className="text-primary text-xs font-medium leading-normal mt-auto">
                     {t(`home.categories.${service.category}`)}
                   </p>
                 </div>
@@ -518,7 +555,7 @@ export default function HomePage() {
             <div
               key={index}
               onClick={() => setLocation(service.path || getCategoryPath(service.category))}
-              className="flex flex-col gap-2 p-3 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer"
+              className="flex flex-col gap-3 p-4 rounded-xl bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-sidebar-dark/80 hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer min-h-[200px]"
             >
               <div
                 className={`flex items-center justify-center w-12 h-12 ${
@@ -529,14 +566,14 @@ export default function HomePage() {
                   {service.icon}
                 </span>
               </div>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 flex-1">
                 <p className="text-foreground text-sm font-semibold leading-tight">
                   {service.title}
                 </p>
                 <p className="text-muted-foreground text-xs font-normal leading-normal">
                   {service.description}
                 </p>
-                <p className="text-primary text-xs font-medium leading-normal mt-1">
+                <p className="text-primary text-xs font-medium leading-normal mt-auto">
                   {t(`home.categories.${service.category}`)}
                 </p>
               </div>
