@@ -96,19 +96,12 @@ export default function CreditPurchasePage() {
       // 4. 결제창 띄우기
       await payment.requestPayment({
         method: 'CARD',
-        amount: {
-          currency: 'KRW',
-          value: amount,
-        },
+        amount,
         orderId,
         orderName,
         successUrl: `${window.location.origin}/payment/success`,
         failUrl: `${window.location.origin}/payment/fail`,
-        customerEmail: '',
         customerName: '고객',
-        card: {
-          flowMode: 'DEFAULT',
-        },
       });
     } catch (error: any) {
       console.error('Payment error:', error);
