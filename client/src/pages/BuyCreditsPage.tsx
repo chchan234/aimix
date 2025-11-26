@@ -160,7 +160,10 @@ export default function BuyCreditsPage() {
       // 4. 결제창 띄우기 (v2 SDK 문법)
       await payment.requestPayment({
         method: 'CARD',
-        amount,
+        amount: {
+          value: amount,
+          currency: 'KRW',
+        },
         orderId,
         orderName,
         successUrl: `${window.location.origin}/payment/success`,
