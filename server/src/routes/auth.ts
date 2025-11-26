@@ -12,7 +12,6 @@ import { eq } from 'drizzle-orm';
 import { supabase } from '../db/supabase.js';
 import { db } from '../db/index.js';
 import { siteSettings } from '../db/schema.js';
-import { generateVerificationToken, getTokenExpiration, sendVerificationEmail } from '../services/email.js';
 import { createRefreshToken } from '../services/refreshToken.js';
 import { rateLimitByIP } from '../middleware/rateLimit.js';
 import { generateStateToken, verifyAndConsumeStateToken } from '../utils/oauth-state.js';
@@ -140,11 +139,7 @@ router.post('/register', rateLimitByIP(5, 60 * 1000), async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Generate verification token
-    const verificationToken = generateVerificationToken();
-    const verificationTokenExpires = getTokenExpiration();
-
-    // Create user
+    // Create user (no email verification required)
     const { data: newUser, error } = await supabase
       .from('users')
       .insert({
@@ -153,30 +148,22 @@ router.post('/register', rateLimitByIP(5, 60 * 1000), async (req, res) => {
         username: username || email.split('@')[0],
         provider: 'email',
         credits: 0,
-        lifetime_credits: 0,
-        email_verified: false,
-        verification_token: verificationToken,
-        verification_token_expires: verificationTokenExpires.toISOString()
+        lifetime_credits: 0
       })
       .select()
       .single();
 
-    if (error) throw error;
-
-    // Send verification email
-    try {
-      await sendVerificationEmail(email, newUser.username, verificationToken);
-    } catch (emailError) {
-      console.error('Failed to send verification email:', emailError);
-      // Continue anyway - user is created, they can request resend later
+    if (error) {
+      console.error('Supabase insert error:', error);
+      throw error;
     }
 
-    // Generate JWT access token (but email not verified yet)
+    // Generate JWT access token
     const accessToken = jwt.sign(
       {
         userId: newUser.id,
         email: newUser.email,
-        emailVerified: false,
+        emailVerified: true,
         provider: 'email'
       },
       JWT_SECRET,
@@ -197,16 +184,24 @@ router.post('/register', rateLimitByIP(5, 60 * 1000), async (req, res) => {
         email: newUser.email,
         username: newUser.username,
         credits: newUser.credits,
-        profileImageUrl: newUser.profile_image_url,
-        emailVerified: false
+        profileImageUrl: newUser.profile_image_url
       },
-      message: '회원가입이 완료되었습니다. 이메일을 확인하여 인증을 완료해주세요.'
+      message: '회원가입이 완료되었습니다.'
     });
 
   } catch (error) {
     console.error('Registration error:', error);
+    // Provide more specific error messages
+    let errorMessage = '회원가입에 실패했습니다.';
+    if (error instanceof Error) {
+      if (error.message.includes('duplicate') || error.message.includes('unique')) {
+        errorMessage = '이미 등록된 이메일입니다.';
+      } else if (error.message.includes('password')) {
+        errorMessage = '비밀번호 형식이 올바르지 않습니다.';
+      }
+    }
     res.status(500).json({
-      error: error instanceof Error ? error.message : 'Registration failed'
+      error: errorMessage
     });
   }
 });

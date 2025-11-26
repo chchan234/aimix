@@ -57,11 +57,13 @@ export default function SignupPage() {
       window.location.href = '/';
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : '회원가입에 실패했습니다.';
-      // Translate common error messages
-      if (errorMessage.includes('Email already registered')) {
+      // Handle various error messages
+      if (errorMessage.includes('Email already registered') || errorMessage.includes('이미 등록된 이메일')) {
         setError('이미 등록된 이메일입니다.');
       } else if (errorMessage.includes('Validation failed')) {
         setError('입력값이 올바르지 않습니다. 이메일 형식과 비밀번호를 확인해주세요.');
+      } else if (errorMessage.includes('Registration failed') || errorMessage.includes('회원가입에 실패')) {
+        setError('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
       } else {
         setError(errorMessage);
       }
