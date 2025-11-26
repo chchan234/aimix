@@ -13,6 +13,8 @@ import SettingsPage from './pages/SettingsPage';
 import MyResultsPage from './pages/MyResultsPage';
 import BuyCreditsPage from './pages/BuyCreditsPage';
 import HelpPage from './pages/HelpPage';
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
 import KakaoCallback from './pages/KakaoCallback';
 import AdminPage from './pages/AdminPage';
 import CreditPurchasePage from './pages/CreditPurchasePage';
@@ -21,6 +23,7 @@ import PaymentFailPage from './pages/PaymentFailPage';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import AnnouncementBanner from './components/AnnouncementBanner';
+import Footer from './components/Footer';
 
 // Service Pages - Fortune
 import SajuPage from './pages/services/SajuPage';
@@ -94,6 +97,8 @@ function App() {
             <Route path="/payment/success" component={PaymentSuccessPage} />
             <Route path="/payment/fail" component={PaymentFailPage} />
             <Route path="/help" component={HelpPage} />
+            <Route path="/privacy" component={PrivacyPage} />
+            <Route path="/terms" component={TermsPage} />
             <Route path="/admin" component={AdminPage} />
 
             {/* Category Pages */}
@@ -150,6 +155,9 @@ function App() {
           </Switch>
         </main>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
