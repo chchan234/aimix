@@ -60,7 +60,7 @@ router.post('/prepare', authenticateToken, async (req, res) => {
       amount: creditPackage.price,
       orderName: creditPackage.name,
       credits: creditPackage.credits,
-      clientKey: process.env.TOSS_CLIENT_KEY,
+      clientKey: process.env.TOSS_CLIENT_KEY?.trim(), // 줄바꿈 문자 제거
       customerKey,
     });
   } catch (error) {
