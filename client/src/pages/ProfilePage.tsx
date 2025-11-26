@@ -20,21 +20,10 @@ interface ServiceResult {
   createdAt: string;
 }
 
-interface UserStats {
-  totalCreditsUsed: number;
-  servicesUsed: number;
-  lastActivity: string | null;
-}
-
 export default function ProfilePage() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [stats, setStats] = useState<UserStats>({
-    totalCreditsUsed: 0,
-    servicesUsed: 0,
-    lastActivity: null,
-  });
   const [recentActivities, setRecentActivities] = useState<ServiceResult[]>([]);
 
   useEffect(() => {
@@ -54,16 +43,6 @@ export default function ProfilePage() {
       if (profileResponse.ok) {
         const profileData = await profileResponse.json();
         setProfile(profileData.user);
-      }
-
-      // Fetch user stats
-      const statsResponse = await fetch('/api/auth/stats', {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-
-      if (statsResponse.ok) {
-        const statsData = await statsResponse.json();
-        setStats(statsData);
       }
 
       // Fetch recent results
@@ -217,29 +196,6 @@ export default function ProfilePage() {
                   <label className="text-muted-foreground text-sm mb-2 block">로그인 방식</label>
                   <p className="text-foreground capitalize">{profile.provider}</p>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 이용 통계 */}
-          <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10">
-            <h2 className="text-foreground text-xl font-bold mb-6">{t('profile.stats.title')}</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-gray-100 dark:bg-[#2a2436] rounded-xl p-4">
-                <p className="text-muted-foreground text-sm mb-2">{t('profile.stats.totalCreditsUsed')}</p>
-                <p className="text-primary text-3xl font-bold">
-                  {stats.totalCreditsUsed.toLocaleString()}
-                </p>
-              </div>
-              <div className="bg-gray-100 dark:bg-[#2a2436] rounded-xl p-4">
-                <p className="text-muted-foreground text-sm mb-2">{t('profile.stats.servicesUsed')}</p>
-                <p className="text-blue-400 text-3xl font-bold">{stats.servicesUsed}</p>
-              </div>
-              <div className="bg-gray-100 dark:bg-[#2a2436] rounded-xl p-4">
-                <p className="text-muted-foreground text-sm mb-2">{t('profile.stats.lastActivity')}</p>
-                <p className="text-green-400 text-xl font-bold">
-                  {stats.lastActivity ? formatDate(stats.lastActivity) : '-'}
-                </p>
               </div>
             </div>
           </div>
