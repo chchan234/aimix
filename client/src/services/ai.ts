@@ -191,9 +191,21 @@ export async function getResults() {
 }
 
 /**
- * Get user credits
+ * Get user credits with statistics
  */
-export async function getCredits(): Promise<{ success: boolean; credits: number }> {
+export interface CreditStats {
+  thisMonthUsed: number;
+  totalCharged: number;
+  totalUsed: number;
+}
+
+export interface GetCreditsResponse {
+  success: boolean;
+  credits: number;
+  stats?: CreditStats;
+}
+
+export async function getCredits(): Promise<GetCreditsResponse> {
   const token = getAuthToken();
 
   if (!token) {

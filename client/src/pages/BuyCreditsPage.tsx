@@ -30,6 +30,9 @@ export default function BuyCreditsPage() {
   const [selectedPackage, setSelectedPackage] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<'CARD' | 'PAYPAL'>('CARD');
   const [currentCredits, setCurrentCredits] = useState(0);
+  const [thisMonthUsed, setThisMonthUsed] = useState(0);
+  const [totalCharged, setTotalCharged] = useState(0);
+  const [totalUsed, setTotalUsed] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [purchaseHistory, setPurchaseHistory] = useState<PurchaseHistory[]>([]);
@@ -46,6 +49,11 @@ export default function BuyCreditsPage() {
         const response = await getCredits();
         if (response.success) {
           setCurrentCredits(response.credits);
+          if (response.stats) {
+            setThisMonthUsed(response.stats.thisMonthUsed);
+            setTotalCharged(response.stats.totalCharged);
+            setTotalUsed(response.stats.totalUsed);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch credits:', error);
@@ -221,15 +229,15 @@ export default function BuyCreditsPage() {
             <div className="grid grid-cols-3 gap-4 text-white/80 text-sm">
               <div>
                 <p className="text-white/60 text-xs mb-1">{t('buyCredits.stats.thisMonth')}</p>
-                <p className="font-semibold">850</p>
+                <p className="font-semibold">{loading ? '...' : thisMonthUsed.toLocaleString()}</p>
               </div>
               <div>
                 <p className="text-white/60 text-xs mb-1">{t('buyCredits.stats.totalCharged')}</p>
-                <p className="font-semibold">15,000</p>
+                <p className="font-semibold">{loading ? '...' : totalCharged.toLocaleString()}</p>
               </div>
               <div>
                 <p className="text-white/60 text-xs mb-1">{t('buyCredits.stats.totalUsed')}</p>
-                <p className="font-semibold">13,800</p>
+                <p className="font-semibold">{loading ? '...' : totalUsed.toLocaleString()}</p>
               </div>
             </div>
           </div>

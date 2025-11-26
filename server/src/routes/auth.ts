@@ -620,7 +620,7 @@ router.get('/me', async (req, res) => {
 
 /**
  * GET /api/auth/credits
- * Get user credits
+ * Get user credits with statistics
  */
 router.get('/credits', async (req, res) => {
   try {
@@ -638,12 +638,13 @@ router.get('/credits', async (req, res) => {
 
     // Verify JWT token
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const userId = decoded.userId;
 
     // Get user credits from database
     const { data: user, error } = await supabase
       .from('users')
       .select('credits')
-      .eq('id', decoded.userId)
+      .eq('id', userId)
       .single();
 
     if (error || !user) {
@@ -654,9 +655,45 @@ router.get('/credits', async (req, res) => {
       });
     }
 
+    // Get credit statistics from transactions
+    const { data: transactions } = await supabase
+      .from('transactions')
+      .select('type, amount, created_at')
+      .eq('user_id', userId);
+
+    // Calculate statistics
+    let totalCharged = 0;
+    let totalUsed = 0;
+    let thisMonthUsed = 0;
+
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    if (transactions) {
+      for (const t of transactions) {
+        if (t.type === 'charge') {
+          totalCharged += t.amount;
+        } else if (t.type === 'use') {
+          const usedAmount = Math.abs(t.amount);
+          totalUsed += usedAmount;
+
+          // Check if transaction is from this month
+          const transactionDate = new Date(t.created_at);
+          if (transactionDate >= startOfMonth) {
+            thisMonthUsed += usedAmount;
+          }
+        }
+      }
+    }
+
     res.json({
       success: true,
-      credits: user.credits
+      credits: user.credits,
+      stats: {
+        thisMonthUsed,
+        totalCharged,
+        totalUsed
+      }
     });
 
   } catch (error) {
