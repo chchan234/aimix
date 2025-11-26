@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'wouter';
+import { getToken, logout } from '../services/auth';
 
 export default function SettingsPage() {
   const { t, i18n } = useTranslation();
+  const [, setLocation] = useLocation();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // 설정 상태
   const [language, setLanguage] = useState(i18n.language);
@@ -18,10 +22,39 @@ export default function SettingsPage() {
     alert(t('settings.settingsSaved'));
   };
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     const confirmed = window.confirm(t('settings.account.deleteWarning'));
-    if (confirmed) {
-      alert('Account deletion is not implemented yet.');
+    if (!confirmed) return;
+
+    // Double confirmation for safety
+    const doubleConfirmed = window.confirm('정말로 계정을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.');
+    if (!doubleConfirmed) return;
+
+    setIsDeleting(true);
+
+    try {
+      const token = getToken();
+      const response = await fetch('/api/auth/account', {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('계정이 삭제되었습니다.');
+        logout();
+        setLocation('/');
+      } else {
+        alert(data.error || '계정 삭제 중 오류가 발생했습니다.');
+      }
+    } catch (error) {
+      console.error('Account deletion error:', error);
+      alert('계정 삭제 중 오류가 발생했습니다.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -52,41 +85,6 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        {/* 보안 설정 */}
-        <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10">
-          <h2 className="text-foreground text-xl font-bold mb-6">{t('settings.security.title')}</h2>
-
-          <div className="space-y-4">
-            <div>
-              <label className="text-foreground font-semibold mb-2 block">{t('settings.security.currentPassword')}</label>
-              <input
-                type="password"
-                className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
-                placeholder="••••••••"
-              />
-            </div>
-            <div>
-              <label className="text-foreground font-semibold mb-2 block">{t('settings.security.newPassword')}</label>
-              <input
-                type="password"
-                className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
-                placeholder="••••••••"
-              />
-            </div>
-            <div>
-              <label className="text-foreground font-semibold mb-2 block">{t('settings.security.confirmPassword')}</label>
-              <input
-                type="password"
-                className="w-full bg-gray-100 dark:bg-[#2a2436] text-foreground px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 focus:border-primary focus:outline-none"
-                placeholder="••••••••"
-              />
-            </div>
-            <button className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition font-medium">
-              {t('settings.security.changePassword')}
-            </button>
-          </div>
-        </div>
-
         {/* 계정 관리 */}
         <div className="bg-white dark:bg-[#1a1625] rounded-2xl p-6 border border-gray-200 dark:border-white/10">
           <h2 className="text-foreground text-xl font-bold mb-6">{t('settings.account.title')}</h2>
@@ -101,9 +99,10 @@ export default function SettingsPage() {
             </div>
             <button
               onClick={handleDeleteAccount}
-              className="w-full bg-red-500/20 text-red-400 py-3 rounded-lg hover:bg-red-500/30 transition font-medium border border-red-500/30"
+              disabled={isDeleting}
+              className="w-full bg-red-500/20 text-red-400 py-3 rounded-lg hover:bg-red-500/30 transition font-medium border border-red-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t('settings.account.deleteButton')}
+              {isDeleting ? '삭제 중...' : t('settings.account.deleteButton')}
             </button>
           </div>
         </div>

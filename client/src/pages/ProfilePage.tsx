@@ -91,9 +91,6 @@ export default function ProfilePage() {
                     {username.charAt(0).toUpperCase()}
                   </span>
                 </div>
-                <button className="absolute bottom-0 right-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center hover:bg-primary/90 transition">
-                  <span className="material-symbols-outlined text-white text-sm">edit</span>
-                </button>
               </div>
 
               {/* 프로필 정보 */}

@@ -928,4 +928,79 @@ router.post('/resend-verification', async (req, res) => {
   }
 });
 
+/**
+ * DELETE /api/auth/account
+ * Delete user account and all associated data
+ */
+router.delete('/account', async (req, res) => {
+  try {
+    // Get token from header or cookie
+    let token = req.headers.authorization?.startsWith('Bearer ')
+      ? req.headers.authorization.substring(7)
+      : null;
+
+    if (!token && req.cookies?.accessToken) {
+      token = req.cookies.accessToken;
+    }
+
+    if (!token) {
+      return res.status(401).json({ error: '인증이 필요합니다.' });
+    }
+
+    // Verify token
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const userId = decoded.userId;
+
+    // Delete user's refresh tokens
+    await supabase
+      .from('refresh_tokens')
+      .delete()
+      .eq('user_id', userId);
+
+    // Delete user's transactions
+    await supabase
+      .from('transactions')
+      .delete()
+      .eq('user_id', userId);
+
+    // Delete user's payments
+    await supabase
+      .from('payments')
+      .delete()
+      .eq('user_id', userId);
+
+    // Delete user's services (this will cascade delete service_results)
+    await supabase
+      .from('services')
+      .delete()
+      .eq('user_id', userId);
+
+    // Finally delete the user
+    const { error: deleteError } = await supabase
+      .from('users')
+      .delete()
+      .eq('id', userId);
+
+    if (deleteError) {
+      console.error('Delete user error:', deleteError);
+      return res.status(500).json({ error: '계정 삭제 중 오류가 발생했습니다.' });
+    }
+
+    // Clear auth cookies
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+
+    res.json({
+      success: true,
+      message: '계정이 성공적으로 삭제되었습니다.'
+    });
+
+  } catch (error) {
+    console.error('Account deletion error:', error);
+    res.status(500).json({
+      error: '계정 삭제 중 오류가 발생했습니다.'
+    });
+  }
+});
+
 export default router;
