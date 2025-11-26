@@ -48,11 +48,11 @@ router.post('/prepare', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'Invalid package type' });
     }
 
-    // orderId 생성 (고유한 주문번호)
-    const orderId = `ORDER_${userId.substring(0, 8)}_${Date.now()}`;
+    // orderId 생성 (TossPayments 규칙: 6-64자, 영문 대소문자/숫자/-/_만 허용)
+    const cleanUserId = userId.replace(/-/g, '').substring(0, 8);
+    const orderId = `ORDER_${cleanUserId}_${Date.now()}`;
 
     // customerKey 생성 (TossPayments 규칙: 영문 대소문자, 숫자, -, _, =, ., @ 만 허용, 2-50자)
-    // userId에서 하이픈 제거하고 앞 20자만 사용
     const customerKey = `user_${userId.replace(/-/g, '').substring(0, 20)}`;
 
     res.json({

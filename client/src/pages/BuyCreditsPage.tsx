@@ -178,8 +178,14 @@ export default function BuyCreditsPage() {
       });
     } catch (error: any) {
       console.error('Payment error:', error);
+      console.error('Error details:', {
+        code: error.code,
+        message: error.message,
+        name: error.name,
+        stack: error.stack,
+      });
       if (error.code !== 'USER_CANCEL') {
-        alert('결제 처리 중 오류가 발생했습니다.');
+        alert(`결제 처리 중 오류가 발생했습니다: ${error.message || error.code || '알 수 없는 오류'}`);
       }
     } finally {
       setIsProcessing(false);
