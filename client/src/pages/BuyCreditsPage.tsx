@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import { getCredits } from '../services/ai';
 import { isLoggedIn } from '../services/auth';
 import { loadTossPayments, ANONYMOUS } from '@tosspayments/tosspayments-sdk';
+import { loadTossPayments as loadTossPaymentsV1 } from '@tosspayments/payment-sdk';
 
 interface CreditPackage {
   id: string;
@@ -178,23 +179,20 @@ export default function BuyCreditsPage() {
           },
         });
       } else {
-        // PayPal 결제
-        await payment.requestPayment({
-          method: 'FOREIGN_EASY_PAY',
-          amount: {
-            currency: 'USD',
-            value: Math.round(amount / 1300), // KRW to USD 환율 적용 (대략 1300원/달러)
-          },
+        // PayPal 결제 (v1 SDK 사용)
+        const tossPaymentsV1 = await loadTossPaymentsV1(clientKey);
+        const usdAmount = Math.round((amount / 1400) * 100) / 100; // KRW to USD 환율 적용 (소수점 2자리)
+
+        await tossPaymentsV1.requestPayment('해외간편결제', {
+          amount: usdAmount,
           orderId,
           orderName,
+          customerName: '고객',
           successUrl: `${window.location.origin}/payment/success`,
           failUrl: `${window.location.origin}/payment/fail`,
-          customerEmail: '',
-          customerName: '고객',
-          foreignEasyPay: {
-            provider: 'PAYPAL',
-            country: 'KR',
-          },
+          provider: 'PAYPAL',
+          currency: 'USD',
+          country: 'US',
         });
       }
     } catch (error: any) {
