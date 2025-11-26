@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { isLoggedIn } from '../services/auth';
-import { loadTossPayments, ANONYMOUS } from '@tosspayments/tosspayments-sdk';
+import { loadTossPayments } from '@tosspayments/tosspayments-sdk';
 
 interface CreditPackage {
   id: string;
@@ -85,13 +85,13 @@ export default function CreditPurchasePage() {
         throw new Error('Failed to prepare payment');
       }
 
-      const { orderId, amount, orderName, clientKey } = await prepareResponse.json();
+      const { orderId, amount, orderName, clientKey, customerKey } = await prepareResponse.json();
 
       // 2. 토스페이먼츠 SDK 로드
       const tossPayments = await loadTossPayments(clientKey);
 
-      // 3. 결제창 객체 생성
-      const payment = tossPayments.payment({ customerKey: ANONYMOUS });
+      // 3. 결제창 객체 생성 (서버에서 생성한 customerKey 사용)
+      const payment = tossPayments.payment({ customerKey });
 
       // 4. 결제창 띄우기
       await payment.requestPayment({

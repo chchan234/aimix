@@ -149,14 +149,13 @@ export default function BuyCreditsPage() {
         throw new Error(errorData.error || 'Failed to prepare payment');
       }
 
-      const { orderId, amount, orderName, clientKey } = await prepareResponse.json();
+      const { orderId, amount, orderName, clientKey, customerKey } = await prepareResponse.json();
 
       // 2. 토스페이먼츠 SDK v2 로드
       const tossPayments = await loadTossPayments(clientKey);
 
-      // 3. 결제창 객체 생성 (임시 customerKey 생성)
-      const tempCustomerKey = `GUEST_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
-      const payment = tossPayments.payment({ customerKey: tempCustomerKey });
+      // 3. 결제창 객체 생성 (서버에서 생성한 customerKey 사용)
+      const payment = tossPayments.payment({ customerKey });
 
       // 4. 결제창 띄우기 (v2 SDK 문법)
       await payment.requestPayment({

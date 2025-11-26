@@ -51,12 +51,17 @@ router.post('/prepare', authenticateToken, async (req, res) => {
     // orderId 생성 (고유한 주문번호)
     const orderId = `ORDER_${userId.substring(0, 8)}_${Date.now()}`;
 
+    // customerKey 생성 (TossPayments 규칙: 영문 대소문자, 숫자, -, _, =, ., @ 만 허용, 2-50자)
+    // userId에서 하이픈 제거하고 앞 20자만 사용
+    const customerKey = `user_${userId.replace(/-/g, '').substring(0, 20)}`;
+
     res.json({
       orderId,
       amount: creditPackage.price,
       orderName: creditPackage.name,
       credits: creditPackage.credits,
       clientKey: process.env.TOSS_CLIENT_KEY,
+      customerKey,
     });
   } catch (error) {
     console.error('Payment prepare error:', error);
