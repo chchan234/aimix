@@ -3,7 +3,7 @@ import { useLocation } from 'wouter';
 import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { calculateBMI } from '../../services/ai';
-import { isLoggedIn, getToken } from '../../services/auth';
+import { getCurrentUser, isLoggedIn, getToken, useCredits } from '../../services/auth';
 import { useSavedResult } from '../../hooks/useSavedResult';
 
 interface BMIResult {
@@ -40,9 +40,13 @@ export default function BMICalculatorPage() {
   const [age, setAge] = useState<string>('');
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [loading, setLoading] = useState(false);
+  const [startingService, setStartingService] = useState(false);
   const [saving, setSaving] = useState(false);
   const [result, setResult] = useState<BMIResult | null>(null);
   const [error, setError] = useState<string>('');
+  const [currentCredits, setCurrentCredits] = useState(0);
+
+  const serviceCost = 15;
 
 
   // Load saved result if resultId is in URL
@@ -50,6 +54,18 @@ export default function BMICalculatorPage() {
     setResult(resultData);
     setStep("result");
   });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = await getCurrentUser();
+        setCurrentCredits(user.credits);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   // Auth state monitoring - redirect if logged out
   useEffect(() => {
@@ -68,12 +84,26 @@ export default function BMICalculatorPage() {
     };
   }, [setLocation]);
 
-  const handleStartTest = () => {
+  const handleStartService = async () => {
     if (!isLoggedIn()) {
       alert('로그인이 필요한 서비스입니다. 로그인 후 이용해주세요.');
       return;
     }
-    setStep('input');
+    if (currentCredits < serviceCost) {
+      alert(`크레딧이 부족합니다. 필요: ${serviceCost} 크레딧, 보유: ${currentCredits} 크레딧`);
+      return;
+    }
+
+    setStartingService(true);
+    try {
+      const remaining = await useCredits('bmi', serviceCost);
+      setCurrentCredits(remaining);
+      setStep('input');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : '서비스 시작에 실패했습니다.');
+    } finally {
+      setStartingService(false);
+    }
   };
 
   const handleCalculate = async () => {
@@ -286,10 +316,19 @@ export default function BMICalculatorPage() {
             </div>
 
             <button
-              onClick={handleStartTest}
-              className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"
+              onClick={handleStartService}
+              disabled={startingService || (!isLoggedIn() ? false : currentCredits < serviceCost)}
+              className={`w-full px-6 py-4 font-semibold rounded-lg transition-colors ${
+                !isLoggedIn() || currentCredits >= serviceCost
+                  ? 'bg-green-600 hover:bg-green-700 text-foreground'
+                  : 'bg-gray-400 cursor-not-allowed text-gray-600'
+              }`}
             >
-              시작하기 (15 크레딧)
+              {startingService ? '처리 중...' :
+                (!isLoggedIn() ? `시작하기 (${serviceCost} 크레딧)` :
+                  currentCredits < serviceCost
+                    ? `크레딧 부족 (${currentCredits}/${serviceCost})`
+                    : `시작하기 (${serviceCost} 크레딧)`)}
             </button>
           </div>
         </div>

@@ -221,6 +221,37 @@ export function updateStoredCredits(credits: number) {
 }
 
 /**
+ * Use credits for a service (deduct credits upfront)
+ * @returns remaining credits on success, or throws error on failure
+ */
+export async function useCredits(serviceName: string, cost: number): Promise<number> {
+  const token = getToken();
+  if (!token) {
+    throw new Error('로그인이 필요합니다.');
+  }
+
+  const response = await fetch(`${API_URL}/api/auth/use-credits`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ serviceName, cost })
+  });
+
+  const data = await response.json();
+
+  if (!response.ok || !data.success) {
+    throw new Error(data.error || '크레딧 차감에 실패했습니다.');
+  }
+
+  // Update stored credits
+  updateStoredCredits(data.credits.remaining);
+
+  return data.credits.remaining;
+}
+
+/**
  * Check if user is logged in
  */
 export function isLoggedIn(): boolean {

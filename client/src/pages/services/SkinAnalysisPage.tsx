@@ -3,7 +3,7 @@ import { useLocation } from 'wouter';
 import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeSkin } from '../../services/ai';
-import { isLoggedIn, getToken } from '../../services/auth';
+import { getCurrentUser, isLoggedIn, getToken, useCredits } from '../../services/auth';
 import { useSavedResult } from '../../hooks/useSavedResult';
 
 interface SkinAnalysisResult {
@@ -55,9 +55,11 @@ export default function SkinAnalysisPage() {
   const [step, setStep] = useState<'intro' | 'upload' | 'result'>(resultId ? 'result' : 'intro');
   const [imagePreview, setImagePreview] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [startingService, setStartingService] = useState(false);
   const [saving, setSaving] = useState(false);
   const [result, setResult] = useState<SkinAnalysisResult | null>(null);
   const [error, setError] = useState<string>('');
+  const [currentCredits, setCurrentCredits] = useState(0);
 
   // Load saved result if resultId is in URL
   const { loading: loadingSavedResult, error: savedResultError } = useSavedResult<any>((resultData) => {
@@ -66,6 +68,21 @@ export default function SkinAnalysisPage() {
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const serviceCost = 30;
+
+  // Fetch user credits on mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = await getCurrentUser();
+        setCurrentCredits(user.credits);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   // Auth state monitoring - redirect if logged out
   useEffect(() => {
@@ -84,12 +101,26 @@ export default function SkinAnalysisPage() {
     };
   }, [setLocation]);
 
-  const handleStartTest = () => {
+  const handleStartService = async () => {
     if (!isLoggedIn()) {
       alert('로그인이 필요한 서비스입니다. 로그인 후 이용해주세요.');
       return;
     }
-    setStep('upload');
+    if (currentCredits < serviceCost) {
+      alert(`크레딧이 부족합니다. 필요: ${serviceCost} 크레딧, 보유: ${currentCredits} 크레딧`);
+      return;
+    }
+
+    setStartingService(true);
+    try {
+      const remaining = await useCredits('skin-analysis', serviceCost);
+      setCurrentCredits(remaining);
+      setStep('upload');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : '서비스 시작에 실패했습니다.');
+    } finally {
+      setStartingService(false);
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -286,10 +317,19 @@ export default function SkinAnalysisPage() {
             </div>
 
             <button
-              onClick={handleStartTest}
-              className="w-full px-6 py-4 bg-pink-600 hover:bg-pink-700 text-white font-semibold rounded-lg transition-colors"
+              onClick={handleStartService}
+              disabled={startingService || (!isLoggedIn() ? false : currentCredits < serviceCost)}
+              className={`w-full px-6 py-4 font-semibold rounded-lg transition-colors ${
+                !isLoggedIn() || currentCredits >= serviceCost
+                  ? 'bg-pink-600 hover:bg-pink-700 text-white'
+                  : 'bg-gray-400 cursor-not-allowed text-gray-600'
+              }`}
             >
-              시작하기 (30 크레딧)
+              {startingService ? '처리 중...' :
+                (!isLoggedIn() ? `시작하기 (${serviceCost} 크레딧)` :
+                  currentCredits < serviceCost
+                    ? `크레딧 부족 (${currentCredits}/${serviceCost})`
+                    : `시작하기 (${serviceCost} 크레딧)`)}
             </button>
           </div>
         </div>

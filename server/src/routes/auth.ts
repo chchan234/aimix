@@ -670,6 +670,87 @@ router.get('/credits', async (req, res) => {
 });
 
 /**
+ * POST /api/auth/use-credits
+ * Deduct credits for a service (called when starting a service)
+ */
+router.post('/use-credits', async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({
+        success: false,
+        error: '인증이 필요합니다.'
+      });
+    }
+
+    const token = authHeader.substring(7);
+    const { serviceName, cost } = req.body;
+
+    if (!serviceName || typeof cost !== 'number' || cost <= 0) {
+      return res.status(400).json({
+        success: false,
+        error: '서비스 정보가 올바르지 않습니다.'
+      });
+    }
+
+    // Verify JWT token
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const userId = decoded.userId;
+
+    // Atomically deduct credits using PostgreSQL function
+    const { data, error } = await supabase
+      .rpc('deduct_credits', {
+        p_user_id: userId,
+        p_amount: cost
+      })
+      .single();
+
+    if (error) {
+      console.error('Credit deduction error:', error);
+      return res.status(500).json({
+        success: false,
+        error: '크레딧 차감 중 오류가 발생했습니다.'
+      });
+    }
+
+    // If no user returned, insufficient credits
+    if (!data) {
+      const { data: user } = await supabase
+        .from('users')
+        .select('credits')
+        .eq('id', userId)
+        .single();
+
+      return res.status(403).json({
+        success: false,
+        error: '크레딧이 부족합니다.',
+        details: {
+          required: cost,
+          current: user?.credits || 0
+        }
+      });
+    }
+
+    // Return success with remaining credits
+    res.json({
+      success: true,
+      credits: {
+        cost,
+        remaining: (data as any).credits
+      }
+    });
+
+  } catch (error) {
+    console.error('Use credits error:', error);
+    res.status(500).json({
+      success: false,
+      error: '크레딧 사용 중 오류가 발생했습니다.'
+    });
+  }
+});
+
+/**
  * POST /api/auth/logout
  * Logout and revoke refresh token
  */

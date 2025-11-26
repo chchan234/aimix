@@ -4,7 +4,7 @@ import { useLocation } from 'wouter';
 import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { analyzeLoveCompatibility } from '../../services/ai';
-import { getCurrentUser, isLoggedIn, getToken } from '../../services/auth';
+import { getCurrentUser, isLoggedIn, getToken, useCredits } from '../../services/auth';
 import { useSavedResult } from '../../hooks/useSavedResult';
 
 export default function LoveCompatibilityPage() {
@@ -19,6 +19,7 @@ export default function LoveCompatibilityPage() {
   const [person1BirthDate, setPerson1BirthDate] = useState('');
   const [person2BirthDate, setPerson2BirthDate] = useState('');
   const [loading, setLoading] = useState(false);
+  const [startingService, setStartingService] = useState(false);
   const [saving, setSaving] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [currentCredits, setCurrentCredits] = useState(0);
@@ -61,14 +62,31 @@ export default function LoveCompatibilityPage() {
     };
   }, [setLocation]);
 
-  const handleExecute = async () => {
-    if (!person1BirthDate || !person2BirthDate) {
-      alert('두 사람의 생년월일을 모두 입력해주세요.');
+  const handleStartService = async () => {
+    if (!isLoggedIn()) {
+      alert('로그인이 필요한 서비스입니다. 로그인 후 이용해주세요.');
+      return;
+    }
+    if (currentCredits < serviceCost) {
+      alert(`크레딧이 부족합니다. 필요: ${serviceCost} 크레딧, 보유: ${currentCredits} 크레딧`);
       return;
     }
 
-    if (currentCredits < serviceCost) {
-      alert('크레딧이 부족합니다.');
+    setStartingService(true);
+    try {
+      const remaining = await useCredits('love-compatibility', serviceCost);
+      setCurrentCredits(remaining);
+      setStep('input');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : '서비스 시작에 실패했습니다.');
+    } finally {
+      setStartingService(false);
+    }
+  };
+
+  const handleExecute = async () => {
+    if (!person1BirthDate || !person2BirthDate) {
+      alert('두 사람의 생년월일을 모두 입력해주세요.');
       return;
     }
 
@@ -222,16 +240,19 @@ export default function LoveCompatibilityPage() {
             </div>
 
             <button
-              onClick={() => {
-                if (!isLoggedIn()) {
-                  alert('로그인이 필요한 서비스입니다. 로그인 후 이용해주세요.');
-                  return;
-                }
-                setStep('input');
-              }}
-              className="w-full px-6 py-4 bg-pink-600 hover:bg-pink-700 text-foreground font-semibold rounded-lg transition-colors"
+              onClick={handleStartService}
+              disabled={startingService || (!isLoggedIn() ? false : currentCredits < serviceCost)}
+              className={`w-full px-6 py-4 font-semibold rounded-lg transition-colors ${
+                !isLoggedIn() || currentCredits >= serviceCost
+                  ? 'bg-pink-600 hover:bg-pink-700 text-foreground'
+                  : 'bg-gray-400 cursor-not-allowed text-gray-600'
+              }`}
             >
-              시작하기 ({serviceCost} 크레딧)
+              {startingService ? '처리 중...' :
+                (!isLoggedIn() ? `시작하기 (${serviceCost} 크레딧)` :
+                  currentCredits < serviceCost
+                    ? `크레딧 부족 (${currentCredits}/${serviceCost})`
+                    : `시작하기 (${serviceCost} 크레딧)`)}
             </button>
           </div>
         </div>

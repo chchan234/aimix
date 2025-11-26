@@ -3,7 +3,7 @@ import { useLocation } from 'wouter';
 import { Loader2 } from 'lucide-react';
 import ServiceDetailLayout from '../../components/ServiceDetailLayout';
 import { generateBabyFace } from '../../services/ai';
-import { isLoggedIn, getToken } from '../../services/auth';
+import { getCurrentUser, isLoggedIn, getToken, useCredits } from '../../services/auth';
 import { useSavedResult } from '../../hooks/useSavedResult';
 
 export default function BabyFacePage() {
@@ -16,9 +16,11 @@ export default function BabyFacePage() {
   const [parent2Image, setParent2Image] = useState<string>('');
   const [style, setStyle] = useState<'normal' | 'idol'>('normal');
   const [loading, setLoading] = useState(false);
+  const [startingService, setStartingService] = useState(false);
   const [resultImage, setResultImage] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [saving, setSaving] = useState(false);
+  const [currentCredits, setCurrentCredits] = useState(0);
   const [aiModel, setAiModel] = useState<string | undefined>();
   const parent1InputRef = useRef<HTMLInputElement>(null);
   const parent2InputRef = useRef<HTMLInputElement>(null);
@@ -29,6 +31,21 @@ export default function BabyFacePage() {
     setResultImage(imageUrl);
     setStep('result');
   });
+
+  const serviceCost = 50;
+
+  // Fetch user credits on mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = await getCurrentUser();
+        setCurrentCredits(user.credits);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   // Image compression function to reduce payload size
   const compressImage = (base64: string, maxWidth: number = 800, quality: number = 0.7): Promise<string> => {
@@ -78,12 +95,26 @@ export default function BabyFacePage() {
     };
   }, [setLocation]);
 
-  const handleStartTest = () => {
+  const handleStartService = async () => {
     if (!isLoggedIn()) {
       alert('로그인이 필요한 서비스입니다. 로그인 후 이용해주세요.');
       return;
     }
-    setStep('upload');
+    if (currentCredits < serviceCost) {
+      alert(`크레딧이 부족합니다. 필요: ${serviceCost} 크레딧, 보유: ${currentCredits} 크레딧`);
+      return;
+    }
+
+    setStartingService(true);
+    try {
+      const remaining = await useCredits('baby-face', serviceCost);
+      setCurrentCredits(remaining);
+      setStep('upload');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : '서비스 시작에 실패했습니다.');
+    } finally {
+      setStartingService(false);
+    }
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, parent: 1 | 2) => {
@@ -280,16 +311,25 @@ export default function BabyFacePage() {
                   <p className="text-muted-foreground text-sm">AI 유전 분석 + 얼굴 합성</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-pink-400 font-bold text-xl">50 크레딧</p>
+                  <p className="text-pink-400 font-bold text-xl">{serviceCost} 크레딧</p>
                 </div>
               </div>
             </div>
 
             <button
-              onClick={handleStartTest}
-              className="w-full px-6 py-4 bg-pink-600 hover:bg-pink-700 text-white font-semibold rounded-lg transition-colors"
+              onClick={handleStartService}
+              disabled={startingService || (!isLoggedIn() ? false : currentCredits < serviceCost)}
+              className={`w-full px-6 py-4 font-semibold rounded-lg transition-colors ${
+                !isLoggedIn() || currentCredits >= serviceCost
+                  ? 'bg-pink-600 hover:bg-pink-700 text-white'
+                  : 'bg-gray-400 cursor-not-allowed text-gray-600'
+              }`}
             >
-              시작하기 (50 크레딧)
+              {startingService ? '처리 중...' :
+                (!isLoggedIn() ? `시작하기 (${serviceCost} 크레딧)` :
+                  currentCredits < serviceCost
+                    ? `크레딧 부족 (${currentCredits}/${serviceCost})`
+                    : `시작하기 (${serviceCost} 크레딧)`)}
             </button>
           </div>
         </div>
