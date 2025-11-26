@@ -83,7 +83,7 @@ class TossPaymentsClient {
   private readonly secretKey: string;
 
   constructor() {
-    const secretKey = process.env.TOSS_SECRET_KEY;
+    const secretKey = process.env.TOSS_SECRET_KEY?.trim();
     if (!secretKey) {
       throw new Error('TOSS_SECRET_KEY is not configured');
     }
