@@ -157,8 +157,8 @@ router.post('/register', rateLimitByIP(5, 60 * 1000), async (req, res) => {
         password: hashedPassword,
         username: username || email.split('@')[0],
         provider: 'email',
-        credits: 1000, // Welcome bonus
-        lifetime_credits: 1000,
+        credits: 0,
+        lifetime_credits: 0,
         email_verified: false,
         verification_token: verificationToken,
         verification_token_expires: verificationTokenExpires.toISOString()

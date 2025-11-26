@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import { login, loginWithKakao, initKakao, saveAuthData } from '../services/auth';
 
 export default function LoginPage() {
+  const [, setLocation] = useLocation();
   const { t } = useTranslation();
   const [formData, setFormData] = useState({
     email: '',
@@ -141,11 +143,11 @@ export default function LoginPage() {
             <p className="text-muted-foreground text-sm">
               {t('login.noAccount')}{' '}
               <button
-                onClick={handleKakaoLogin}
+                onClick={() => setLocation('/signup')}
                 className="text-primary font-semibold hover:underline"
                 disabled={isLoading}
               >
-                카카오로 10초만에 가입
+                10초만에 가입
               </button>
             </p>
           </div>

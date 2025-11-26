@@ -8,12 +8,9 @@ export default function SignupPage() {
     email: '',
     password: '',
     confirmPassword: '',
-    name: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [showVerificationMessage, setShowVerificationMessage] = useState(false);
-  const [registeredEmail, setRegisteredEmail] = useState('');
 
   // Initialize Kakao SDK
   useEffect(() => {
@@ -24,7 +21,14 @@ export default function SignupPage() {
     e.preventDefault();
     setError('');
 
-    // Validation
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('올바른 이메일 형식을 입력해주세요.');
+      return;
+    }
+
+    // Password validation
     if (formData.password !== formData.confirmPassword) {
       setError('비밀번호가 일치하지 않습니다.');
       return;
@@ -38,20 +42,15 @@ export default function SignupPage() {
     setIsLoading(true);
 
     try {
-      // Call register API
-      const response = await register(formData.email, formData.password, formData.name);
+      // Call register API (name is optional, use email prefix as default)
+      const defaultName = formData.email.split('@')[0];
+      const response = await register(formData.email, formData.password, defaultName);
 
       // Save auth data
       saveAuthData(response.token, response.user);
 
-      // Show verification message if email is not verified
-      if (!response.user.emailVerified) {
-        setRegisteredEmail(formData.email);
-        setShowVerificationMessage(true);
-      } else {
-        // Redirect to home for verified users (OAuth users)
-        window.location.href = '/';
-      }
+      // Redirect to home immediately
+      window.location.href = '/';
     } catch (err) {
       setError(err instanceof Error ? err.message : '회원가입에 실패했습니다.');
     } finally {
@@ -71,34 +70,14 @@ export default function SignupPage() {
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4">
       <div className="w-full max-w-md">
-        <div className="bg-sidebar-dark rounded-2xl p-8 shadow-2xl">
+        <div className="bg-white dark:bg-sidebar-dark rounded-2xl p-8 shadow-2xl border border-gray-200 dark:border-transparent">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-white text-3xl font-bold mb-2">회원가입</h1>
-            <p className="text-[#ab9eb7] text-sm">
-              AI PORT에서 다양한 AI 서비스를 무료로 이용하세요
+            <h1 className="text-foreground text-3xl font-bold mb-2">회원가입</h1>
+            <p className="text-muted-foreground text-sm">
+              이메일과 비밀번호만으로 간편하게 가입하세요
             </p>
           </div>
-
-          {/* Verification Success Message */}
-          {showVerificationMessage && (
-            <div className="mb-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-              <div className="flex items-start gap-3">
-                <span className="material-symbols-outlined text-green-400 text-2xl">
-                  mark_email_read
-                </span>
-                <div className="flex-1">
-                  <h3 className="text-green-400 font-semibold mb-2">회원가입 완료!</h3>
-                  <p className="text-gray-300 text-sm mb-2">
-                    <strong>{registeredEmail}</strong>로 인증 이메일을 보냈습니다.
-                  </p>
-                  <p className="text-gray-400 text-xs">
-                    이메일을 확인하여 인증을 완료해주세요. (링크 유효기간: 24시간)
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Error Message */}
           {error && (
@@ -109,28 +88,14 @@ export default function SignupPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {/* Name */}
-            <div className="flex flex-col gap-2">
-              <label className="text-white text-sm font-medium">이름</label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="px-4 py-3 bg-background-dark text-white rounded-lg border border-white/10 focus:border-primary focus:outline-none transition"
-                placeholder="홍길동"
-                required
-                disabled={isLoading}
-              />
-            </div>
-
             {/* Email */}
             <div className="flex flex-col gap-2">
-              <label className="text-white text-sm font-medium">이메일</label>
+              <label className="text-foreground text-sm font-medium">이메일</label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="px-4 py-3 bg-background-dark text-white rounded-lg border border-white/10 focus:border-primary focus:outline-none transition"
+                className="px-4 py-3 bg-gray-100 dark:bg-background-dark text-foreground rounded-lg border border-gray-300 dark:border-white/10 focus:border-primary focus:outline-none transition"
                 placeholder="example@email.com"
                 required
                 disabled={isLoading}
@@ -139,12 +104,12 @@ export default function SignupPage() {
 
             {/* Password */}
             <div className="flex flex-col gap-2">
-              <label className="text-white text-sm font-medium">비밀번호</label>
+              <label className="text-foreground text-sm font-medium">비밀번호</label>
               <input
                 type="password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="px-4 py-3 bg-background-dark text-white rounded-lg border border-white/10 focus:border-primary focus:outline-none transition"
+                className="px-4 py-3 bg-gray-100 dark:bg-background-dark text-foreground rounded-lg border border-gray-300 dark:border-white/10 focus:border-primary focus:outline-none transition"
                 placeholder="8자 이상 입력하세요"
                 required
                 minLength={8}
@@ -154,14 +119,14 @@ export default function SignupPage() {
 
             {/* Confirm Password */}
             <div className="flex flex-col gap-2">
-              <label className="text-white text-sm font-medium">비밀번호 확인</label>
+              <label className="text-foreground text-sm font-medium">비밀번호 확인</label>
               <input
                 type="password"
                 value={formData.confirmPassword}
                 onChange={(e) =>
                   setFormData({ ...formData, confirmPassword: e.target.value })
                 }
-                className="px-4 py-3 bg-background-dark text-white rounded-lg border border-white/10 focus:border-primary focus:outline-none transition"
+                className="px-4 py-3 bg-gray-100 dark:bg-background-dark text-foreground rounded-lg border border-gray-300 dark:border-white/10 focus:border-primary focus:outline-none transition"
                 placeholder="비밀번호를 다시 입력하세요"
                 required
                 minLength={8}
@@ -181,9 +146,9 @@ export default function SignupPage() {
 
           {/* Divider */}
           <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 h-px bg-white/10"></div>
-            <span className="text-[#ab9eb7] text-sm">또는</span>
-            <div className="flex-1 h-px bg-white/10"></div>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-white/10"></div>
+            <span className="text-muted-foreground text-sm">또는</span>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-white/10"></div>
           </div>
 
           {/* Social Login Buttons */}
@@ -194,13 +159,13 @@ export default function SignupPage() {
               className="px-6 py-3 bg-[#FEE500] text-[#191919] font-semibold rounded-lg hover:bg-[#FDD835] transition-all duration-300 flex items-center justify-center gap-2"
             >
               <span className="material-symbols-outlined">chat</span>
-              카카오 10초 가입
+              카카오로 가입
             </button>
           </div>
 
           {/* Login Link */}
           <div className="text-center mt-6">
-            <p className="text-[#ab9eb7] text-sm">
+            <p className="text-muted-foreground text-sm">
               이미 계정이 있으신가요?{' '}
               <button
                 onClick={() => setLocation('/login')}

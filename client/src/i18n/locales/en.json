@@ -41,7 +41,7 @@
   },
   "login": {
     "title": "Login",
-    "subtitle": "Login with your AI PORT account",
+    "subtitle": "Login with your account",
     "emailOrId": "Email or ID",
     "emailPlaceholder": "Enter your email",
     "password": "Password",

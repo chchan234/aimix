@@ -41,7 +41,7 @@
   },
   "login": {
     "title": "로그인",
-    "subtitle": "AI PORT 계정으로 로그인하세요",
+    "subtitle": "계정으로 로그인하세요",
     "emailOrId": "이메일 또는 아이디",
     "emailPlaceholder": "이메일을 입력하세요",
     "password": "비밀번호",
