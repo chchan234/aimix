@@ -12,6 +12,10 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Password validation state
+  const isPasswordLongEnough = formData.password.length >= 8;
+  const doPasswordsMatch = formData.password === formData.confirmPassword && formData.confirmPassword.length > 0;
+
   // Initialize Kakao SDK
   useEffect(() => {
     initKakao();
@@ -29,13 +33,13 @@ export default function SignupPage() {
     }
 
     // Password validation
-    if (formData.password !== formData.confirmPassword) {
-      setError('비밀번호가 일치하지 않습니다.');
+    if (!isPasswordLongEnough) {
+      setError('비밀번호는 8자 이상이어야 합니다.');
       return;
     }
 
-    if (formData.password.length < 8) {
-      setError('비밀번호는 8자 이상이어야 합니다.');
+    if (!doPasswordsMatch) {
+      setError('비밀번호가 일치하지 않습니다.');
       return;
     }
 
@@ -52,7 +56,15 @@ export default function SignupPage() {
       // Redirect to home immediately
       window.location.href = '/';
     } catch (err) {
-      setError(err instanceof Error ? err.message : '회원가입에 실패했습니다.');
+      const errorMessage = err instanceof Error ? err.message : '회원가입에 실패했습니다.';
+      // Translate common error messages
+      if (errorMessage.includes('Email already registered')) {
+        setError('이미 등록된 이메일입니다.');
+      } else if (errorMessage.includes('Validation failed')) {
+        setError('입력값이 올바르지 않습니다. 이메일 형식과 비밀번호를 확인해주세요.');
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -82,7 +94,7 @@ export default function SignupPage() {
           {/* Error Message */}
           {error && (
             <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-              <p className="text-red-400 text-sm">{error}</p>
+              <p className="text-red-500 text-sm">{error}</p>
             </div>
           )}
 
@@ -110,11 +122,31 @@ export default function SignupPage() {
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 className="px-4 py-3 bg-gray-100 dark:bg-background-dark text-foreground rounded-lg border border-gray-300 dark:border-white/10 focus:border-primary focus:outline-none transition"
-                placeholder="8자 이상 입력하세요"
+                placeholder="비밀번호 입력"
                 required
-                minLength={8}
                 disabled={isLoading}
               />
+              {/* Password length indicator */}
+              <div className="flex items-center gap-2 mt-1">
+                {formData.password.length > 0 ? (
+                  isPasswordLongEnough ? (
+                    <span className="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+                  ) : (
+                    <span className="material-symbols-outlined text-red-500 text-lg">cancel</span>
+                  )
+                ) : (
+                  <span className="material-symbols-outlined text-gray-400 text-lg">radio_button_unchecked</span>
+                )}
+                <span className={`text-xs ${
+                  formData.password.length === 0
+                    ? 'text-gray-400'
+                    : isPasswordLongEnough
+                      ? 'text-green-500'
+                      : 'text-red-500'
+                }`}>
+                  8자 이상 {formData.password.length > 0 && `(${formData.password.length}자)`}
+                </span>
+              </div>
             </div>
 
             {/* Confirm Password */}
@@ -127,18 +159,33 @@ export default function SignupPage() {
                   setFormData({ ...formData, confirmPassword: e.target.value })
                 }
                 className="px-4 py-3 bg-gray-100 dark:bg-background-dark text-foreground rounded-lg border border-gray-300 dark:border-white/10 focus:border-primary focus:outline-none transition"
-                placeholder="비밀번호를 다시 입력하세요"
+                placeholder="비밀번호 재입력"
                 required
-                minLength={8}
                 disabled={isLoading}
               />
+              {/* Password match indicator */}
+              {formData.confirmPassword.length > 0 && (
+                <div className="flex items-center gap-2 mt-1">
+                  {doPasswordsMatch ? (
+                    <>
+                      <span className="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+                      <span className="text-xs text-green-500">비밀번호가 일치합니다</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-red-500 text-lg">cancel</span>
+                      <span className="text-xs text-red-500">비밀번호가 일치하지 않습니다</span>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
               className="mt-4 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isLoading}
+              disabled={isLoading || !isPasswordLongEnough || !doPasswordsMatch}
             >
               {isLoading ? '회원가입 중...' : '회원가입'}
             </button>
