@@ -53,8 +53,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Sidebar */}
       <aside
         className={`
-          w-64 flex-shrink-0 bg-sidebar-dark p-4 flex flex-col justify-between
-          fixed top-0 left-0 h-full z-50
+          w-64 flex-shrink-0 bg-gray-50 dark:bg-sidebar-dark p-4 flex flex-col justify-between
+          fixed top-0 left-0 h-full z-50 border-r border-gray-200 dark:border-transparent
           transition-transform duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
@@ -66,7 +66,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className="p-2 rounded-lg hover:bg-primary/20 transition"
             aria-label="Close menu"
           >
-            <span className="material-symbols-outlined text-white text-2xl">close</span>
+            <span className="material-symbols-outlined text-gray-700 dark:text-white text-2xl">close</span>
           </button>
         </div>
 
@@ -85,12 +85,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 >
                   <span
                     className={`material-symbols-outlined text-2xl ${
-                      location === '/' ? 'fill text-white' : 'text-white'
+                      location === '/' ? 'fill text-white' : 'text-gray-700 dark:text-white'
                     }`}
                   >
                     home
                   </span>
-                  <p className="text-white text-sm font-medium leading-normal">
+                  <p className={`text-sm font-medium leading-normal ${
+                    location === '/' ? 'text-white' : 'text-gray-700 dark:text-white'
+                  }`}>
                     {t('sidebar.home')}
                   </p>
                 </div>
@@ -109,23 +111,25 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   <div className="flex items-center gap-3">
                     <span
                       className={`material-symbols-outlined text-2xl ${
-                        isExplorePath ? 'fill text-white' : 'text-white'
+                        isExplorePath && !exploreOpen ? 'fill text-white' : 'text-gray-700 dark:text-white'
                       }`}
                     >
                       explore
                     </span>
-                    <p className="text-white text-sm font-medium leading-normal">
+                    <p className={`text-sm font-medium leading-normal ${
+                      isExplorePath && !exploreOpen ? 'text-white' : 'text-gray-700 dark:text-white'
+                    }`}>
                       {t('sidebar.explore')}
                     </p>
                   </div>
-                  <span className="material-symbols-outlined text-white text-xl transition-transform" style={{ transform: exploreOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                  <span className="material-symbols-outlined text-gray-700 dark:text-white text-xl transition-transform" style={{ transform: exploreOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
                     expand_more
                   </span>
                 </div>
 
                 {/* 탐색 서브메뉴 */}
                 {exploreOpen && (
-                  <div className="flex flex-col gap-1 mt-1 ml-6 pl-3 border-l-2 border-white/10">
+                  <div className="flex flex-col gap-1 mt-1 ml-6 pl-3 border-l-2 border-gray-300 dark:border-white/10">
                     {exploreItems.map((item) => (
                       <Link key={item.path} href={item.path} onClick={handleLinkClick}>
                         <div
@@ -137,12 +141,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                         >
                           <span
                             className={`material-symbols-outlined text-xl ${
-                              location === item.path ? 'fill text-white' : 'text-white'
+                              location === item.path ? 'fill text-white' : 'text-gray-700 dark:text-white'
                             }`}
                           >
                             {item.icon}
                           </span>
-                          <p className="text-white text-sm font-medium leading-normal">
+                          <p className={`text-sm font-medium leading-normal ${
+                            location === item.path ? 'text-white' : 'text-gray-700 dark:text-white'
+                          }`}>
                             {item.label}
                           </p>
                         </div>
@@ -163,12 +169,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 >
                   <span
                     className={`material-symbols-outlined text-2xl ${
-                      location === '/my-results' ? 'fill text-white' : 'text-white'
+                      location === '/my-results' ? 'fill text-white' : 'text-gray-700 dark:text-white'
                     }`}
                   >
                     palette
                   </span>
-                  <p className="text-white text-sm font-medium leading-normal">
+                  <p className={`text-sm font-medium leading-normal ${
+                    location === '/my-results' ? 'text-white' : 'text-gray-700 dark:text-white'
+                  }`}>
                     {t('sidebar.myResults')}
                   </p>
                 </div>
@@ -185,12 +193,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 >
                   <span
                     className={`material-symbols-outlined text-2xl ${
-                      location === '/buy-credits' ? 'fill text-white' : 'text-white'
+                      location === '/buy-credits' ? 'fill text-white' : 'text-gray-700 dark:text-white'
                     }`}
                   >
                     store
                   </span>
-                  <p className="text-white text-sm font-medium leading-normal">
+                  <p className={`text-sm font-medium leading-normal ${
+                    location === '/buy-credits' ? 'text-white' : 'text-gray-700 dark:text-white'
+                  }`}>
                     {t('sidebar.buyCredits')}
                   </p>
                 </div>
@@ -210,9 +220,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   : 'hover:bg-primary/20'
               }`}>
                 <span className={`material-symbols-outlined text-2xl ${
-                  location === '/admin' ? 'fill text-white' : 'text-white'
+                  location === '/admin' ? 'fill text-white' : 'text-gray-700 dark:text-white'
                 }`}>admin_panel_settings</span>
-                <p className="text-white text-sm font-medium leading-normal">운영 페이지</p>
+                <p className={`text-sm font-medium leading-normal ${
+                  location === '/admin' ? 'text-white' : 'text-gray-700 dark:text-white'
+                }`}>운영 페이지</p>
               </div>
             </Link>
           )}
@@ -224,9 +236,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 : 'hover:bg-primary/20'
             }`}>
               <span className={`material-symbols-outlined text-2xl ${
-                location === '/settings' ? 'fill text-white' : 'text-white'
+                location === '/settings' ? 'fill text-white' : 'text-gray-700 dark:text-white'
               }`}>settings</span>
-              <p className="text-white text-sm font-medium leading-normal">{t('sidebar.settings')}</p>
+              <p className={`text-sm font-medium leading-normal ${
+                location === '/settings' ? 'text-white' : 'text-gray-700 dark:text-white'
+              }`}>{t('sidebar.settings')}</p>
             </div>
           </Link>
           <Link href="/help" onClick={handleLinkClick}>
@@ -236,9 +250,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 : 'hover:bg-primary/20'
             }`}>
               <span className={`material-symbols-outlined text-2xl ${
-                location === '/help' ? 'fill text-white' : 'text-white'
+                location === '/help' ? 'fill text-white' : 'text-gray-700 dark:text-white'
               }`}>help</span>
-              <p className="text-white text-sm font-medium leading-normal">{t('sidebar.help')}</p>
+              <p className={`text-sm font-medium leading-normal ${
+                location === '/help' ? 'text-white' : 'text-gray-700 dark:text-white'
+              }`}>{t('sidebar.help')}</p>
             </div>
           </Link>
         </div>

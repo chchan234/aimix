@@ -161,7 +161,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             <div className="flex items-center gap-2 cursor-pointer">
               <span className="material-symbols-outlined text-3xl text-primary font-light">auto_awesome</span>
               <h1 className="text-2xl font-serif font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-pink-500 bg-clip-text text-transparent">
-                AI PORT
+                AI PORTS
               </h1>
             </div>
           </Link>
