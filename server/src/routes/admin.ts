@@ -455,16 +455,15 @@ router.get('/analytics/services', async (req: Request, res: Response) => {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
 
+    // Get service usage stats from services table directly
     const serviceStats = await db.execute(sql`
       SELECT
-        COALESCE(s.service_type, 'unknown') as service_type,
+        COALESCE(service_type, 'unknown') as service_type,
         COUNT(*)::int as usage_count,
-        COALESCE(SUM(t.credit_amount), 0)::int as total_credits
-      FROM transactions t
-      LEFT JOIN services s ON t.service_id = s.id
-      WHERE t.type = 'use'
-        AND t.created_at >= ${startDate}
-      GROUP BY s.service_type
+        COALESCE(SUM(credit_cost), 0)::int as total_credits
+      FROM services
+      WHERE created_at >= ${startDate}
+      GROUP BY service_type
       ORDER BY usage_count DESC
     `);
 

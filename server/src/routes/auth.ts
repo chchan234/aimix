@@ -358,7 +358,7 @@ router.post('/kakao', async (req, res) => {
       const { data: newUser, error } = await supabase
         .from('users')
         .insert({
-          email: email || `kakao_${kakaoId}@aiplatform.com`,
+          email: email || `kakao_${kakaoId}@aiports.org`,
           username: nickname || `kakao_${kakaoId}`,
           provider: 'kakao',
           provider_id: kakaoId,
@@ -520,7 +520,7 @@ router.post('/kakao/callback', rateLimitByIP(10, 60 * 1000), async (req, res) =>
       const { data: newUser, error } = await supabase
         .from('users')
         .insert({
-          email: email || `kakao_${kakaoId}@aiplatform.com`,
+          email: email || `kakao_${kakaoId}@aiports.org`,
           username: nickname || `kakao_${kakaoId}`,
           provider: 'kakao',
           provider_id: kakaoId,
@@ -925,6 +925,59 @@ router.post('/resend-verification', async (req, res) => {
     res.status(500).json({
       error: '인증 이메일 재전송 중 오류가 발생했습니다.'
     });
+  }
+});
+
+/**
+ * GET /api/auth/stats
+ * Get user statistics (credits used, services used, last activity)
+ */
+router.get('/stats', async (req, res) => {
+  try {
+    // Get token from header or cookie
+    let token = req.headers.authorization?.startsWith('Bearer ')
+      ? req.headers.authorization.substring(7)
+      : null;
+
+    if (!token && req.cookies?.accessToken) {
+      token = req.cookies.accessToken;
+    }
+
+    if (!token) {
+      return res.status(401).json({ error: '인증이 필요합니다.' });
+    }
+
+    // Verify token
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const userId = decoded.userId;
+
+    // Get user's usage statistics from transactions
+    const { data: transactions, error: transactionsError } = await supabase
+      .from('transactions')
+      .select('type, amount, created_at')
+      .eq('user_id', userId)
+      .eq('type', 'use')
+      .order('created_at', { ascending: false });
+
+    if (transactionsError) {
+      console.error('Stats fetch error:', transactionsError);
+      return res.status(500).json({ error: '통계 조회 중 오류가 발생했습니다.' });
+    }
+
+    // Calculate statistics
+    const totalCreditsUsed = transactions?.reduce((sum, t) => sum + Math.abs(t.amount), 0) || 0;
+    const servicesUsed = transactions?.length || 0;
+    const lastActivity = transactions && transactions.length > 0 ? transactions[0].created_at : null;
+
+    res.json({
+      totalCreditsUsed,
+      servicesUsed,
+      lastActivity
+    });
+
+  } catch (error) {
+    console.error('Stats error:', error);
+    res.status(500).json({ error: '통계 조회 중 오류가 발생했습니다.' });
   }
 });
 
