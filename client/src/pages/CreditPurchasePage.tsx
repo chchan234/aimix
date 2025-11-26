@@ -220,7 +220,7 @@ export default function CreditPurchasePage() {
             </li>
             <li className="flex items-start">
               <span className="text-indigo-600 mr-2">•</span>
-              <span>구매한 크레딧은 환불되지 않습니다.</span>
+              <span>사용하지 않은 크레딧은 구매일로부터 7일 이내 환불 가능합니다.</span>
             </li>
             <li className="flex items-start">
               <span className="text-indigo-600 mr-2">•</span>

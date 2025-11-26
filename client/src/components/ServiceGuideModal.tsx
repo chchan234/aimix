@@ -170,7 +170,7 @@ export default function ServiceGuideModal({ isOpen, onClose }: ServiceGuideModal
               {t('help.serviceGuide.notice.title', { defaultValue: '⚠️ 주의사항' })}
             </h3>
             <ul className="space-y-2 text-sm text-[#ab9eb7]">
-              <li>• {t('help.serviceGuide.notice.item1', { defaultValue: '서비스 이용 시 크레딧이 차감되며, 취소 또는 환불되지 않습니다' })}</li>
+              <li>• {t('help.serviceGuide.notice.item1', { defaultValue: '서비스 이용 시 크레딧이 차감됩니다. 사용하지 않은 크레딧은 구매일로부터 7일 이내 환불 가능합니다' })}</li>
               <li>• {t('help.serviceGuide.notice.item2', { defaultValue: 'AI 결과는 참고용이며, 실제와 다를 수 있습니다' })}</li>
               <li>• {t('help.serviceGuide.notice.item3', { defaultValue: '이미지 업로드 시 개인정보가 포함되지 않도록 주의하세요' })}</li>
               <li>• {t('help.serviceGuide.notice.item4', { defaultValue: '결과물은 "내 결과물" 페이지에서 확인 가능합니다' })}</li>

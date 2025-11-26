@@ -88,7 +88,7 @@ export default function GettingStartedGuideModal({ isOpen, onClose }: GettingSta
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-primary text-sm">check_circle</span>
-                    {t('help.guide.step2.item3', { defaultValue: '유효기간 없음: 영구 사용 가능' })}
+                    {t('help.guide.step2.item3', { defaultValue: '유효기간: 구매일로부터 12개월' })}
                   </li>
                 </ul>
               </div>
