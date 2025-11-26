@@ -165,14 +165,21 @@ export default function BuyCreditsPage() {
       await payment.requestPayment({
         method: 'CARD',
         amount: {
-          value: amount,
           currency: 'KRW',
+          value: amount,
         },
         orderId,
         orderName,
         successUrl: `${window.location.origin}/payment/success`,
         failUrl: `${window.location.origin}/payment/fail`,
         customerName: '고객',
+        // 카드 결제에 필요한 정보 (SDK v2 필수)
+        card: {
+          useEscrow: false,
+          flowMode: 'DEFAULT', // 통합결제창
+          useCardPoint: false,
+          useAppCardOnly: false,
+        },
       });
     } catch (error: any) {
       console.error('Payment error:', error);
