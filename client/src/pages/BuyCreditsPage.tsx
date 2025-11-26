@@ -28,7 +28,7 @@ export default function BuyCreditsPage() {
   const [, setLocation] = useLocation();
 
   const [selectedPackage, setSelectedPackage] = useState<string>('');
-  const [paymentMethod, setPaymentMethod] = useState<'CARD' | 'PAYPAL'>('CARD');
+  const [paymentMethod, setPaymentMethod] = useState<'EASY_PAY' | 'PAYPAL'>('EASY_PAY');
   const [currentCredits, setCurrentCredits] = useState(0);
   const [thisMonthUsed, setThisMonthUsed] = useState(0);
   const [totalCharged, setTotalCharged] = useState(0);
@@ -159,8 +159,8 @@ export default function BuyCreditsPage() {
       const payment = tossPayments.payment({ customerKey: ANONYMOUS });
 
       // 4. 결제창 띄우기 (v2 SDK 문법)
-      if (paymentMethod === 'CARD') {
-        // 일반 결제 (카드/간편결제 등)
+      if (paymentMethod === 'EASY_PAY') {
+        // 간편결제 (토스페이먼츠 결제창 - 카드, 간편결제 등 모든 결제수단)
         await payment.requestPayment({
           method: 'CARD',
           amount: {
@@ -300,18 +300,18 @@ export default function BuyCreditsPage() {
             <h2 className="text-foreground text-xl font-serif font-bold mb-4">결제 방법</h2>
             <div className="grid grid-cols-2 gap-4">
               <button
-                onClick={() => setPaymentMethod('CARD')}
+                onClick={() => setPaymentMethod('EASY_PAY')}
                 className={`p-5 rounded-2xl border-2 cursor-pointer transition ${
-                  paymentMethod === 'CARD'
+                  paymentMethod === 'EASY_PAY'
                     ? 'border-pink-400 bg-pink-50/80 dark:bg-pink-900/20 shadow-lg shadow-pink-200/50 dark:shadow-pink-900/30'
                     : 'border-pink-100/50 dark:border-purple-500/30 bg-white/60 dark:bg-[#1a1625] hover:border-pink-300 hover:bg-white/80 dark:hover:bg-[#2a2436]'
                 }`}
               >
                 <div className="flex flex-col items-center gap-3">
-                  <span className="material-symbols-outlined text-4xl text-pink-500">credit_card</span>
-                  <p className="text-foreground font-bold">신용카드</p>
-                  <p className="text-muted-foreground text-sm">KRW 결제</p>
-                  {paymentMethod === 'CARD' && (
+                  <span className="material-symbols-outlined text-4xl text-pink-500">account_balance_wallet</span>
+                  <p className="text-foreground font-bold">간편결제</p>
+                  <p className="text-muted-foreground text-sm">카드, 카카오페이 등</p>
+                  {paymentMethod === 'EASY_PAY' && (
                     <div className="w-6 h-6 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full flex items-center justify-center shadow-md">
                       <span className="material-symbols-outlined text-white text-sm">check</span>
                     </div>
@@ -365,9 +365,9 @@ export default function BuyCreditsPage() {
                 처리 중...
               </span>
             ) : selectedPackage && packages.find((p) => p.id === selectedPackage) ? (
-              paymentMethod === 'PAYPAL'
-                ? `$${Math.round(packages.find((p) => p.id === selectedPackage)!.price / 1300)} ${t('buyCredits.purchase.button')}`
-                : `₩${packages.find((p) => p.id === selectedPackage)!.price.toLocaleString()} ${t('buyCredits.purchase.button')}`
+              paymentMethod === 'EASY_PAY'
+                ? `₩${packages.find((p) => p.id === selectedPackage)!.price.toLocaleString()} ${t('buyCredits.purchase.button')}`
+                : `$${Math.round(packages.find((p) => p.id === selectedPackage)!.price / 1300)} ${t('buyCredits.purchase.button')}`
             ) : (
               t('buyCredits.purchase.selectPackage')
             )}
