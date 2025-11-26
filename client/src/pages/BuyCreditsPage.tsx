@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
 import { getCredits } from '../services/ai';
 import { isLoggedIn } from '../services/auth';
-import { loadTossPayments, ANONYMOUS } from '@tosspayments/tosspayments-sdk';
+import { loadTossPayments } from '@tosspayments/tosspayments-sdk';
 
 interface CreditPackage {
   id: string;
@@ -154,8 +154,9 @@ export default function BuyCreditsPage() {
       // 2. 토스페이먼츠 SDK v2 로드
       const tossPayments = await loadTossPayments(clientKey);
 
-      // 3. 결제창 객체 생성 (비회원 결제)
-      const payment = tossPayments.payment({ customerKey: ANONYMOUS });
+      // 3. 결제창 객체 생성 (임시 customerKey 생성)
+      const tempCustomerKey = `GUEST_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+      const payment = tossPayments.payment({ customerKey: tempCustomerKey });
 
       // 4. 결제창 띄우기 (v2 SDK 문법)
       await payment.requestPayment({
