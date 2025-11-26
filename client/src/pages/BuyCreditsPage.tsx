@@ -151,8 +151,12 @@ export default function BuyCreditsPage() {
 
       const { orderId, amount, orderName, clientKey, customerKey } = await prepareResponse.json();
 
+      console.log('Payment prepare response:', { orderId, amount, orderName, clientKey, customerKey });
+
       // 2. 토스페이먼츠 SDK v2 로드
+      console.log('Loading TossPayments SDK with clientKey:', clientKey);
       const tossPayments = await loadTossPayments(clientKey);
+      console.log('TossPayments SDK loaded successfully');
 
       // 3. 결제창 객체 생성 (서버에서 생성한 customerKey 사용)
       const payment = tossPayments.payment({ customerKey });
