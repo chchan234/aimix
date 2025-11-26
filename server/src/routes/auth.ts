@@ -8,7 +8,10 @@ import express, { Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
+import { eq } from 'drizzle-orm';
 import { supabase } from '../db/supabase.js';
+import { db } from '../db/index.js';
+import { siteSettings } from '../db/schema.js';
 import { generateVerificationToken, getTokenExpiration, sendVerificationEmail } from '../services/email.js';
 import { createRefreshToken } from '../services/refreshToken.js';
 import { rateLimitByIP } from '../middleware/rateLimit.js';
@@ -1053,6 +1056,31 @@ router.delete('/account', async (req, res) => {
     res.status(500).json({
       error: '계정 삭제 중 오류가 발생했습니다.'
     });
+  }
+});
+
+/**
+ * GET /api/auth/popular-services
+ * Get popular services (public endpoint, no auth required)
+ */
+const DEFAULT_POPULAR_SERVICES = ['saju', 'profile-generator', 'mbti-analysis', 'face-reading', 'lookalike'];
+
+router.get('/popular-services', async (req, res) => {
+  try {
+    const result = await db.select()
+      .from(siteSettings)
+      .where(eq(siteSettings.key, 'popularServices'))
+      .limit(1);
+
+    if (result.length > 0) {
+      res.json({ services: result[0].value });
+    } else {
+      res.json({ services: DEFAULT_POPULAR_SERVICES });
+    }
+  } catch (error) {
+    console.error('Get popular services error:', error);
+    // Return default if table doesn't exist
+    res.json({ services: DEFAULT_POPULAR_SERVICES });
   }
 });
 

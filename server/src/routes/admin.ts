@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { db } from '../db/index.js';
-import { users, transactions, adminLogs, announcements } from '../db/schema.js';
+import { users, transactions, adminLogs, announcements, siteSettings } from '../db/schema.js';
 import { eq, desc, sql, and, gte, like, or, count } from 'drizzle-orm';
 import { requireAdmin, getClientIP } from '../middleware/admin.js';
 
@@ -819,6 +819,74 @@ router.get('/status', async (req: Request, res: Response) => {
       email: (req as any).admin.email
     }
   });
+});
+
+// ================================
+// Popular Services Management
+// ================================
+const DEFAULT_POPULAR_SERVICES = ['saju', 'profile-generator', 'mbti-analysis', 'face-reading', 'lookalike'];
+
+router.get('/popular-services', async (req: Request, res: Response) => {
+  try {
+    const result = await db.select()
+      .from(siteSettings)
+      .where(eq(siteSettings.key, 'popularServices'))
+      .limit(1);
+
+    if (result.length > 0) {
+      res.json({ services: result[0].value });
+    } else {
+      res.json({ services: DEFAULT_POPULAR_SERVICES });
+    }
+  } catch (error) {
+    console.error('Get popular services error:', error);
+    // Return default if table doesn't exist
+    res.json({ services: DEFAULT_POPULAR_SERVICES });
+  }
+});
+
+router.put('/popular-services', async (req: Request, res: Response) => {
+  try {
+    const { services } = req.body;
+    const adminId = (req as any).admin.id;
+
+    if (!Array.isArray(services) || services.length !== 5) {
+      return res.status(400).json({ error: '5개의 서비스를 선택해주세요.' });
+    }
+
+    // Check if setting exists
+    const existing = await db.select()
+      .from(siteSettings)
+      .where(eq(siteSettings.key, 'popularServices'))
+      .limit(1);
+
+    if (existing.length > 0) {
+      await db.update(siteSettings)
+        .set({
+          value: services,
+          updatedAt: new Date()
+        })
+        .where(eq(siteSettings.key, 'popularServices'));
+    } else {
+      await db.insert(siteSettings).values({
+        key: 'popularServices',
+        value: services
+      });
+    }
+
+    await db.insert(adminLogs).values({
+      adminId,
+      action: 'popular_services_update',
+      targetType: 'site_settings',
+      details: { services },
+      ipAddress: getClientIP(req)
+    });
+
+    res.json({ success: true, services });
+  } catch (error) {
+    console.error('Update popular services error:', error);
+    res.status(500).json({ error: '인기 서비스 업데이트에 실패했습니다.' });
+  }
 });
 
 export default router;

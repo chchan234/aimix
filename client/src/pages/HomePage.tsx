@@ -1,7 +1,41 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { useTranslation } from 'react-i18next';
 import AnnouncementSection from '../components/AnnouncementSection';
+
+// Service ID to path mapping
+const SERVICE_PATH_MAP: Record<string, string> = {
+  'saju': '/services/saju',
+  'face-reading': '/services/face-reading',
+  'palmistry': '/services/palmistry',
+  'horoscope': '/services/horoscope',
+  'zodiac': '/services/zodiac',
+  'love-compatibility': '/services/love-compatibility',
+  'name-compatibility': '/services/name-compatibility',
+  'marriage-compatibility': '/services/marriage-compatibility',
+  'profile-generator': '/services/profile-generator',
+  'caricature': '/services/caricature',
+  'id-photo': '/services/id-photo',
+  'age-transform': '/services/age-transform',
+  'gender-swap': '/services/gender-swap',
+  'colorization': '/services/colorization',
+  'background-removal': '/services/background-removal',
+  'hairstyle': '/services/hairstyle',
+  'tattoo': '/services/tattoo',
+  'mbti-analysis': '/services/mbti-analysis',
+  'enneagram-test': '/services/enneagram-test',
+  'bigfive-test': '/services/bigfive-test',
+  'stress-test': '/services/stress-test',
+  'lookalike': '/services/lookalike',
+  'geumjjoki-test': '/services/geumjjoki-test',
+  'body-analysis': '/services/body-analysis',
+  'bmi-calculator': '/services/bmi-calculator',
+  'skin-analysis': '/services/skin-analysis',
+  'baby-face': '/services/baby-face',
+  'personal-color': '/services/personal-color',
+  'pet-soulmate': '/services/pet-soulmate',
+  'deep-saju-2026': '/services/deep-saju-2026',
+};
 
 export default function HomePage() {
   const [, setLocation] = useLocation();
@@ -232,6 +266,39 @@ export default function HomePage() {
       category: 'health',
       path: '/services/skin-analysis',
     },
+    // 추가 서비스
+    {
+      title: t('services.entertainment.babyFace.title'),
+      description: t('services.entertainment.babyFace.description'),
+      icon: 'child_friendly',
+      color: 'pink',
+      category: 'entertainment',
+      path: '/services/baby-face',
+    },
+    {
+      title: t('services.health.personalColor.title'),
+      description: t('services.health.personalColor.description'),
+      icon: 'color_lens',
+      color: 'purple',
+      category: 'health',
+      path: '/services/personal-color',
+    },
+    {
+      title: t('services.entertainment.petSoulmate.title'),
+      description: t('services.entertainment.petSoulmate.description'),
+      icon: 'pets',
+      color: 'orange',
+      category: 'entertainment',
+      path: '/services/pet-soulmate',
+    },
+    {
+      title: t('services.fortune.deepSaju2026.title'),
+      description: t('services.fortune.deepSaju2026.description'),
+      icon: 'auto_awesome',
+      color: 'yellow',
+      category: 'fortune',
+      path: '/services/deep-saju-2026',
+    },
   ], [t]);
 
   const colorClasses: Record<string, string> = {
@@ -252,59 +319,36 @@ export default function HomePage() {
     return shuffled.slice(0, 6);
   }, [allServices]);
 
-  // 이번주 인기 서비스 (추후 좋아요 기능으로 대체)
-  const popularServices = useMemo(() => [
-    {
-      title: t('services.fortune.saju.title'),
-      description: t('services.fortune.saju.description'),
-      icon: 'calendar_today',
-      color: 'purple',
-      category: 'fortune',
-      path: '/services/saju',
-      rating: 4.9,
-      users: 3245,
-    },
-    {
-      title: t('services.image.profileGenerator.title'),
-      description: t('services.image.profileGenerator.description'),
-      icon: 'account_circle',
-      color: 'cyan',
-      category: 'image',
-      path: '/services/profile-generator',
-      rating: 4.8,
-      users: 2876,
-    },
-    {
-      title: t('services.entertainment.mbti.title'),
-      description: t('services.entertainment.mbti.description'),
-      icon: 'psychology',
-      color: 'purple',
-      category: 'entertainment',
-      path: '/services/mbti-analysis',
-      rating: 4.7,
-      users: 2654,
-    },
-    {
-      title: t('services.fortune.faceReading.title'),
-      description: t('services.fortune.faceReading.description'),
-      icon: 'face',
-      color: 'blue',
-      category: 'fortune',
-      path: '/services/face-reading',
-      rating: 4.6,
-      users: 1987,
-    },
-    {
-      title: t('services.entertainment.lookalike.title'),
-      description: t('services.entertainment.lookalike.description'),
-      icon: 'compare',
-      color: 'pink',
-      category: 'entertainment',
-      path: '/services/lookalike',
-      rating: 4.5,
-      users: 1543,
-    },
-  ], [t]);
+  // 이번주 인기 서비스 (API에서 불러옴)
+  const [popularServiceIds, setPopularServiceIds] = useState<string[]>([
+    'saju', 'profile-generator', 'mbti-analysis', 'face-reading', 'lookalike'
+  ]);
+
+  useEffect(() => {
+    const fetchPopularServices = async () => {
+      try {
+        const response = await fetch('/api/auth/popular-services');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.services && Array.isArray(data.services)) {
+            setPopularServiceIds(data.services);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch popular services:', error);
+      }
+    };
+    fetchPopularServices();
+  }, []);
+
+  const popularServices = useMemo(() => {
+    return popularServiceIds
+      .map(serviceId => {
+        const service = allServices.find(s => s.path === SERVICE_PATH_MAP[serviceId]);
+        return service;
+      })
+      .filter((s): s is NonNullable<typeof s> => s !== undefined);
+  }, [popularServiceIds, allServices]);
 
   // 순위 뱃지 아이콘
   const getRankBadge = (rank: number) => {
@@ -385,17 +429,6 @@ export default function HomePage() {
                   <p className="text-primary text-xs font-medium leading-normal mt-1">
                     {t(`home.categories.${service.category}`)}
                   </p>
-                  {/* 평점 및 사용자 수 */}
-                  <div className="flex items-center gap-2 mt-1 text-xs">
-                    <span className="flex items-center gap-0.5 text-yellow-400">
-                      <span className="material-symbols-outlined text-sm">star</span>
-                      {service.rating}
-                    </span>
-                    <span className="text-muted-foreground">•</span>
-                    <span className="text-muted-foreground">
-                      {service.users.toLocaleString()} {t('home.users')}
-                    </span>
-                  </div>
                 </div>
               </div>
             ))}
@@ -434,17 +467,6 @@ export default function HomePage() {
                 <p className="text-primary text-xs font-medium leading-normal mt-1">
                   {t(`home.categories.${service.category}`)}
                 </p>
-                {/* 평점 및 사용자 수 */}
-                <div className="flex items-center gap-2 mt-1 text-xs">
-                  <span className="flex items-center gap-0.5 text-yellow-400">
-                    <span className="material-symbols-outlined text-sm">star</span>
-                    {service.rating}
-                  </span>
-                  <span className="text-muted-foreground">•</span>
-                  <span className="text-muted-foreground">
-                    {service.users.toLocaleString()} {t('home.users')}
-                  </span>
-                </div>
               </div>
             </div>
           ))}

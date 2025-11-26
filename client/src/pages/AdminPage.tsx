@@ -77,7 +77,7 @@ interface Pagination {
   pages: number;
 }
 
-type TabType = 'dashboard' | 'users' | 'credits' | 'analytics' | 'announcements' | 'logs';
+type TabType = 'dashboard' | 'users' | 'credits' | 'analytics' | 'popular' | 'announcements' | 'logs';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
 
@@ -97,6 +97,10 @@ const TAB_DESCRIPTIONS: Record<TabType, { title: string; description: string }> 
   analytics: {
     title: '서비스 통계',
     description: '서비스별 이용 현황과 일별 트렌드를 분석합니다. 인기 서비스와 사용 패턴을 파악할 수 있습니다.'
+  },
+  popular: {
+    title: '인기 서비스',
+    description: '메인 페이지에 표시될 이번주 인기 서비스 5개를 선택합니다.'
   },
   announcements: {
     title: '공지사항',
@@ -152,6 +156,10 @@ export default function AdminPage() {
   const [logPage, setLogPage] = useState(1);
   const [logPagination, setLogPagination] = useState<Pagination | null>(null);
   const [logFilter, setLogFilter] = useState({ action: '', startDate: '', endDate: '' });
+
+  // Popular services state
+  const [popularServices, setPopularServices] = useState<string[]>([]);
+  const [savingPopular, setSavingPopular] = useState(false);
 
   // Auth check
   useEffect(() => {
@@ -307,6 +315,64 @@ export default function AdminPage() {
     }
   };
 
+  const loadPopularServices = async () => {
+    try {
+      const response = await fetch(`${API_BASE}/api/admin/popular-services`, {
+        headers: {
+          'Authorization': `Bearer ${getToken()}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setPopularServices(data.services || []);
+      }
+    } catch (err) {
+      console.error('Failed to load popular services:', err);
+    }
+  };
+
+  const handleSavePopularServices = async () => {
+    if (popularServices.length !== 5) {
+      setError('5개의 서비스를 선택해주세요.');
+      return;
+    }
+
+    setSavingPopular(true);
+    try {
+      const response = await fetch(`${API_BASE}/api/admin/popular-services`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${getToken()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ services: popularServices })
+      });
+
+      if (response.ok) {
+        setSuccess('인기 서비스가 저장되었습니다.');
+      } else {
+        const data = await response.json();
+        setError(data.error || '저장에 실패했습니다.');
+      }
+    } catch {
+      setError('저장 중 오류가 발생했습니다.');
+    } finally {
+      setSavingPopular(false);
+    }
+  };
+
+  const togglePopularService = (serviceId: string) => {
+    setPopularServices(prev => {
+      if (prev.includes(serviceId)) {
+        return prev.filter(s => s !== serviceId);
+      } else if (prev.length < 5) {
+        return [...prev, serviceId];
+      }
+      return prev;
+    });
+  };
+
   const handleTabChange = (tab: TabType) => {
     setActiveTab(tab);
     setError(null);
@@ -326,6 +392,9 @@ export default function AdminPage() {
         break;
       case 'analytics':
         loadAnalytics();
+        break;
+      case 'popular':
+        loadPopularServices();
         break;
       case 'announcements':
         loadAnnouncements();
@@ -575,6 +644,7 @@ export default function AdminPage() {
             { id: 'users', label: '사용자 관리', icon: 'people' },
             { id: 'credits', label: '크레딧 관리', icon: 'payments' },
             { id: 'analytics', label: '서비스 통계', icon: 'analytics' },
+            { id: 'popular', label: '인기 서비스', icon: 'trending_up' },
             { id: 'announcements', label: '공지사항', icon: 'campaign' },
             { id: 'logs', label: '활동 로그', icon: 'history' },
           ].map((tab) => (
@@ -941,6 +1011,88 @@ export default function AdminPage() {
               ) : (
                 <p className="text-gray-500 text-center py-8">데이터가 없습니다.</p>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Popular Services Tab */}
+        {activeTab === 'popular' && (
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-semibold">이번주 인기 서비스 선택 ({popularServices.length}/5)</h3>
+              <button
+                onClick={handleSavePopularServices}
+                disabled={savingPopular || popularServices.length !== 5}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <span className="material-symbols-outlined text-xl">save</span>
+                {savingPopular ? '저장 중...' : '저장'}
+              </button>
+            </div>
+
+            <p className="text-sm text-gray-600 mb-4">
+              메인 페이지에 표시될 인기 서비스 5개를 선택하세요. 선택한 순서대로 표시됩니다.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {[
+                { id: 'saju', name: '사주팔자', category: '운세' },
+                { id: 'face-reading', name: 'AI 관상', category: '운세' },
+                { id: 'palmistry', name: '손금 분석', category: '운세' },
+                { id: 'horoscope', name: '오늘의 운세', category: '운세' },
+                { id: 'zodiac', name: '띠 운세', category: '운세' },
+                { id: 'love-compatibility', name: '연애 궁합', category: '운세' },
+                { id: 'name-compatibility', name: '이름 궁합', category: '운세' },
+                { id: 'marriage-compatibility', name: '결혼 궁합', category: '운세' },
+                { id: 'profile-generator', name: 'AI 프로필', category: '이미지' },
+                { id: 'caricature', name: '캐리커처', category: '이미지' },
+                { id: 'id-photo', name: '증명사진', category: '이미지' },
+                { id: 'age-transform', name: '나이 변환', category: '이미지' },
+                { id: 'gender-swap', name: '성별 변환', category: '이미지' },
+                { id: 'colorization', name: '흑백 사진 복원', category: '이미지' },
+                { id: 'background-removal', name: '배경 제거', category: '이미지' },
+                { id: 'hairstyle', name: '헤어스타일', category: '이미지' },
+                { id: 'tattoo', name: '타투 시뮬', category: '이미지' },
+                { id: 'mbti-analysis', name: 'MBTI 분석', category: '엔터' },
+                { id: 'enneagram-test', name: '에니어그램', category: '엔터' },
+                { id: 'bigfive-test', name: 'Big Five', category: '엔터' },
+                { id: 'stress-test', name: '스트레스 테스트', category: '엔터' },
+                { id: 'lookalike', name: '닮은꼴 연예인', category: '엔터' },
+                { id: 'geumjjoki-test', name: '금쪽이 테스트', category: '엔터' },
+                { id: 'body-analysis', name: '체형 분석', category: '건강' },
+                { id: 'bmi-calculator', name: 'BMI 계산기', category: '건강' },
+                { id: 'skin-analysis', name: '피부 분석', category: '건강' },
+                { id: 'baby-face', name: '아기 얼굴 예측', category: '엔터' },
+                { id: 'personal-color', name: '퍼스널 컬러', category: '건강' },
+                { id: 'pet-soulmate', name: '반려동물 소울메이트', category: '엔터' },
+                { id: 'deep-saju-2026', name: '2026 신년운세', category: '운세' },
+              ].map((service) => {
+                const isSelected = popularServices.includes(service.id);
+                const selectedIndex = popularServices.indexOf(service.id);
+                return (
+                  <div
+                    key={service.id}
+                    onClick={() => togglePopularService(service.id)}
+                    className={`p-4 border-2 rounded-lg cursor-pointer transition ${
+                      isSelected
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium">{service.name}</p>
+                        <p className="text-xs text-gray-500">{service.category}</p>
+                      </div>
+                      {isSelected && (
+                        <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
+                          {selectedIndex + 1}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
