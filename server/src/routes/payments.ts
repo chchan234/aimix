@@ -15,15 +15,16 @@ const router = Router();
 
 // 크레딧 패키지 정의
 const CREDIT_PACKAGES = {
+  starter: { credits: 10, price: 1100, name: '스타터 패키지' },
+  lite: { credits: 50, price: 4900, name: '라이트 패키지' },
   basic: { credits: 100, price: 9900, name: '베이직 패키지' },
-  standard: { credits: 300, price: 24900, name: '스탠다드 패키지' },
-  premium: { credits: 1000, price: 69900, name: '프리미엄 패키지' },
-  enterprise: { credits: 5000, price: 299000, name: '엔터프라이즈 패키지' },
+  standard: { credits: 300, price: 26900, name: '스탠다드 패키지' },
+  premium: { credits: 500, price: 39900, name: '프리미엄 패키지' },
 };
 
 // 결제 준비 스키마
 const preparePaymentSchema = z.object({
-  packageType: z.enum(['basic', 'standard', 'premium', 'enterprise']),
+  packageType: z.enum(['starter', 'lite', 'basic', 'standard', 'premium']),
 });
 
 // 결제 승인 스키마

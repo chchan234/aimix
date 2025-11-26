@@ -153,10 +153,10 @@ export default function CreditPurchasePage() {
               className={`
                 bg-white rounded-2xl shadow-lg p-8 border-2 transition-all duration-300
                 ${selectedPackage?.id === pkg.id ? 'border-indigo-600 shadow-2xl scale-105' : 'border-transparent hover:border-indigo-300 hover:shadow-xl'}
-                ${pkg.id === 'premium' ? 'ring-2 ring-indigo-500 ring-offset-2' : ''}
+                ${pkg.id === 'basic' ? 'ring-2 ring-indigo-500 ring-offset-2' : ''}
               `}
             >
-              {pkg.id === 'premium' && (
+              {pkg.id === 'basic' && (
                 <div className="bg-indigo-600 text-white text-xs font-bold py-1 px-3 rounded-full inline-block mb-4">
                   인기
                 </div>
@@ -188,7 +188,7 @@ export default function CreditPurchasePage() {
                 disabled={isProcessing}
                 className={`
                   w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300
-                  ${pkg.id === 'premium'
+                  ${pkg.id === 'basic'
                     ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg'
                     : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                   }

@@ -101,10 +101,11 @@ export default function BuyCreditsPage() {
 
   // 크레딧 패키지 (토스페이먼츠 연동)
   const packages: CreditPackage[] = [
-    { id: 'basic', credits: 100, price: 9900, name: '베이직 패키지' },
-    { id: 'standard', credits: 300, price: 24900, name: '스탠다드 패키지' },
-    { id: 'premium', credits: 1000, price: 69900, name: '프리미엄 패키지', popular: true },
-    { id: 'enterprise', credits: 5000, price: 299000, name: '엔터프라이즈 패키지' },
+    { id: 'starter', credits: 10, price: 1100, name: '스타터 패키지' },
+    { id: 'lite', credits: 50, price: 4900, name: '라이트 패키지' },
+    { id: 'basic', credits: 100, price: 9900, name: '베이직 패키지', popular: true },
+    { id: 'standard', credits: 300, price: 26900, name: '스탠다드 패키지' },
+    { id: 'premium', credits: 500, price: 39900, name: '프리미엄 패키지' },
   ];
 
   const handlePurchase = async () => {
