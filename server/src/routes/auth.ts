@@ -22,14 +22,9 @@ const registerSchema = z.object({
   email: z.string().email('Invalid email format').max(255, 'Email too long'),
   password: z.string()
     .min(8, 'Password must be at least 8 characters')
-    .max(128, 'Password too long')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one number'),
+    .max(128, 'Password too long'),
   username: z.string()
-    .min(3, 'Username must be at least 3 characters')
     .max(50, 'Username too long')
-    .regex(/^[a-zA-Z0-9_-]+$/, 'Username can only contain letters, numbers, underscores and hyphens')
     .optional()
 });
 
