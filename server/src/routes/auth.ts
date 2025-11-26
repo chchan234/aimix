@@ -787,138 +787,24 @@ router.post('/refresh', async (req, res) => {
 
 /**
  * GET /api/auth/verify-email
- * Verify email with token
+ * Email verification is no longer required
  */
-router.get('/verify-email', async (req, res) => {
-  try {
-    const { token } = req.query;
-
-    if (!token || typeof token !== 'string') {
-      return res.status(400).json({
-        error: '유효하지 않은 인증 링크입니다.'
-      });
-    }
-
-    // Find user with this verification token
-    const { data: user, error: fetchError } = await supabase
-      .from('users')
-      .select('*')
-      .eq('verification_token', token)
-      .single();
-
-    if (fetchError || !user) {
-      return res.status(400).json({
-        error: '유효하지 않거나 만료된 인증 링크입니다.'
-      });
-    }
-
-    // Check if already verified
-    if (user.email_verified) {
-      return res.json({
-        success: true,
-        message: '이미 인증된 이메일입니다.',
-        alreadyVerified: true
-      });
-    }
-
-    // Check if token expired
-    const tokenExpires = new Date(user.verification_token_expires);
-    if (tokenExpires < new Date()) {
-      return res.status(400).json({
-        error: '인증 링크가 만료되었습니다. 새로운 인증 이메일을 요청해주세요.'
-      });
-    }
-
-    // Update user as verified
-    const { error: updateError } = await supabase
-      .from('users')
-      .update({
-        email_verified: true,
-        verification_token: null,
-        verification_token_expires: null
-      })
-      .eq('id', user.id);
-
-    if (updateError) throw updateError;
-
-    res.json({
-      success: true,
-      message: '이메일 인증이 완료되었습니다!'
-    });
-
-  } catch (error) {
-    console.error('Email verification error:', error);
-    res.status(500).json({
-      error: '이메일 인증 중 오류가 발생했습니다.'
-    });
-  }
+router.get('/verify-email', async (_req, res) => {
+  res.json({
+    success: true,
+    message: '이메일 인증이 더 이상 필요하지 않습니다.'
+  });
 });
 
 /**
  * POST /api/auth/resend-verification
- * Resend verification email
+ * Email verification is no longer required
  */
-router.post('/resend-verification', async (req, res) => {
-  try {
-    const { email } = req.body;
-
-    if (!email) {
-      return res.status(400).json({
-        error: '이메일이 필요합니다.'
-      });
-    }
-
-    // Find user
-    const { data: user, error: fetchError } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email)
-      .eq('provider', 'email')
-      .single();
-
-    if (fetchError || !user) {
-      return res.status(400).json({
-        error: '해당 이메일로 가입된 계정을 찾을 수 없습니다.'
-      });
-    }
-
-    // Check if already verified
-    if (user.email_verified) {
-      return res.json({
-        success: true,
-        message: '이미 인증된 이메일입니다.'
-      });
-    }
-
-    // Generate new verification token
-    const verificationToken = generateVerificationToken();
-    const verificationTokenExpires = getTokenExpiration();
-
-    // Update user with new token
-    const { error: updateError } = await supabase
-      .from('users')
-      .update({
-        verification_token: verificationToken,
-        verification_token_expires: verificationTokenExpires.toISOString()
-      })
-      .eq('id', user.id);
-
-    if (updateError) throw updateError;
-
-    // Send verification email
-    await sendVerificationEmail(email, user.username, verificationToken);
-
-    res.json({
-      success: true,
-      message: '인증 이메일이 재전송되었습니다. 이메일을 확인해주세요.'
-    });
-
-  } catch (error) {
-    console.error('Resend verification error:', error);
-    res.status(500).json({
-      error: '인증 이메일 재전송 중 오류가 발생했습니다.'
-    });
-  }
+router.post('/resend-verification', async (_req, res) => {
+  res.json({
+    success: true,
+    message: '이메일 인증이 더 이상 필요하지 않습니다.'
+  });
 });
 
 /**
