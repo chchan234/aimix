@@ -41,7 +41,7 @@ export default function TermsPage() {
           <h2 className="text-lg font-semibold text-foreground">제5조 (크레딧 및 결제)</h2>
           <ol className="list-decimal pl-5 space-y-1">
             <li>서비스 이용을 위해서는 크레딧이 필요하며, 크레딧은 유료로 구매할 수 있습니다.</li>
-            <li>사용하지 않은 크레딧은 구매일로부터 7일 이내 환불이 가능합니다. 환불 요청은 고객센터를 통해 접수해 주세요.</li>
+            <li>다음의 경우 환불이 가능합니다: ① 구매일로부터 7일 이내, 사용하지 않은 크레딧 ② 회사의 귀책사유로 결제 오류가 발생한 경우 ③ 회사의 귀책사유로 서비스가 중단되는 경우. 환불 요청은 고객센터를 통해 접수해 주세요.</li>
             <li>크레딧의 유효기간은 구매일로부터 12개월입니다.</li>
           </ol>
         </section>
