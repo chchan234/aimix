@@ -41,14 +41,30 @@ export default function TermsPage() {
           <h2 className="text-lg font-semibold text-foreground">제5조 (크레딧 및 결제)</h2>
           <ol className="list-decimal pl-5 space-y-1">
             <li>서비스 이용을 위해서는 크레딧이 필요하며, 크레딧은 유료로 구매할 수 있습니다.</li>
-            <li>다음의 경우 환불이 가능합니다: ① 구매일로부터 7일 이내, 사용하지 않은 크레딧 ② 회사의 귀책사유로 결제 오류가 발생한 경우 ③ 회사의 귀책사유로 서비스가 중단되는 경우. 환불 요청은 고객센터를 통해 접수해 주세요.</li>
-            <li>크레딧의 유효기간은 구매일로부터 12개월입니다.</li>
-            <li>충전된 포인트의 이용기간과 환불가능기간은 결제시점으로부터 1년 이내로 제한됩니다.</li>
+            <li>크레딧은 1회 최대 10만원까지 충전할 수 있습니다.</li>
+            <li>결제는 토스페이먼츠를 통해 안전하게 처리됩니다.</li>
           </ol>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-foreground">제6조 (회원의 의무)</h2>
+          <h2 className="text-lg font-semibold text-foreground">제6조 (충전된 포인트에 대한 환불 정책)</h2>
+          <ol className="list-decimal pl-5 space-y-1">
+            <li>충전된 포인트의 이용기간과 환불가능기간은 결제시점으로부터 1년 이내로 제한됩니다.</li>
+            <li>다음의 경우 환불이 가능합니다:
+              <ul className="list-disc pl-5 mt-1 space-y-1">
+                <li>구매일로부터 7일 이내, 사용하지 않은 크레딧</li>
+                <li>회사의 귀책사유로 결제 오류가 발생한 경우</li>
+                <li>회사의 귀책사유로 서비스가 중단되는 경우</li>
+              </ul>
+            </li>
+            <li>환불 요청은 고객센터(010-6558-0068)를 통해 접수해 주세요.</li>
+            <li>환불 시 결제 수수료를 제외한 금액이 환불됩니다.</li>
+            <li>이미 사용한 크레딧은 환불 대상에서 제외됩니다.</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-foreground">제7조 (회원의 의무)</h2>
           <p>회원은 다음 행위를 하여서는 안됩니다.</p>
           <ul className="list-disc pl-5 space-y-1">
             <li>타인의 정보 도용</li>
@@ -60,7 +76,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-foreground">제7조 (면책조항)</h2>
+          <h2 className="text-lg font-semibold text-foreground">제8조 (면책조항)</h2>
           <ol className="list-decimal pl-5 space-y-1">
             <li>회사는 AI가 생성한 결과물의 정확성, 신뢰성을 보장하지 않습니다.</li>
             <li>서비스에서 제공하는 운세, 심리분석 등의 결과는 오락 목적으로만 제공되며, 의료, 법률, 금융 등의 전문적인 조언을 대체하지 않습니다.</li>
@@ -69,7 +85,7 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-foreground">제8조 (분쟁해결)</h2>
+          <h2 className="text-lg font-semibold text-foreground">제9조 (분쟁해결)</h2>
           <p>본 약관에서 정하지 아니한 사항과 이 약관의 해석에 관하여는 관계법령 또는 상관례에 따릅니다.</p>
         </section>
 
