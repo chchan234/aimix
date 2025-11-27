@@ -41,7 +41,6 @@ export default function TermsPage() {
           <h2 className="text-lg font-semibold text-foreground">제5조 (크레딧 및 결제)</h2>
           <ol className="list-decimal pl-5 space-y-1">
             <li>서비스 이용을 위해서는 크레딧이 필요하며, 크레딧은 유료로 구매할 수 있습니다.</li>
-            <li>크레딧은 1회 최대 10만원까지 충전할 수 있습니다.</li>
             <li>결제는 토스페이먼츠를 통해 안전하게 처리됩니다.</li>
           </ol>
         </section>
@@ -52,12 +51,11 @@ export default function TermsPage() {
             <li>충전된 포인트의 이용기간과 환불가능기간은 결제시점으로부터 1년 이내로 제한됩니다.</li>
             <li>다음의 경우 환불이 가능합니다:
               <ul className="list-disc pl-5 mt-1 space-y-1">
-                <li>구매일로부터 7일 이내, 사용하지 않은 크레딧</li>
                 <li>회사의 귀책사유로 결제 오류가 발생한 경우</li>
                 <li>회사의 귀책사유로 서비스가 중단되는 경우</li>
               </ul>
             </li>
-            <li>환불 요청은 고객센터(010-6558-0068)를 통해 접수해 주세요.</li>
+            <li>환불 요청은 고객센터를 통해 접수해 주세요.</li>
             <li>환불 시 결제 수수료를 제외한 금액이 환불됩니다.</li>
             <li>이미 사용한 크레딧은 환불 대상에서 제외됩니다.</li>
           </ol>
